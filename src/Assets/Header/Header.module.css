@@ -1,0 +1,30 @@
+.Header {
+    background: linear-gradient(rgba(51, 51, 51,0.75),rgba(0, 0, 0, 0.85));
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+.Header .HeaderTitle {
+    font-size: 2em;
+    color: #ddd;
+    font-weight: 700;
+    line-height: 60px;
+    margin-left: 20px;
+}
+.Header .HeaderButton {
+    border: none;
+    background: none;
+    color: #ddd;
+    margin-right: 20px;
+}
+.header .headerButton .headerButtonSpan {
+    font-size: 40px;
+}
+.header .headerButton .headerButtonSpan:hover {
+    color: #950;
+}
