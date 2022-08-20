@@ -1,0 +1,12 @@
+.form-login {
+    /*
+        Position absolute and top. right, left and bottom zero are
+          used to cover all page with the background color
+    */
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #00FF7F;
+}
