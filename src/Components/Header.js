@@ -1,14 +1,16 @@
 import React from 'react'
 import Styles from '../Assets/Header/Header.module.css'
 
-function Header() {
-    return (
-        <header className={Styles.Header}>
+class Header extends React.Component {
+    render() {
+        return (
+            <header className={Styles.Header}>
             <span className={Styles.HeaderTitle}>
                 Header
             </span>
-        </header>
-    );
+            </header>
+        );
+    }
 }
 
 export default Header;
