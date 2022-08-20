@@ -1,13 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
-import Header from './Components/Header';
+import HomeRoutes from './Routes/Routes'
+import 'devextreme/dist/css/dx.light.css';
 
 function App() {
-  return (
-    <div className="App">
-        <Header />
-    </div>
-  );
+    return (
+        <HomeRoutes/>
+    );
 }
 
 export default App;
