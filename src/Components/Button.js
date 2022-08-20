@@ -5,18 +5,25 @@ import 'devextreme/dist/css/dx.light.css';
 import {Button as Btn} from 'devextreme-react/button';
 
 class Button extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <Btn
-                text="Click me"
-                onClick={this.sayHelloWorld}
+                text={this.props.text}
+                onClick={this.props.onClick}
+                className={this.props.className}
+                color={this.props.color}
             />
         );
     }
-
-    sayHelloWorld() {
-        alert('Hello world!')
-    }
 }
+
+Button.defaultProps = {
+    text: 'Lucas Moura',
+    color: '#00FF7F'
+};
 
 export default Button;

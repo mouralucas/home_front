@@ -1,27 +1,27 @@
 import React from "react";
-import Header from "../Components/Header";
-import {Link} from 'react-router-dom'
-import '../Assets/Login/Login.css'
-import logo from '../Assets/Core/Images/Logo/logo_lucas.svg'
+import {Link} from 'react-router-dom';
+import Input from "../Components/Input";
+import '../Assets/Login/Login.css';
+import logo from '../Assets/Core/Images/Logo/logo_lucas.svg';
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props)
     }
 
     render() {
         return (
             <div className='form-login'>
                 <div className="card-login">
-                    <img src={logo} alt="Logo"/>
+                    <img src={logo} alt="Logo" className='mb-4'/>
                     <form action="">
                         <label htmlFor="">Username</label>
-                        <input type="text"/>
+                        <Input name={'username'} placeholder={'Username'}/>
                         <label htmlFor="">Password</label>
-                        <input type="password"/>
+                        <Input name={'password'} placeholder={'Password'} />
+                        <button className="mt-4 teste-button">Entrar</button>
                     </form>
-                    <p class="mt-4 text-center">
+                    <p className="mt-4 text-center">
                         Não consegue acessar?
                         <Link to='/library/home'> Clique aqui </Link>
                     </p>
