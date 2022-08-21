@@ -9,9 +9,9 @@ import Login from '../Login'
 function Home () {
     const [token, setToken] = useState()
 
-    if (!token) {
-        return <Login />
-    }
+    // if (!token) {
+    //     return <Login />
+    // }
 
     return (
         <div className="App">
