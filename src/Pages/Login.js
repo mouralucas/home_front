@@ -18,7 +18,8 @@ async function loginAPI(credentials) {
     }).then(response => {
         return response.data
     }).catch(response => {
-        alert(response);
+        console.log(response.response.data.error);
+        return {'error': response}
     })
 }
 
@@ -34,8 +35,15 @@ export default function Login() {
             username,
             password
         });
-        setToken(token.access);
-        navigate("/library/home", {replace: true});
+
+        if (token.hasOwnProperty('error')) {
+            alert(token.error.response.data.error);
+        } else {
+            setToken(token.access);
+            navigate("/library/home", {replace: true});
+        }
+
+
     }
 
     return (
@@ -44,30 +52,30 @@ export default function Login() {
                 <div className="row justify-content-center mt-6">
                     <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5">
                         <div className="card">
-                            <div class="card-body">
-                                <div class="row justify-content-center ">
-                                    <div class="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-8">
+                            <div className="card-body">
+                                <div className="row justify-content-center ">
+                                    <div className="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-8">
                                         <img src={logo} alt="Logo" className='mb-4'/>
                                         <form onSubmit={handleSubmit}>
                                             <label htmlFor="">Username</label>
                                             <Input name={'username'} placeholder={'Username'} onChange={e => setUserName(e.target.value)} className='form-control'/>
                                             <label htmlFor="">Password</label>
                                             <Input name={'password'} placeholder={'Password'} onChange={e => setPassword(e.target.value)} className='form-control'/>
-                                            <div class="text-center">
-                                                <button type='submit' className="mt-2 btn btn-primary btn-block w-100">Entrar</button>
+                                            <div className="text-center">
+                                                <button type='submit' className="mt-4 btn btn-primary btn-block w-100">Entrar</button>
                                             </div>
                                         </form>
 
-                                        <p class="mt-4 text-center">
+                                        <p className="mt-4 text-center">
                                             Não consegue acessar?
                                             <Link to="#">Clique aqui.</Link>
                                         </p>
                                     </div>
                                 </div>
                                 <hr className="mt-2 mb-4"/>
-                                <div class="text-center">
-                                    <p class="small text-muted">Powered by:</p>
-                                    <a href="https://lucasmoura.com" target="_blank" rel="noreferrer"><img src="" alt="Logo Lucas Moura" width="150" class="mb-3"/></a>
+                                <div className="text-center">
+                                    <p className="small text-muted">Powered by:</p>
+                                    <a href="https://lucasmoura.com" target="_blank" rel="noreferrer"><img src="" alt="Logo Lucas Moura" width="150" className="mb-3"/></a>
                                 </div>
                             </div>
                         </div>
