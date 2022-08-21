@@ -5,13 +5,14 @@ import Navbar from '../../Components/Navbar'
 import {useState} from "react";
 import Login from '../Login'
 
+import {isAuthenticated} from "../../Services/Auth/Auth";
+
 
 function Home () {
-    const [token, setToken] = useState()
 
-    // if (!token) {
-    //     return <Login />
-    // }
+    if (!isAuthenticated()) {
+        return <Login />
+    }
 
     return (
         <div className="App">

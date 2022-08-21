@@ -1,5 +1,4 @@
 import React from "react";
-import TextBox from 'devextreme-react/text-box';
 
 class Input extends React.Component {
     constructor(props) {
@@ -19,11 +18,11 @@ class Input extends React.Component {
 
     render() {
         return (
-            <TextBox name={this.props.name}
+            <input name={this.props.name}
                      defaultValue={this.props.default}
                      placeholder={this.props.placeholder}
                      className='teste-input'
-                     onValueChanged={this.props.onValueChanged}
+                     onChange={this.props.onValueChanged}
                      type={this.props.type}
             />
         );
