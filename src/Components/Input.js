@@ -1,7 +1,7 @@
 import React from "react";
 import TextBox from 'devextreme-react/text-box';
 
-class App extends React.Component {
+class Input extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -9,7 +9,6 @@ class App extends React.Component {
         };
         this.rules = {X: /[02-9]/};
         this.valueChanged = this.valueChanged.bind(this);
-        console.log(props);
     }
 
     valueChanged(data) {
@@ -20,9 +19,19 @@ class App extends React.Component {
 
     render() {
         return (
-            <TextBox name={this.props.name} defaultValue={this.props.default} placeholder={this.props.placeholder} className='teste-input' />
+            <TextBox name={this.props.name}
+                     defaultValue={this.props.default}
+                     placeholder={this.props.placeholder}
+                     className='teste-input'
+                     onValueChanged={this.props.onValueChanged}
+                     type={this.props.type}
+            />
         );
     }
 }
 
-export default App;
+Input.defaultProps = {
+    type: 'text',
+}
+
+export default Input;

@@ -1,4 +1,4 @@
-export const TOKEN_KEY = null;
+export const TOKEN_KEY = 'userToken';
 
 // Stateless function are write with arrow
 export const isAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
