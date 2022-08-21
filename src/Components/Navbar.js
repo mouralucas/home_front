@@ -17,7 +17,7 @@ class Navbar extends React.Component {
     render () {
         return (
             <nav className="navbar">
-                <h1>Aqui é o Lucas</h1>
+                <h1>Lucas Moura</h1>
                 <p>{this.state.count}</p>
                 <div className="links">
                     <a href="/">Menu 1</a>

@@ -1,25 +1,36 @@
-import Header from "../../Components/Header";
-import MyChart from "../../Components/Chart";
-import Button from '../../Components/Button'
 import Navbar from '../../Components/Navbar'
-import {useState} from "react";
 import Login from '../Login'
+import Table from '../../Components/DataGrid'
 
 import {isAuthenticated} from "../../Services/Auth/Auth";
 
 
-function Home () {
+function Home() {
 
     if (!isAuthenticated()) {
-        return <Login />
+        return <Login/>
     }
 
     return (
         <div className="App">
             {/*<Header />*/}
-            <Navbar />
-            <div className="content">
-                <h1>App component</h1>
+            <Navbar/>
+            <div className="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header d-flex flex-wrap bg-body">
+                                <div>
+                                    <img src="#" alt="" width="25"/>
+                                    Livros
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <Table />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
