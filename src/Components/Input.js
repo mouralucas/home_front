@@ -19,18 +19,14 @@ class Input extends React.Component {
     render() {
         return (
             <input name={this.props.name}
-                     defaultValue={this.props.default}
-                     placeholder={this.props.placeholder}
-                     className='teste-input'
-                     onChange={this.props.onValueChanged}
-                     type={this.props.type}
+                   defaultValue={this.props.default}
+                   placeholder={this.props.placeholder}
+                   onChange={this.props.onChange}
+                   type={this.props.type}
+                   className={this.props.className}
             />
         );
     }
-}
-
-Input.defaultProps = {
-    type: 'text',
 }
 
 export default Input;
