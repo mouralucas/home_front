@@ -1,4 +1,6 @@
 import React from "react";
+import {Link} from "react-router-dom";
+import {logout} from "../Services/Auth/Auth";
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -22,7 +24,8 @@ class Navbar extends React.Component {
                 <div className="links">
                     <a href="/">Menu 1</a>
                     <a href="/menu2">Menu 2</a>
-                    <button className='button'  onClick={this.functionCount}>Clique</button>
+                    <button className='button'  onClick={logout}>Sair</button>
+                    {/*<Link to={'/logout'}> Logout </Link>*/}
                 </div>
             </nav>
         );

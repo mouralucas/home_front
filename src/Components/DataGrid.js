@@ -1,7 +1,8 @@
 import React from 'react';
 
 import ODataStore from 'devextreme/data/odata/store';
-
+import ptMessages from "devextreme/localization/messages/pt.json";
+import {locale, loadMessages} from "devextreme/localization";
 import DataGrid, {
     Column,
     Grouping,
@@ -28,42 +29,88 @@ const dataSourceOptions = {
 class Table extends React.Component {
     constructor(props) {
         super(props);
+
+        loadMessages(ptMessages);
+        locale(navigator.language);
+
         this.state = {
             collapsed: false,
+            showInfo: true,
         };
+
         this.onContentReady = this.onContentReady.bind(this);
+        this.setColumns = this.setColumns.bind(this);
+        this.setPager = this.setPager.bind(this);
+        this.setPaging = this.setPaging.bind(this);
+    }
+
+    setColumns() {
+        let lista_columns = [];
+        this.props.columns.forEach(function (column) {
+            lista_columns.push(<Column
+                dataField={column.dataField}
+                caption={column.caption}
+                dataType={column.dataType}
+                format={column.format}
+                alignment={column.alignment ?? 'center'}
+                width={column.width ?? null}
+                visible={column.visible ?? true}
+            />)
+        });
+        return lista_columns
+    }
+
+    setPager() {
+        let pager;
+        // TODO: set the props pager
+        if (this.props.pager) {
+            pager = null;
+        } else {
+            pager = <Pager
+                visible={true}
+                allowedPageSizes={pageSizes}
+                displayMode={this.state.displayMode}
+                showPageSizeSelector={this.state.showPageSizeSelector}
+                showInfo={this.state.showInfo}
+                showNavigationButtons={this.state.showNavButtons}
+            />;
+        }
+        return pager
+    }
+
+    setPaging() {
+        let paging;
+        if (this.props.paging){
+            paging = null;
+        } else {
+            paging = <Paging defaultPageSize={10}/>;
+        }
+
+        return paging
     }
 
     render() {
         return (
             <DataGrid
-                dataSource={dataSourceOptions}
+                dataSource={this.props.data}
                 allowColumnReordering={true}
                 rowAlternationEnabled={true}
                 showBorders={true}
                 onContentReady={this.onContentReady}
             >
-                <GroupPanel visible={true} />
-                <SearchPanel visible={true} highlightCaseSensitive={true} />
-                <Grouping autoExpandAll={false} />
 
-                <Column dataField="Product" groupIndex={0} />
-                <Column
-                    dataField="Amount"
-                    caption="Sale Amount"
-                    dataType="number"
-                    format="currency"
-                    alignment="right"
-                />
-                <Column dataField="SaleDate" dataType="date" />
-                <Column dataField="Region" dataType="string" />
-                <Column dataField="Sector" dataType="string" />
-                <Column dataField="Channel" dataType="string" />
-                <Column dataField="Customer" dataType="string" width={150} />
+                <GroupPanel visible={true}/>
+                <SearchPanel visible={true} highlightCaseSensitive={true}/>
+                <Grouping autoExpandAll={false}/>
 
-                <Pager allowedPageSizes={pageSizes} showPageSizeSelector={true} />
-                <Paging defaultPageSize={10} />
+                {this.setColumns()}
+
+                {this.setPager()}
+
+                {this.setPaging()}
+
             </DataGrid>
+
         );
     }
 
