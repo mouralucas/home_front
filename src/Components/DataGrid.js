@@ -40,6 +40,7 @@ class Table extends React.Component {
                 alignment={column.alignment ?? 'center'}
                 width={column.width ?? null}
                 visible={column.visible ?? true}
+                cellTemplate={column.cellTemplate ?? null}
             />)
         });
         return lista_columns
@@ -91,6 +92,8 @@ class Table extends React.Component {
                 rowAlternationEnabled={true}
                 showBorders={true}
                 onContentReady={this.onContentReady}
+                showRowLines={this.props.showRowLines ?? true}
+                showColumnLines={this.props.showColumnLines ?? true}
                 ref={(ref) => { this.dataGrid = ref; }}
             >
 
