@@ -91,6 +91,7 @@ class Table extends React.Component {
                 rowAlternationEnabled={true}
                 showBorders={true}
                 onContentReady={this.onContentReady}
+                ref={(ref) => { this.dataGrid = ref; }}
             >
 
                 <GroupPanel visible={true}/>
