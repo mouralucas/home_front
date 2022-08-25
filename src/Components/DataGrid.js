@@ -1,18 +1,11 @@
 import React from 'react';
-
-import ODataStore from 'devextreme/data/odata/store';
 import ptMessages from "devextreme/localization/messages/pt.json";
-import {locale, loadMessages} from "devextreme/localization";
-import DataGrid, {
-    Column,
-    Grouping,
-    GroupPanel,
-    Pager,
-    Paging,
-    SearchPanel,
-} from 'devextreme-react/data-grid';
+import {loadMessages, locale} from "devextreme/localization";
+import DataGrid, {Column, Grouping, GroupPanel, Pager, Paging, SearchPanel,} from 'devextreme-react/data-grid';
+import '../Assets/Table.css'
 
-const pageSizes = [10, 25, 50, 100];
+
+const pageSizes = [10, 15, 20];
 
 class Table extends React.Component {
     constructor(props) {
@@ -24,6 +17,8 @@ class Table extends React.Component {
         this.state = {
             collapsed: false,
             showInfo: true,
+            showPageSizeSelector: true,
+            showNavButtons: true,
         };
 
         this.onContentReady = this.onContentReady.bind(this);
@@ -59,7 +54,7 @@ class Table extends React.Component {
             pager = <Pager
                 visible={true}
                 allowedPageSizes={pageSizes}
-                displayMode={this.state.displayMode}
+                displayMode='full'
                 showPageSizeSelector={this.state.showPageSizeSelector}
                 showInfo={this.state.showInfo}
                 showNavigationButtons={this.state.showNavButtons}

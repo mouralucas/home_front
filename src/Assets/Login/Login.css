@@ -8,7 +8,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: #00FF7F;
+    background-color: var(--color-primay);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,13 +32,4 @@
 .card-login img {
     width: 300px;
     border-top: 15px;
-}
-
-/* Temporário */
-.mt-4 {
-    margin-top: 1.5rem;
-}
-
-.mb-4 {
-    margin-bottom: 1.5rem;
 }
