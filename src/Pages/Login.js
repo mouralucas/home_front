@@ -18,7 +18,6 @@ async function loginAPI(credentials) {
     }).then(response => {
         return response.data
     }).catch(response => {
-        console.log(response.response.data.error);
         return {'error': response}
     })
 }

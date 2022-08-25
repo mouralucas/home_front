@@ -1,8 +1,8 @@
 import React from 'react';
 import ptMessages from "devextreme/localization/messages/pt.json";
 import {loadMessages, locale} from "devextreme/localization";
-import DataGrid, {Column, Grouping, GroupPanel, Pager, Paging, SearchPanel,} from 'devextreme-react/data-grid';
-import '../Assets/Table.css'
+import DataGrid, {Column, ColumnChooser, Grouping, GroupPanel, Pager, Paging, SearchPanel,} from 'devextreme-react/data-grid';
+import '../Assets/Core/Components/Table.css'
 
 
 const pageSizes = [10, 15, 20];
@@ -13,6 +13,8 @@ class Table extends React.Component {
 
         loadMessages(ptMessages);
         locale(navigator.language);
+
+        console.log(this.props.columnChooser);
 
         this.state = {
             collapsed: false,
@@ -26,24 +28,29 @@ class Table extends React.Component {
         this.setPager = this.setPager.bind(this);
         this.setPaging = this.setPaging.bind(this);
         this.setGrouping = this.setGrouping.bind(this);
+        this.setColumnChooser = this.setColumnChooser.bind(this);
     }
 
     // Properties customizations
     setColumns() {
-        let lista_columns = [];
-        this.props.columns.forEach(function (column) {
-            lista_columns.push(<Column
-                dataField={column.dataField}
-                caption={column.caption}
-                dataType={column.dataType}
-                format={column.format}
-                alignment={column.alignment ?? 'center'}
-                width={column.width ?? null}
-                visible={column.visible ?? true}
-                cellTemplate={column.cellTemplate ?? null}
-            />)
-        });
-        return lista_columns
+        if (!this.props.tableColumns){
+            return null
+        } else {
+            let lista_columns = [];
+            this.props.tableColumns.forEach(function (column) {
+                lista_columns.push(<Column
+                    dataField={column.dataField}
+                    caption={column.caption}
+                    dataType={column.dataType}
+                    format={column.format}
+                    alignment={column.alignment ?? 'center'}
+                    width={column.width ?? null}
+                    visible={column.visible ?? true}
+                    cellTemplate={column.cellTemplate ?? null}
+                />)
+            });
+            return lista_columns
+        }
     }
 
     setPager() {
@@ -58,6 +65,7 @@ class Table extends React.Component {
                 displayMode='full'
                 showPageSizeSelector={this.state.showPageSizeSelector}
                 showInfo={this.state.showInfo}
+                infoText={this.props.infoText ?? null}
                 showNavigationButtons={this.state.showNavButtons}
             />;
         }
@@ -73,6 +81,17 @@ class Table extends React.Component {
         }
 
         return paging
+    }
+
+    setColumnChooser() {
+        let columnChooser;
+        if (this.props.columnChooser){
+            columnChooser = null
+        } else {
+            columnChooser = <ColumnChooser enabled={true} mode="dragAndDrop" />
+        }
+
+        return columnChooser
     }
 
     setGrouping() {
@@ -94,7 +113,6 @@ class Table extends React.Component {
                 onContentReady={this.onContentReady}
                 showRowLines={this.props.showRowLines ?? true}
                 showColumnLines={this.props.showColumnLines ?? true}
-                ref={(ref) => { this.dataGrid = ref; }}
             >
 
                 <GroupPanel visible={true}/>
@@ -102,6 +120,8 @@ class Table extends React.Component {
                 <Grouping autoExpandAll={false}/>
 
                 {this.setColumns()}
+
+                {this.setColumnChooser()}
 
                 {this.setPager()}
 

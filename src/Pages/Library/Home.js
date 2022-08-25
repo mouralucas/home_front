@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import Navbar from '../../Components/Navbar'
 import Login from '../Login'
-import Table from '../../Components/DataGrid'
 import axios from '../../Services/Axios/Axios'
 import {isAuthenticated} from "../../Services/Auth/Auth";
-import Card from "../../Components/Card";
+import Card from "../../Components/Card/Card";
+import Header from "../../Components/Header";
 
 
 function Home() {
@@ -12,7 +12,6 @@ function Home() {
 
     useEffect(() => {
         axios.get('/library/ajax/item/teste').then(response => {
-            console.log(response.data);
             setBooks(response.data.items);
         })
     }, []);
@@ -22,8 +21,12 @@ function Home() {
         return <Login/>
     }
 
+    function cellRender(data) {
+        return <img src={data.value} />;
+    }
 
-    let colunasTabelaItem = [
+
+    let colunasTabelaLivro = [
         {
             dataField: "id",
             caption: "Id",
@@ -54,7 +57,59 @@ function Home() {
         },
         {
             dataField: "cover_price",
-            caption: "Valor",
+            caption: "Pago/Capa",
+            dataType: "currency",
+        },
+        {
+            dataField: "nm_serie",
+            caption: "Serie",
+            dataType: "string",
+            visible: false,
+        },
+        {
+            dataField: "nm_publisher",
+            caption: "Editora",
+            dataType: "string",
+        },
+        {
+            dataField: "nm_last_status",
+            caption: "Status",
+            dataType: "string",
+        }
+    ]
+
+    let colunasTabelaManga = [
+        {
+            dataField: "id",
+            caption: "Id",
+            dataType: "number",
+            visible: false,
+        },
+        {
+            dataField: "title",
+            caption: "Título",
+            dataType: "string",
+            visible: true,
+        },
+        {
+            dataField: "nm_main_author",
+            caption: "Autor",
+            dataType: "string",
+            visible: true,
+        },
+        {
+            dataField: "pages",
+            caption: "Paginas",
+            dataType: "number",
+        },
+        {
+            dataField: "volume",
+            caption: "Vol.",
+            dataType: "number",
+        },
+        {
+            dataField: "cover_price",
+            caption: "Pago/Capa",
             dataType: "currency",
         },
         {
@@ -79,8 +134,10 @@ function Home() {
         <div className="App">
             <Navbar/>
 
-            <Card colunasTabelaItem={colunasTabelaItem} data={books}/>
-
+            <Card title={'Livros'} tableColumns={colunasTabelaLivro} data={books} columnChooser={false}>
+                <Header title={'Luvro'}></Header>
+            </Card>
+            <Card title={'Mangás'} tableColumns={colunasTabelaManga} data={books}/>
         </div>
     );
 }
