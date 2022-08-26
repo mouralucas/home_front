@@ -1,38 +1,30 @@
 import React from 'react';
-import Table from "../DataGrid";
-import '../../Assets/Core/Components/Cards.css'
-import Header from "../../Components/Card/Header";
 
+const Card = ({children}) => {
+    let subComponentList = Object.keys(Card);
 
-/**
- * Component the defines a Card
- *  All properties can be changed through props variable
- *  If it is a card of table, the properties are forwarded to the DataGrid component
- *      All the table configuration must be set in the component that uses the CardTable
- */
-class Card extends React.Component {
-    constructor(props) {
-        super(props);
-
-    }
-
-    render() {
-        return (
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-12">
-                        <div className="card card-custom">
-                            <div className="card-img"></div>
-                            <Header />
-                            <div className="card-body">
-                                <Table {...this.props}/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    let subComponents = subComponentList.map((key) => {
+        return React.Children.map(children, (child) =>
+            child.type.name === key ? child : null
         );
-    }
-}
+    });
+
+    return (
+        <div className="container-fluid mt-4">
+            <div className='card'>
+                {subComponents.map((component) => component)}
+            </div>
+        </div>
+    );
+};
+
+const Header = (props) => <div className='card-header'>{props.children}</div>;
+Card.Header = Header;
+
+const Body = (props) => <div className='card-body'>{props.children}</div>;
+Card.Body = Body;
+
+const Footer = (props) => <div className='card-footer'>{props.children}</div>;
+Card.Footer = Footer;
 
 export default Card;

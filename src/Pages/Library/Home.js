@@ -4,7 +4,7 @@ import Login from '../Login'
 import axios from '../../Services/Axios/Axios'
 import {isAuthenticated} from "../../Services/Auth/Auth";
 import Card from "../../Components/Card/Card";
-import Header from "../../Components/Header";
+import DataGrid from "../../Components/DataGrid";
 
 
 function Home() {
@@ -22,7 +22,7 @@ function Home() {
     }
 
     function cellRender(data) {
-        return <img src={data.value} />;
+        return <img src={data.value} alt='ima'/>;
     }
 
 
@@ -134,8 +134,11 @@ function Home() {
         <div className="App">
             <Navbar/>
 
-            <Card title={'Livros'} tableColumns={colunasTabelaLivro} data={books} columnChooser={false}>
-                <Header title={'Luvro'}></Header>
+            <Card>
+                <Card.Header>Livros</Card.Header>
+                <Card.Body>
+                    <DataGrid tableColumns={colunasTabelaLivro} data={books}/>
+                </Card.Body>
             </Card>
             <Card title={'Mangás'} tableColumns={colunasTabelaManga} data={books}/>
         </div>
