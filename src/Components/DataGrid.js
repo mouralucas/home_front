@@ -1,11 +1,17 @@
 import React from 'react';
 import ptMessages from "devextreme/localization/messages/pt.json";
 import {loadMessages, locale} from "devextreme/localization";
-import DataGrid, {Column, ColumnChooser, Grouping, GroupPanel, Pager, Paging, SearchPanel,} from 'devextreme-react/data-grid';
+import DataGrid, {Column, ColumnChooser, Grouping, GroupPanel, Pager, Paging, SearchPanel, Toolbar, LoadPanel, Export} from 'devextreme-react/data-grid';
 import '../Assets/Core/Components/Table.css'
+import {Item} from "devextreme-react/box";
+import Button from 'devextreme-react/button';
+import {exportDataGrid} from "devextreme/pdf_exporter";
+import {Workbook} from "exceljs";
+import saveAs from 'file-saver';
 
 
 const pageSizes = [10, 15, 20];
+const exportFormats = ['xlsx'];
 
 class Table extends React.Component {
     constructor(props) {
@@ -29,6 +35,8 @@ class Table extends React.Component {
         this.setPaging = this.setPaging.bind(this);
         this.setGrouping = this.setGrouping.bind(this);
         this.setColumnChooser = this.setColumnChooser.bind(this);
+        this.setLoadPanel = this.setLoadPanel.bind(this);
+        this.setExport = this.setExport.bind(this);
     }
 
     // Properties customizations
@@ -88,14 +96,34 @@ class Table extends React.Component {
         if (this.props.columnChooser){
             columnChooser = null
         } else {
-            columnChooser = <ColumnChooser enabled={true} mode="dragAndDrop" />
+            columnChooser = <ColumnChooser enabled={true} mode="dragAndDrop" />;
         }
 
         return columnChooser
     }
 
     setGrouping() {
-        
+
+    }
+
+    setLoadPanel(){
+        let loadPanel;
+        if (this.props.columnChooser){
+            loadPanel = null;
+        } else {
+            loadPanel = <LoadPanel enable={false}/>;
+        }
+        return loadPanel
+    }
+
+    setExport() {
+        let export_data;
+        if (this.props.export){
+            export_data = null;
+        } else {
+            export_data = <Export enabled={true}  formats={exportFormats} allowExportSelectedData={false} />;
+        }
+        return export_data
     }
 
     // Columns type customization
@@ -113,6 +141,7 @@ class Table extends React.Component {
                 onContentReady={this.onContentReady}
                 showRowLines={this.props.showRowLines ?? true}
                 showColumnLines={this.props.showColumnLines ?? true}
+                onExporting={this.onExporting}
             >
 
                 <GroupPanel visible={true}/>
@@ -127,6 +156,25 @@ class Table extends React.Component {
 
                 {this.setPaging()}
 
+                {this.setLoadPanel()}
+
+                {this.setExport()}
+
+                <Toolbar>
+                    <Item location="before">
+                        <div className="informer">
+                            <h2 className="count">{this.state.totalCount}</h2>
+                            <span className="name">Total Count</span>
+                        </div>
+                    </Item>
+                    <Item location="after">
+                        <Button
+                            icon='refresh'
+                            onClick={this.refreshDataGrid} />
+                    </Item>
+                    <Item name="columnChooserButton" />
+                    <Item name="exportButton" />
+                </Toolbar>
             </DataGrid>
 
         );
@@ -139,6 +187,26 @@ class Table extends React.Component {
                 collapsed: true,
             });
         }
+    }
+
+    onExporting(e) {
+        const workbook = new Workbook();
+        const worksheet = workbook.addWorksheet('Main sheet');
+        exportDataGrid({
+            component: e.component,
+            worksheet: worksheet,
+            customizeCell: function(options) {
+                const excelCell = options;
+                excelCell.font = { name: 'Arial', size: 12 };
+                excelCell.alignment = { horizontal: 'left' };
+            }
+        }).then(function() {
+            workbook.xlsx.writeBuffer()
+                .then(function(buffer) {
+                    saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'DataGrid.xlsx');
+                });
+        });
+        e.cancel = true;
     }
 }
 

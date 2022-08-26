@@ -3,7 +3,7 @@ import Navbar from '../../Components/Navbar'
 import Login from '../Login'
 import axios from '../../Services/Axios/Axios'
 import {isAuthenticated} from "../../Services/Auth/Auth";
-import Card from "../../Components/Card/Card";
+import Card from "../../Components/Card";
 import DataGrid from "../../Components/DataGrid";
 
 
