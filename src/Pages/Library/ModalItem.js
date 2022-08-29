@@ -3,7 +3,9 @@ import Modal from "../../Components/Modal";
 
 const ModalItem = () => {
     return (
-        <Modal />
+        <Modal
+            title={'Item'}
+        />
     );
 }
 

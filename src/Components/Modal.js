@@ -15,7 +15,7 @@ const App = (props) => {
             </Button>
             <Modal show={show} onHide={modalClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{props.title ?? 'Lucas'}</Modal.Title>
+                    <Modal.Title>{props.title ?? 'Modal Title'}</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>

@@ -5,7 +5,7 @@ import axios from '../../Services/Axios/Axios'
 import {isAuthenticated} from "../../Services/Auth/Auth";
 import Card from "../../Components/Card";
 import DataGrid from "../../Components/DataGrid";
-import Modal from  './ModalItem'
+import Modal from './ModalItem'
 
 
 function Home() {
@@ -13,22 +13,11 @@ function Home() {
     const [show, setShow] = useState(false);
 
 
-
     useEffect(() => {
         axios.get('/library/ajax/item/teste').then(response => {
             setBooks(response.data.items);
         })
     }, []);
-
-
-    if (!isAuthenticated()) {
-        return <Login/>
-    }
-
-    function cellRender(data) {
-        return <img src={data.value} alt='ima'/>;
-    }
-
 
     let colunasTabelaLivro = [
         {
@@ -151,7 +140,7 @@ function Home() {
                     <DataGrid tableColumns={colunasTabelaLivro} data={books}/>
                 </Card.Body>
                 <Card.Footer>
-                    <Modal />
+                    <Modal/>
                 </Card.Footer>
             </Card>
         </div>
