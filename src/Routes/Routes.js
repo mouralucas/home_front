@@ -3,7 +3,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from '../Pages/Library/Home';
 import Login from "../Pages/Login";
 import Error404 from "../Pages/Errors/404";
-import RequireAuth from "./ProtectedRoutes";
+import RequireAuth from "../Services/Auth/Auth";
 
 
 function HomeRoutes() {

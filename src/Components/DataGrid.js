@@ -20,8 +20,6 @@ class Table extends React.Component {
         loadMessages(ptMessages);
         locale(navigator.language);
 
-        console.log(this.props.loadPanel);
-
         this.state = {
             collapsed: false,
             showInfo: true,

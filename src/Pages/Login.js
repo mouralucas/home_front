@@ -22,7 +22,7 @@ async function loginAPI(credentials) {
     })
 }
 
-export default function Login() {
+const Login = () => {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
 
@@ -84,3 +84,5 @@ export default function Login() {
         </div>
     );
 }
+
+export default Login;
