@@ -10,7 +10,7 @@ const Card = ({children}) => {
     });
 
     return (
-        <div className="container-fluid mt-4">
+        <div className="container-fluid">
             <div className='card'>
                 {subComponents.map((component) => component)}
             </div>

@@ -20,7 +20,7 @@ class Table extends React.Component {
         loadMessages(ptMessages);
         locale(navigator.language);
 
-        console.log(this.props.columnChooser);
+        console.log(this.props.loadPanel);
 
         this.state = {
             collapsed: false,
@@ -41,7 +41,7 @@ class Table extends React.Component {
 
     // Properties customizations
     setColumns() {
-        if (!this.props.tableColumns){
+        if (!this.props.tableColumns) {
             return null
         } else {
             let lista_columns = [];
@@ -82,7 +82,7 @@ class Table extends React.Component {
 
     setPaging() {
         let paging;
-        if (this.props.paging){
+        if (this.props.paging) {
             paging = null;
         } else {
             paging = <Paging defaultPageSize={10}/>;
@@ -93,10 +93,10 @@ class Table extends React.Component {
 
     setColumnChooser() {
         let columnChooser;
-        if (this.props.columnChooser){
+        if (this.props.columnChooser) {
             columnChooser = null
         } else {
-            columnChooser = <ColumnChooser enabled={true} mode="dragAndDrop" />;
+            columnChooser = <ColumnChooser enabled={true} mode="dragAndDrop"/>;
         }
 
         return columnChooser
@@ -106,9 +106,9 @@ class Table extends React.Component {
 
     }
 
-    setLoadPanel(){
+    setLoadPanel() {
         let loadPanel;
-        if (this.props.columnChooser){
+        if (this.props.loadPanel) {
             loadPanel = null;
         } else {
             loadPanel = <LoadPanel enable={false}/>;
@@ -118,10 +118,10 @@ class Table extends React.Component {
 
     setExport() {
         let export_data;
-        if (this.props.export){
+        if (this.props.export) {
             export_data = null;
         } else {
-            export_data = <Export enabled={true}  formats={exportFormats} allowExportSelectedData={false} />;
+            export_data = <Export enabled={true} formats={exportFormats} allowExportSelectedData={false}/>;
         }
         return export_data
     }
@@ -148,33 +148,28 @@ class Table extends React.Component {
                 <SearchPanel visible={true} highlightCaseSensitive={true}/>
                 <Grouping autoExpandAll={false}/>
 
-                {this.setColumns()}
 
+                {this.setColumns()}
                 {this.setColumnChooser()}
 
+                {/* Page elements */}
                 {this.setPager()}
-
                 {this.setPaging()}
 
+                {/* Toolbar elements */}
                 {this.setLoadPanel()}
-
                 {this.setExport()}
 
-                <Toolbar>
-                    <Item location="before">
-                        <div className="informer">
-                            <h2 className="count">{this.state.totalCount}</h2>
-                            <span className="name">Total Count</span>
-                        </div>
-                    </Item>
-                    <Item location="after">
-                        <Button
-                            icon='refresh'
-                            onClick={this.refreshDataGrid} />
-                    </Item>
-                    <Item name="columnChooserButton" />
-                    <Item name="exportButton" />
-                </Toolbar>
+                {/*<Toolbar>*/}
+                {/*    <Item>*/}
+                {/*        <Button*/}
+                {/*            icon='refresh'*/}
+                {/*            onClick={this.refreshDataGrid} />*/}
+                {/*    </Item>*/}
+                {/*    <Item name="columnChooserButton" />*/}
+                {/*    <Item name="exportButton" />*/}
+                {/*    <Item name="searchPanel" />*/}
+                {/*</Toolbar>*/}
             </DataGrid>
 
         );
@@ -195,15 +190,15 @@ class Table extends React.Component {
         exportDataGrid({
             component: e.component,
             worksheet: worksheet,
-            customizeCell: function(options) {
+            customizeCell: function (options) {
                 const excelCell = options;
-                excelCell.font = { name: 'Arial', size: 12 };
-                excelCell.alignment = { horizontal: 'left' };
+                excelCell.font = {name: 'Arial', size: 12};
+                excelCell.alignment = {horizontal: 'left'};
             }
-        }).then(function() {
+        }).then(function () {
             workbook.xlsx.writeBuffer()
-                .then(function(buffer) {
-                    saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'DataGrid.xlsx');
+                .then(function (buffer) {
+                    saveAs(new Blob([buffer], {type: 'application/octet-stream'}), 'DataGrid.xlsx');
                 });
         });
         e.cancel = true;

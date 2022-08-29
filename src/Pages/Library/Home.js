@@ -5,10 +5,14 @@ import axios from '../../Services/Axios/Axios'
 import {isAuthenticated} from "../../Services/Auth/Auth";
 import Card from "../../Components/Card";
 import DataGrid from "../../Components/DataGrid";
+import Modal from  './ModalItem'
 
 
 function Home() {
     const [books, setBooks] = useState();
+    const [show, setShow] = useState(false);
+
+
 
     useEffect(() => {
         axios.get('/library/ajax/item/teste').then(response => {
@@ -140,7 +144,16 @@ function Home() {
                     <DataGrid tableColumns={colunasTabelaLivro} data={books}/>
                 </Card.Body>
             </Card>
-            <Card title={'Mangás'} tableColumns={colunasTabelaManga} data={books}/>
+
+            <Card>
+                <Card.Header>Mangá</Card.Header>
+                <Card.Body>
+                    <DataGrid tableColumns={colunasTabelaLivro} data={books}/>
+                </Card.Body>
+                <Card.Footer>
+                    <Modal />
+                </Card.Footer>
+            </Card>
         </div>
     );
 }
