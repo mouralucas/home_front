@@ -81,3 +81,6 @@ nav p {
     font-size: 25px;
 }
 
+.button-text {
+    font-weight: bold!important;
+}

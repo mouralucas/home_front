@@ -1,21 +1,21 @@
 import React from 'react';
 import ptMessages from "devextreme/localization/messages/pt.json";
 import {loadMessages, locale} from "devextreme/localization";
-import DataGrid, {Column, ColumnChooser, Grouping, GroupPanel, Pager, Paging, SearchPanel, Toolbar, LoadPanel, Export} from 'devextreme-react/data-grid';
+import DataGrid, {Column, ColumnChooser, Export, Grouping, GroupPanel, LoadPanel, Pager, Paging, SearchPanel, Toolbar, Editing} from 'devextreme-react/data-grid';
 import '../Assets/Core/Components/Table.css'
 import {Item} from "devextreme-react/box";
-import Button from 'devextreme-react/button';
 import {exportDataGrid} from "devextreme/pdf_exporter";
 import {Workbook} from "exceljs";
 import saveAs from 'file-saver';
 
 
 const pageSizes = [10, 15, 20];
-const exportFormats = ['xlsx'];
+const exportFormats = ['pdf', 'xlsx'];
 
 class Table extends React.Component {
     constructor(props) {
         super(props);
+        console.log(props);
 
         loadMessages(ptMessages);
         locale(navigator.language);
@@ -35,6 +35,7 @@ class Table extends React.Component {
         this.setColumnChooser = this.setColumnChooser.bind(this);
         this.setLoadPanel = this.setLoadPanel.bind(this);
         this.setExport = this.setExport.bind(this);
+        this.setToolbar = this.setToolbar.bind(this);
     }
 
     // Properties customizations
@@ -101,17 +102,41 @@ class Table extends React.Component {
     }
 
     setGrouping() {
+    }
 
+    setToolbar2() {
+        let toolbar;
+
+        if (this.props.toolBar) {
+            toolbar = null;
+        } else {
+            toolbar = <Toolbar>
+                <Item name="columnChooserButton"/>
+                <Item name="exportButton"/>
+                <Item location="after"> </Item>
+                <Item name="searchPanel"/>
+
+
+            </Toolbar>;
+        }
+        return toolbar
+    }
+
+    setToolbar() {
+        let lista_toolbar = [];
+
+        if (this.props.toolBarItems) {
+            this.props.toolBarItems.forEach(function (item) {
+                lista_toolbar.push(
+                    <Item name={item.name ?? null} location={item.location ?? ''}>{item.child ?? null}</Item>
+                )
+            });
+        }
+        return lista_toolbar
     }
 
     setLoadPanel() {
-        let loadPanel;
-        if (this.props.loadPanel) {
-            loadPanel = null;
-        } else {
-            loadPanel = <LoadPanel enable={false}/>;
-        }
-        return loadPanel
+        return <LoadPanel enable={this.props.loadPanel ?? false}/>;
     }
 
     setExport() {
@@ -146,7 +171,6 @@ class Table extends React.Component {
                 <SearchPanel visible={true} highlightCaseSensitive={true}/>
                 <Grouping autoExpandAll={false}/>
 
-
                 {this.setColumns()}
                 {this.setColumnChooser()}
 
@@ -158,28 +182,21 @@ class Table extends React.Component {
                 {this.setLoadPanel()}
                 {this.setExport()}
 
-                {/*<Toolbar>*/}
-                {/*    <Item>*/}
-                {/*        <Button*/}
-                {/*            icon='refresh'*/}
-                {/*            onClick={this.refreshDataGrid} />*/}
-                {/*    </Item>*/}
-                {/*    <Item name="columnChooserButton" />*/}
-                {/*    <Item name="exportButton" />*/}
-                {/*    <Item name="searchPanel" />*/}
-                {/*</Toolbar>*/}
+                <Toolbar visible={this.props.toolBar}>
+                    {this.setToolbar()}
+                </Toolbar>
             </DataGrid>
 
         );
     }
 
     onContentReady(e) {
-        if (!this.state.collapsed) {
-            e.component.expandRow(['EnviroCare']);
-            this.setState({
-                collapsed: true,
-            });
-        }
+        // if (!this.state.collapsed) {
+        //     e.component.expandRow(['EnviroCare']);
+        //     this.setState({
+        //         collapsed: true,
+        //     });
+        // }
     }
 
     onExporting(e) {

@@ -5,6 +5,8 @@ const ModalItem = () => {
     return (
         <Modal
             title={'Item'}
+            launchButtonText={'Adicionar Item'}
+            launchButtonIcon={'add'}
         />
     );
 }

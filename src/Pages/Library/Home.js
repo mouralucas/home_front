@@ -6,122 +6,12 @@ import {isAuthenticated} from "../../Services/Auth/Auth";
 import Card from "../../Components/Card";
 import DataGrid from "../../Components/DataGrid";
 import Modal from './ModalItem'
+import TableBooks from "./TableBooks";
 
 
 function Home() {
-    const [books, setBooks] = useState();
+
     const [show, setShow] = useState(false);
-
-
-    useEffect(() => {
-        axios.get('/library/ajax/item/teste').then(response => {
-            setBooks(response.data.items);
-        })
-    }, []);
-
-    let colunasTabelaLivro = [
-        {
-            dataField: "id",
-            caption: "Id",
-            dataType: "number",
-            visible: false,
-        },
-        {
-            dataField: "title",
-            caption: "Título",
-            dataType: "string",
-            visible: true,
-        },
-        {
-            dataField: "nm_main_author",
-            caption: "Autor",
-            dataType: "string",
-            visible: true,
-        },
-        {
-            dataField: "pages",
-            caption: "Paginas",
-            dataType: "number",
-        },
-        {
-            dataField: "volume",
-            caption: "Vol.",
-            dataType: "number",
-        },
-        {
-            dataField: "cover_price",
-            caption: "Pago/Capa",
-            dataType: "currency",
-        },
-        {
-            dataField: "nm_serie",
-            caption: "Serie",
-            dataType: "string",
-            visible: false,
-        },
-        {
-            dataField: "nm_publisher",
-            caption: "Editora",
-            dataType: "string",
-        },
-        {
-            dataField: "nm_last_status",
-            caption: "Status",
-            dataType: "string",
-        }
-    ]
-
-    let colunasTabelaManga = [
-        {
-            dataField: "id",
-            caption: "Id",
-            dataType: "number",
-            visible: false,
-        },
-        {
-            dataField: "title",
-            caption: "Título",
-            dataType: "string",
-            visible: true,
-        },
-        {
-            dataField: "nm_main_author",
-            caption: "Autor",
-            dataType: "string",
-            visible: true,
-        },
-        {
-            dataField: "pages",
-            caption: "Paginas",
-            dataType: "number",
-        },
-        {
-            dataField: "volume",
-            caption: "Vol.",
-            dataType: "number",
-        },
-        {
-            dataField: "cover_price",
-            caption: "Pago/Capa",
-            dataType: "currency",
-        },
-        {
-            dataField: "nm_serie",
-            caption: "Serie",
-            dataType: "string",
-            visible: false,
-        },
-        {
-            dataField: "nm_publisher",
-            caption: "Editora",
-            dataType: "string",
-        },
-        {
-            dataField: "nm_last_status",
-            caption: "Status",
-            dataType: "string",
-        }
-    ]
 
     return (
         <div className="App">
@@ -130,18 +20,8 @@ function Home() {
             <Card>
                 <Card.Header>Livros</Card.Header>
                 <Card.Body>
-                    <DataGrid tableColumns={colunasTabelaLivro} data={books}/>
+                    <TableBooks />
                 </Card.Body>
-            </Card>
-
-            <Card>
-                <Card.Header>Mangá</Card.Header>
-                <Card.Body>
-                    <DataGrid tableColumns={colunasTabelaLivro} data={books}/>
-                </Card.Body>
-                <Card.Footer>
-                    <Modal/>
-                </Card.Footer>
             </Card>
         </div>
     );

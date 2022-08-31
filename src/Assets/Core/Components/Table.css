@@ -51,6 +51,10 @@
     margin: auto 0;
 }
 
+.dx-button-content{
+    background-color: var(--color-primay);
+    font-weight: bold!important;
+}
 
 .informer {
     height: 70px;

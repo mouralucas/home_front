@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from 'react-bootstrap';
+import {Button as Btn} from 'devextreme-react'
 import {useState} from 'react';
 
 const App = (props) => {
@@ -9,10 +10,8 @@ const App = (props) => {
     const modalShow = () => setShow(true);
 
     return (
-        <div className="App p-4">
-            <Button variant="success" onClick={modalShow}>
-                Launch demo modal
-            </Button>
+        <div className="App">
+            <Btn text={props.launchButtonText} icon={props.launchButtonIcon} onClick={modalShow}> </Btn>
             <Modal show={show} onHide={modalClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{props.title ?? 'Modal Title'}</Modal.Title>
