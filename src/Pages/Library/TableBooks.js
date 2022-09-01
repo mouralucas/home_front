@@ -8,7 +8,7 @@ import ModalItem from "../../Pages/Library/ModalItem";
 const TableBooks = () => {
     const [books, setBooks] = useState();
 
-    function getBooks() {
+    const getBooks = () => {
         axios.get('/library/ajax/item', {
             params: {'item_type': 'book'}
         }).then(response => {
