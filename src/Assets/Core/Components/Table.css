@@ -56,6 +56,11 @@
     font-weight: bold!important;
 }
 
+.dx-button-content:hover{
+    background-color: var(--color-secondary) !important;
+    font-weight: bold!important;
+}
+
 .informer {
     height: 70px;
     width: 130px;

@@ -1,7 +1,8 @@
 import React from 'react';
 import ptMessages from "devextreme/localization/messages/pt.json";
 import {loadMessages, locale} from "devextreme/localization";
-import DataGrid, {Column, ColumnChooser, Export, Grouping, GroupPanel, LoadPanel, Pager, Paging, SearchPanel, Toolbar, Editing} from 'devextreme-react/data-grid';
+import DataGrid, {Column, ColumnChooser, Export, Grouping, GroupPanel, HeaderFilter, LoadPanel,
+    Pager, Paging, SearchPanel, Toolbar} from 'devextreme-react/data-grid';
 import '../Assets/Core/Components/Table.css'
 import {Item} from "devextreme-react/box";
 import {exportDataGrid} from "devextreme/pdf_exporter";
@@ -170,6 +171,7 @@ class Table extends React.Component {
                 <GroupPanel visible={true}/>
                 <SearchPanel visible={true} highlightCaseSensitive={true}/>
                 <Grouping autoExpandAll={false}/>
+                <HeaderFilter visible={true} />
 
                 {this.setColumns()}
                 {this.setColumnChooser()}

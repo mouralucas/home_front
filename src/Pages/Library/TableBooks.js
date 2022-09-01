@@ -11,11 +11,12 @@ const TableBooks = () => {
     function getBooks() {
         axios.get('/library/ajax/item', {
             params: {'item_type': 'book'}
+        }).then(response => {
+                setBooks(response.data.items);
+            }
+        ).catch(response => {
+            return {'error': response}
         })
-            .then(response => {
-                    setBooks(response.data.items);
-                }
-            )
     }
 
     useEffect(() => {
@@ -30,7 +31,6 @@ const TableBooks = () => {
     function testeFuncionamento() {
         alert('Deu boa');
     }
-
 
 
     let colunasTabelaLivro = [
@@ -56,16 +56,20 @@ const TableBooks = () => {
             dataField: "pages",
             caption: "Paginas",
             dataType: "number",
+            width: 150,
         },
         {
             dataField: "volume",
             caption: "Vol.",
             dataType: "number",
+            width: 150,
         },
         {
             dataField: "cover_price",
             caption: "Pago/Capa",
-            dataType: "currency",
+            dataType: "number",
+            width: 150,
+            format: {style: 'currency', currency: 'BRL', useGrouping: true, precision: 2}
         },
         {
             dataField: "nm_serie",
@@ -99,7 +103,7 @@ const TableBooks = () => {
             location: "after"
         },
         {
-            child: <ModalItem />,
+            child: <ModalItem/>,
             location: "after"
         },
         {
