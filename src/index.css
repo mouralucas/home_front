@@ -34,6 +34,15 @@
     color: var(--color-primay) !important;
 }
 
+.input-default {
+    height: 40px;
+}
+
+/* Sobrescreve a classe do select do react-select */
+.css-1s2u09g-control {
+    height: 40px;
+}
+
 /* Mover após ajuste do header/navbar */
 .d-flex {
     display: flex !important

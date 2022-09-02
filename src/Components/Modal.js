@@ -11,7 +11,7 @@ const App = (props) => {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <p>{props.body}</p>
+                    {props.body}
                 </Modal.Body>
 
                 <Modal.Footer>
