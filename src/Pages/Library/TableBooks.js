@@ -3,13 +3,13 @@ import React, {useEffect, useState} from "react";
 import axios from "../../Services/Axios/Axios";
 import Button from "devextreme-react/button";
 import ModalItem from "../../Pages/Library/ModalItem";
-
+import {URL_ITEM} from '../../Services/Axios/ApiUrls'
 
 const TableBooks = () => {
     const [books, setBooks] = useState();
 
     const getBooks = () => {
-        axios.get('/library/ajax/item', {
+        axios.get(URL_ITEM, {
             params: {'item_type': 'book'}
         }).then(response => {
                 setBooks(response.data.items);

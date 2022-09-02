@@ -11,8 +11,6 @@ import TableBooks from "./TableBooks";
 
 function Home() {
 
-    const [show, setShow] = useState(false);
-
     return (
         <div className="App">
             <Navbar/>

@@ -6,11 +6,12 @@ import axios from "../Services/Axios/Axios";
 import {setToken} from '../Services/Auth/Auth'
 import Input from "../Components/Input";
 import {Link} from 'react-router-dom'
+import {URL_LOGIN} from "../Services/Axios/ApiUrls";
 
 async function loginAPI(credentials) {
     return axios({
         method: 'post',
-        url: '/user/login',
+        url: URL_LOGIN,
         data: credentials,
         headers: {
             'Content-Type': 'multipart/form-data'
