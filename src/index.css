@@ -14,6 +14,11 @@
 /*
     Project Default
 */
+
+.btn {
+    margin-right: .5rem;
+}
+
 .btn-default {
     background-color: var(--color-primay);
     border-color: var(--color-primay);
@@ -25,8 +30,8 @@
 }
 
 .btn-default-hollow {
-    border-color: #F36C24;
-    color: #F36C24;
+    border-color: var(--color-primay);
+    color: var(--color-primay) !important;
 }
 
 /* Mover após ajuste do header/navbar */

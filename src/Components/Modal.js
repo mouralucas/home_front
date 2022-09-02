@@ -26,8 +26,10 @@ const App = (props) => {
                         </div>
 
                         <div className="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 mt-1">
+
                             <div className="d-flex flex-nowrap">
-                                <a className='btn btn-default text-white text-center w-100 mr-1'>Salvar</a>
+                                {/*<a href="" className="btn btn-default-hollow w-100">Outro</a>*/}
+                                <a className='btn btn-default text-white text-center w-100 mr-1' onClick={props.actionModal ?? props.hideModal}>Salvar</a>
                             </div>
                         </div>
                     </div>
