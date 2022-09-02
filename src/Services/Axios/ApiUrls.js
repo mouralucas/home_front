@@ -8,5 +8,11 @@ const URL_ITEM = '/library/item';
 const URL_AUTHORS = 'library/author';
 const URL_PUBLISHERS = 'library/publisher';
 
+// Finance URL
+const URL_BILLS = '/finance/bill'
 
-export  {URL_BASE, URL_LOGIN, URL_ITEM, URL_AUTHORS, URL_PUBLISHERS}
+
+export {
+    URL_BASE, URL_LOGIN, URL_ITEM, URL_AUTHORS, URL_PUBLISHERS,
+    URL_BILLS
+}

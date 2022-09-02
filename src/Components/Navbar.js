@@ -22,8 +22,8 @@ class Navbar extends React.Component {
                 <h1>Lucas Moura</h1>
                 <p>{this.state.count}</p>
                 <div className="links">
-                    <a href="/">Menu 1</a>
-                    <a href="/menu2">Menu 2</a>
+                    <Link to="/library/home">Biblioteca</Link>
+                    <Link to="/finance/home">Financeiro</Link>
                     <button className='button'  onClick={logout}>Sair</button>
                     {/*<Link to={'/logout'}> Logout </Link>*/}
                 </div>

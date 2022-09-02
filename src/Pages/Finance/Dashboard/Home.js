@@ -1,6 +1,6 @@
-import Navbar from '../../Components/Navbar'
-import Card from "../../Components/Card";
-import TableBooks from "./TableBooks";
+import Navbar from "../../../Components/Navbar";
+import Card from "../../../Components/Card";
+import TableBill from "./TableBill";
 
 
 const Home = () => {
@@ -10,9 +10,9 @@ const Home = () => {
             <Navbar/>
 
             <Card>
-                <Card.Header>Livros</Card.Header>
+                <Card.Header>Faturas</Card.Header>
                 <Card.Body>
-                    <TableBooks />
+                    <TableBill/>
                 </Card.Body>
             </Card>
         </div>
