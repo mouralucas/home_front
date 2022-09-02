@@ -1,4 +1,5 @@
 import React from 'react';
+import '../Assets/Core/Components/Cards.css'
 
 const Card = ({children}) => {
     let subComponentList = Object.keys(Card);

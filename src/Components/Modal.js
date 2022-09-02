@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, Button} from 'react-bootstrap';
-import {Button as Btn} from 'devextreme-react'
-import {useState} from 'react';
+import {Modal} from 'react-bootstrap';
+import '../Assets/Core/Components/Modal.css'
 
 const App = (props) => {
     return (
@@ -16,8 +15,23 @@ const App = (props) => {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={props.hideModal}>Close Modal</Button>
-                    <Button variant="primary">Save changes</Button>
+                    <div className='row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100'>
+                        <div className="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 mt-1">
+                            <div className="d-flex flex-nowrap">
+                                <a className='btn btn-outline-secondary text-center w-100' onClick={props.hideModal}>Fechar</a>
+                            </div>
+                        </div>
+
+                        <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 mt-1">
+                        </div>
+
+                        <div className="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 mt-1">
+                            <div className="d-flex flex-nowrap">
+                                <a className='btn btn-default text-white text-center w-100 mr-1'>Salvar</a>
+                            </div>
+                        </div>
+                    </div>
+
                 </Modal.Footer>
             </Modal>
         </div>

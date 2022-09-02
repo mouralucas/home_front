@@ -2,15 +2,18 @@ import Modal from "../../Components/Modal";
 import {useEffect, useState} from "react";
 import axios from "../../Services/Axios/Axios";
 import {Button as Btn} from "devextreme-react/button";
+import {URL_AUTHORS} from "../../Services/Axios/ApiUrls";
+import Select from "react-select";
 
 
 const ModalItem = () => {
     const [modalState, setModalState] = useState(false);
 
-    const [authors, setAuthors] = useState();
+    const [authors, setAuthors] = useState([]);
     const [publishers, setPublisher] = useState();
 
     const showModalItem = () => {
+        getAuthors();
         setModalState(true);
     }
 
@@ -19,8 +22,8 @@ const ModalItem = () => {
     }
 
     const getAuthors = () => {
-        axios.get('/library/ajax/author').then(response => {
-                setAuthors(response.data.authors);
+        axios.get(URL_AUTHORS).then(response => {
+                setAuthors(response.data.authors.map(author => ({value: author.id, label: author.nm_full})));
             }
         )
     }
@@ -36,7 +39,11 @@ const ModalItem = () => {
                 <form action="">
                     <div className="container-fluid">
                         <div className="row">
-                            <div className="col-6">
+                            <div className="col-3">
+                                <label htmlFor="{'combo_author'}">Nome do author</label>
+                                <Select name={'combo_author'} options={authors}/>
+                            </div>
+                            <div className="col-3">
                                 <label htmlFor="{'nm_author'}">Nome do author</label>
                                 <input id={'nm_author'} type="text" className='form-control'/>
                             </div>
