@@ -1,7 +1,7 @@
-import PieChart from "../../../Components/PieChart";
+import PieChart from "../../../../Components/Charts/PieChart";
 import {useEffect, useState} from "react";
-import axios from "../../../Services/Axios/Axios";
-import {URL_EXPENSES_FIXES, URL_EXPENSES_VARIABLE} from "../../../Services/Axios/ApiUrls";
+import axios from "../../../../Services/Axios/Axios";
+import {URL_EXPENSES_FIXES, URL_EXPENSES_VARIABLE} from "../../../../Services/Axios/ApiUrls";
 
 
 const App = () => {
