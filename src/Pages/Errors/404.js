@@ -17,7 +17,7 @@ class Error404 extends React.Component {
                     </div>
                 </div>
                 <div class="bt-back-error404">
-                    <a href="#" class="bt-back-error404" onclick="window.history.go(-1);">Voltar</a>
+                    <a href="#" class="bt-back-error404" onClick="window.history.go(-1);">Voltar</a>
                 </div>
             </div>
         );

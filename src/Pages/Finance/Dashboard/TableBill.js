@@ -24,10 +24,6 @@ const TableBills = () => {
         getBills();
     }, []);
 
-    const updateBills = () => {
-        getBills();
-    }
-
     const columns = [
         {
             dataField: "id",
@@ -88,13 +84,13 @@ const TableBills = () => {
             location: 'after',
         },
         {
-            child: <Button icon='refresh' onClick={updateBills}/>,
+            child: <Button icon='refresh' onClick={getBills}/>,
             location: "after"
         },
-        {
-            child: <ModalItem/>,
-            location: "after"
-        },
+        // {
+        //     child: <ModalItem/>,
+        //     location: "after"
+        // },
         {
             name: 'searchPanel',
             location: "after",

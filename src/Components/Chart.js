@@ -17,7 +17,7 @@ const data = [{
     val: 6916183482
 }];
 
-class MyChart extends React.Component {
+class App extends React.Component {
     render() {
         return (
             <Chart dataSource={data}>
@@ -29,4 +29,4 @@ class MyChart extends React.Component {
     }
 }
 
-export default MyChart;
+export default App;
