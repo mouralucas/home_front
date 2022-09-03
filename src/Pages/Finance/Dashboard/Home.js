@@ -1,7 +1,8 @@
 import Navbar from "../../../Components/Navbar";
 import Card from "../../../Components/Card";
 import TableBill from "./TableBill";
-import PieChart from '../Dashboard/FixedExpenses'
+import PieChartFixedExpenses from '../Dashboard/FixedExpenses'
+import PieChartVariableExpenses from '../Dashboard/VariableExpenses'
 
 
 const Home = () => {
@@ -13,17 +14,17 @@ const Home = () => {
             <div className="row">
                 <div className="col-6">
                     <Card>
-                        <Card.Header>Gastos Fixos</Card.Header>
+                        <Card.Header>Despesas Fixas</Card.Header>
                         <Card.Body>
-                            <PieChart/>
+                            <PieChartFixedExpenses/>
                         </Card.Body>
                     </Card>
                 </div>
                 <div className="col-6">
                     <Card>
-                        <Card.Header>Gastos VAriáveis</Card.Header>
+                        <Card.Header>Despesas Variáveis</Card.Header>
                         <Card.Body>
-                            <PieChart/>
+                            <PieChartVariableExpenses/>
                         </Card.Body>
                     </Card>
                 </div>

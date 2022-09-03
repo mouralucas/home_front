@@ -1,17 +1,17 @@
 import PieChart from "../../../Components/PieChart";
 import {useEffect, useState} from "react";
 import axios from "../../../Services/Axios/Axios";
-import {URL_EXPENSES_FIXES} from "../../../Services/Axios/ApiUrls";
+import {URL_EXPENSES_FIXES, URL_EXPENSES_VARIABLE} from "../../../Services/Axios/ApiUrls";
 
 
 const App = () => {
     const [expenses, setExpenses] = useState()
 
     const getExpenses = () => {
-        axios.get(URL_EXPENSES_FIXES, {
+        axios.get(URL_EXPENSES_VARIABLE, {
             params: {'reference': 202206}
         }).then(response => {
-            setExpenses(response.data.expenses.map(expense => ({category:expense.category, total_amount: expense.total_amount})))
+            setExpenses(response.data.expenses.map(publisher => ({category: publisher.category, total_amount: publisher.total_amount})))
         });
     }
 
@@ -22,7 +22,7 @@ const App = () => {
     return (
         <PieChart data={expenses}
                   axis={{argumentField: 'category', valueField: 'total_amount'}}
-                  // title={''}
+                  title={'Medalhas'}
         />
     );
 }
