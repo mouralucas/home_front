@@ -1,0 +1,14 @@
+
+.navbar {
+    height: 100px;
+    padding: 20px;
+    display: flex;
+    border-bottom: 1px solid;
+    align-items: center;
+}
+
+.navbar img {
+    height: 100px;
+    width: 100%;
+
+}

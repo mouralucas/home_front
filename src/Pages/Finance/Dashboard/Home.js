@@ -1,6 +1,6 @@
 import Navbar from "../../../Components/Navbar";
 import Card from "../../../Components/Card";
-import TableBill from "./TableBill";
+import TableBill from "./Tables/TableBill";
 import PieChartFixedExpenses from './Charts/FixedExpenses'
 import PieChartVariableExpenses from './Charts/VariableExpenses'
 import LineChart from '../../../Components/Charts/LineChart'

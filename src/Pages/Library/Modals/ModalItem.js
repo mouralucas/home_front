@@ -1,8 +1,8 @@
-import Modal from "../../Components/Modal";
+import Modal from "../../../Components/Modal";
 import {useState} from "react";
-import axios from "../../Services/Axios/Axios";
+import axios from "../../../Services/Axios/Axios";
 import {Button as Btn} from "devextreme-react/button";
-import {URL_AUTHORS, URL_ITEM, URL_PUBLISHERS} from "../../Services/Axios/ApiUrls";
+import {URL_AUTHORS, URL_ITEM, URL_PUBLISHERS} from "../../../Services/Axios/ApiUrls";
 import Select from "react-select";
 
 

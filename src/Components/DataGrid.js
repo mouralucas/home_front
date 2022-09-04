@@ -8,6 +8,7 @@ import {Item} from "devextreme-react/box";
 import {exportDataGrid} from "devextreme/pdf_exporter";
 import {Workbook} from "exceljs";
 import saveAs from 'file-saver';
+import {FilterRow} from "devextreme-react/gantt";
 
 
 const pageSizes = [10, 15, 20];
@@ -55,6 +56,9 @@ class Table extends React.Component {
                     width={column.width ?? null}
                     visible={column.visible ?? true}
                     cellTemplate={column.cellTemplate ?? null}
+                    customizeText={column.customizeText ?? null}
+                    calculateCellValue={column.calculateCellValue ?? null}
+                    cellRender={column.cellRender ?? null}
                 />)
             });
             return lista_columns
@@ -170,8 +174,9 @@ class Table extends React.Component {
 
                 <GroupPanel visible={true}/>
                 <SearchPanel visible={true} highlightCaseSensitive={true}/>
+                <FilterRow visible={this.props.filterRow ?? false} />
                 <Grouping autoExpandAll={false}/>
-                <HeaderFilter visible={true} />
+                <HeaderFilter visible={this.props.headerFilter ?? true} />
 
                 {this.setColumns()}
                 {this.setColumnChooser()}

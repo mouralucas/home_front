@@ -1,14 +1,12 @@
 import Navbar from '../../Components/Navbar'
 import Card from "../../Components/Card";
-import TableBooks from "./TableBooks";
+import TableBooks from "./Tables/TableBooks";
 
 
 const Home = () => {
 
     return (
         <div className="App">
-            <Navbar/>
-
             <Card>
                 <Card.Header>Livros</Card.Header>
                 <Card.Body>

@@ -1,9 +1,9 @@
-import DataGrid from "../../Components/DataGrid";
+import DataGrid from "../../../Components/DataGrid";
 import React, {useEffect, useState} from "react";
-import axios from "../../Services/Axios/Axios";
+import axios from "../../../Services/Axios/Axios";
 import Button from "devextreme-react/button";
-import ModalItem from "../../Pages/Library/ModalItem";
-import {URL_ITEM} from '../../Services/Axios/ApiUrls'
+import ModalItem from "../Modals/ModalItem";
+import {URL_ITEM} from '../../../Services/Axios/ApiUrls'
 
 const TableBooks = () => {
     const [books, setBooks] = useState();

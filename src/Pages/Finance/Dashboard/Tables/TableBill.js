@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import axios from "../../../Services/Axios/Axios";
-import {URL_BILLS} from "../../../Services/Axios/ApiUrls";
-import DataGrid from "../../../Components/DataGrid";
+import axios from "../../../../Services/Axios/Axios";
+import {URL_BILLS} from "../../../../Services/Axios/ApiUrls";
+import DataGrid from "../../../../Components/DataGrid";
 import Button from "devextreme-react/button";
-import ModalItem from "../../Library/ModalItem";
+import ModalItem from "../../../Library/Modals/ModalItem";
 
 
 const TableBills = () => {
@@ -11,7 +11,7 @@ const TableBills = () => {
 
     const getBills = () => {
         axios.get(URL_BILLS, {
-            params: {'reference': 202206}
+            params: {'reference': 202209}
         }).then(response => {
                 setBills(response.data.bill);
             }
@@ -23,6 +23,10 @@ const TableBills = () => {
     useEffect(() => {
         getBills();
     }, []);
+
+    function priceColumn_customizeText(cellInfo) {
+        return cellInfo.installment + '/' + cellInfo.tot_installment;
+    }
 
     const columns = [
         {
@@ -41,30 +45,36 @@ const TableBills = () => {
             dataField: "card",
             caption: "Cartão",
             dataType: "text",
+            width: 150,
         },
         {
             dataField: "dat_purchase",
             caption: "Compra",
             dataType: "date",
+            width: 150,
         },
         {
             dataField: "dat_payment",
             caption: "Pagamento",
             dataType: "date",
+            width: 150,
         },
         {
             dataField: "total",
             caption: "Valor",
             dataType: "number",
+            width: 110,
         },
         {
-            dataField: "stallmen",
+            dataField: "installment",
             caption: "Parcela",
             dataType: "number",
+            calculateCellValue: priceColumn_customizeText,
+            width: 100,
         },
         {
             dataField: "description",
-            caption: "Descricao",
+            caption: "Descrição",
             dataType: "text",
         },
         {
