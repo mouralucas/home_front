@@ -1,6 +1,6 @@
 import Card from '../../../Components/Card'
 import LineChart from "../../../Components/Charts/LineChart";
-import Table from '../Dashboard/Tables/TableBill'
+import Table from './Tables/TableBill'
 
 const App = () => {
     return (

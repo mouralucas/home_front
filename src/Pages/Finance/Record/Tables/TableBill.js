@@ -24,7 +24,7 @@ const TableBills = () => {
         getBills();
     }, []);
 
-    function priceColumn_customizeText(cellInfo) {
+    function installmentCustomCell(cellInfo) {
         return cellInfo.installment + '/' + cellInfo.tot_installment;
     }
 
@@ -51,6 +51,7 @@ const TableBills = () => {
             dataField: "dat_purchase",
             caption: "Compra",
             dataType: "date",
+            format: 'shortDate',
             width: 150,
         },
         {
@@ -69,7 +70,7 @@ const TableBills = () => {
             dataField: "installment",
             caption: "Parcela",
             dataType: "number",
-            calculateCellValue: priceColumn_customizeText,
+            calculateCellValue: installmentCustomCell,
             width: 100,
         },
         {

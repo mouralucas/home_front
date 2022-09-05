@@ -17,7 +17,6 @@ const exportFormats = ['pdf', 'xlsx'];
 class Table extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props);
 
         loadMessages(ptMessages);
         locale(navigator.language);
@@ -57,7 +56,7 @@ class Table extends React.Component {
                     visible={column.visible ?? true}
                     cellTemplate={column.cellTemplate ?? null}
                     customizeText={column.customizeText ?? null}
-                    calculateCellValue={column.calculateCellValue ?? null}
+                    calculateCellValue={column.calculateCellValue}
                     cellRender={column.cellRender ?? null}
                 />)
             });
@@ -174,7 +173,7 @@ class Table extends React.Component {
 
                 <GroupPanel visible={true}/>
                 <SearchPanel visible={true} highlightCaseSensitive={true}/>
-                <FilterRow visible={this.props.filterRow ?? false} />
+                <FilterRow visible={this.props.filterRow ?? true} />
                 <Grouping autoExpandAll={false}/>
                 <HeaderFilter visible={this.props.headerFilter ?? true} />
 
