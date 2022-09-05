@@ -11,7 +11,7 @@ import saveAs from 'file-saver';
 import {FilterRow} from "devextreme-react/gantt";
 
 
-const pageSizes = [10, 15, 20];
+const pageSizes = [10, 15, 20, 50, 100];
 const exportFormats = ['pdf', 'xlsx'];
 
 class Table extends React.Component {
@@ -72,8 +72,8 @@ class Table extends React.Component {
         } else {
             pager = <Pager
                 visible={true}
-                allowedPageSizes={pageSizes}
-                displayMode='full'
+                allowedPageSizes={this.props.allowedPageSizes ?? pageSizes}
+                displayMode={this.props.displayMode ?? 'full'}
                 showPageSizeSelector={this.state.showPageSizeSelector}
                 showInfo={this.state.showInfo}
                 infoText={this.props.infoText ?? null}
@@ -119,8 +119,6 @@ class Table extends React.Component {
                 <Item name="exportButton"/>
                 <Item location="after"> </Item>
                 <Item name="searchPanel"/>
-
-
             </Toolbar>;
         }
         return toolbar
@@ -140,7 +138,7 @@ class Table extends React.Component {
     }
 
     setLoadPanel() {
-        return <LoadPanel enable={this.props.loadPanel ?? false}/>;
+        return ;
     }
 
     setExport() {
@@ -177,6 +175,8 @@ class Table extends React.Component {
                 <Grouping autoExpandAll={false}/>
                 <HeaderFilter visible={this.props.headerFilter ?? true} />
 
+                <LoadPanel enable={this.props.loadPanel ?? false}/>
+
                 {this.setColumns()}
                 {this.setColumnChooser()}
 
@@ -185,7 +185,6 @@ class Table extends React.Component {
                 {this.setPaging()}
 
                 {/* Toolbar elements */}
-                {this.setLoadPanel()}
                 {this.setExport()}
 
                 <Toolbar visible={this.props.toolBar}>

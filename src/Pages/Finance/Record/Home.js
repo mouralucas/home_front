@@ -1,6 +1,5 @@
 import Card from '../../../Components/Card'
-import LineChart from "../../../Components/Charts/LineChart";
-import Table from './Tables/TableBill'
+import CreditCardBillTable from './Tables/CreditCardBill'
 
 const App = () => {
     return (
@@ -10,7 +9,7 @@ const App = () => {
                     <Card>
                         <Card.Header>Faturas</Card.Header>
                         <Card.Body>
-                            <Table />
+                            <CreditCardBillTable />
                         </Card.Body>
                     </Card>
                 </div>

@@ -3,7 +3,6 @@ import axios from "../../../../Services/Axios/Axios";
 import {URL_BILLS} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import Button from "devextreme-react/button";
-import ModalItem from "../../../Library/Modals/ModalItem";
 
 
 const TableBills = () => {
@@ -25,6 +24,9 @@ const TableBills = () => {
     }, []);
 
     function installmentCustomCell(cellInfo) {
+        /*
+        * Custom function to show the installments in the table it shows the current installment and the total in the format xx/xx
+        * */
         return cellInfo.installment + '/' + cellInfo.tot_installment;
     }
 
@@ -113,7 +115,7 @@ const TableBills = () => {
         <DataGrid
             tableColumns={columns}
             data={bills}
-            tooBarRefresh={false}
+            toolBarRefresh={false}
             toolBarItems={toolBarItems}
             loadPanel={false}
         />
