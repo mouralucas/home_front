@@ -7,21 +7,28 @@ import Login from "../Pages/Login";
 import Error404 from "../Pages/Errors/404";
 import RequireAuth from "../Services/Auth/Auth";
 import Navbar from "../Components/Navbar";
+import WithNav from "./WithNav";
+import WithoutNav from "./WithoutNav";
 
 
 function HomeRoutes() {
     return (
         <BrowserRouter>
-            <Navbar/>
             <Routes>
-                <Route element={<RequireAuth><Library /></RequireAuth>} path="/library/home"   />
-                <Route element={<RequireAuth><FinanceDashboard /></RequireAuth>} path="/finance/dashboard"   />
-                <Route element={<RequireAuth><FinanceRecord /></RequireAuth>} path="/finance/records"   />
-                <Route element={<Login />} path="" />
-                <Route path="*" element={<Error404 />} />
+                <Route element={<WithNav/>}>
+                    <Route element={<RequireAuth><Library/></RequireAuth>} path="/library/home"/>
+                    <Route element={<RequireAuth><FinanceDashboard/></RequireAuth>} path="/finance/dashboard"/>
+                    <Route element={<RequireAuth><FinanceRecord/></RequireAuth>} path="/finance/records"/>
+                </Route>
+
+                <Route element={<WithoutNav/>}>
+                    <Route element={<Login/>} path=""/>
+                    <Route path="*" element={<Error404/>}/>
+                </Route>
             </Routes>
         </BrowserRouter>
     );
+
 }
 
 export default HomeRoutes;

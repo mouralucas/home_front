@@ -1,5 +1,5 @@
 
-.navbar {
+.navbar-custom {
     height: 100px;
     padding: 20px;
     display: flex;
@@ -7,8 +7,25 @@
     align-items: center;
 }
 
-.navbar img {
-    height: 100px;
+.navbar-custom img {
+    height: 90px;
     width: 100%;
+}
 
+.navbar-custom .links {
+    /*margin-left: auto;*/
+}
+
+.navbar-custom a {
+    margin-left: 16px;
+    text-decoration: none;
+    padding: 6px;
+    border-radius: 50px;
+    border-width: 70px;
+    color: #000000 !important;
+    background-color: var(--color-primay);
+}
+
+.navbar-brand img{
+    width: 50%;
 }
