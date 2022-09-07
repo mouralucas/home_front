@@ -3,9 +3,10 @@ import axios from "../../../../Services/Axios/Axios";
 import {URL_BILLS} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import Button from "devextreme-react/button";
+import ModalBill from '../Modals/CreditCardBill'
 
 
-const TableBills = () => {
+const App = () => {
     const [bills, setBills] = useState();
 
     const getBills = () => {
@@ -100,10 +101,10 @@ const TableBills = () => {
             child: <Button icon='refresh' onClick={getBills}/>,
             location: "after"
         },
-        // {
-        //     child: <ModalItem/>,
-        //     location: "after"
-        // },
+        {
+            child: <ModalBill/>,
+            location: "after"
+        },
         {
             name: 'searchPanel',
             location: "after",
@@ -122,4 +123,4 @@ const TableBills = () => {
     );
 }
 
-export default TableBills;
+export default App;

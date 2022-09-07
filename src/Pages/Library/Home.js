@@ -1,6 +1,6 @@
 import Navbar from '../../Components/Navbar'
 import Card from "../../Components/Card";
-import TableBooks from "./Tables/TableBooks";
+import Books from "./Tables/Books";
 
 
 const Home = () => {
@@ -10,7 +10,7 @@ const Home = () => {
             <Card>
                 <Card.Header>Livros</Card.Header>
                 <Card.Body>
-                    <TableBooks />
+                    <Books />
                 </Card.Body>
             </Card>
         </div>

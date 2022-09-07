@@ -5,7 +5,7 @@ import Button from "devextreme-react/button";
 import ModalItem from "../Modals/ModalItem";
 import {URL_ITEM} from '../../../Services/Axios/ApiUrls'
 
-const TableBooks = () => {
+const Books = () => {
     const [books, setBooks] = useState();
 
     const getBooks = () => {
@@ -124,4 +124,4 @@ const TableBooks = () => {
     );
 }
 
-export default TableBooks;
+export default Books;
