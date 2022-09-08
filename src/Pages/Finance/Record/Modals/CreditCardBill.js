@@ -1,13 +1,10 @@
 import Modal from '../../../../Components/Modal'
 import {useState} from "react";
-import {Button as Btn} from "devextreme-react/button";
-import {URL_AUTHORS, URL_BILLS, URL_CATEGORIES, URL_CREDIT_CARDS, URL_ITEM} from "../../../../Services/Axios/ApiUrls";
+import {Button} from "devextreme-react/button";
+import {URL_BILLS, URL_CATEGORIES, URL_CREDIT_CARDS} from "../../../../Services/Axios/ApiUrls";
 import axios from "../../../../Services/Axios/Axios";
 import Select from "react-select";
-import DatePicker from "react-datepicker";
-import 'react-datepicker/dist/react-datepicker.css'
-import DatPurchase from 'devextreme-react/date-box';
-import DatPayment from 'devextreme-react/date-box';
+import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
 
 const App = () => {
@@ -100,11 +97,11 @@ const App = () => {
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data compra</label>
-                            <DatPurchase value={values.dat_purchase} className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
+                            <DateBox value={values.dat_purchase} type="date" className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data pagamento</label>
-                            <DatPayment value={values.dat_payment} className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_payment')}/>
+                            <DateBox value={values.dat_payment} className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_payment')}/>
                         </div>
                     </div>
                     <div class='row'>
@@ -122,22 +119,6 @@ const App = () => {
                             <label htmlFor="">Descrição</label>
                             <textarea className='form-control' value={values.description} id="" cols="30" rows="10" onChange={set('description')}></textarea>
                         </div>
-                        {/*<div className="col-2">*/}
-                        {/*    <label htmlFor="{'combo_author'}">Cartão: {values.author_id}</label>*/}
-                        {/*    <Select formTarget={true} options={cards} onChange={setCombo}/>*/}
-                        {/*</div>*/}
-                        {/*<div className="col-2">*/}
-                        {/*    <label htmlFor="">Categoria: {values.author_id}</label>*/}
-                        {/*    <Select formTarget={true} options={categories} onChange={setCombo}/>*/}
-                        {/*</div>*/}
-                        {/*<div className="col-2">*/}
-                        {/*    <label htmlFor="{'nm_author'}">Título</label>*/}
-                        {/*    <input value={values.title} onChange={set('title')} type="text" className='form-control input-default'/>*/}
-                        {/*</div>*/}
-                        {/*<div className="col-2">*/}
-                        {/*    <label htmlFor="{'subtitle'}">Outra coisa</label>*/}
-                        {/*    <input value={values.subtitle} onChange={set('subtitle')} type="text" className='form-control input-default'/>*/}
-                        {/*</div>*/}
                     </div>
                 </div>
             </form>;
@@ -157,7 +138,7 @@ const App = () => {
                 actionModal={setBill}
                 size={'lg'}
             />
-            <Btn text={'Adicionar Fatura'} icon={'add'} onClick={showModal}></Btn>
+            <Button text={'Adicionar Fatura'} icon={'add'} onClick={showModal}></Button>
         </div>
     );
 }
