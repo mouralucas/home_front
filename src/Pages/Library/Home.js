@@ -1,4 +1,3 @@
-import Navbar from '../../Components/Navbar'
 import Card from "../../Components/Card";
 import Books from "./Tables/Books";
 

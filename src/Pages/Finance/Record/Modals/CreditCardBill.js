@@ -6,6 +6,8 @@ import axios from "../../../../Services/Axios/Axios";
 import Select from "react-select";
 import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
+import Currency from '../../../../Components/Currency'
+import {NumericFormat} from "react-number-format";
 
 const App = () => {
     const [modalState, setModalState] = useState(false);
@@ -19,7 +21,7 @@ const App = () => {
     const [values, setValues] = useState({
         card_id: '',
         category_id: '',
-        amount: '',
+        amount: 14.58,
         dat_payment: Moment(new Date()).format('YYYY-MM-DD'),
         dat_purchase: Moment(new Date()).format('YYYY-MM-DD'),
         description: '',
@@ -53,6 +55,11 @@ const App = () => {
 
     const setDate = (e, name) => {
         return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
+    }
+
+    const setCurrency = (values, name) => {
+        // console.log(values.value/100);
+        return setValues(oldValues => ({...oldValues, [name]: values.value/100}));
     }
 
     const showModal = () => {
@@ -92,8 +99,20 @@ const App = () => {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-4">
-                            <label htmlFor="">Valor</label>
-                            <input type="text" onChange={set('amount')} value={values.amount} className='form-control input-default'/>
+                            <label htmlFor="">Valor: {values.amount}</label>
+                            {/*<input type="text" onChange={set('amount')} value={values.amount} className='form-control input-default'/>*/}
+                            {/*<NumericFormat className='form-control input-default'*/}
+                            {/*    defaultValue={values.amount}*/}
+                            {/*    prefix="R$ "*/}
+                            {/*    onValueChange={(values, sourceInfo) => {*/}
+                            {/*        setCurrency(values, 'amount');*/}
+                            {/*    }}*/}
+                            {/*/>;*/}
+                            <Currency className='form-control input-default'
+                                      defaultValue={values.amount*100}
+                                      onValueChange={(values, sourceInfo) => {
+                                          setCurrency(values, 'amount')
+                                      }}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data compra</label>

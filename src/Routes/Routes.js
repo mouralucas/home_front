@@ -6,7 +6,6 @@ import FinanceRecord from '../Pages/Finance/Record/Home'
 import Login from "../Pages/Login";
 import Error404 from "../Pages/Errors/404";
 import RequireAuth from "../Services/Auth/Auth";
-import Navbar from "../Components/Navbar";
 import WithNav from "./WithNav";
 import WithoutNav from "./WithoutNav";
 

@@ -28,11 +28,6 @@ const Books = () => {
         getBooks();
     }
 
-    function testeFuncionamento() {
-        alert('Deu boa');
-    }
-
-
     let colunasTabelaLivro = [
         {
             dataField: "id",
