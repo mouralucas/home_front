@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import {useNavigate} from 'react-router-dom';
+import {Navigate, useNavigate} from 'react-router-dom';
 import '../Assets/Login/Login.css';
 import logo from '../Assets/Core/Images/Logo/logo_lucas.svg';
 import axios from "../Services/Axios/Axios";
-import {setToken} from '../Services/Auth/Auth'
+import {isAuthenticated, setToken} from '../Services/Auth/Auth'
 import Input from "../Components/Input";
 import {Link} from 'react-router-dom'
 import {URL_LOGIN} from "../Services/Axios/ApiUrls";
@@ -42,8 +42,14 @@ const Login = () => {
             setToken(token.access);
             navigate("/library/home", {replace: true});
         }
+    }
 
-
+    if (isAuthenticated()) {
+        // Redirect them to the / page, but save the current location they were
+        // trying to go to when they were redirected. This allows us to send them
+        // along to that page after they login, which is a nicer user experience
+        // than dropping them off on the home page.
+        return <Navigate to="/library/home"/>;
     }
 
     return (

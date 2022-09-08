@@ -47,7 +47,7 @@ const App = () => {
         {
             dataField: "card",
             caption: "Cartão",
-            dataType: "text",
+            dataType: "string",
             width: 150,
         },
         {
@@ -72,14 +72,14 @@ const App = () => {
         {
             dataField: "installment",
             caption: "Parcela",
-            dataType: "number",
+            dataType: "string",
             calculateCellValue: installmentCustomCell,
             width: 100,
         },
         {
             dataField: "description",
             caption: "Descrição",
-            dataType: "text",
+            dataType: "string",
         },
         {
             dataField: "nm_category",

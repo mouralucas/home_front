@@ -51,14 +51,19 @@
     margin: auto 0;
 }
 
-.dx-button-content{
+.dx-button-content {
     background-color: var(--color-primay);
-    font-weight: bold!important;
+    font-weight: bold !important;
 }
 
-.dx-button-content:hover{
+.dx-button-content:hover {
     background-color: var(--color-secondary) !important;
-    font-weight: bold!important;
+    font-weight: bold !important;
+}
+
+.dx-dropdowneditor-icon:hover {
+    background-color: var(--color-secondary) !important;
+    font-weight: bold !important;
 }
 
 .informer {
