@@ -109,17 +109,17 @@ const App = () => {
                     </div>
                     <div class='row'>
                         <div className="col-4">
-                            <label htmlFor="">Cartão: {values.card_id}</label>
+                            <label htmlFor="">Cartão</label>
                             <Select formTarget={true} options={cards} onChange={setCombo}/>
                         </div>
                         <div className="col-4">
-                            <label htmlFor="">Categoria: {values.author_id}</label>
+                            <label htmlFor="">Categoria</label>
                             <Select formTarget={true} options={categories} onChange={setCombo}/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-12">
-                            <label htmlFor="">Descrição {values.description}</label>
+                            <label htmlFor="">Descrição</label>
                             <textarea className='form-control' value={values.description} id="" cols="30" rows="10" onChange={set('description')}></textarea>
                         </div>
                         {/*<div className="col-2">*/}
