@@ -7,6 +7,7 @@ import Currency from "../../../../Components/Currency";
 import DateBox from "devextreme-react/date-box";
 import Select from "react-select";
 import Moment from "moment/moment";
+import handleSubmit from '../../../../Services/Axios/Post'
 
 
 const App = () => {
@@ -66,26 +67,10 @@ const App = () => {
         return setValues(oldValues => ({...oldValues, [name]: values.value/100}));
     }
 
-    // Create default function that accepts the values and URL
-    const setStatement = async e => {
-        e.preventDefault();
-
-        const formData = new FormData();
-        Object.keys(values).forEach(key => formData.append(key, values[key]));
-
-        await axios({
-            method: 'post',
-            url: URL_STATEMENT,
-            data: formData,
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then(response => {
-            return response.data
-        }).catch(response => {
-            return {'error': response}
-        })
-    }
+    // const setStatement = e => {
+    //     // User state from father to update table, if possible
+    //     let response = HandleSubmit(e, URL_STATEMENT, values);
+    // }
 
     const body = () => {
         let body_html =
@@ -136,7 +121,7 @@ const App = () => {
                 title={'Fatura'}
                 body={body()}
                 fullscreen={false}
-                actionModal={setStatement}
+                actionModal={(e) => handleSubmit(e, URL_STATEMENT, values)}
                 size={'lg'}
             />
             <Button text={'Adicionar extrato'} icon={'add'} onClick={showModal}></Button>
