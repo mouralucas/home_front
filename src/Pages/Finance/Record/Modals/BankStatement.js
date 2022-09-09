@@ -1,41 +1,47 @@
-import Modal from '../../../../Components/Modal'
-import {useState} from "react";
+import Modal from "../../../../Components/Modal";
 import {Button} from "devextreme-react/button";
-import {URL_BILLS, URL_CATEGORIES, URL_CREDIT_CARDS} from "../../../../Services/Axios/ApiUrls";
+import {useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
+import {URL_CATEGORIES, URL_ACCOUNTS, URL_BILLS, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
+import Currency from "../../../../Components/Currency";
+import DateBox from "devextreme-react/date-box";
 import Select from "react-select";
-import DateBox from 'devextreme-react/date-box';
-import Moment from 'moment';
-import Currency from '../../../../Components/Currency'
-import {NumericFormat} from "react-number-format";
+import Moment from "moment/moment";
+
 
 const App = () => {
     const [modalState, setModalState] = useState(false);
 
     // Combo boxes
-    const [cards, setCards] = useState();
+    const [accounts, setAccounts] = useState();
     const [categories, setCategories] = useState();
 
-    // Form variables
     const [values, setValues] = useState({
-        card_id: '',
-        category_id: '',
-        amount: 14.58,
-        dat_payment: Moment(new Date()).format('YYYY-MM-DD'),
-        dat_purchase: Moment(new Date()).format('YYYY-MM-DD'),
-        description: '',
+        amount: 0,
+        dat_purchase: new Date(),
+        account_id: 0,
+        description: ''
     })
 
-    const getCards = () => {
-        axios.get(URL_CREDIT_CARDS).then(response => {
-                setCards(response.data.credit_cards.map(author => ({name: 'card_id', value: author.id, label: author.name})));
-            }
-        )
+    const showModal = () => {
+        getCategories();
+        getAccounts();
+        setModalState(true);
+    }
+
+    const hideModal = () => {
+        setModalState(false);
     }
 
     const getCategories = () => {
         axios.get(URL_CATEGORIES, {params: {show_mode: 'all', module: 'finance'}}).then(response => {
             setCategories(response.data.categories.map(publisher => ({name: 'category_id', value: publisher.id, label: publisher.name})))
+        });
+    }
+
+    const getAccounts = () => {
+        axios.get(URL_ACCOUNTS, {params: {show_mode: 'all', module: 'finance'}}).then(response => {
+            setAccounts(response.data.bank_accounts.map(publisher => ({name: 'category_id', value: publisher.id, label: publisher.nm_bank})))
         });
     }
 
@@ -57,22 +63,11 @@ const App = () => {
     }
 
     const setCurrency = (values, name) => {
-        // console.log(values.value/100);
         return setValues(oldValues => ({...oldValues, [name]: values.value/100}));
     }
 
-    const showModal = () => {
-        getCategories();
-        getCards();
-        setModalState(true);
-    }
-
-    const hideModal = () => {
-        setModalState(false);
-    }
-
-    // Form submit
-    const setBill = async e => {
+    // Create default function that accepts the values and URL
+    const setStatement = async e => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -80,7 +75,7 @@ const App = () => {
 
         await axios({
             method: 'post',
-            url: URL_BILLS,
+            url: URL_STATEMENT,
             data: formData,
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -94,43 +89,32 @@ const App = () => {
 
     const body = () => {
         let body_html =
-            <form onSubmit={setBill}>
+            <form >
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-4">
+                        <div className="col-3">
                             <label htmlFor="">Valor: {values.amount}</label>
-                            {/*<input type="text" onChange={set('amount')} value={values.amount} className='form-control input-default'/>*/}
-                            {/*<NumericFormat className='form-control input-default'*/}
-                            {/*    defaultValue={values.amount}*/}
-                            {/*    prefix="R$ "*/}
-                            {/*    onValueChange={(values, sourceInfo) => {*/}
-                            {/*        setCurrency(values, 'amount');*/}
-                            {/*    }}*/}
-                            {/*/>;*/}
                             <Currency className='form-control input-default'
-                                      defaultValue={values.amount*100}
+                                      defaultValue={values.amount * 100}
                                       onValueChange={(values, sourceInfo) => {
                                           setCurrency(values, 'amount')
                                       }}/>
                         </div>
-                        <div className="col-4">
+                        <div className="col-3">
                             <label htmlFor="">Data compra</label>
                             <DateBox value={values.dat_purchase} type="date" className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
                         </div>
-                        <div className="col-4">
-                            <label htmlFor="">Data pagamento</label>
-                            <DateBox value={values.dat_payment} className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_payment')}/>
+                        <div className="col-3">
+                            <label htmlFor="">Conta</label>
+                            <Select formTarget={true} options={accounts} onChange={setCombo}/>
                         </div>
-                    </div>
-                    <div class='row'>
-                        <div className="col-4">
-                            <label htmlFor="">Cartão</label>
-                            <Select formTarget={true} options={cards} onChange={setCombo}/>
-                        </div>
-                        <div className="col-4">
+                        <div className="col-3">
                             <label htmlFor="">Categoria</label>
                             <Select formTarget={true} options={categories} onChange={setCombo}/>
                         </div>
+                    </div>
+                    <div class='row'>
+
                     </div>
                     <div className="row">
                         <div className="col-12">
@@ -142,7 +126,6 @@ const App = () => {
             </form>;
 
         return body_html
-
     }
 
     return (
@@ -153,12 +136,12 @@ const App = () => {
                 title={'Fatura'}
                 body={body()}
                 fullscreen={false}
-                actionModal={setBill}
+                actionModal={setStatement}
                 size={'lg'}
             />
-            <Button text={'Adicionar Fatura'} icon={'add'} onClick={showModal}></Button>
+            <Button text={'Adicionar extrato'} icon={'add'} onClick={showModal}></Button>
         </div>
     );
 }
 
-export default App
+export default App;
