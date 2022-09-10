@@ -42,7 +42,7 @@ const App = () => {
 
     const getAccounts = () => {
         axios.get(URL_ACCOUNTS, {params: {show_mode: 'all', module: 'finance'}}).then(response => {
-            setAccounts(response.data.bank_accounts.map(publisher => ({name: 'category_id', value: publisher.id, label: publisher.nm_bank})))
+            setAccounts(response.data.bank_accounts.map(publisher => ({name: 'account_id', value: publisher.id, label: publisher.nm_bank})))
         });
     }
 

@@ -2,17 +2,19 @@ import {Navigate, useLocation} from "react-router-dom";
 import React from "react";
 
 export const TOKEN_KEY = 'userToken';
+// export const STORAGE_TYPE = sessionStorage;
+export const STORAGE_TYPE = localStorage;
 
 // Stateless function are write with arrow
-export const isAuthenticated = () => sessionStorage.getItem(TOKEN_KEY) !== null;
-export const getToken = () => sessionStorage.getItem(TOKEN_KEY);
+export const isAuthenticated = () => STORAGE_TYPE.getItem(TOKEN_KEY) !== null;
+export const getToken = () => STORAGE_TYPE.getItem(TOKEN_KEY);
 
 export const setToken = token => {
-    sessionStorage.setItem(TOKEN_KEY, token);
+    STORAGE_TYPE.setItem(TOKEN_KEY, token);
 };
 
 export const logout = () => {
-    sessionStorage.removeItem(TOKEN_KEY);
+    STORAGE_TYPE.removeItem(TOKEN_KEY);
 };
 
 const RequireAuth = ({children}) => {

@@ -17,7 +17,7 @@ const HandleSubmit = async (e, url, values) => {
     }).then(response => {
         return response.data
     }).catch(response => {
-        return {'error': response}
+        return {'error': response.data}
     })
 }
 
