@@ -1,15 +1,16 @@
 import {useState} from "react"
 import "../Assets/Core/Components/Navbar.css"
 import {Link} from "react-router-dom";
+import logo from '../Assets/Core/Images/Logo/logo_lucas.svg'
 
 export default function Navbar() {
     const [isNavExpanded, setIsNavExpanded] = useState(false)
 
     return (
         <nav className="navigation">
-            <a href="/" className="brand-name">
-                MacroSoft
-            </a>
+            <Link to="/" className="brand-name">
+                <img src={logo} alt=""/>
+            </Link>
             <button className="nav-button" onClick={() => {setIsNavExpanded(!isNavExpanded)}}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -24,12 +25,8 @@ export default function Navbar() {
                     />
                 </svg>
             </button>
-            <div
-                className={
-                    isNavExpanded ? "navigation-menu expanded" : "navigation-menu"
-                }
-            >
-                <ul>
+            <div className={isNavExpanded ? "navigation-menu expanded" : "navigation-menu"}>
+                <ul className='navigation-items'>
                     <li>
                         <Link to="/library/home">Biblioteca</Link>
                     </li>
