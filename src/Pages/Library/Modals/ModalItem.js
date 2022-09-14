@@ -15,10 +15,15 @@ const ModalItem = () => {
 
     // Form variables
     const [values, setValues] = useState({
-        author_id: '',
-        publisher_id: '',
+        item_id: 0,
+        status_id: '',
+        dat_status: new Date(),
+        main_author_id: '',
         title: '',
-        subtitle: ''
+        subtitle: '',
+        title_original: '',
+        subtitle_original: '',
+        publisher_id: ''
     })
 
     const getAuthors = () => {
@@ -84,11 +89,11 @@ const ModalItem = () => {
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-3">
-                                <label htmlFor="{'combo_author'}">Nome do author: {values.author_id}</label>
+                                <label htmlFor="{'combo_author'}">Nome do author: {values.main_author_id}</label>
                                 <Select formTarget={true} options={authors} onChange={setCombo}/>
                             </div>
                             <div className="col-3">
-                                <label htmlFor="">Editora: {values.author_id}</label>
+                                <label htmlFor="">Editora: {values.main_author_id}</label>
                                 <Select formTarget={true} options={publishers} onChange={setCombo}/>
                             </div>
                             <div className="col-3">
