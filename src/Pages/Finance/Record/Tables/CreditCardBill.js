@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
 import {URL_BILLS} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
@@ -9,6 +9,7 @@ import {Button as Btn} from "devextreme-react/data-grid";
 
 const App = () => {
     const [bills, setBills] = useState();
+    const modalBillRef = useRef();
 
     const getBills = () => {
         axios.get(URL_BILLS, {
@@ -23,6 +24,7 @@ const App = () => {
 
     useEffect(() => {
         getBills();
+        console.log(modalBillRef.current);
     }, []);
 
     function installmentCustomCell(cellInfo) {
@@ -32,8 +34,8 @@ const App = () => {
         return cellInfo.installment + '/' + cellInfo.tot_installment;
     }
 
-    function myCommand(e) {
-        alert('Lucas');
+    function openEditModal(e) {
+        modalBillRef.current.showModal();
     }
 
     function myOtherCommand(e) {
@@ -104,8 +106,8 @@ const App = () => {
                     text="My Command"
                     // icon="/url/to/my/icon.ico"
                     icon="edit"
-                    hint="My Command"
-                    onClick={myCommand}
+                    hint="Editar"
+                    onClick={openEditModal}
                 />,
                 <Btn
                     text="My Command"
@@ -131,7 +133,7 @@ const App = () => {
             location: "after"
         },
         {
-            child: <ModalBill/>,
+            child: <ModalBill ref={modalBillRef} />,
             location: "after"
         },
         {

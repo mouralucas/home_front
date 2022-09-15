@@ -38,14 +38,9 @@ class Table extends React.Component {
         this.setPaging = this.setPaging.bind(this);
         this.setGrouping = this.setGrouping.bind(this);
         this.setColumnChooser = this.setColumnChooser.bind(this);
-        this.setLoadPanel = this.setLoadPanel.bind(this);
+        // this.setLoadPanel = this.setLoadPanel.bind(this);
         this.setExport = this.setExport.bind(this);
         this.setToolbar = this.setToolbar.bind(this);
-    }
-
-    myCommand (e) {
-        alert(e);
-        console.log(e);
     }
 
     // Properties customizations
@@ -133,9 +128,6 @@ class Table extends React.Component {
         return lista_toolbar
     }
 
-    setLoadPanel() {
-        return ;
-    }
 
     setExport() {
         let export_data;
@@ -165,7 +157,7 @@ class Table extends React.Component {
                 showColumnLines={this.props.showColumnLines ?? true}
                 onExporting={this.onExporting}
                 // columnHidingEnabled={this.props.columnHidingEnabled ?? true}
-                focusedRowEnabled={this.props.focusedRowEnabled ?? true}
+                focusedRowEnabled={this.props.focusedRowEnabled ?? false}
             >
 
                 <GroupPanel visible={true}/>

@@ -1,5 +1,5 @@
 import Modal from '../../../../Components/Modal'
-import {useState} from "react";
+import {useState, forwardRef, useImperativeHandle} from "react";
 import {Button} from "devextreme-react/button";
 import {URL_BILLS, URL_CATEGORIES, URL_CREDIT_CARDS} from "../../../../Services/Axios/ApiUrls";
 import axios from "../../../../Services/Axios/Axios";
@@ -9,7 +9,7 @@ import Moment from 'moment';
 import Currency from '../../../../Components/Currency'
 import {NumericFormat} from "react-number-format";
 
-const App = () => {
+const App = forwardRef((_, ref) => {
     const [modalState, setModalState] = useState(false);
 
     // Combo boxes
@@ -20,11 +20,15 @@ const App = () => {
     const [values, setValues] = useState({
         card_id: '',
         category_id: '',
-        amount: 14.58,
+        amount: 0,
         dat_payment: Moment(new Date()).format('YYYY-MM-DD'),
         dat_purchase: Moment(new Date()).format('YYYY-MM-DD'),
         description: '',
     })
+
+    useImperativeHandle(ref, () => ({
+        showModal: showModal
+    }));
 
     const getCards = () => {
         axios.get(URL_CREDIT_CARDS).then(response => {
@@ -57,7 +61,6 @@ const App = () => {
     }
 
     const setCurrency = (values, name) => {
-        // console.log(values.value/100);
         return setValues(oldValues => ({...oldValues, [name]: values.value/100}));
     }
 
@@ -99,16 +102,9 @@ const App = () => {
                     <div className="row">
                         <div className="col-4">
                             <label htmlFor="">Valor: {values.amount}</label>
-                            {/*<input type="text" onChange={set('amount')} value={values.amount} className='form-control input-default'/>*/}
-                            {/*<NumericFormat className='form-control input-default'*/}
-                            {/*    defaultValue={values.amount}*/}
-                            {/*    prefix="R$ "*/}
-                            {/*    onValueChange={(values, sourceInfo) => {*/}
-                            {/*        setCurrency(values, 'amount');*/}
-                            {/*    }}*/}
-                            {/*/>;*/}
                             <Currency className='form-control input-default'
                                       defaultValue={values.amount*100}
+                                      onFocus={event => event.target.select()}
                                       onValueChange={(values, sourceInfo) => {
                                           setCurrency(values, 'amount')
                                       }}/>
@@ -122,7 +118,7 @@ const App = () => {
                             <DateBox value={values.dat_payment} className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_payment')}/>
                         </div>
                     </div>
-                    <div class='row'>
+                    <div className='row'>
                         <div className="col-4">
                             <label htmlFor="">Cartão</label>
                             <Select formTarget={true} options={cards} onChange={setCombo}/>
@@ -159,6 +155,6 @@ const App = () => {
             <Button text={'Adicionar Fatura'} icon={'add'} onClick={showModal}></Button>
         </div>
     );
-}
+})
 
 export default App

@@ -1,9 +1,12 @@
 import { NumberFormatBase } from 'react-number-format';
 
+/**
+ * Documentation on react-number-format
+ *      https://s-yadav.github.io/react-number-format/docs/intro/
+ * */
+
 const App = (props) => {
     const format = (value) => {
-        // const amount;
-        // if (!Number(value)) amount = 0.00;
 
         const amount = new Intl.NumberFormat("pt-BR", {
             style: "currency",
