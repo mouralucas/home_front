@@ -1,15 +1,18 @@
 import PieChart from "../../../../Components/Charts/PieChart";
 import {useEffect, useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
-import {URL_EXPENSES_FIXES} from "../../../../Services/Axios/ApiUrls";
+import {URL_EXPENSES} from "../../../../Services/Axios/ApiUrls";
 
 
 const App = () => {
     const [expenses, setExpenses] = useState()
 
     const getExpenses = () => {
-        axios.get(URL_EXPENSES_FIXES, {
-            params: {'reference': 202206}
+        axios.get(URL_EXPENSES, {
+            params: {
+                'reference': 202206,
+                'expense_type': 'fixed'
+            }
         }).then(response => {
             setExpenses(response.data.expenses.map(expense => ({category:expense.category, total_amount: expense.total_amount})))
         });
