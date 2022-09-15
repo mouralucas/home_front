@@ -4,6 +4,7 @@ import {URL_BILLS} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import Button from "devextreme-react/button";
 import ModalBill from '../Modals/CreditCardBill'
+import {Button as Btn} from "devextreme-react/data-grid";
 
 
 const App = () => {
@@ -31,12 +32,20 @@ const App = () => {
         return cellInfo.installment + '/' + cellInfo.tot_installment;
     }
 
+    function myCommand(e) {
+        alert('Lucas');
+    }
+
+    function myOtherCommand(e) {
+        alert('Café');
+    }
+
     const columns = [
         {
             dataField: "id",
             caption: "Id",
             dataType: "number",
-            visible: false,
+            visible: true,
         },
         {
             dataField: "reference",
@@ -85,6 +94,26 @@ const App = () => {
             dataField: "nm_category",
             caption: "Categoria",
             dataType: "string",
+        },
+        {
+            caption: 'Butãos',
+            type: 'buttons',
+            width: 110,
+            child: [
+                <Btn
+                    text="My Command"
+                    // icon="/url/to/my/icon.ico"
+                    icon="edit"
+                    hint="My Command"
+                    onClick={myCommand}
+                />,
+                <Btn
+                    text="My Command"
+                    // icon="/url/to/my/icon.ico"
+                    icon="coffee"
+                    hint="My Command"
+                    onClick={myOtherCommand}
+                />]
         }
     ]
 
@@ -114,6 +143,7 @@ const App = () => {
 
     return (
         <DataGrid
+            keyExpr={'id'}
             tableColumns={columns}
             data={bills}
             toolBarRefresh={false}

@@ -1,14 +1,18 @@
 import React from 'react';
 import ptMessages from "devextreme/localization/messages/pt.json";
 import {loadMessages, locale} from "devextreme/localization";
-import DataGrid, {Column, ColumnChooser, Export, Grouping, GroupPanel, HeaderFilter, LoadPanel,
-    Pager, Paging, SearchPanel, Toolbar} from 'devextreme-react/data-grid';
+import DataGrid, {
+    Column, ColumnChooser, Export, Grouping, GroupPanel, HeaderFilter, LoadPanel,
+    Pager, Paging, Scrolling, SearchPanel, Toolbar, Button as Btn
+} from 'devextreme-react/data-grid';
 import '../Assets/Core/Components/Table.css'
 import {Item} from "devextreme-react/box";
 import {exportDataGrid} from "devextreme/pdf_exporter";
 import {Workbook} from "exceljs";
 import saveAs from 'file-saver';
-import {FilterRow} from "devextreme-react/gantt";
+import {Editing, FilterRow} from "devextreme-react/gantt";
+// import {Button} from "devextreme-react/button";
+import {Lookup} from "devextreme-react";
 
 
 const pageSizes = [10, 15, 20, 50, 100];
@@ -39,6 +43,11 @@ class Table extends React.Component {
         this.setToolbar = this.setToolbar.bind(this);
     }
 
+    myCommand (e) {
+        alert(e);
+        console.log(e);
+    }
+
     // Properties customizations
     setColumns() {
         if (!this.props.tableColumns) {
@@ -47,6 +56,7 @@ class Table extends React.Component {
             let lista_columns = [];
             this.props.tableColumns.forEach(function (column) {
                 lista_columns.push(<Column
+                    type={column.type ?? null}
                     dataField={column.dataField}
                     caption={column.caption}
                     dataType={column.dataType}
@@ -54,12 +64,14 @@ class Table extends React.Component {
                     alignment={column.alignment ?? 'center'}
                     width={column.width ?? null}
                     visible={column.visible ?? true}
-                    cellTemplate={column.cellTemplate ?? null}
+                    // cellTemplate={column.cellTemplate ?? null}
                     customizeText={column.customizeText ?? null}
                     calculateCellValue={column.calculateCellValue}
                     cellRender={column.cellRender ?? null}
-                />)
+                    > {column.child} </Column>
+                )
             });
+
             return lista_columns
         }
     }
@@ -108,22 +120,6 @@ class Table extends React.Component {
     setGrouping() {
     }
 
-    setToolbar2() {
-        let toolbar;
-
-        if (this.props.toolBar) {
-            toolbar = null;
-        } else {
-            toolbar = <Toolbar>
-                <Item name="columnChooserButton"/>
-                <Item name="exportButton"/>
-                <Item location="after"> </Item>
-                <Item name="searchPanel"/>
-            </Toolbar>;
-        }
-        return toolbar
-    }
-
     setToolbar() {
         let lista_toolbar = [];
 
@@ -159,6 +155,7 @@ class Table extends React.Component {
     render() {
         return (
             <DataGrid
+                keyExpr={this.props.keyExpr}
                 dataSource={this.props.data}
                 allowColumnReordering={true}
                 rowAlternationEnabled={true}
@@ -167,6 +164,8 @@ class Table extends React.Component {
                 showRowLines={this.props.showRowLines ?? true}
                 showColumnLines={this.props.showColumnLines ?? true}
                 onExporting={this.onExporting}
+                // columnHidingEnabled={this.props.columnHidingEnabled ?? true}
+                focusedRowEnabled={this.props.focusedRowEnabled ?? true}
             >
 
                 <GroupPanel visible={true}/>

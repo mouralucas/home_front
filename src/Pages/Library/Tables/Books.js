@@ -94,13 +94,16 @@ const Books = () => {
             location: 'after',
         },
         {
-            child: <Button icon='refresh' onClick={updateBooks}/>,
-            location: "after"
+            name: 'columnChooserButton',
+            location: 'after',
         },
-        {
-            child: <ModalItem/>,
-            location: "after"
-        },
+
+
+        // {
+        //     child: <ModalItem/>,
+        //     location: "after",
+        //     locateInMenu: 'auto'
+        // },
         {
             name: 'searchPanel',
             location: "after",
@@ -110,11 +113,13 @@ const Books = () => {
 
     return (
         <DataGrid
+            keyExpr={'id'}
             tableColumns={colunasTabelaLivro}
             data={books}
             tooBarRefresh={false}
             toolBarItems={toolBarItems}
             loadPanel={false}
+
         />
     );
 }

@@ -86,6 +86,7 @@ const App = () => {
 
     return (
         <DataGrid
+            keyExpr={'id'}
             tableColumns={columns}
             data={statement}
             toolBarRefresh={false}
