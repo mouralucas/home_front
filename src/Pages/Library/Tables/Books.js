@@ -2,6 +2,7 @@ import DataGrid from "../../../Components/DataGrid";
 import React, {useEffect, useState} from "react";
 import axios from "../../../Services/Axios/Axios";
 import {URL_ITEM} from '../../../Services/Axios/ApiUrls'
+import ModalItem from "../Modals/ModalItem";
 
 const Books = () => {
     const [books, setBooks] = useState();
@@ -95,13 +96,11 @@ const Books = () => {
             name: 'columnChooserButton',
             location: 'after',
         },
-
-
-        // {
-        //     child: <ModalItem/>,
-        //     location: "after",
-        //     locateInMenu: 'auto'
-        // },
+        {
+            child: <ModalItem/>,
+            location: "after",
+            locateInMenu: 'auto'
+        },
         {
             name: 'searchPanel',
             location: "after",

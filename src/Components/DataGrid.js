@@ -49,8 +49,9 @@ class Table extends React.Component {
             return null
         } else {
             let lista_columns = [];
-            this.props.tableColumns.forEach(function (column) {
+            this.props.tableColumns.forEach(function (column, index) {
                 lista_columns.push(<Column
+                    key={index}
                     type={column.type ?? null}
                     dataField={column.dataField}
                     caption={column.caption}
@@ -119,9 +120,9 @@ class Table extends React.Component {
         let lista_toolbar = [];
 
         if (this.props.toolBarItems) {
-            this.props.toolBarItems.forEach(function (item) {
+            this.props.toolBarItems.forEach(function (item, index) {
                 lista_toolbar.push(
-                    <Item name={item.name ?? null} location={item.location ?? ''}>{item.child ?? null}</Item>
+                    <Item key={index} name={item.name ?? null} location={item.location ?? ''}>{item.child ?? null}</Item>
                 )
             });
         }
