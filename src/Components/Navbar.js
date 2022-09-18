@@ -36,6 +36,12 @@ export default function Navbar() {
                     <li>
                         <Link to="/finance/records">Registros</Link>
                     </li>
+                    <li>
+                        <Link to='/files'>Arquivos</Link>
+                    </li>
+                    <li>
+                        <Link to='/files/upload'>Upload</Link>
+                    </li>
                 </ul>
             </div>
         </nav>

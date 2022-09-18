@@ -20,6 +20,7 @@ const URL_EXPENSES = '/finance/expenses'
 
 // Core URLs
 const URL_CATEGORIES = 'core/category'
+const URL_UPLOADS = 'file/upload'
 
 
 
@@ -28,4 +29,5 @@ export {
     URL_BASE, URL_LOGIN, URL_ITEM, URL_AUTHORS, URL_PUBLISHERS,
     URL_BILLS, URL_STATEMENT, URL_EXPENSES, URL_CREDIT_CARDS, URL_ACCOUNTS,
     URL_CATEGORIES,
+    URL_UPLOADS,
 }

@@ -2,17 +2,24 @@ import React from 'react';
 import ptMessages from "devextreme/localization/messages/pt.json";
 import {loadMessages, locale} from "devextreme/localization";
 import DataGrid, {
-    Column, ColumnChooser, Export, Grouping, GroupPanel, HeaderFilter, LoadPanel,
-    Pager, Paging, Scrolling, SearchPanel, Toolbar, Button as Btn
+    Column,
+    ColumnChooser,
+    Export,
+    Grouping,
+    GroupPanel,
+    HeaderFilter,
+    LoadPanel,
+    Pager,
+    Paging,
+    SearchPanel,
+    Toolbar
 } from 'devextreme-react/data-grid';
 import '../Assets/Core/Components/Table.css'
 import {Item} from "devextreme-react/box";
 import {exportDataGrid} from "devextreme/pdf_exporter";
 import {Workbook} from "exceljs";
 import saveAs from 'file-saver';
-import {Editing, FilterRow} from "devextreme-react/gantt";
-// import {Button} from "devextreme-react/button";
-import {Lookup} from "devextreme-react";
+import {FilterRow} from "devextreme-react/gantt";
 
 
 const pageSizes = [10, 15, 20, 50, 100];
