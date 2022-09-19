@@ -1,5 +1,5 @@
-const URL_BASE = 'http://127.0.0.1:8010';
-// const URL_BASE = 'http://67.205.180.83:8080/';
+// const URL_BASE = 'http://127.0.0.1:8010';
+const URL_BASE = 'http://67.205.180.83:8080/';
 
 // User URLs
 const URL_LOGIN = '/user/login';
@@ -14,13 +14,14 @@ const URL_BILLS = '/finance/bill'
 const URL_STATEMENT = '/finance/statement'
 const URL_CREDIT_CARDS = '/finance/card'
 const URL_ACCOUNTS = '/finance/account'
-
 const URL_EXPENSES = '/finance/expenses'
 
+// Files URLs
+const URL_UPLOADS = 'file/upload'
 
 // Core URLs
 const URL_CATEGORIES = 'core/category'
-const URL_UPLOADS = 'file/upload'
+
 
 
 

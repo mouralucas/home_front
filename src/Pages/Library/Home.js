@@ -1,15 +1,15 @@
 import Card from "../../Components/Card";
-import Books from "./Tables/Books";
+import DataGrid from "./Tables/Books";
+import {useState} from "react";
 
 
 const Home = () => {
-
     return (
         <div className="App">
             <Card>
                 <Card.Header>Livros</Card.Header>
                 <Card.Body>
-                    <Books />
+                    <DataGrid />
                 </Card.Body>
             </Card>
         </div>

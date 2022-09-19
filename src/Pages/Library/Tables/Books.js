@@ -6,6 +6,9 @@ import ModalItem from "../Modals/ModalItem";
 
 const Books = () => {
     const [books, setBooks] = useState();
+    const [bookModalState, setBookModalState] = useState(false)
+
+
 
     const getBooks = () => {
         axios.get(URL_ITEM, {

@@ -9,7 +9,7 @@ import Moment from "moment/moment";
 import Currency from "../../../Components/Currency";
 
 
-const ModalItem = () => {
+const ModalItem = (props) => {
     const [modalState, setModalState] = useState(false);
 
     // Combo boxes variables
@@ -48,7 +48,6 @@ const ModalItem = () => {
         width: '',
         thickness: '',
         resumo: '',
-
     })
 
     const getAuthors = () => {
