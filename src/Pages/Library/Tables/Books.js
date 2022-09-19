@@ -3,11 +3,23 @@ import React, {useEffect, useState} from "react";
 import axios from "../../../Services/Axios/Axios";
 import {URL_ITEM} from '../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
+import {Button as Btn} from "devextreme-react/button";
 
 const Books = () => {
     const [books, setBooks] = useState();
-    const [bookModalState, setBookModalState] = useState(false)
+    const [itemModalState, setItemModalState] = useState(false)
 
+    useEffect(() => {
+        getBooks();
+    }, []);
+
+    const showModalItem = () => {
+        setItemModalState(true);
+    }
+
+    const hideModalItem = () => {
+        setItemModalState(false);
+    }
 
 
     const getBooks = () => {
@@ -19,15 +31,6 @@ const Books = () => {
         ).catch(response => {
             return {'error': response}
         })
-    }
-
-    useEffect(() => {
-        getBooks();
-    }, []);
-
-
-    function updateBooks() {
-        getBooks();
     }
 
     let colunasTabelaLivro = [
@@ -100,7 +103,7 @@ const Books = () => {
             location: 'after',
         },
         {
-            child: <ModalItem/>,
+            child: <><Btn text={'Adicionar Item'} icon={'add'} onClick={showModalItem}></Btn><ModalItem itemModalState={itemModalState} hideModalItem={hideModalItem}/></>,
             location: "after",
             locateInMenu: 'auto'
         },
@@ -110,6 +113,12 @@ const Books = () => {
         },
 
     ]
+
+
+
+    function updateBooks() {
+        getBooks();
+    }
 
     return (
         <DataGrid

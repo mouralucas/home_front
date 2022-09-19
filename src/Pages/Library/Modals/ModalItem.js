@@ -1,7 +1,6 @@
 import Modal from "../../../Components/Modal";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "../../../Services/Axios/Axios";
-import {Button as Btn} from "devextreme-react/button";
 import {URL_AUTHORS, URL_ITEM, URL_PUBLISHERS} from "../../../Services/Axios/ApiUrls";
 import Select from "react-select";
 import DateBox from "devextreme-react/date-box";
@@ -10,11 +9,9 @@ import Currency from "../../../Components/Currency";
 
 
 const ModalItem = (props) => {
-    const [modalState, setModalState] = useState(false);
-
     // Combo boxes variables
     const [authors, setAuthorsList] = useState([]);
-    const [publishers, setPublisher] = useState();
+    const [publishers, setPublisher] = useState([]);
 
     // Form variables
     const [values, setValues] = useState({
@@ -49,6 +46,14 @@ const ModalItem = (props) => {
         thickness: '',
         resumo: '',
     })
+
+    useEffect(() => {
+        if (props.itemModalState){
+            getPublishers();
+            getAuthors();
+            console.log('executou')
+        }
+    },[props.itemModalState])
 
     const getAuthors = () => {
         axios.get(URL_AUTHORS).then(response => {
@@ -90,16 +95,6 @@ const ModalItem = (props) => {
 
     const setCurrency = (values, name) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
-    }
-
-    const showModalItem = () => {
-        getPublishers();
-        getAuthors();
-        setModalState(true);
-    }
-
-    const hideModalItem = () => {
-        setModalState(false);
     }
 
     // Form submit
@@ -250,7 +245,7 @@ const ModalItem = (props) => {
                             <Currency className='form-control input-default'
                                       defaultValue={values.amount * 100}
                                       onFocus={event => event.target.select()}
-                                      onValueChange={(values, sourceInfo) => {
+                                      onValueChange={(values) => {
                                           setCurrency(values, 'cover_price')
                                       }}/>
                         </div>
@@ -259,7 +254,7 @@ const ModalItem = (props) => {
                             <Currency className='form-control input-default'
                                       defaultValue={values.amount * 100}
                                       onFocus={event => event.target.select()}
-                                      onValueChange={(values, sourceInfo) => {
+                                      onValueChange={(values) => {
                                           setCurrency(values, 'payed_price')
                                       }}/>
                         </div>
@@ -303,14 +298,13 @@ const ModalItem = (props) => {
     return (
         <div>
             <Modal
-                showModal={modalState}
-                hideModal={hideModalItem}
+                showModal={props.itemModalState}
+                hideModal={props.hideModalItem}
                 title={'Item'}
                 body={body()}
                 fullscreen={true}
                 actionModal={setItem}
             />
-            <Btn text={'Adicionar Item'} icon={'add'} onClick={showModalItem}></Btn>
         </div>
     );
 }
