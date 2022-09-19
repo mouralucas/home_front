@@ -1,5 +1,5 @@
 import Modal from '../../../../Components/Modal'
-import {useState, forwardRef, useImperativeHandle} from "react";
+import {useState, forwardRef, useImperativeHandle, useEffect} from "react";
 import {Button} from "devextreme-react/button";
 import {URL_BILLS, URL_CATEGORIES, URL_CREDIT_CARDS} from "../../../../Services/Axios/ApiUrls";
 import axios from "../../../../Services/Axios/Axios";
@@ -24,6 +24,13 @@ const App = (props) => {
         dat_purchase: Moment(new Date()).format('YYYY-MM-DD'),
         description: '',
     })
+
+    useEffect(() => {
+        if (props.modalState){
+            getCards();
+            getCategories();
+        }
+    },[props.modalState])
 
     const getCards = () => {
         axios.get(URL_CREDIT_CARDS).then(response => {

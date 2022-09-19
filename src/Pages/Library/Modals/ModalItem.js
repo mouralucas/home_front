@@ -48,12 +48,12 @@ const ModalItem = (props) => {
     })
 
     useEffect(() => {
-        if (props.itemModalState){
+        if (props.modalState){
             getPublishers();
             getAuthors();
             console.log('executou')
         }
-    },[props.itemModalState])
+    },[props.modalState])
 
     const getAuthors = () => {
         axios.get(URL_AUTHORS).then(response => {

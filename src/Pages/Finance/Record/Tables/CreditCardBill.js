@@ -110,7 +110,7 @@ const App = () => {
             width: 110,
             child: [
                 <Btn
-                    // text="My Command"
+                    text="My Command"
                     // icon="/url/to/my/icon.ico"
                     icon="edit"
                     hint="Editar"
