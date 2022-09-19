@@ -3,7 +3,7 @@ import FileUploader from 'devextreme-react/file-uploader';
 import ProgressBar from 'devextreme-react/progress-bar';
 import '../../Assets/Core/Components/Uploader.css'
 import axios from "../../Services/Axios/Axios";
-import {URL_UPLOADS} from "../../Services/Axios/ApiUrls";
+import {URL_BASE, URL_UPLOADS} from "../../Services/Axios/ApiUrls";
 
 class App extends React.Component {
     constructor(props) {
@@ -33,7 +33,8 @@ class App extends React.Component {
         return (
             <div className="widget-container flex-box">
                 <span>Profile Picture</span>
-                <div id="dropzone-external" className={`flex-box ${isDropZoneActive ? 'dx-theme-accent-as-border-color dropzone-active' : 'dx-theme-border-color'}`}>
+                <div id="dropzone-external" className={`flex-box ${isDropZoneActive ? 
+                    'dx-theme-accent-as-border-color dropzone-active' : 'dx-theme-border-color'}`}>
                     {imageSource && <img id="dropzone-image" src={imageSource} alt="" />}
                     {textVisible
                         && <div id="dropzone-text" className="flex-box">
@@ -56,8 +57,8 @@ class App extends React.Component {
                     dropZone="#dropzone-external"
                     multiple={false}
                     allowedFileExtensions={this.allowedFileExtensions}
-                    uploadMode="instantly"
-                    uploadUrl="https://js.devexpress.com/Demos/NetCore/FileUploader/Upload"
+                    uploadMode={this.props.uploadMode ?? "useForm"}
+                    uploadUrl={URL_BASE + '/' + URL_UPLOADS}
                     visible={false}
                     onDropZoneEnter={this.onDropZoneEnter}
                     onDropZoneLeave={this.onDropZoneLeave}
@@ -91,7 +92,7 @@ class App extends React.Component {
             });
         };
         fileReader.readAsDataURL(file);
-        this.sendToBack(file);
+        // this.sendToBack(file);
         this.setState({
             textVisible: false,
             progressVisible: false,

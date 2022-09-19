@@ -43,9 +43,7 @@ class Table extends React.Component {
         this.setColumns = this.setColumns.bind(this);
         this.setPager = this.setPager.bind(this);
         this.setPaging = this.setPaging.bind(this);
-        this.setGrouping = this.setGrouping.bind(this);
         this.setColumnChooser = this.setColumnChooser.bind(this);
-        // this.setLoadPanel = this.setLoadPanel.bind(this);
         this.setExport = this.setExport.bind(this);
         this.setToolbar = this.setToolbar.bind(this);
     }
@@ -120,9 +118,6 @@ class Table extends React.Component {
         return columnChooser
     }
 
-    setGrouping() {
-    }
-
     setToolbar() {
         let lista_toolbar = [];
 
@@ -136,7 +131,6 @@ class Table extends React.Component {
         return lista_toolbar
     }
 
-
     setExport() {
         let export_data;
         if (this.props.export) {
@@ -145,11 +139,6 @@ class Table extends React.Component {
             export_data = <Export enabled={true} formats={exportFormats} allowExportSelectedData={false}/>;
         }
         return export_data
-    }
-
-    // Columns type customization
-    priceColumn_customizeText(cellInfo) {
-        return cellInfo.value + '$';
     }
 
     render() {
