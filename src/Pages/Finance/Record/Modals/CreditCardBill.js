@@ -9,8 +9,7 @@ import Moment from 'moment';
 import Currency from '../../../../Components/Currency'
 import {NumericFormat} from "react-number-format";
 
-const App = forwardRef((_, ref) => {
-    const [modalState, setModalState] = useState(false);
+const App = (props) => {
 
     // Combo boxes
     const [cards, setCards] = useState();
@@ -25,10 +24,6 @@ const App = forwardRef((_, ref) => {
         dat_purchase: Moment(new Date()).format('YYYY-MM-DD'),
         description: '',
     })
-
-    useImperativeHandle(ref, () => ({
-        showModal: showModal
-    }));
 
     const getCards = () => {
         axios.get(URL_CREDIT_CARDS).then(response => {
@@ -64,15 +59,15 @@ const App = forwardRef((_, ref) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value/100}));
     }
 
-    const showModal = () => {
-        getCategories();
-        getCards();
-        setModalState(true);
-    }
-
-    const hideModal = () => {
-        setModalState(false);
-    }
+    // const showModal = () => {
+    //     getCategories();
+    //     getCards();
+    //     setModalState(true);
+    // }
+    //
+    // const hideModal = () => {
+    //     setModalState(false);
+    // }
 
     // Form submit
     const setBill = async e => {
@@ -144,17 +139,16 @@ const App = forwardRef((_, ref) => {
     return (
         <div>
             <Modal
-                showModal={modalState}
-                hideModal={hideModal}
+                showModal={props.modalState}
+                hideModal={props.hideModal}
                 title={'Fatura'}
                 body={body()}
                 fullscreen={false}
                 actionModal={setBill}
                 size={'lg'}
             />
-            <Button text={'Adicionar Fatura'} icon={'add'} onClick={showModal}></Button>
         </div>
     );
-})
+}
 
 export default App

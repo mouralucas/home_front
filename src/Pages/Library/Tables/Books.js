@@ -7,18 +7,18 @@ import {Button as Btn} from "devextreme-react/button";
 
 const Books = () => {
     const [books, setBooks] = useState();
-    const [itemModalState, setItemModalState] = useState(false)
+    const [modalState, setModalState] = useState(false)
 
     useEffect(() => {
         getBooks();
     }, []);
 
     const showModalItem = () => {
-        setItemModalState(true);
+        setModalState(true);
     }
 
     const hideModalItem = () => {
-        setItemModalState(false);
+        setModalState(false);
     }
 
 
@@ -103,7 +103,7 @@ const Books = () => {
             location: 'after',
         },
         {
-            child: <><Btn text={'Adicionar Item'} icon={'add'} onClick={showModalItem}></Btn><ModalItem itemModalState={itemModalState} hideModalItem={hideModalItem}/></>,
+            child: <Btn text={'Adicionar Item'} icon={'add'} onClick={showModalItem}></Btn>,
             location: "after",
             locateInMenu: 'auto'
         },
@@ -115,21 +115,23 @@ const Books = () => {
     ]
 
 
-
     function updateBooks() {
         getBooks();
     }
 
     return (
-        <DataGrid
-            keyExpr={'id'}
-            tableColumns={colunasTabelaLivro}
-            data={books}
-            tooBarRefresh={false}
-            toolBarItems={toolBarItems}
-            loadPanel={false}
+        <>
+            <DataGrid
+                keyExpr={'id'}
+                tableColumns={colunasTabelaLivro}
+                data={books}
+                tooBarRefresh={false}
+                toolBarItems={toolBarItems}
+                loadPanel={false}
 
-        />
+            />
+            <ModalItem modalState={modalState} hideModalItem={hideModalItem}/>
+        </>
     );
 }
 

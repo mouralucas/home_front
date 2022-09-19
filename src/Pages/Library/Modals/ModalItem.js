@@ -298,7 +298,7 @@ const ModalItem = (props) => {
     return (
         <div>
             <Modal
-                showModal={props.itemModalState}
+                showModal={props.modalState}
                 hideModal={props.hideModalItem}
                 title={'Item'}
                 body={body()}

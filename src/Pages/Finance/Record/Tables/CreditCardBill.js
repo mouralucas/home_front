@@ -1,15 +1,23 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
 import {URL_BILLS} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
+import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalBill from '../Modals/CreditCardBill'
-import {Button as Btn} from "devextreme-react/data-grid";
 
 
 const App = () => {
     const [bills, setBills] = useState();
-    const modalBillRef = useRef();
+    const [modalState, setModalState] = useState(false)
+
+    const showModal = () => {
+        setModalState(true);
+    }
+
+    const hideModal = () => {
+        setModalState(false);
+    }
 
     const getBills = () => {
         axios.get(URL_BILLS, {
@@ -24,7 +32,6 @@ const App = () => {
 
     useEffect(() => {
         getBills();
-        console.log(modalBillRef.current);
     }, []);
 
     function installmentCustomCell(cellInfo) {
@@ -34,8 +41,8 @@ const App = () => {
         return cellInfo.installment + '/' + cellInfo.tot_installment;
     }
 
-    function openEditModal(e) {
-        modalBillRef.current.showModal();
+    function myFunction(e) {
+        alert('Não é café');
     }
 
     function myOtherCommand(e) {
@@ -103,15 +110,15 @@ const App = () => {
             width: 110,
             child: [
                 <Btn
-                    text="My Command"
+                    // text="My Command"
                     // icon="/url/to/my/icon.ico"
                     icon="edit"
                     hint="Editar"
-                    onClick={openEditModal}
+                    onClick={showModal}
                 />,
                 <Btn
-                    text="My Command"
-                    // icon="/url/to/my/icon.ico"
+                    // text="My Command"
+                    // // icon="/url/to/my/icon.ico"
                     icon="coffee"
                     hint="My Command"
                     onClick={myOtherCommand}
@@ -129,11 +136,11 @@ const App = () => {
             location: 'after',
         },
         {
-            child: <Button icon='refresh' onClick={getBills}/>,
+            child: <Button icon={'refresh'} onClick={getBills}/>,
             location: "after"
         },
         {
-            child: <ModalBill ref={modalBillRef} />,
+            child: <Button text={'Adicionar Fatura'} icon={'add'} onClick={showModal}></Button>,
             location: "after"
         },
         {
@@ -144,14 +151,17 @@ const App = () => {
     ]
 
     return (
-        <DataGrid
-            keyExpr={'id'}
-            tableColumns={columns}
-            data={bills}
-            toolBarRefresh={false}
-            toolBarItems={toolBarItems}
-            loadPanel={false}
-        />
+        <>
+            <DataGrid
+                keyExpr={'id'}
+                tableColumns={columns}
+                data={bills}
+                toolBarRefresh={false}
+                toolBarItems={toolBarItems}
+                loadPanel={false}
+            />
+            <ModalBill modalState={modalState} hideModal={hideModal}/>
+        </>
     );
 }
 
