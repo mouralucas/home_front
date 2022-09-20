@@ -1,18 +1,17 @@
 import Modal from '../../../../Components/Modal'
-import {useState, forwardRef, useImperativeHandle, useEffect} from "react";
-import {Button} from "devextreme-react/button";
+import {useEffect, useState} from "react";
 import {URL_BILLS, URL_CATEGORIES, URL_CREDIT_CARDS} from "../../../../Services/Axios/ApiUrls";
 import axios from "../../../../Services/Axios/Axios";
 import Select from "react-select";
 import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
 import Currency from '../../../../Components/Currency'
-import {NumericFormat} from "react-number-format";
+import AsyncSelect from "react-select/async";
 
 const App = (props) => {
 
     // Combo boxes
-    const [cards, setCards] = useState();
+    const [cards, setCards] = useState([]);
     const [categories, setCategories] = useState();
 
     // Form variables
@@ -41,14 +40,13 @@ const App = (props) => {
         axios.get(URL_CREDIT_CARDS).then(response => {
                 setCards(response.data.credit_cards.map(card => ({name: 'card_id', value: card.id, label: card.name})));
                 console.log(cards);
-                console.log(values.card_id);
             }
         )
     }
 
     const getCategories = () => {
         axios.get(URL_CATEGORIES, {params: {show_mode: 'all', module: 'finance'}}).then(response => {
-            setCategories(response.data.categories.map(publisher => ({name: 'category_id', value: publisher.id, label: publisher.name})))
+            setCategories(response.data.categories.map(category => ({name: 'category_id', value: category.id, label: category.name})))
         });
     }
 
@@ -104,6 +102,29 @@ const App = (props) => {
         })
     }
 
+    const loadOptions = (query, callback) => {
+        if (query) {
+            console.log('sadasd');
+        }
+        else {
+            // var customerID = queryString.parse(location.search).customer;
+            axios.get(URL_BILLS)
+                .then(response => {
+                    // response.data.categories.map(category => ({name: 'category_id', value: category.id, label: category.name}))
+                    const items = response.data.credit_cards;
+                    console.log(response.data);
+                    let options = items.map(function (item) {
+                        return {
+                            value: item.id,
+                            label: item.name,
+                        };
+                    });
+                    callback(options);
+                    this.setState({selectValue: options[0]});
+                });
+        }
+    }
+
     const body = () => {
         let body_html =
             <form onSubmit={setBill}>
@@ -130,11 +151,11 @@ const App = (props) => {
                     <div className='row'>
                         <div className="col-4">
                             <label htmlFor="">Cartão</label>
-                            <Select formTarget={true} options={cards} onChange={setCombo} defaultValue={'nubank'}/>
+                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => loadOptions(query, callback)} onChange={setCombo} defaultOptions/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Categoria</label>
-                            <Select formTarget={true} options={categories} onChange={setCombo} defaultValue={values.category_id}/>
+                            <Select formTarget={true} options={categories} onChange={setCombo} />
                         </div>
                     </div>
                     <div className="row">
