@@ -108,7 +108,7 @@ const App = (props) => {
         }
         else {
             // var customerID = queryString.parse(location.search).customer;
-            axios.get(URL_BILLS)
+            axios.get(URL_CREDIT_CARDS)
                 .then(response => {
                     // response.data.categories.map(category => ({name: 'category_id', value: category.id, label: category.name}))
                     const items = response.data.credit_cards;
@@ -151,7 +151,7 @@ const App = (props) => {
                     <div className='row'>
                         <div className="col-4">
                             <label htmlFor="">Cartão</label>
-                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => loadOptions(query, callback)} onChange={setCombo} defaultOptions/>
+                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => loadOptions(query, callback)} onChange={setCombo} defaultOptions={false} value={values.card_id}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Categoria</label>
