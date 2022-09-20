@@ -16,25 +16,32 @@ const App = (props) => {
     const [categories, setCategories] = useState();
 
     // Form variables
-    const [values, setValues] = useState({
-        card_id: '',
-        category_id: '',
-        amount: 0,
-        dat_payment: Moment(new Date()).format('YYYY-MM-DD'),
-        dat_purchase: Moment(new Date()).format('YYYY-MM-DD'),
-        description: '',
-    })
+    const val_inicial = {
+        card_id: 'nubank',
+        category_id: 1,
+        amount: 17.32,
+        dat_payment: '2022-01-01',
+        dat_purchase: '2022-02-01',
+        description: 'Eh um cu mesmo'
+    }
+
+
+    const [values, setValues] = useState(val_inicial)
 
     useEffect(() => {
-        if (props.modalState){
+        if (props.modalState) {
             getCards();
             getCategories();
         }
-    },[props.modalState])
+        // setValues(oldValues => ({...oldValues, [values.card_id]: 'nubank'}));
+
+    }, [props.modalState])
 
     const getCards = () => {
         axios.get(URL_CREDIT_CARDS).then(response => {
-                setCards(response.data.credit_cards.map(author => ({name: 'card_id', value: author.id, label: author.name})));
+                setCards(response.data.credit_cards.map(card => ({name: 'card_id', value: card.id, label: card.name})));
+                console.log(cards);
+                console.log(values.card_id);
             }
         )
     }
@@ -63,7 +70,7 @@ const App = (props) => {
     }
 
     const setCurrency = (values, name) => {
-        return setValues(oldValues => ({...oldValues, [name]: values.value/100}));
+        return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
 
     // const showModal = () => {
@@ -105,7 +112,7 @@ const App = (props) => {
                         <div className="col-4">
                             <label htmlFor="">Valor: {values.amount}</label>
                             <Currency className='form-control input-default'
-                                      defaultValue={values.amount*100}
+                                      defaultValue={values.amount * 100}
                                       onFocus={event => event.target.select()}
                                       onValueChange={(values, sourceInfo) => {
                                           setCurrency(values, 'amount')
@@ -123,11 +130,11 @@ const App = (props) => {
                     <div className='row'>
                         <div className="col-4">
                             <label htmlFor="">Cartão</label>
-                            <Select formTarget={true} options={cards} onChange={setCombo}/>
+                            <Select formTarget={true} options={cards} onChange={setCombo} defaultValue={'nubank'}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Categoria</label>
-                            <Select formTarget={true} options={categories} onChange={setCombo}/>
+                            <Select formTarget={true} options={categories} onChange={setCombo} defaultValue={values.category_id}/>
                         </div>
                     </div>
                     <div className="row">
