@@ -1,8 +1,7 @@
 import Modal from '../../../../Components/Modal'
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {URL_BILLS, URL_CATEGORIES, URL_CREDIT_CARDS} from "../../../../Services/Axios/ApiUrls";
 import axios from "../../../../Services/Axios/Axios";
-import Select from "react-select";
 import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
 import Currency from '../../../../Components/Currency'
@@ -11,13 +10,13 @@ import AsyncSelect from "react-select/async";
 const App = (props) => {
 
     // Combo boxes
-    const [cards, setCards] = useState([]);
-    const [categories, setCategories] = useState();
+    const [selectedCard, setSelectedCard] = useState();
+    const [selectedCategory, setSelectedCategory] = useState();
 
     // Form variables
     const val_inicial = {
-        card_id: 'nubank',
-        category_id: 1,
+        card_id: null,
+        category_id: 'aluguel',
         amount: 17.32,
         dat_payment: '2022-01-01',
         dat_purchase: '2022-02-01',
@@ -27,26 +26,35 @@ const App = (props) => {
 
     const [values, setValues] = useState(val_inicial)
 
-    useEffect(() => {
-        if (props.modalState) {
-            getCards();
-            getCategories();
+    const getCreditCard = (query, callback) => {
+        if (query) {
         }
-        // setValues(oldValues => ({...oldValues, [values.card_id]: 'nubank'}));
-
-    }, [props.modalState])
-
-    const getCards = () => {
-        axios.get(URL_CREDIT_CARDS).then(response => {
-                setCards(response.data.credit_cards.map(card => ({name: 'card_id', value: card.id, label: card.name})));
-                console.log(cards);
-            }
-        )
+        else {
+            axios.get(URL_CREDIT_CARDS).then(response => {
+                    let options = response.data.credit_cards.map(function (item) {
+                        return {
+                            value: item.id,
+                            label: item.name,
+                        };
+                    });
+                    callback(options);
+                    const selected = options.filter(card => card.value === values.card_id)
+                    setSelectedCard(selected[0]);
+                });
+        }
     }
 
-    const getCategories = () => {
+    const getCategory = (query, callback) => {
         axios.get(URL_CATEGORIES, {params: {show_mode: 'all', module: 'finance'}}).then(response => {
-            setCategories(response.data.categories.map(category => ({name: 'category_id', value: category.id, label: category.name})))
+            let options = response.data.categories.map(function (item) {
+                return {
+                    value: item.id,
+                    label: item.name,
+                }
+            });
+            callback(options)
+            const selected = options.filter(category => category.value === values.category_id);
+            setSelectedCategory(selected[0]);
         });
     }
 
@@ -56,11 +64,13 @@ const App = (props) => {
         }
     }
 
-    const setCombo = object => {
-        if (object !== null) {
-            return setValues(oldValues => ({...oldValues, [object.name]: object.value}));
+    const setCombo = (e, name, setFunction) => {
+        if (e !== null) {
+            setFunction(e);
+            return setValues(oldValues => ({...oldValues, [name]: e.value}));
+
         }
-        return setValues(oldValues => ({...oldValues, [object.name]: object.value}));
+        return setValues(oldValues => ({...oldValues, [name]: e.value}));
     }
 
     const setDate = (e, name) => {
@@ -70,16 +80,6 @@ const App = (props) => {
     const setCurrency = (values, name) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
-
-    // const showModal = () => {
-    //     getCategories();
-    //     getCards();
-    //     setModalState(true);
-    // }
-    //
-    // const hideModal = () => {
-    //     setModalState(false);
-    // }
 
     // Form submit
     const setBill = async e => {
@@ -100,29 +100,6 @@ const App = (props) => {
         }).catch(response => {
             return {'error': response}
         })
-    }
-
-    const loadOptions = (query, callback) => {
-        if (query) {
-            console.log('sadasd');
-        }
-        else {
-            // var customerID = queryString.parse(location.search).customer;
-            axios.get(URL_CREDIT_CARDS)
-                .then(response => {
-                    // response.data.categories.map(category => ({name: 'category_id', value: category.id, label: category.name}))
-                    const items = response.data.credit_cards;
-                    console.log(response.data);
-                    let options = items.map(function (item) {
-                        return {
-                            value: item.id,
-                            label: item.name,
-                        };
-                    });
-                    callback(options);
-                    this.setState({selectValue: options[0]});
-                });
-        }
     }
 
     const body = () => {
@@ -150,12 +127,12 @@ const App = (props) => {
                     </div>
                     <div className='row'>
                         <div className="col-4">
-                            <label htmlFor="">Cartão</label>
-                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => loadOptions(query, callback)} onChange={setCombo} defaultOptions={false} value={values.card_id}/>
+                            <label htmlFor="">Cartão: {values.card_id}</label>
+                            <AsyncSelect id={'combo_cards'} formTarget={true} loadOptions={(query, callback) => getCreditCard(query, callback)} onChange={(e) => setCombo(e, 'card_id', setSelectedCard)} defaultOptions value={selectedCard}/>
                         </div>
                         <div className="col-4">
-                            <label htmlFor="">Categoria</label>
-                            <Select formTarget={true} options={categories} onChange={setCombo} />
+                            <label htmlFor="">Categoria: {values.category_id}</label>
+                            <AsyncSelect id={'combo_categories'} formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)} onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)} defaultOptions value={selectedCategory} />
                         </div>
                     </div>
                     <div className="row">
