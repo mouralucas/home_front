@@ -15,7 +15,7 @@ const App = (props) => {
 
     // Form variables
     const val_inicial = {
-        card_id: null,
+        card_id: 'picpay',
         category_id: 'aluguel',
         amount: 17.32,
         dat_payment: '2022-01-01',
