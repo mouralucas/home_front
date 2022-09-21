@@ -14,17 +14,17 @@ const App = (props) => {
     const [selectedCategory, setSelectedCategory] = useState();
 
     // Form variables
-    const val_inicial = {
-        card_id: 'picpay',
-        category_id: 'aluguel',
-        amount: 17.32,
-        dat_payment: '2022-01-01',
-        dat_purchase: '2022-02-01',
-        description: 'Eh um cu mesmo'
+    const defaultValues = {
+        card_id: null,
+        category_id: null,
+        amount: 0,
+        dat_payment: new Date(),
+        dat_purchase: new Date(),
+        description: null
     }
 
 
-    const [values, setValues] = useState(val_inicial)
+    const [values, setValues] = useState(defaultValues)
 
     const getCreditCard = (query, callback) => {
         if (query) {

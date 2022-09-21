@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
-import {URL_BILLS, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
+import {URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import Button from "devextreme-react/button";
 import ModalStatement from '../Modals/BankStatement'
@@ -8,6 +8,15 @@ import ModalStatement from '../Modals/BankStatement'
 
 const App = () => {
     const [statement, setStatement] = useState();
+    const [modalState, setModalState] = useState(false)
+
+    const showModal = () => {
+        setModalState(true);
+    }
+
+    const hideModal = () => {
+        setModalState(false);
+    }
 
     const getStatements = () => {
         axios.get(URL_STATEMENT, {
@@ -74,7 +83,7 @@ const App = () => {
             location: "after"
         },
         {
-            child: <ModalStatement/>,
+            child: <Button text={'Adicionar extrato'} icon={'add'} onClick={showModal}></Button>,
             location: "after"
         },
         {
@@ -85,14 +94,17 @@ const App = () => {
     ]
 
     return (
-        <DataGrid
-            keyExpr={'id'}
-            tableColumns={columns}
-            data={statement}
-            toolBarRefresh={false}
-            toolBarItems={toolBarItems}
-            loadPanel={false}
-        />
+        <>
+            <DataGrid
+                keyExpr={'id'}
+                tableColumns={columns}
+                data={statement}
+                toolBarRefresh={false}
+                toolBarItems={toolBarItems}
+                loadPanel={false}
+            />
+            <ModalStatement modalState={modalState} hideModal={hideModal}/>
+        </>
     );
 }
 
