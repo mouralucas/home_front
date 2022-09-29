@@ -5,7 +5,7 @@ import {URL_ITEM} from '../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
 import {Button as Btn} from "devextreme-react/button";
 
-const Books = () => {
+const Book = () => {
     const [books, setBooks] = useState();
     const [modalState, setModalState] = useState(false)
 
@@ -135,4 +135,4 @@ const Books = () => {
     );
 }
 
-export default Books;
+export default Book;

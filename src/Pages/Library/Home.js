@@ -1,6 +1,6 @@
 import Card from "../../Components/Card";
-import DataGrid from "./Tables/Books";
-import {useState} from "react";
+import TableBook from "./Tables/Book";
+import TableManga from "./Tables/Manga";
 
 
 const Home = () => {
@@ -9,7 +9,13 @@ const Home = () => {
             <Card>
                 <Card.Header>Livros</Card.Header>
                 <Card.Body>
-                    <DataGrid />
+                    <TableBook />
+                </Card.Body>
+            </Card>
+            <Card>
+                <Card.Header>Mangás</Card.Header>
+                <Card.Body>
+                    <TableManga />
                 </Card.Body>
             </Card>
         </div>

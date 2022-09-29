@@ -69,6 +69,7 @@ class Table extends React.Component {
                     customizeText={column.customizeText ?? null}
                     calculateCellValue={column.calculateCellValue}
                     cellRender={column.cellRender ?? null}
+                    groupIndex={column.groupIndex ?? null}
                     > {column.child} </Column>
                 )
             });
