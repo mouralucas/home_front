@@ -6,11 +6,13 @@ import Select from "react-select";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import Currency from "../../../Components/Currency";
+import AsyncSelect from "react-select/async";
 
 
 const ModalItem = (props) => {
     // Combo boxes variables
-    const [authors, setAuthorsList] = useState([]);
+    // const [authors, setAuthorsList] = useState([]);
+    const [selectedAuthor, setSelectedAuthor] = useState([]);
     const [itemTypes, setItemTypes] = useState([]);
     const [series, setSeries] = useState([]);
     const [collections, setCollections] = useState([]);
@@ -53,20 +55,32 @@ const ModalItem = (props) => {
     })
 
     useEffect(() => {
-        if (props.modalState){
+        if (props.modalState) {
             getAuthors();
             getItemTypes();
             getSerie();
             getCollection();
             getPublishers();
         }
-    },[props.modalState])
+    }, [props.modalState])
 
-    const getAuthors = () => {
-        axios.get(URL_AUTHORS).then(response => {
-                setAuthorsList(response.data.authors.map(author => ({value: author.id, label: author.nm_full})));
-            }
-        )
+    const getAuthors = (query, callback) => {
+        if (query) {
+
+        } else {
+            axios.get(URL_AUTHORS).then(response => {
+                let options = response.data.categories.map(function (item) {
+                    return {
+                        value: item.id,
+                        label: item.name,
+                    }
+                });
+                callback(options)
+                const selected = options.filter(category => category.value === values.category_id);
+                setSelectedAuthor(selected[0]);
+                // setAuthorsList(response.data.authors.map(author => ({value: author.id, label: author.nm_full})));
+            });
+        }
     }
 
     const getItemTypes = () => {
@@ -150,19 +164,18 @@ const ModalItem = (props) => {
                     <div className="row">
                         <div className="col-4">
                             <label htmlFor="{'combo_author'}">Autor principal: {values.main_author_id}</label>
-                            <Select formTarget={true} options={authors}
-                                    onChange={(e) => setCombo(e, 'main_author_id')}/>
+                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => getAuthors(query, callback)} onChange={(e) => setCombo(e, 'main_author_id')} defaultOptions value={selectedAuthor}/>
                         </div>
-                        <div className="col-4">
-                            <label htmlFor="{'combo_author'}">Outros autores: {values.authors_id}</label>
-                            <Select formTarget={true} options={authors} onChange={(e) => setCombo(e, 'authors_id')}
-                                    isMulti={true}/>
-                        </div>
-                        <div className="col-4">
-                            <label htmlFor="{'combo_translator'}">Tradutor: {values.translator_id}</label>
-                            <Select formTarget={true} options={authors} onChange={(e) => setCombo(e, 'authors_id')}
-                                    isMulti={true}/>
-                        </div>
+                        {/*<div className="col-4">*/}
+                        {/*    <label htmlFor="{'combo_author'}">Outros autores: {values.authors_id}</label>*/}
+                        {/*    <Select formTarget={true} options={authors} onChange={(e) => setCombo(e, 'authors_id')}*/}
+                        {/*            isMulti={true}/>*/}
+                        {/*</div>*/}
+                        {/*<div className="col-4">*/}
+                        {/*    <label htmlFor="{'combo_translator'}">Tradutor: {values.translator_id}</label>*/}
+                        {/*    <Select formTarget={true} options={authors} onChange={(e) => setCombo(e, 'authors_id')}*/}
+                        {/*            isMulti={true}/>*/}
+                        {/*</div>*/}
                     </div>
                     <div className="row">
                         <div className="col-6">
