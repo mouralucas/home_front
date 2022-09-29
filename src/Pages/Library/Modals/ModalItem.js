@@ -7,11 +7,11 @@ import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import Currency from "../../../Components/Currency";
 import AsyncSelect from "react-select/async";
-
+import filterSelect from "../Util";
 
 const ModalItem = (props) => {
     // Combo boxes variables
-    // const [authors, setAuthorsList] = useState([]);
+    const [authors, setAuthors] = useState([]);
     const [selectedAuthor, setSelectedAuthor] = useState([]);
     const [itemTypes, setItemTypes] = useState([]);
     const [series, setSeries] = useState([]);
@@ -66,18 +66,15 @@ const ModalItem = (props) => {
 
     const getAuthors = (query, callback) => {
         if (query) {
-
+            callback(filterSelect(authors, query));
         } else {
             axios.get(URL_AUTHORS).then(response => {
-                let options = response.data.categories.map(function (item) {
-                    return {
-                        value: item.id,
-                        label: item.name,
-                    }
-                });
-                callback(options)
-                const selected = options.filter(category => category.value === values.category_id);
+                let options = response.data.authors.map(author => ({value: author.id, label: author.nm_full}));
+                setAuthors(options);
+
+                const selected = authors.filter(category => category.value === values.main_author_id);
                 setSelectedAuthor(selected[0]);
+                callback(options);
                 // setAuthorsList(response.data.authors.map(author => ({value: author.id, label: author.nm_full})));
             });
         }
@@ -113,15 +110,23 @@ const ModalItem = (props) => {
         }
     }
 
-    const setCombo = (e, name) => {
-        console.log(values["authors_id"]);
-        if (Array.isArray(e)) {
-            var list_values = [];
-            e.forEach(key => list_values.push(key.value));
-            return setValues(oldValues => ({...oldValues, [name]: list_values}));
-        }
-
+    // const setCombo = (e, name) => {
+    //     console.log(values["authors_id"]);
+    //     if (Array.isArray(e)) {
+    //         var list_values = [];
+    //         e.forEach(key => list_values.push(key.value));
+    //         return setValues(oldValues => ({...oldValues, [name]: list_values}));
+    //     }
+    //
+    //     if (e !== null) {
+    //         return setValues(oldValues => ({...oldValues, [name]: e.value}));
+    //
+    //     }
+    //     return setValues(oldValues => ({...oldValues, [name]: e.value}));
+    // }
+    const setCombo = (e, name, setFunction) => {
         if (e !== null) {
+            setFunction(e);
             return setValues(oldValues => ({...oldValues, [name]: e.value}));
 
         }
@@ -164,7 +169,7 @@ const ModalItem = (props) => {
                     <div className="row">
                         <div className="col-4">
                             <label htmlFor="{'combo_author'}">Autor principal: {values.main_author_id}</label>
-                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => getAuthors(query, callback)} onChange={(e) => setCombo(e, 'main_author_id')} defaultOptions value={selectedAuthor}/>
+                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => getAuthors(query, callback)} onChange={(e) => setCombo(e, 'main_author_id', setSelectedAuthor)} defaultOptions value={selectedAuthor}/>
                         </div>
                         {/*<div className="col-4">*/}
                         {/*    <label htmlFor="{'combo_author'}">Outros autores: {values.authors_id}</label>*/}
