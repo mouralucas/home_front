@@ -1,3 +1,6 @@
+import axios from "../../Services/Axios/Axios";
+import {URL_AUTHORS} from "../../Services/Axios/ApiUrls";
+
 /**
  * @author Lucas Penha de Moura - 29/09/2022
  * @param data: the state that will be filtered (must be in {value: '', label: ''} format)
@@ -6,22 +9,6 @@
  */
 const filterSelect = (data, query) => {
     return data.filter((i) => i.label.toLowerCase().includes(query.toLowerCase()))
-}
-
-const getAuthor = () => {
-
-}
-
-const getPublisher = () => {
-
-}
-
-const getSerie = () => {
-
-}
-
-const getCollection = () => {
-
 }
 
 export default filterSelect;

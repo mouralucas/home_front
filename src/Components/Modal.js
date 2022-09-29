@@ -7,7 +7,12 @@ const App = (props) => {
         <div className="App">
             <Modal show={props.showModal} size={props.size ?? null} onHide={props.hideModal} fullscreen={props.fullscreen ?? null}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{props.title ?? 'Modal Title'}</Modal.Title>
+                    <div className="row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100">
+                        <div className="col-6">
+                            <Modal.Title>{props.title ?? 'Modal Title'}</Modal.Title>
+                        </div>
+                        {props.headerComponents ?? <></>}
+                    </div>
                 </Modal.Header>
 
                 <Modal.Body>
