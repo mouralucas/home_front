@@ -1,7 +1,7 @@
 import Modal from "../../../Components/Modal";
 import {useEffect, useState} from "react";
 import axios from "../../../Services/Axios/Axios";
-import {URL_AUTHORS, URL_ITEM, URL_PUBLISHERS} from "../../../Services/Axios/ApiUrls";
+import {URL_AUTHORS, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_PUBLISHERS} from "../../../Services/Axios/ApiUrls";
 import Select from "react-select";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
@@ -11,7 +11,12 @@ import Currency from "../../../Components/Currency";
 const ModalItem = (props) => {
     // Combo boxes variables
     const [authors, setAuthorsList] = useState([]);
+    const [itemTypes, setItemTypes] = useState([]);
+    const [series, setSeries] = useState([]);
+    const [collections, setCollections] = useState([]);
     const [publishers, setPublisher] = useState([]);
+    const [itemFormats, setItemFormats] = useState([]);
+    const [languages, setLanguages] = useState([]);
 
     // Form variables
     const [values, setValues] = useState({
@@ -31,8 +36,8 @@ const ModalItem = (props) => {
         pages: 0,
         volume: 1,
         edition: 1,
-        dat_published: new Date(),
-        dat_published_original: new Date(),
+        dat_published: null,
+        dat_published_original: null,
         serie_id: 0,
         collection_id: 0,
         publisher_id: '',
@@ -49,9 +54,11 @@ const ModalItem = (props) => {
 
     useEffect(() => {
         if (props.modalState){
-            getPublishers();
             getAuthors();
-            console.log('executou')
+            getItemTypes();
+            getSerie();
+            getCollection();
+            getPublishers();
         }
     },[props.modalState])
 
@@ -60,6 +67,24 @@ const ModalItem = (props) => {
                 setAuthorsList(response.data.authors.map(author => ({value: author.id, label: author.nm_full})));
             }
         )
+    }
+
+    const getItemTypes = () => {
+        axios.get(URL_ITEM_TYPES).then(response => {
+            setItemTypes(response.data.types.map(type => ({value: type.id, label: type.text})))
+        });
+    }
+
+    const getSerie = () => {
+        axios.get(URL_ITEM_SERIE).then(response => {
+            setSeries(response.data.series.map(serie => ({value: serie.id, label: serie.name})))
+        });
+    }
+
+    const getCollection = () => {
+        axios.get(URL_ITEM_COLLECTION).then(response => {
+            setCollections(response.data.collections.map(collection => ({value: collection.id, label: collection.name})))
+        });
     }
 
     const getPublishers = () => {
@@ -134,18 +159,14 @@ const ModalItem = (props) => {
                                     isMulti={true}/>
                         </div>
                         <div className="col-4">
-                            <label htmlFor="{'combo_author'}">Tradutor: {values.translator_id}</label>
+                            <label htmlFor="{'combo_translator'}">Tradutor: {values.translator_id}</label>
                             <Select formTarget={true} options={authors} onChange={(e) => setCombo(e, 'authors_id')}
                                     isMulti={true}/>
                         </div>
-                        {/*<div className="col-3">*/}
-                        {/*    <label htmlFor="">Editora: {values.publisher_id}</label>*/}
-                        {/*    <Select formTarget={true} options={publishers} onChange={(e) => setCombo(e, 'publisher_id')}/>*/}
-                        {/*</div>*/}
                     </div>
                     <div className="row">
                         <div className="col-6">
-                            <label htmlFor="{'nm_author'}">Título</label>
+                            <label htmlFor="{'nm_title'}">Título</label>
                             <input value={values.title} onChange={set('title')} type="text"
                                    className='form-control input-default'/>
                         </div>
@@ -180,7 +201,7 @@ const ModalItem = (props) => {
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Tipo: {values.item_type}</label>
-                            <Select formTarget={true} options={publishers}
+                            <Select formTarget={true} options={itemTypes}
                                     onChange={(e) => setCombo(e, 'item_type_id')}/>
                         </div>
                         <div className="col-1">
@@ -189,12 +210,12 @@ const ModalItem = (props) => {
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-1">
-                            <label htmlFor="{'pages'}">Volume</label>
+                            <label htmlFor="{volume'}">Volume</label>
                             <input value={values.volume} onChange={set('volume')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-1">
-                            <label htmlFor="{'pages'}">Edição</label>
+                            <label htmlFor="{'edition'}">Edição</label>
                             <input value={values.edition} onChange={set('edition')} type="text"
                                    className='form-control input-default'/>
                         </div>
@@ -213,12 +234,12 @@ const ModalItem = (props) => {
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Serie: {values.serie_id}</label>
-                            <Select formTarget={true} options={publishers}
+                            <Select formTarget={true} options={series}
                                     onChange={(e) => setCombo(e, 'publisher_id')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Coleção: {values.collection_id}</label>
-                            <Select formTarget={true} options={publishers}
+                            <Select formTarget={true} options={collections}
                                     onChange={(e) => setCombo(e, 'publisher_id')}/>
                         </div>
                     </div>
@@ -230,12 +251,12 @@ const ModalItem = (props) => {
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Formato: {values.format_id}</label>
-                            <Select formTarget={true} options={publishers}
+                            <Select formTarget={true} options={itemFormats}
                                     onChange={(e) => setCombo(e, 'publisher_id')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Idioma: {values.language_id}</label>
-                            <Select formTarget={true} options={publishers}
+                            <Select formTarget={true} options={languages}
                                     onChange={(e) => setCombo(e, 'publisher_id')}/>
                         </div>
                     </div>

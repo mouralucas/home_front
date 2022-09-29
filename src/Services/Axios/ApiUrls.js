@@ -7,6 +7,9 @@ const URL_LOGIN = '/user/login';
 // Library URLs
 const URL_ITEM = '/library/item';
 const URL_AUTHORS = 'library/author';
+const URL_ITEM_TYPES = 'library/type';
+const URL_ITEM_SERIE = 'library/serie';
+const URL_ITEM_COLLECTION = 'library/collection';
 const URL_PUBLISHERS = 'library/publisher';
 
 // Finance URL
@@ -27,7 +30,8 @@ const URL_CATEGORIES = 'core/category'
 
 
 export {
-    URL_BASE, URL_LOGIN, URL_ITEM, URL_AUTHORS, URL_PUBLISHERS,
+    URL_BASE, URL_LOGIN, URL_ITEM,
+    URL_AUTHORS, URL_ITEM_TYPES, URL_ITEM_SERIE, URL_ITEM_COLLECTION, URL_PUBLISHERS,
     URL_BILLS, URL_STATEMENT, URL_EXPENSES, URL_CREDIT_CARDS, URL_ACCOUNTS,
     URL_CATEGORIES,
     URL_UPLOADS,
