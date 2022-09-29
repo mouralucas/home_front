@@ -49,7 +49,7 @@ const ModalItem = (props) => {
         subtitle_original: '',
         isbn: '',
         isbn10: '',
-        item_type: 0,
+        itemType: 0,
         pages: 0,
         volume: 1,
         edition: 1,
@@ -87,18 +87,23 @@ const ModalItem = (props) => {
                 let options = response.data.authors.map(author => ({value: author.id, label: author.nm_full}));
                 setMainAuthor(options);
 
-                const selected = options.filter(category => category.value === values.main_author_id);
-                console.log(selected);
-                setSelectedMainAuthor(selected[0]);
+                setSelectedMainAuthor(options.filter(category => category.value === values.main_author_id)[0]);
+                // setSelectedOtherAuthors(options.filter(category => category.value === values.main_author_id)[0]);
                 callback(options);
                 // setAuthorsList(response.data.authors.map(author => ({value: author.id, label: author.nm_full})));
             });
         }
     }
 
-    const getItemTypes = () => {
+    const getItemTypes = (query, callback) => {
+        if (query) {
+            callback(filterSelect(itemType, query));
+        }
         axios.get(URL_ITEM_TYPES).then(response => {
-            setItemType(response.data.types.map(type => ({value: type.id, label: type.text})))
+            let options = response.data.types.map(type => ({value: type.value, label: type.text}))
+            setItemType(options);
+            callback(options);
+            setSelectedItemType(options.filter(i => i.value === values.itemType)[0]);
         });
     }
 
@@ -126,24 +131,17 @@ const ModalItem = (props) => {
         }
     }
 
-    // const setCombo = (e, name) => {
-    //     console.log(values["authors_id"]);
-    //     if (Array.isArray(e)) {
-    //         var list_values = [];
-    //         e.forEach(key => list_values.push(key.value));
-    //         return setValues(oldValues => ({...oldValues, [name]: list_values}));
-    //     }
-    //
-    //     if (e !== null) {
-    //         return setValues(oldValues => ({...oldValues, [name]: e.value}));
-    //
-    //     }
-    //     return setValues(oldValues => ({...oldValues, [name]: e.value}));
-    // }
     const setCombo = (e, name, setFunction) => {
         if (e !== null) {
-            setFunction(e);
-            return setValues(oldValues => ({...oldValues, [name]: e.value}));
+            if (Array.isArray(e)) {
+                var list_values = [];
+                e.forEach(key => list_values.push(key.value));
+                setFunction(e);
+                return setValues(oldValues => ({...oldValues, [name]: list_values}));
+            } else {
+                setFunction(e);
+                return setValues(oldValues => ({...oldValues, [name]: e.value}));
+            }
         }
         return setValues(oldValues => ({...oldValues, [name]: e.value}));
     }
@@ -180,15 +178,24 @@ const ModalItem = (props) => {
     const body = () => {
         let body_html =
             <form onSubmit={setItem}>
-                <div className="container-fluid">
+                <div className="">
                     <div className="row">
                         <div className="col-4">
                             <label htmlFor="{'combo_author'}">Autor principal: {values.main_author_id}</label>
-                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => getAuthors(query, callback)} onChange={(e) => setCombo(e, 'main_author_id', setSelectedMainAuthor)} defaultOptions value={selectedMainAuthor}/>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getAuthors(query, callback)}
+                                         onChange={(e) => setCombo(e, 'main_author_id', setSelectedMainAuthor)}
+                                         defaultOptions
+                                         value={selectedMainAuthor}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="{'combo_author'}">Outros autores: {values.authors_id}</label>
-                            <AsyncSelect formTarget={true} options={mainAuthor} onChange={(e) => setCombo(e, 'authors_id')} isMulti={true}/>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getAuthors(query, callback)}
+                                         onChange={(e) => setCombo(e, 'authors_id', setSelectedOtherAuthors)}
+                                         defaultOptions
+                                         value={selectedOtherAuthors}
+                                         isMulti={true}/>
                         </div>
                         {/*<div className="col-4">*/}
                         {/*    <label htmlFor="{'combo_translator'}">Tradutor: {values.translator_id}</label>*/}
@@ -199,42 +206,39 @@ const ModalItem = (props) => {
                     <div className="row">
                         <div className="col-6">
                             <label htmlFor="{'nm_title'}">Título</label>
-                            <input value={values.title} onChange={set('title')} type="text"
-                                   className='form-control input-default'/>
+                            <input value={values.title} onChange={set('title')} type="text" className='form-control input-default'/>
                         </div>
                         <div className="col-6">
                             <label htmlFor="{'subtitle'}">Sub-título</label>
-                            <input value={values.subtitle} onChange={set('subtitle')} type="text"
-                                   className='form-control input-default'/>
+                            <input value={values.subtitle} onChange={set('subtitle')} type="text" className='form-control input-default'/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-6">
                             <label htmlFor="{'nm_author'}">Título original</label>
-                            <input value={values.title_original} onChange={set('title_original')} type="text"
-                                   className='form-control input-default'/>
+                            <input value={values.title_original} onChange={set('title_original')} type="text" className='form-control input-default'/>
                         </div>
                         <div className="col-6">
                             <label htmlFor="{'subtitle'}">Sub-título original</label>
-                            <input value={values.subtitle_original} onChange={set('subtitle_original')} type="text"
-                                   className='form-control input-default'/>
+                            <input value={values.subtitle_original} onChange={set('subtitle_original')} type="text" className='form-control input-default'/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-3">
                             <label htmlFor="{'nm_author'}">ISBN</label>
-                            <input value={values.isbn} onChange={set('isbn')} type="text"
-                                   className='form-control input-default'/>
+                            <input value={values.isbn} onChange={set('isbn')} type="text" className='form-control input-default'/>
                         </div>
                         <div className="col-3">
                             <label htmlFor="{'subtitle'}">ISBN-10</label>
-                            <input value={values.isbn10} onChange={set('isbn10')} type="text"
-                                   className='form-control input-default'/>
+                            <input value={values.isbn10} onChange={set('isbn10')} type="text" className='form-control input-default'/>
                         </div>
                         <div className="col-3">
-                            <label htmlFor="">Tipo: {values.item_type}</label>
-                            <Select formTarget={true} options={itemType}
-                                    onChange={(e) => setCombo(e, 'item_type_id')}/>
+                            <label htmlFor="">Tipo: {values.itemType}</label>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getItemTypes(query, callback)}
+                                         onChange={(e) => setCombo(e, 'itemType', setSelectedItemType)}
+                                         defaultOptions
+                                         value={selectedItemType} />
                         </div>
                         <div className="col-1">
                             <label htmlFor="{'pages'}">Páginas</label>
