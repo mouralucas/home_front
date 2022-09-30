@@ -20,11 +20,19 @@ const App = (props) => {
         amount: 0,
         dat_payment: new Date(),
         dat_purchase: new Date(),
-        description: null
+        description: '',
     }
 
 
     const [values, setValues] = useState(defaultValues)
+
+    if (props.bill_id) {
+        // axios.get(URL_BILLS, {params: {credit_card_bill_id: props.bill_id}}).then(response => {
+        //     setValues(response.data.bill);
+        // });
+        console.log('modal', props.bill_id);
+    } else {
+    }
 
     const getCreditCard = (query, callback) => {
         if (query) {

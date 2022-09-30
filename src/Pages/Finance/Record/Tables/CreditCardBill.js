@@ -10,8 +10,11 @@ import ModalBill from '../Modals/CreditCardBill'
 const App = () => {
     const [bills, setBills] = useState();
     const [modalState, setModalState] = useState(false)
+    const [selectedBill, setSelectedBill] = useState()
 
-    const showModal = () => {
+    const showModal = (e) => {
+        console.log(e.row.data);
+        setSelectedBill(e.row.data);
         setModalState(true);
     }
 
@@ -34,10 +37,12 @@ const App = () => {
         getBills();
     }, []);
 
+    /**
+     * Custom function to show the installments in the table it shows the current installment and the total in the format xx/xx
+     * @param cellInfo
+     * @returns the installments in xx/xx format
+     */
     function installmentCustomCell(cellInfo) {
-        /*
-        * Custom function to show the installments in the table it shows the current installment and the total in the format xx/xx
-        * */
         return cellInfo.installment + '/' + cellInfo.tot_installment;
     }
 
@@ -110,7 +115,7 @@ const App = () => {
             width: 110,
             child: [
                 <Btn
-                    text="My Command"
+                    text="Editar"
                     // icon="/url/to/my/icon.ico"
                     icon="edit"
                     hint="Editar"
@@ -160,7 +165,7 @@ const App = () => {
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            <ModalBill modalState={modalState} hideModal={hideModal}/>
+            <ModalBill modalState={modalState} hideModal={hideModal} bill_id={selectedBill}/>
         </>
     );
 }
