@@ -1,7 +1,7 @@
 import Modal from "../../../Components/Modal";
 import {useEffect, useState} from "react";
 import axios from "../../../Services/Axios/Axios";
-import {URL_AUTHORS, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_PUBLISHERS} from "../../../Services/Axios/ApiUrls";
+import {URL_AUTHORS, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_FORMAT, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_LANGUAGE, URL_PUBLISHERS} from "../../../Services/Axios/ApiUrls";
 import Select from "react-select";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
@@ -24,7 +24,7 @@ const ModalItem = (props) => {
     const [selectedSerie, setSelectedSerie] = useState([]);
 
     const [collection, setCollection] = useState([]);
-    const [selectedCollection, setSelectedCollection] = useState([]);
+    const [selectedCollection, setSelectedCollection] = useState();
 
     const [publisher, setPublisher] = useState([]);
     const [selectedPublisher, setSelectedPublisher] = useState([]);
@@ -57,9 +57,9 @@ const ModalItem = (props) => {
         dat_published_original: null,
         serie_id: 0,
         collection_id: 0,
-        publisher_id: '',
+        publisher_id: 0,
         format_id: 0,
-        language_id: 0,
+        language_id: 'PT',
         cover_price: 0,
         payed_price: 0,
         dimensions: '',
@@ -90,7 +90,6 @@ const ModalItem = (props) => {
                 setSelectedMainAuthor(options.filter(category => category.value === values.main_author_id)[0]);
                 // setSelectedOtherAuthors(options.filter(category => category.value === values.main_author_id)[0]);
                 callback(options);
-                // setAuthorsList(response.data.authors.map(author => ({value: author.id, label: author.nm_full})));
             });
         }
     }
@@ -100,29 +99,77 @@ const ModalItem = (props) => {
             callback(filterSelect(itemType, query));
         }
         axios.get(URL_ITEM_TYPES).then(response => {
-            let options = response.data.types.map(type => ({value: type.value, label: type.text}))
+            let options = response.data.types.map(type => ({value: type.value, label: type.text}));
             setItemType(options);
             callback(options);
             setSelectedItemType(options.filter(i => i.value === values.itemType)[0]);
         });
     }
 
-    const getSerie = () => {
-        axios.get(URL_ITEM_SERIE).then(response => {
-            setSerie(response.data.series.map(serie => ({value: serie.id, label: serie.name})))
-        });
+    const getSerie = (query, callback) => {
+        if (query) {
+            callback(filterSelect(serie, query));
+        } else {
+            axios.get(URL_ITEM_SERIE).then(response => {
+                let options = response.data.series.map(serie => ({value: serie.id, label: serie.name}));
+                setSerie(options);
+                callback(options);
+                setSelectedSerie(options.filter(i => i.value === values.serie_id)[0])
+            });
+        }
     }
 
-    const getCollection = () => {
-        axios.get(URL_ITEM_COLLECTION).then(response => {
-            setCollection(response.data.collections.map(collection => ({value: collection.id, label: collection.name})))
-        });
+    const getCollection = (query, callback) => {
+        if (query) {
+            callback(filterSelect(collection, query));
+        } else {
+            axios.get(URL_ITEM_COLLECTION).then(response => {
+                let options = response.data.collections.map(collection => ({value: collection.id, label: collection.name}));
+                setCollection(options);
+                callback(options);
+                setSelectedCollection(options.filter(i => i.value === values.collection_id)[0]);
+            });
+        }
     }
 
-    const getPublishers = () => {
-        axios.get(URL_PUBLISHERS).then(response => {
-            setPublisher(response.data.publishers.map(publisher => ({value: publisher.id, label: publisher.name})))
-        });
+    const getPublishers = (query, callback) => {
+        if (query) {
+            callback(filterSelect(publisher, query));
+        } else {
+            axios.get(URL_PUBLISHERS).then(response => {
+                let options = response.data.publishers.map(publisher => ({value: publisher.id, label: publisher.name}));
+                setPublisher(options);
+                callback(options);
+                setSelectedPublisher(options.filter(i => i.value === values.publisher_id)[0]);
+            });
+        }
+    }
+
+    const getItemFormat = (query, callback) => {
+        if (query) {
+            callback(filterSelect(itemFormat, query));
+        } else {
+            axios.get(URL_ITEM_FORMAT).then(response => {
+                let options = response.data.formats.map(i => ({value: i.value, label: i.text}));
+                setItemFormat(options);
+                callback(options);
+                setSelectedItemFormat(options.filter(i => i.value === values.format_id)[0]);
+            });
+        }
+    }
+
+    const getLanguage = (query, callback) => {
+        if (query) {
+            callback(filterSelect(language, query));
+        } else {
+            axios.get(URL_LANGUAGE).then(response => {
+                let options = response.data.languages.map(i => ({value: i.id, label: i.name}));
+                console.log(options);
+                setLanguage(options);
+                callback(options);
+                setSelectedLanguage(options.filter(i => i.value === values.language_id)[0]);
+            });
+        }
     }
 
     const set = (name) => {
@@ -242,58 +289,67 @@ const ModalItem = (props) => {
                         </div>
                         <div className="col-1">
                             <label htmlFor="{'pages'}">Páginas</label>
-                            <input value={values.pages} onChange={set('pages')} type="text"
-                                   className='form-control input-default'/>
+                            <input value={values.pages} onChange={set('pages')} type="text" className='form-control input-default'/>
                         </div>
                         <div className="col-1">
                             <label htmlFor="{volume'}">Volume</label>
-                            <input value={values.volume} onChange={set('volume')} type="text"
-                                   className='form-control input-default'/>
+                            <input value={values.volume} onChange={set('volume')} type="text" className='form-control input-default'/>
                         </div>
                         <div className="col-1">
                             <label htmlFor="{'edition'}">Edição</label>
-                            <input value={values.edition} onChange={set('edition')} type="text"
-                                   className='form-control input-default'/>
+                            <input value={values.edition} onChange={set('edition')} type="text" className='form-control input-default'/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-2">
                             <label htmlFor="">Lançamento</label>
-                            <DateBox value={values.dat_published} type="date" className='form-control input-default'
-                                     onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
+                            <DateBox value={values.dat_published} type="date" className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
                         </div>
                         <div className="col-2">
                             <label htmlFor="">Lançamento original</label>
-                            <DateBox value={values.dat_published_original} type="date"
-                                     className='form-control input-default'
-                                     onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
+                            <DateBox value={values.dat_published_original} type="date" className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Serie: {values.serie_id}</label>
-                            <Select formTarget={true} options={serie}
-                                    onChange={(e) => setCombo(e, 'publisher_id')}/>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getSerie(query, callback)}
+                                         onChange={(e) => setCombo(e, 'serie_id', setSelectedSerie)}
+                                         defaultOptions
+                                         value={selectedSerie} />
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Coleção: {values.collection_id}</label>
-                            <Select formTarget={true} options={collection}
-                                    onChange={(e) => setCombo(e, 'publisher_id')}/>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getCollection(query, callback)}
+                                         onChange={(e) => setCombo(e, 'collection_id', setSelectedCollection)}
+                                         defaultOptions
+                                         value={selectedCollection} />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-4">
                             <label htmlFor="">Editora: {values.publisher_id}</label>
-                            <Select formTarget={true} options={publisher}
-                                    onChange={(e) => setCombo(e, 'publisher_id')}/>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getPublishers(query, callback)}
+                                         onChange={(e) => setCombo(e, 'publisher_id', setSelectedPublisher)}
+                                         defaultOptions
+                                         value={selectedPublisher} />
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Formato: {values.format_id}</label>
-                            <Select formTarget={true} options={itemFormat}
-                                    onChange={(e) => setCombo(e, 'publisher_id')}/>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getItemFormat(query, callback)}
+                                         onChange={(e) => setCombo(e, 'format_id', setSelectedItemFormat)}
+                                         defaultOptions
+                                         value={selectedItemFormat} />
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Idioma: {values.language_id}</label>
-                            <Select formTarget={true} options={language}
-                                    onChange={(e) => setCombo(e, 'publisher_id')}/>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getLanguage(query, callback)}
+                                         onChange={(e) => setCombo(e, 'language_id', setSelectedLanguage)}
+                                         defaultOptions
+                                         value={selectedLanguage} />
                         </div>
                     </div>
                     <div className="row">
