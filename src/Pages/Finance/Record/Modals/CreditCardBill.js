@@ -1,5 +1,5 @@
 import Modal from '../../../../Components/Modal'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {URL_BILLS, URL_CATEGORIES, URL_CREDIT_CARDS} from "../../../../Services/Axios/ApiUrls";
 import axios from "../../../../Services/Axios/Axios";
 import DateBox from 'devextreme-react/date-box';
@@ -7,10 +7,17 @@ import Moment from 'moment';
 import Currency from '../../../../Components/Currency'
 import AsyncSelect from "react-select/async";
 
+/**
+ * Modal to create new entry for the credit card bill
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const App = (props) => {
-
     // Combo boxes
+    const [card, setCard] = useState();
     const [selectedCard, setSelectedCard] = useState();
+    const [category, setCategory] = useState();
     const [selectedCategory, setSelectedCategory] = useState();
 
     // Form variables
@@ -26,29 +33,29 @@ const App = (props) => {
 
     const [values, setValues] = useState(defaultValues)
 
-    if (props.bill_id) {
-        // axios.get(URL_BILLS, {params: {credit_card_bill_id: props.bill_id}}).then(response => {
-        //     setValues(response.data.bill);
-        // });
-        console.log('modal', props.bill_id);
-    } else {
-    }
+    // Set the values from selected item in the table
+    useEffect(() => {
+        if (props.bill && props.modalState) {
+            setValues(props.bill);
+        }
+    }, [props.bill]);
+
+    // Set the default values when modal closes
+    useEffect(() => {
+        if (!props.modalState) {
+            setValues(defaultValues);
+        }
+    }, [props.modalState])
 
     const getCreditCard = (query, callback) => {
         if (query) {
-        }
-        else {
+        } else {
             axios.get(URL_CREDIT_CARDS).then(response => {
-                    let options = response.data.credit_cards.map(function (item) {
-                        return {
-                            value: item.id,
-                            label: item.name,
-                        };
-                    });
-                    callback(options);
-                    const selected = options.filter(card => card.value === values.card_id)
-                    setSelectedCard(selected[0]);
-                });
+                let options = response.data.credit_cards.map(i => ({value: i.id, label: i.name}));
+                callback(options);
+
+                setSelectedCard(options.filter(card => card.value === values.card_id)[0]);
+            });
         }
     }
 
@@ -118,7 +125,7 @@ const App = (props) => {
                         <div className="col-4">
                             <label htmlFor="">Valor: {values.amount}</label>
                             <Currency className='form-control input-default'
-                                      defaultValue={values.amount * 100}
+                                      value={values.amount * 100}
                                       onFocus={event => event.target.select()}
                                       onValueChange={(values, sourceInfo) => {
                                           setCurrency(values, 'amount')
@@ -140,7 +147,7 @@ const App = (props) => {
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Categoria: {values.category_id}</label>
-                            <AsyncSelect id={'combo_categories'} formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)} onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)} defaultOptions value={selectedCategory} />
+                            <AsyncSelect id={'combo_categories'} formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)} onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)} defaultOptions value={selectedCategory}/>
                         </div>
                     </div>
                     <div className="row">

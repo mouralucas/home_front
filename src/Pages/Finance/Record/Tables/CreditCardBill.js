@@ -13,8 +13,9 @@ const App = () => {
     const [selectedBill, setSelectedBill] = useState()
 
     const showModal = (e) => {
-        console.log(e.row.data);
-        setSelectedBill(e.row.data);
+        if (typeof e.row !== 'undefined') {
+            setSelectedBill(e.row.data);
+        }
         setModalState(true);
     }
 
@@ -68,7 +69,7 @@ const App = () => {
             visible: false,
         },
         {
-            dataField: "card",
+            dataField: "nm_card",
             caption: "Cartão",
             dataType: "string",
             width: 150,
@@ -87,7 +88,7 @@ const App = () => {
             width: 150,
         },
         {
-            dataField: "total",
+            dataField: "amount",
             caption: "Valor",
             dataType: "number",
             width: 110,
@@ -165,7 +166,7 @@ const App = () => {
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            <ModalBill modalState={modalState} hideModal={hideModal} bill_id={selectedBill}/>
+            <ModalBill modalState={modalState} hideModal={hideModal} bill={selectedBill}/>
         </>
     );
 }

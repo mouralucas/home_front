@@ -7,7 +7,7 @@ import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import Currency from "../../../Components/Currency";
 import AsyncSelect from "react-select/async";
-import filterSelect from "../Util";
+import filterSelect from "../../../Utils/DataHandling";
 
 const ModalItem = (props) => {
     // Combo boxes variables
@@ -85,11 +85,10 @@ const ModalItem = (props) => {
         } else {
             axios.get(URL_AUTHORS).then(response => {
                 let options = response.data.authors.map(author => ({value: author.id, label: author.nm_full}));
-                setMainAuthor(options);
-
-                setSelectedMainAuthor(options.filter(category => category.value === values.main_author_id)[0]);
-                // setSelectedOtherAuthors(options.filter(category => category.value === values.main_author_id)[0]);
                 callback(options);
+
+                setMainAuthor(options);
+                setSelectedMainAuthor(options.filter(category => category.value === values.main_author_id)[0]);
             });
         }
     }
@@ -100,8 +99,9 @@ const ModalItem = (props) => {
         }
         axios.get(URL_ITEM_TYPES).then(response => {
             let options = response.data.types.map(type => ({value: type.value, label: type.text}));
-            setItemType(options);
             callback(options);
+
+            setItemType(options);
             setSelectedItemType(options.filter(i => i.value === values.itemType)[0]);
         });
     }
@@ -112,8 +112,9 @@ const ModalItem = (props) => {
         } else {
             axios.get(URL_ITEM_SERIE).then(response => {
                 let options = response.data.series.map(serie => ({value: serie.id, label: serie.name}));
-                setSerie(options);
                 callback(options);
+
+                setSerie(options);
                 setSelectedSerie(options.filter(i => i.value === values.serie_id)[0])
             });
         }
@@ -125,8 +126,9 @@ const ModalItem = (props) => {
         } else {
             axios.get(URL_ITEM_COLLECTION).then(response => {
                 let options = response.data.collections.map(collection => ({value: collection.id, label: collection.name}));
-                setCollection(options);
                 callback(options);
+
+                setCollection(options);
                 setSelectedCollection(options.filter(i => i.value === values.collection_id)[0]);
             });
         }
@@ -138,8 +140,9 @@ const ModalItem = (props) => {
         } else {
             axios.get(URL_PUBLISHERS).then(response => {
                 let options = response.data.publishers.map(publisher => ({value: publisher.id, label: publisher.name}));
-                setPublisher(options);
                 callback(options);
+
+                setPublisher(options);
                 setSelectedPublisher(options.filter(i => i.value === values.publisher_id)[0]);
             });
         }
@@ -151,8 +154,9 @@ const ModalItem = (props) => {
         } else {
             axios.get(URL_ITEM_FORMAT).then(response => {
                 let options = response.data.formats.map(i => ({value: i.value, label: i.text}));
-                setItemFormat(options);
                 callback(options);
+
+                setItemFormat(options);
                 setSelectedItemFormat(options.filter(i => i.value === values.format_id)[0]);
             });
         }
@@ -164,9 +168,9 @@ const ModalItem = (props) => {
         } else {
             axios.get(URL_LANGUAGE).then(response => {
                 let options = response.data.languages.map(i => ({value: i.id, label: i.name}));
-                console.log(options);
-                setLanguage(options);
                 callback(options);
+
+                setLanguage(options);
                 setSelectedLanguage(options.filter(i => i.value === values.language_id)[0]);
             });
         }
