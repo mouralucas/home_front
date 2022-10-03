@@ -9,8 +9,9 @@ import ModalBill from '../Modals/CreditCardBill'
 
 const App = () => {
     const [bills, setBills] = useState();
-    const [modalState, setModalState] = useState(false)
     const [selectedBill, setSelectedBill] = useState()
+    const [modalState, setModalState] = useState(false)
+
 
     const showModal = (e) => {
         if (typeof e.row !== 'undefined') {
@@ -45,10 +46,6 @@ const App = () => {
      */
     function installmentCustomCell(cellInfo) {
         return cellInfo.installment + '/' + cellInfo.tot_installment;
-    }
-
-    function myFunction(e) {
-        alert('Não é café');
     }
 
     function myOtherCommand(e) {
@@ -111,7 +108,7 @@ const App = () => {
             dataType: "string",
         },
         {
-            caption: 'Butãos',
+            caption: 'Ações',
             type: 'buttons',
             width: 110,
             child: [

@@ -1,5 +1,5 @@
 import Modal from "../../../../Components/Modal";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
 import {URL_ACCOUNTS, URL_CATEGORIES, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import Currency from "../../../../Components/Currency";
@@ -10,8 +10,13 @@ import AsyncSelect from "react-select/async";
 
 
 const App = (props) => {
+    const [account, setAccount] = useState([]);
+    const [selectedAccount, setSelectedAccount] = useState();
+    const [category, setCategory] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState();
+
     const defaultValues = {
-        amount: 17.30,
+        amount: 0,
         account_id: null,
         category_id: null,
         dat_purchase: new Date(),
@@ -20,18 +25,29 @@ const App = (props) => {
 
     const [values, setValues] = useState(defaultValues)
 
-    const [selectedAccount, setSelectedAccount] = useState();
-    const [selectedCategory, setSelectedCategory] = useState();
+    useEffect(() => {
+        if (props.statement && props.modalState) {
+            setValues(props.statement);
+        }
 
-    // const showModal = () => {
-    //     getCategories();
-    //     getAccounts();
-    //     setModalState(true);
-    // }
-    //
-    // const hideModal = () => {
-    //     setModalState(false);
-    // }
+        if (!props.modalState) {
+            setValues(defaultValues);
+            setSelectedCategory(null);
+            setSelectedAccount(null);
+        }
+    }, [props.modalState])
+
+    useEffect(() => {
+        if (props.statement) {
+            setSelectedCategory(category.filter(i => i.value === props.statement.category_id)[0]);
+        }
+    }, [category])
+
+    useEffect(() => {
+        if (props.statement) {
+            setSelectedAccount(account.filter(i => i.value === props.statement.account_id)[0]);
+        }
+    }, [account])
 
     const getCategory = (query, callback) => {
         axios.get(URL_CATEGORIES, {params: {show_mode: 'all', module: 'finance'}}).then(response => {
@@ -41,17 +57,12 @@ const App = (props) => {
                     label: item.name,
                 }
             });
-            callback(options)
-            const selected = options.filter(category => category.value === values.category_id);
-            setSelectedCategory(selected[0]);
+            callback(options);
+            setCategory(options);
         });
     }
 
     const getAccounts = (query, callback) => {
-        // axios.get(URL_ACCOUNTS, {params: {show_mode: 'all', module: 'finance'}}).then(response => {
-        //     setAccounts(response.data.bank_accounts.map(publisher => ({name: 'account_id', value: publisher.id, label: publisher.nm_bank})))
-        // });
-
         axios.get(URL_ACCOUNTS).then(response => {
             let options = response.data.bank_accounts.map(function (item) {
                 return {
@@ -59,9 +70,8 @@ const App = (props) => {
                     label: item.nm_bank,
                 }
             });
-            callback(options)
-            const selected = options.filter(category => category.value === values.category_id);
-            setSelectedAccount(selected[0]);
+            callback(options);
+            setAccount(options);
         });
     }
 
@@ -99,7 +109,7 @@ const App = (props) => {
                         <div className="col-3">
                             <label htmlFor="">Valor: {values.amount}</label>
                             <Currency className='form-control input-default'
-                                      defaultValue={values.amount * 100}
+                                      value={values.amount * 100}
                                       onValueChange={(values, sourceInfo) => {
                                           setCurrency(values, 'amount')
                                       }}/>
@@ -116,9 +126,6 @@ const App = (props) => {
                             <label htmlFor="">Categoria {values.category_id}</label>
                             <AsyncSelect formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)} onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)} defaultOptions value={selectedCategory}/>
                         </div>
-                    </div>
-                    <div class='row'>
-
                     </div>
                     <div className="row">
                         <div className="col-12">

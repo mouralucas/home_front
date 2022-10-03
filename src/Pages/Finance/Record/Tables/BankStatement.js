@@ -4,13 +4,20 @@ import {URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import Button from "devextreme-react/button";
 import ModalStatement from '../Modals/BankStatement'
+import {Button as Btn} from "devextreme-react/data-grid";
 
 
 const App = () => {
     const [statement, setStatement] = useState();
+    const [selectedStatement, setSelectedStatement] = useState()
     const [modalState, setModalState] = useState(false)
 
-    const showModal = () => {
+    const showModal = (e) => {
+        if (typeof e.row !== 'undefined') {
+            setSelectedStatement(e.row.data);
+        } else {
+            setSelectedStatement(null);
+        }
         setModalState(true);
     }
 
@@ -38,10 +45,9 @@ const App = () => {
             dataField: "id",
             caption: "Id",
             dataType: "number",
-            visible: false,
         },
         {
-            dataField: "account",
+            dataField: "nm_account",
             caption: "Conta",
             dataType: "string",
         },
@@ -52,7 +58,7 @@ const App = () => {
             width: 150,
         },
         {
-            dataField: "total",
+            dataField: "amount",
             caption: "Valor",
             dataType: "number",
             width: 110,
@@ -66,6 +72,27 @@ const App = () => {
             dataField: "nm_category",
             caption: "Categoria",
             dataType: "string",
+        },
+        {
+            caption: 'Ações',
+            type: 'buttons',
+            width: 110,
+            child: [
+                <Btn
+                    text="Editar"
+                    // icon="/url/to/my/icon.ico"
+                    icon="edit"
+                    hint="Editar"
+                    onClick={showModal}
+                />,
+                // <Btn
+                //     // text="My Command"
+                //     // // icon="/url/to/my/icon.ico"
+                //     icon="coffee"
+                //     hint="My Command"
+                //     onClick={myOtherCommand}
+                // />
+            ]
         }
     ]
 
@@ -103,7 +130,7 @@ const App = () => {
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            <ModalStatement modalState={modalState} hideModal={hideModal}/>
+            <ModalStatement modalState={modalState} hideModal={hideModal} statement={selectedStatement} />
         </>
     );
 }
