@@ -23,7 +23,6 @@ instance.interceptors.response.use(
     },
     async function (error) {
         if (error.response.status === 401 && getToken()) {
-            console.log('cu')
             //Your logic to refresh token and reattempt request
         } else {
             console.error('Error', error);

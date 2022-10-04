@@ -110,7 +110,7 @@ const App = () => {
             location: "after"
         },
         {
-            child: <Button text={'Adicionar extrato'} icon={'add'} onClick={showModal}></Button>,
+            child: <Button icon={'add'} onClick={showModal}></Button>,
             location: "after"
         },
         {
