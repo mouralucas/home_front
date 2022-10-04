@@ -17,4 +17,19 @@ instance.interceptors.request.use(async config => {
     return config;
 });
 
+instance.interceptors.response.use(
+    async function (response) {
+        return response;
+    },
+    async function (error) {
+        if (error.response.status === 401 && getToken()) {
+            console.log('cu')
+            //Your logic to refresh token and reattempt request
+        } else {
+            console.error('Error', error);
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default instance
