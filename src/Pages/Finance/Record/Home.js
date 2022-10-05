@@ -2,6 +2,7 @@ import Card from '../../../Components/Card'
 import CreditCardBillTable from './Tables/CreditCardBill'
 import BankStatementTable from './Tables/BankStatement'
 import {useEffect} from "react";
+import AsyncSelect from "react-select/async";
 
 const App = () => {
     useEffect(() => {

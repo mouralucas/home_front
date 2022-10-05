@@ -6,6 +6,7 @@ import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
 import Currency from '../../../../Components/Currency'
 import AsyncSelect from "react-select/async";
+import {getCreditCards as getCards} from "../../Utils/Endpoints";
 
 /**
  * Modal to create new entry for the credit card bill
@@ -50,12 +51,23 @@ const App = (props) => {
     const getCreditCard = (query, callback) => {
         if (query) {
         } else {
-            axios.get(URL_CREDIT_CARDS).then(response => {
-                let options = response.data.credit_cards.map(i => ({value: i.id, label: i.name}));
+            getCards().then(response => {
+                console.log(response)
+                let options = response === null ? {} : response.map(i => ({value: i.id, label: i.name}));
                 callback(options);
-
                 setSelectedCard(options.filter(card => card.value === values.card_id)[0]);
             });
+
+            // let options = creditCards.map(i => ({value: i.id, label: i.name}));
+            // callback(options);
+            // setSelectedCard(options.filter(card => card.value === values.card_id)[0]);
+
+            // axios.get(URL_CREDIT_CARDS).then(response => {
+            //     let options = response.data.credit_cards.map(i => ({value: i.id, label: i.name}));
+            //     callback(options);
+            //
+            //     setSelectedCard(options.filter(card => card.value === values.card_id)[0]);
+            // });
         }
     }
 
