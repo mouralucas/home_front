@@ -1,7 +1,7 @@
 import axios from "../../../Services/Axios/Axios";
 import {URL_CREDIT_CARDS} from "../../../Services/Axios/ApiUrls";
 
-
+// TODO: make function generic for all get calls
 const getCreditCards = async () => {
     let response;
 
