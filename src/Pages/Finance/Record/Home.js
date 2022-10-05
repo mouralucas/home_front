@@ -5,7 +5,7 @@ import {useEffect} from "react";
 
 const App = () => {
     useEffect(() => {
-        document.title = 'My Page Title';
+        document.title = 'Registro de informações';
     }, [])
 
     return (
@@ -13,9 +13,20 @@ const App = () => {
             <div className="row">
                 <div className="col-12">
                     <Card>
-                        <Card.Header>Faturas</Card.Header>
+                        <Card.Header>
+                            <div className="col-6">Fatura</div>
+                            <div className="col-4"></div>
+                            <div className="col-2">
+                                <AsyncSelect id={'combo_credit_cards_records'}
+                                             formTarget={true}
+                                    // loadOptions={(query, callback) => getCategory(query, callback)}
+                                    // onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)}
+                                    // defaultOptions value={selectedCategory}
+                                />
+                            </div>
+                        </Card.Header>
                         <Card.Body>
-                            <CreditCardBillTable />
+                            <CreditCardBillTable/>
                         </Card.Body>
                     </Card>
                 </div>
@@ -26,7 +37,7 @@ const App = () => {
                     <Card>
                         <Card.Header>Extrato</Card.Header>
                         <Card.Body>
-                            <BankStatementTable />
+                            <BankStatementTable/>
                         </Card.Body>
                     </Card>
                 </div>

@@ -19,7 +19,7 @@ const Card = ({children}) => {
     );
 };
 
-const Header = (props) => <div className='card-header'>{props.children}</div>;
+const Header = (props) => <div className='card-header justify-content-between d-flex flex-wrap'>{props.children}</div>;
 Card.Header = Header;
 
 const Body = (props) => <div className='card-body'>{props.children}</div>;
