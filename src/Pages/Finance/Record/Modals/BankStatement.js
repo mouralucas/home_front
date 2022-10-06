@@ -15,15 +15,7 @@ const App = (props) => {
     const [category, setCategory] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState();
 
-    const defaultValues = {
-        amount: 0,
-        account_id: null,
-        category_id: null,
-        dat_purchase: new Date(),
-        description: '',
-    }
-
-    const [values, setValues] = useState(defaultValues)
+    const [values, setValues] = useState({})
 
     useEffect(() => {
         if (props.statement && props.modalState) {
@@ -31,23 +23,29 @@ const App = (props) => {
         }
 
         if (!props.modalState) {
-            setValues(defaultValues);
+            setValues({
+                amount: 0,
+                account_id: null,
+                category_id: null,
+                dat_purchase: new Date(),
+                description: '',
+            });
             setSelectedCategory(null);
             setSelectedAccount(null);
         }
-    }, [props.modalState])
+    }, [props.modalState, props.statement])
 
     useEffect(() => {
         if (props.statement) {
             setSelectedCategory(category.filter(i => i.value === props.statement.category_id)[0]);
         }
-    }, [category])
+    }, [category, props.statement])
 
     useEffect(() => {
         if (props.statement) {
             setSelectedAccount(account.filter(i => i.value === props.statement.account_id)[0]);
         }
-    }, [account])
+    }, [account, props.statement])
 
     const getCategory = (query, callback) => {
         axios.get(URL_CATEGORIES, {params: {show_mode: 'all', module: 'finance'}}).then(response => {

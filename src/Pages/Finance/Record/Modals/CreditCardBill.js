@@ -22,18 +22,7 @@ const App = (props) => {
     const [category, setCategory] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState();
 
-    // Form variables
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const defaultValues = {
-        card_id: null,
-        category_id: null,
-        amount: 0,
-        dat_payment: new Date(),
-        dat_purchase: new Date(),
-        description: '',
-    }
-
-    const [values, setValues] = useState(defaultValues)
+    const [values, setValues] = useState({})
 
     useEffect(() => {
         if (props.bill && props.modalState) {
@@ -41,23 +30,30 @@ const App = (props) => {
         }
 
         if (!props.modalState) {
-            setValues(defaultValues);
+            setValues({
+                card_id: null,
+                category_id: null,
+                amount: 0,
+                dat_payment: new Date(),
+                dat_purchase: new Date(),
+                description: '',
+            });
             setSelectedCategory(null);
             setSelectedCard(null);
         }
-    }, [props.modalState])
+    }, [props.modalState, props.bill])
 
     useEffect(() => {
         if (props.bill) {
             setSelectedCategory(category.filter(i => i.value === props.bill.category_id)[0]);
         }
-    }, [category])
+    }, [category, props.bill])
 
     useEffect(() => {
         if (props.bill) {
             setSelectedCard(card.filter(i => i.value === props.bill.card_id)[0]);
         }
-    }, [card])
+    }, [card, props.bill])
 
     const getCreditCard = (query, callback) => {
         if (query) {
