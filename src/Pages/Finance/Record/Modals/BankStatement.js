@@ -7,6 +7,8 @@ import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import handleSubmit from '../../../../Services/Axios/Post'
 import AsyncSelect from "react-select/async";
+import filterSelect from "../../../../Utils/DataHandling";
+import {getData} from "../../../../Services/Axios/Get";
 
 
 const App = (props) => {
@@ -48,29 +50,29 @@ const App = (props) => {
     }, [account, props.statement])
 
     const getCategory = (query, callback) => {
-        axios.get(URL_CATEGORIES, {params: {show_mode: 'all', module: 'finance'}}).then(response => {
-            let options = response.data.categories.map(function (item) {
-                return {
-                    value: item.id,
-                    label: item.name,
-                }
+        if (query) {
+            callback(filterSelect(category, query));
+        } else {
+            getData(URL_CATEGORIES, {show_mode: 'all', module: 'finance'}).then(response => {
+                let options = response == null ? {} : response.categories.map(i => ({value: i.id, label: i.name}))
+                callback(options);
+                setSelectedCategory(options.filter(category => category.value === values.category_id)[0]);
+                setCategory(options);
             });
-            callback(options);
-            setCategory(options);
-        });
+        }
     }
 
     const getAccounts = (query, callback) => {
-        axios.get(URL_ACCOUNTS).then(response => {
-            let options = response.data.bank_accounts.map(function (item) {
-                return {
-                    value: item.id,
-                    label: item.nm_bank,
-                }
+        if (query) {
+            callback(filterSelect(account, query));
+        } else {
+            getData(URL_ACCOUNTS).then(response => {
+                let options = response.bank_accounts.map(i => ({value: i.id, label: i.nm_bank}))
+                callback(options);
+                setSelectedAccount(options.filter(account => account.value === values.account_id))
+                setAccount(options)
             });
-            callback(options);
-            setAccount(options);
-        });
+        }
     }
 
     const set = name => {
