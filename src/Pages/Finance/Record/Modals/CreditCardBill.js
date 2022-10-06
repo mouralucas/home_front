@@ -6,7 +6,7 @@ import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
 import Currency from '../../../../Components/Currency'
 import AsyncSelect from "react-select/async";
-import {getCreditCards as getCards} from "../../Utils/Endpoints";
+import {getData} from "../../../../Services/Axios/Get";
 import filterSelect from "../../../../Utils/DataHandling";
 
 /**
@@ -17,12 +17,13 @@ import filterSelect from "../../../../Utils/DataHandling";
  */
 const App = (props) => {
     // Combo boxes
-    const [card, setCard] = useState();
+    const [card, setCard] = useState([]);
     const [selectedCard, setSelectedCard] = useState();
-    const [category, setCategory] = useState();
+    const [category, setCategory] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState();
 
     // Form variables
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const defaultValues = {
         card_id: null,
         category_id: null,
@@ -32,30 +33,38 @@ const App = (props) => {
         description: '',
     }
 
-
     const [values, setValues] = useState(defaultValues)
 
-    // Set the values from selected item in the table
     useEffect(() => {
         if (props.bill && props.modalState) {
             setValues(props.bill);
         }
-    }, [props.bill]);
 
-    // Set the default values when modal closes
-    useEffect(() => {
         if (!props.modalState) {
             setValues(defaultValues);
+            setSelectedCategory(null);
+            setSelectedCard(null);
         }
     }, [props.modalState])
+
+    useEffect(() => {
+        if (props.bill) {
+            setSelectedCategory(category.filter(i => i.value === props.bill.category_id)[0]);
+        }
+    }, [category])
+
+    useEffect(() => {
+        if (props.bill) {
+            setSelectedCard(card.filter(i => i.value === props.bill.card_id)[0]);
+        }
+    }, [card])
 
     const getCreditCard = (query, callback) => {
         if (query) {
             callback(filterSelect(card, query));
         } else {
-            getCards().then(response => {
-                console.log(response)
-                let options = response === null ? {} : response.map(i => ({value: i.id, label: i.name}));
+            getData(URL_CREDIT_CARDS).then(response => {
+                let options = response === null ? {} : response.credit_cards.map(i => ({value: i.id, label: i.name}));
                 callback(options);
                 setSelectedCard(options.filter(card => card.value === values.card_id)[0]);
                 setCard(options);
@@ -64,17 +73,28 @@ const App = (props) => {
     }
 
     const getCategory = (query, callback) => {
-        axios.get(URL_CATEGORIES, {params: {show_mode: 'all', module: 'finance'}}).then(response => {
-            let options = response.data.categories.map(function (item) {
-                return {
-                    value: item.id,
-                    label: item.name,
-                }
+        if (query) {
+            callback(filterSelect(category, query))
+        } else {
+            getData(URL_CATEGORIES, {show_mode: 'all', module: 'finance'}).then(response => {
+                console.log(response);
+                let options = response == null ? {} : response.categories.map(i => ({value: i.id, label: i.name}))
+                callback(options);
+                setSelectedCategory(options.filter(category => category.value === values.category_id)[0]);
+                setCategory(options);
             });
-            callback(options)
-            const selected = options.filter(category => category.value === values.category_id);
-            setSelectedCategory(selected[0]);
-        });
+            // axios.get(URL_CATEGORIES, {params: {show_mode: 'all', module: 'finance'}}).then(response => {
+            //     let options = response.data.categories.map(function (item) {
+            //         return {
+            //             value: item.id,
+            //             label: item.name,
+            //         }
+            //     });
+            //     callback(options)
+            //     const selected = options.filter(category => category.value === values.category_id);
+            //     setSelectedCategory(selected[0]);
+            // });
+        }
     }
 
     const set = name => {
