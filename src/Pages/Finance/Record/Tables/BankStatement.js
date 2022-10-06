@@ -79,6 +79,7 @@ const App = () => {
             width: 110,
             child: [
                 <Btn
+                    key={1}
                     text="Editar"
                     // icon="/url/to/my/icon.ico"
                     icon="edit"

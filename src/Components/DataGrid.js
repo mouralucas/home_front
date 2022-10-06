@@ -21,7 +21,6 @@ import {Workbook} from "exceljs";
 import saveAs from 'file-saver';
 import {FilterRow} from "devextreme-react/gantt";
 
-
 const pageSizes = [10, 15, 20, 50, 100];
 const exportFormats = ['pdf', 'xlsx'];
 
@@ -53,9 +52,9 @@ class Table extends React.Component {
         if (!this.props.tableColumns) {
             return null
         } else {
-            let lista_columns = [];
+            let columns_list = [];
             this.props.tableColumns.forEach(function (column, index) {
-                lista_columns.push(<Column
+                columns_list.push(<Column
                     key={index}
                     type={column.type ?? null}
                     dataField={column.dataField}
@@ -74,7 +73,7 @@ class Table extends React.Component {
                 )
             });
 
-            return lista_columns
+            return columns_list
         }
     }
 
@@ -137,7 +136,7 @@ class Table extends React.Component {
         if (this.props.export) {
             export_data = null;
         } else {
-            export_data = <Export enabled={true} formats={exportFormats} allowExportSelectedData={false}/>;
+            export_data = <Export enabled={false} formats={exportFormats} allowExportSelectedData={false}/>;
         }
         return export_data
     }

@@ -18,12 +18,6 @@ const App = () => {
                             <div className="col-6">Fatura</div>
                             <div className="col-4"></div>
                             <div className="col-2">
-                                <AsyncSelect id={'combo_credit_cards_records'}
-                                             formTarget={true}
-                                    // loadOptions={(query, callback) => getCategory(query, callback)}
-                                    // onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)}
-                                    // defaultOptions value={selectedCategory}
-                                />
                             </div>
                         </Card.Header>
                         <Card.Body>
@@ -38,7 +32,7 @@ const App = () => {
                     <Card>
                         <Card.Header>Extrato</Card.Header>
                         <Card.Body>
-                            <BankStatementTable/>
+                            {/*<BankStatementTable/>*/}
                         </Card.Body>
                     </Card>
                 </div>

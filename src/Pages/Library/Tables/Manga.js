@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import axios from "../../../Services/Axios/Axios";
 import {URL_ITEM} from '../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
-import {Button as Btn} from "devextreme-react/button";
+import {Button} from "devextreme-react/button";
 
 const Manga = () => {
     const [mangas, setMangas] = useState();
@@ -20,7 +20,6 @@ const Manga = () => {
     const hideModalItem = () => {
         setModalState(false);
     }
-
 
     const getMangas = () => {
         axios.get(URL_ITEM, {
@@ -57,9 +56,9 @@ const Manga = () => {
             groupIndex: 0,
         },
         {
-          dataField: "nm_collection",
-          caption: "Coleção",
-          dataType: "string"
+            dataField: "nm_collection",
+            caption: "Coleção",
+            dataType: "string"
         },
         {
             dataField: "volume",
@@ -104,11 +103,7 @@ const Manga = () => {
             location: 'after',
         },
         {
-            name: 'columnChooserButton',
-            location: 'after',
-        },
-        {
-            child: <Btn text={'Adicionar Item'} icon={'add'} onClick={showModalItem}></Btn>,
+            child: <Button icon={'add'} onClick={showModalItem}></Button>,
             location: "after",
             locateInMenu: 'auto'
         },

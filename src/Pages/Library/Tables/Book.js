@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import axios from "../../../Services/Axios/Axios";
 import {URL_ITEM} from '../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
-import {Button as Btn} from "devextreme-react/button";
+import {Button} from "devextreme-react/button";
 
 const Book = () => {
     const [books, setBooks] = useState();
@@ -95,15 +95,7 @@ const Book = () => {
             location: 'after',
         },
         {
-            name: 'exportButton',
-            location: 'after',
-        },
-        {
-            name: 'columnChooserButton',
-            location: 'after',
-        },
-        {
-            child: <Btn text={'Adicionar Item'} icon={'add'} onClick={showModalItem}></Btn>,
+            child: <Button icon={'add'} onClick={showModalItem}></Button>,
             location: "after",
             locateInMenu: 'auto'
         },
@@ -113,7 +105,6 @@ const Book = () => {
         },
 
     ]
-
 
     function updateBooks() {
         getBooks();
@@ -128,7 +119,6 @@ const Book = () => {
                 tooBarRefresh={false}
                 toolBarItems={toolBarItems}
                 loadPanel={false}
-
             />
             <ModalItem modalState={modalState} hideModalItem={hideModalItem}/>
         </>

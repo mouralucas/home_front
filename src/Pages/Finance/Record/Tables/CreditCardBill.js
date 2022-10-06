@@ -6,12 +6,10 @@ import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalBill from '../Modals/CreditCardBill'
 
-
 const App = () => {
     const [bills, setBills] = useState();
     const [selectedBill, setSelectedBill] = useState()
     const [modalState, setModalState] = useState(false)
-
 
     const showModal = (e) => {
         if (typeof e.row !== 'undefined') {
@@ -113,6 +111,7 @@ const App = () => {
             width: 110,
             child: [
                 <Btn
+                    key={1}
                     text="Editar"
                     // icon="/url/to/my/icon.ico"
                     icon="edit"
@@ -120,8 +119,8 @@ const App = () => {
                     onClick={showModal}
                 />,
                 <Btn
-                    // text="My Command"
-                    // // icon="/url/to/my/icon.ico"
+                    key={2}
+                    //icon="/url/to/my/icon.ico"
                     icon="coffee"
                     hint="My Command"
                     onClick={myOtherCommand}

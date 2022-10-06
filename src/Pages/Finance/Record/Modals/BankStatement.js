@@ -1,6 +1,5 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import axios from "../../../../Services/Axios/Axios";
 import {URL_ACCOUNTS, URL_CATEGORIES, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import Currency from "../../../../Components/Currency";
 import DateBox from "devextreme-react/date-box";
