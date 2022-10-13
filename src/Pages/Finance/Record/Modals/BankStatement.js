@@ -115,7 +115,8 @@ const App = (props) => {
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Data compra</label>
-                            <DateBox value={values.dat_purchase} type="date" className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
+                            <DateBox value={values.dat_purchase} type="date" className='form-control input-default'
+                                     onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Conta {values.account_id}</label>

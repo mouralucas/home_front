@@ -11,7 +11,7 @@ const App = () => {
         axios.get(URL_EXPENSES, {
             params: {
                 'reference': 202206,
-                'expense_type': 'fixed'
+                'expense_type': 'variable'
             }
         }).then(response => {
             setExpenses(response.data.expenses.map(publisher => ({category: publisher.category, total_amount: publisher.total_amount})))

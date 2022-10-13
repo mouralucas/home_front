@@ -1,13 +1,15 @@
 import Modal from "../../../Components/Modal";
 import {useEffect, useState} from "react";
 import axios from "../../../Services/Axios/Axios";
-import {URL_AUTHORS, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_FORMAT, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_LANGUAGE, URL_PUBLISHERS} from "../../../Services/Axios/ApiUrls";
+import {URL_AUTHORS, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_FORMAT, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_LANGUAGE, URL_PUBLISHERS, URL_STATEMENT} from "../../../Services/Axios/ApiUrls";
 import Select from "react-select";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import Currency from "../../../Components/Currency";
 import AsyncSelect from "react-select/async";
 import filterSelect from "../../../Utils/DataHandling";
+import {getData} from "../../../Services/Axios/Get";
+import handleSubmit from "../../../Services/Axios/Post";
 
 const ModalItem = (props) => {
     // Combo boxes variables
@@ -37,10 +39,10 @@ const ModalItem = (props) => {
 
     // Form variables
     const [values, setValues] = useState({
-        item_id: 0,
+        item_id: null,
         status_id: '',
         dat_status: new Date(),
-        main_author_id: 1,
+        main_author_id: 0,
         authors_id: [],
         translator_id: 0,
         title: '',
@@ -83,13 +85,13 @@ const ModalItem = (props) => {
         if (query) {
             callback(filterSelect(mainAuthor, query));
         } else {
-            axios.get(URL_AUTHORS).then(response => {
-                let options = response.data.authors.map(author => ({value: author.id, label: author.nm_full}));
+            getData(URL_AUTHORS).then(response => {
+                let options = response?.authors.map(author => ({value: author.id, label: author.nm_full}))
                 callback(options);
-
                 setMainAuthor(options);
-                setSelectedMainAuthor(options.filter(category => category.value === values.main_author_id)[0]);
-            });
+                setSelectedMainAuthor(options.filter(category => category.value === values.main_author_id)[0])
+            })
+
         }
     }
 
@@ -97,10 +99,9 @@ const ModalItem = (props) => {
         if (query) {
             callback(filterSelect(itemType, query));
         }
-        axios.get(URL_ITEM_TYPES).then(response => {
-            let options = response.data.types.map(type => ({value: type.value, label: type.text}));
+        getData(URL_ITEM_TYPES).then(response => {
+            let options = response.types.map(type => ({value: type.value, label: type.text}));
             callback(options);
-
             setItemType(options);
             setSelectedItemType(options.filter(i => i.value === values.itemType)[0]);
         });
@@ -110,8 +111,8 @@ const ModalItem = (props) => {
         if (query) {
             callback(filterSelect(serie, query));
         } else {
-            axios.get(URL_ITEM_SERIE).then(response => {
-                let options = response.data.series.map(serie => ({value: serie.id, label: serie.name}));
+            getData(URL_ITEM_SERIE).then(response => {
+                let options = response.series.map(serie => ({value: serie.id, label: serie.name}));
                 callback(options);
 
                 setSerie(options);
@@ -124,8 +125,8 @@ const ModalItem = (props) => {
         if (query) {
             callback(filterSelect(collection, query));
         } else {
-            axios.get(URL_ITEM_COLLECTION).then(response => {
-                let options = response.data.collections.map(collection => ({value: collection.id, label: collection.name}));
+            getData(URL_ITEM_COLLECTION).then(response => {
+                let options = response.collections.map(collection => ({value: collection.id, label: collection.name}));
                 callback(options);
 
                 setCollection(options);
@@ -138,8 +139,8 @@ const ModalItem = (props) => {
         if (query) {
             callback(filterSelect(publisher, query));
         } else {
-            axios.get(URL_PUBLISHERS).then(response => {
-                let options = response.data.publishers.map(publisher => ({value: publisher.id, label: publisher.name}));
+            getData(URL_PUBLISHERS).then(response => {
+                let options = response.publishers.map(publisher => ({value: publisher.id, label: publisher.name}));
                 callback(options);
 
                 setPublisher(options);
@@ -152,8 +153,8 @@ const ModalItem = (props) => {
         if (query) {
             callback(filterSelect(itemFormat, query));
         } else {
-            axios.get(URL_ITEM_FORMAT).then(response => {
-                let options = response.data.formats.map(i => ({value: i.value, label: i.text}));
+            getData(URL_ITEM_FORMAT).then(response => {
+                let options = response.formats.map(i => ({value: i.value, label: i.text}));
                 callback(options);
 
                 setItemFormat(options);
@@ -166,8 +167,8 @@ const ModalItem = (props) => {
         if (query) {
             callback(filterSelect(language, query));
         } else {
-            axios.get(URL_LANGUAGE).then(response => {
-                let options = response.data.languages.map(i => ({value: i.id, label: i.name}));
+            getData(URL_LANGUAGE).then(response => {
+                let options = response.languages.map(i => ({value: i.id, label: i.name}));
                 callback(options);
 
                 setLanguage(options);
@@ -228,7 +229,7 @@ const ModalItem = (props) => {
 
     const body = () => {
         let body_html =
-            <form onSubmit={setItem}>
+            <form>
                 <div className="">
                     <div className="row">
                         <div className="col-4">
@@ -306,12 +307,14 @@ const ModalItem = (props) => {
                     </div>
                     <div className="row">
                         <div className="col-2">
-                            <label htmlFor="">Lançamento</label>
-                            <DateBox value={values.dat_published} type="date" className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
+                            <label htmlFor="">Lançamento: {values.dat_published}</label>
+                            <DateBox value={values.dat_published} type="date" className='form-control input-default'
+                                     onValueChanged={(date) => setDate(date, 'dat_published')}/>
                         </div>
                         <div className="col-2">
-                            <label htmlFor="">Lançamento original</label>
-                            <DateBox value={values.dat_published_original} type="date" className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
+                            <label htmlFor="">Lançamento original: {values.dat_published_original}</label>
+                            <DateBox value={values.dat_published_original} type="date" className='form-control input-default'
+                                     onValueChanged={(date) => setDate(date, 'dat_published_original')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Serie: {values.serie_id}</label>
@@ -419,7 +422,7 @@ const ModalItem = (props) => {
                 title={'Item'}
                 body={body()}
                 fullscreen={true}
-                actionModal={setItem}
+                actionModal={(e) => handleSubmit(e, URL_ITEM, values)}
             />
         </div>
     );
