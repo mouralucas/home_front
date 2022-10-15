@@ -79,17 +79,6 @@ const App = (props) => {
                 setSelectedCategory(options.filter(category => category.value === values.category_id)[0]);
                 setCategory(options);
             });
-            // axios.get(URL_CATEGORIES, {params: {show_mode: 'all', module: 'finance'}}).then(response => {
-            //     let options = response.data.categories.map(function (item) {
-            //         return {
-            //             value: item.id,
-            //             label: item.name,
-            //         }
-            //     });
-            //     callback(options)
-            //     const selected = options.filter(category => category.value === values.category_id);
-            //     setSelectedCategory(selected[0]);
-            // });
         }
     }
 

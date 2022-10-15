@@ -1,8 +1,6 @@
 import Modal from "../../../Components/Modal";
 import {useEffect, useState} from "react";
-import axios from "../../../Services/Axios/Axios";
-import {URL_AUTHORS, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_FORMAT, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_LANGUAGE, URL_PUBLISHERS, URL_STATEMENT} from "../../../Services/Axios/ApiUrls";
-import Select from "react-select";
+import {URL_AUTHORS, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_FORMAT, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_LANGUAGE, URL_PUBLISHERS, URL_STATUS} from "../../../Services/Axios/ApiUrls";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import Currency from "../../../Components/Currency";
@@ -14,72 +12,75 @@ import handleSubmit from "../../../Services/Axios/Post";
 const ModalItem = (props) => {
     // Combo boxes variables
     const [mainAuthor, setMainAuthor] = useState([]);
-    const [selectedMainAuthor, setSelectedMainAuthor] = useState([]);
+    const [selectedMainAuthor, setSelectedMainAuthor] = useState();
 
     const [otherAuthors, setOtherAuthors] = useState([]);
-    const [selectedOtherAuthors, setSelectedOtherAuthors] = useState([]);
+    const [selectedOtherAuthors, setSelectedOtherAuthors] = useState();
 
     const [itemType, setItemType] = useState([]);
-    const [selectedItemType, setSelectedItemType] = useState([]);
+    const [selectedItemType, setSelectedItemType] = useState();
 
     const [serie, setSerie] = useState([]);
-    const [selectedSerie, setSelectedSerie] = useState([]);
+    const [selectedSerie, setSelectedSerie] = useState();
 
     const [collection, setCollection] = useState([]);
     const [selectedCollection, setSelectedCollection] = useState();
 
     const [publisher, setPublisher] = useState([]);
-    const [selectedPublisher, setSelectedPublisher] = useState([]);
+    const [selectedPublisher, setSelectedPublisher] = useState();
 
     const [itemFormat, setItemFormat] = useState([]);
-    const [selectedItemFormat, setSelectedItemFormat] = useState([]);
+    const [selectedItemFormat, setSelectedItemFormat] = useState();
 
     const [language, setLanguage] = useState([]);
-    const [selectedLanguage, setSelectedLanguage] = useState([]);
+    const [selectedLanguage, setSelectedLanguage] = useState();
+
+    const [status, setStatus] = useState([])
+    const [selectedStatus, setSelectedStatus] = useState()
 
     // Form variables
-    const [values, setValues] = useState({
-        item_id: null,
-        status_id: '',
-        dat_status: new Date(),
-        main_author_id: 0,
-        authors_id: [],
-        translator_id: 0,
-        title: '',
-        subtitle: '',
-        title_original: '',
-        subtitle_original: '',
-        isbn: '',
-        isbn10: '',
-        itemType: 0,
-        pages: 0,
-        volume: 1,
-        edition: 1,
-        dat_published: null,
-        dat_published_original: null,
-        serie_id: 0,
-        collection_id: 0,
-        publisher_id: 0,
-        format_id: 0,
-        language_id: 'PT',
-        cover_price: 0,
-        payed_price: 0,
-        dimensions: '',
-        height: '',
-        width: '',
-        thickness: '',
-        resumo: '',
-    })
+    const [values, setValues] = useState()
 
     useEffect(() => {
-        if (props.modalState) {
-            getAuthors();
-            getItemTypes();
-            getSerie();
-            getCollection();
-            getPublishers();
+        if (props.item) {
+            setValues(props.item);
         }
-    }, [props.modalState])
+
+        if (!props.modalState){
+            setValues({
+                item_id: null,
+                status_id: '',
+                dat_status: new Date(),
+                main_author_id: 0,
+                authors_id: [],
+                translator_id: 0,
+                title: '',
+                subtitle: '',
+                title_original: '',
+                subtitle_original: '',
+                isbn: '',
+                isbn10: '',
+                itemType: 0,
+                pages: 0,
+                volume: 1,
+                edition: 1,
+                dat_published: null,
+                dat_published_original: null,
+                serie_id: 0,
+                collection_id: 0,
+                publisher_id: 0,
+                format_id: 0,
+                language_id: 'PT',
+                cover_price: 0,
+                payed_price: 0,
+                dimensions: '',
+                height: '',
+                width: '',
+                thickness: '',
+                resumo: '',
+            })
+        }
+    }, [props.modalState, props.item])
 
     const getAuthors = (query, callback) => {
         if (query) {
@@ -177,6 +178,20 @@ const ModalItem = (props) => {
         }
     }
 
+    const getStatus = (query, callback) => {
+        if (query) {
+            callback(filterSelect(status, query))
+        } else {
+            getData(URL_STATUS, {status_type: 'LIBRARY_ITEM'}).then(response => {
+                let options = response.status.map(i => ({value: i.id, label: i.name}))
+                callback(options);
+
+                setStatus(options);
+                setSelectedStatus(options.filter(i => i.value === values.status_id)[0])
+            })
+        }
+    }
+
     const set = (name) => {
         return ({target: {value}}) => {
             setValues(oldValues => ({...oldValues, [name]: value}));
@@ -207,25 +222,25 @@ const ModalItem = (props) => {
     }
 
     // Form submit
-    const setItem = async e => {
-        e.preventDefault();
-
-        const formData = new FormData();
-        Object.keys(values).forEach(key => formData.append(key, JSON.stringify(values[key])));
-
-        await axios({
-            method: 'post',
-            url: URL_ITEM,
-            data: formData,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        }).then(response => {
-            return response.data
-        }).catch(response => {
-            return {'error': response}
-        })
-    }
+    // const setItem = async e => {
+    //     e.preventDefault();
+    //
+    //     const formData = new FormData();
+    //     Object.keys(values).forEach(key => formData.append(key, JSON.stringify(values[key])));
+    //
+    //     await axios({
+    //         method: 'post',
+    //         url: URL_ITEM,
+    //         data: formData,
+    //         headers: {
+    //             'Content-Type': 'application/x-www-form-urlencoded'
+    //         }
+    //     }).then(response => {
+    //         return response.data
+    //     }).catch(response => {
+    //         return {'error': response}
+    //     })
+    // }
 
     const body = () => {
         let body_html =
@@ -249,11 +264,19 @@ const ModalItem = (props) => {
                                          value={selectedOtherAuthors}
                                          isMulti={true}/>
                         </div>
-                        {/*<div className="col-4">*/}
-                        {/*    <label htmlFor="{'combo_translator'}">Tradutor: {values.translator_id}</label>*/}
-                        {/*    <Select formTarget={true} options={authors} onChange={(e) => setCombo(e, 'authors_id')}*/}
-                        {/*            isMulti={true}/>*/}
-                        {/*</div>*/}
+                        <div className="col-2">
+                            <label htmlFor="{'combo_status'}">Tradutor: {values.status_id}</label>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getStatus(query, callback)}
+                                         onChange={(e) => setCombo(e, 'status_id', setSelectedStatus)}
+                                         defaultOptions
+                                         value={selectedStatus}/>
+                        </div>
+                        <div className="col-2">
+                            <label htmlFor="">Lançamento original:</label>
+                            <DateBox value={values.dat_status} type="date" className='form-control input-default'
+                                     onValueChanged={(date) => setDate(date, 'dat_status')}/>
+                        </div>
                     </div>
                     <div className="row">
                         <div className="col-6">
