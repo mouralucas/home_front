@@ -4,16 +4,23 @@ import axios from "../../../Services/Axios/Axios";
 import {URL_ITEM} from '../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
 import {Button} from "devextreme-react/button";
+import {Button as Btn} from "devextreme-react/data-grid";
 
 const Book = () => {
     const [books, setBooks] = useState();
-    const [modalState, setModalState] = useState(false)
+    const [selectedBook, setSelectedBook] = useState();
+    const [modalState, setModalState] = useState(false);
 
     useEffect(() => {
         getBooks();
     }, []);
 
-    const showModalItem = () => {
+    const showModal = (e) => {
+        if (typeof e.row !== 'undefined') {
+            setSelectedBook(e.row.data);
+        } else {
+            setSelectedBook(null);
+        }
         setModalState(true);
     }
 
@@ -86,6 +93,28 @@ const Book = () => {
             dataField: "nm_last_status",
             caption: "Status",
             dataType: "string",
+        },
+        {
+            caption: 'Ações',
+            type: 'buttons',
+            width: 110,
+            child: [
+                <Btn
+                    key={1}
+                    text="Editar"
+                    // icon="/url/to/my/icon.ico"
+                    icon="edit"
+                    hint="Editar"
+                    onClick={showModal}
+                />,
+                // <Btn
+                //     // text="My Command"
+                //     // // icon="/url/to/my/icon.ico"
+                //     icon="coffee"
+                //     hint="My Command"
+                //     onClick={myOtherCommand}
+                // />
+            ]
         }
     ]
 
@@ -95,7 +124,7 @@ const Book = () => {
             location: 'after',
         },
         {
-            child: <Button icon={'add'} onClick={showModalItem}></Button>,
+            child: <Button icon={'add'} onClick={showModal}></Button>,
             location: "after",
             locateInMenu: 'auto'
         },
@@ -120,7 +149,7 @@ const Book = () => {
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            <ModalItem modalState={modalState} hideModalItem={hideModalItem}/>
+            <ModalItem modalState={modalState} hideModalItem={hideModalItem} item={selectedBook}/>
         </>
     );
 }
