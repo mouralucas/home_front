@@ -39,7 +39,7 @@ const ModalItem = (props) => {
     const [selectedStatus, setSelectedStatus] = useState()
 
     // Form variables
-    const [values, setValues] = useState()
+    const [values, setValues] = useState({})
 
     useEffect(() => {
         if (props.item) {
@@ -49,7 +49,7 @@ const ModalItem = (props) => {
         if (!props.modalState){
             setValues({
                 item_id: null,
-                status_id: '',
+                status_id: 'comprado',
                 dat_status: new Date(),
                 main_author_id: 0,
                 authors_id: [],
@@ -183,7 +183,9 @@ const ModalItem = (props) => {
             callback(filterSelect(status, query))
         } else {
             getData(URL_STATUS, {status_type: 'LIBRARY_ITEM'}).then(response => {
+
                 let options = response.status.map(i => ({value: i.id, label: i.name}))
+                console.log(options);
                 callback(options);
 
                 setStatus(options);
@@ -265,7 +267,7 @@ const ModalItem = (props) => {
                                          isMulti={true}/>
                         </div>
                         <div className="col-2">
-                            <label htmlFor="{'combo_status'}">Tradutor: {values.status_id}</label>
+                            <label htmlFor="{'combo_status'}">Status: {values.status_id}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getStatus(query, callback)}
                                          onChange={(e) => setCombo(e, 'status_id', setSelectedStatus)}
@@ -273,7 +275,7 @@ const ModalItem = (props) => {
                                          value={selectedStatus}/>
                         </div>
                         <div className="col-2">
-                            <label htmlFor="">Lançamento original:</label>
+                            <label htmlFor="">Data status:</label>
                             <DateBox value={values.dat_status} type="date" className='form-control input-default'
                                      onValueChanged={(date) => setDate(date, 'dat_status')}/>
                         </div>
