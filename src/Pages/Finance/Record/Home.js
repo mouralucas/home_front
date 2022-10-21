@@ -32,7 +32,7 @@ const App = () => {
                     <Card>
                         <Card.Header>Extrato</Card.Header>
                         <Card.Body>
-                            {/*<BankStatementTable/>*/}
+                            <BankStatementTable/>
                         </Card.Body>
                     </Card>
                 </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Library from '../Pages/Library/Home';
+import Library from '../Pages/Library/Records/Home';
 import FinanceDashboard from '../Pages/Finance/Dashboard/Home'
 import FinanceRecord from '../Pages/Finance/Record/Home'
 import Files from '../Pages/FileManager/Home'

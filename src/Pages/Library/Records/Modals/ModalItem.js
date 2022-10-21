@@ -1,13 +1,13 @@
-import Modal from "../../../Components/Modal";
+import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_AUTHORS, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_FORMAT, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_LANGUAGE, URL_PUBLISHERS, URL_STATUS} from "../../../Services/Axios/ApiUrls";
+import {URL_AUTHORS, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_FORMAT, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_LANGUAGE, URL_PUBLISHERS, URL_STATUS} from "../../../../Services/Axios/ApiUrls";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
-import Currency from "../../../Components/Currency";
+import Currency from "../../../../Components/Currency";
 import AsyncSelect from "react-select/async";
-import filterSelect from "../../../Utils/DataHandling";
-import {getData} from "../../../Services/Axios/Get";
-import handleSubmit from "../../../Services/Axios/Post";
+import filterSelect from "../../../../Utils/DataHandling";
+import {getData} from "../../../../Services/Axios/Get";
+import handleSubmit from "../../../../Services/Axios/Post";
 
 const ModalItem = (props) => {
     // Combo boxes variables

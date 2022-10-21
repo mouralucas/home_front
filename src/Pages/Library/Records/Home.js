@@ -1,4 +1,4 @@
-import Card from "../../Components/Card";
+import Card from "../../../Components/Card";
 import TableBook from "./Tables/Book";
 import TableManga from "./Tables/Manga";
 
