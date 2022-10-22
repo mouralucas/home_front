@@ -1,6 +1,7 @@
 import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Library from '../Pages/Library/Records/Home';
+import LibraryRecord from '../Pages/Library/Backlog/Home';
 import FinanceDashboard from '../Pages/Finance/Dashboard/Home'
 import FinanceRecord from '../Pages/Finance/Record/Home'
 import Files from '../Pages/FileManager/Home'
@@ -18,6 +19,8 @@ function HomeRoutes() {
             <Routes>
                 <Route element={<WithNav/>}>
                     <Route element={<RequireAuth><Library/></RequireAuth>} path="/library/home"/>
+                    <Route element={<RequireAuth><Library/></RequireAuth>} path="/library/home"/>
+                    <Route element={<RequireAuth><LibraryRecord/></RequireAuth>} path="/library/backlog"/>
                     <Route element={<RequireAuth><FinanceDashboard/></RequireAuth>} path="/finance/dashboard"/>
                     <Route element={<RequireAuth><FinanceRecord/></RequireAuth>} path="/finance/records"/>
                     <Route element={<RequireAuth><Files/></RequireAuth>} path="/files"/>

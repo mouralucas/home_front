@@ -31,6 +31,9 @@ export default function Navbar() {
                         <Link to="/library/home">Biblioteca</Link>
                     </li>
                     <li>
+                        <Link to="/library/backlog">Biblioteca R</Link>
+                    </li>
+                    <li>
                         <Link to="/finance/dashboard">Dashboard</Link>
                     </li>
                     <li>
