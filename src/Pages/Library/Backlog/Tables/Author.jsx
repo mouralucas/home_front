@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
-import {URL_BILLS} from "../../../../Services/Axios/ApiUrls";
+import {URL_AUTHORS, URL_BILLS, URL_LANGUAGE} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
+import ModalAuthor from '../Modals/Author'
+import {getData} from "../../../../Services/Axios/Get";
 
 const App = () => {
-    const [bills, setBills] = useState();
+    const [author, setAuthor] = useState();
     const [selectedBill, setSelectedBill] = useState()
     const [modalState, setModalState] = useState(false)
 
@@ -22,14 +24,9 @@ const App = () => {
     }
 
     const getAuthor = () => {
-        axios.get(URL_BILLS, {
-            params: {'reference': 202209}
-        }).then(response => {
-                setBills(response.data.bill);
-            }
-        ).catch(response => {
-            return {'error': response}
-        })
+        getData(URL_AUTHORS).then(response => {
+            setAuthor(response?.authors)
+        });
     }
 
     useEffect(() => {
@@ -59,12 +56,12 @@ const App = () => {
             format: 'shortDate',
         },
         {
-            dataField: "country_nm",
+            dataField: "nm_country",
             caption: "Pais",
             dataType: "string",
         },
         {
-            dataField: "language_nm",
+            dataField: "nm_language",
             caption: "Idioma",
             dataType: "string",
         },
@@ -105,7 +102,7 @@ const App = () => {
             location: "after"
         },
         {
-            child: <Button text={'Adicionar Fatura'} icon={'add'} onClick={showModal}></Button>,
+            child: <Button icon={'add'} onClick={showModal}></Button>,
             location: "after"
         },
         {
@@ -120,12 +117,12 @@ const App = () => {
             <DataGrid
                 keyExpr={'id'}
                 tableColumns={columns}
-                data={bills}
+                data={author}
                 toolBarRefresh={false}
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            {/*<ModalBill modalState={modalState} hideModal={hideModal} bill={selectedBill}/>*/}
+            <ModalAuthor modalState={modalState} hideModal={hideModal} bill={selectedBill}/>
         </>
     );
 }
