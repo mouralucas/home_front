@@ -16,7 +16,7 @@ const App = (props) => {
     const [category, setCategory] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState();
 
-    const [values, setValues] = useState({})
+    const [values, setValues] = useState({});
 
     useEffect(() => {
         if (props.statement && props.modalState) {
@@ -68,7 +68,7 @@ const App = (props) => {
             getData(URL_ACCOUNTS).then(response => {
                 let options = response.bank_accounts.map(i => ({value: i.id, label: i.nm_bank}))
                 callback(options);
-                setSelectedAccount(options.filter(account => account.value === values.account_id))
+                setSelectedAccount(options?.filter(account => account.value === values.account_id))
                 setAccount(options)
             });
         }
@@ -95,10 +95,6 @@ const App = (props) => {
     const setCurrency = (values, name) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
-    // const setStatement = e => {
-    //     // User state from father to update table, if possible
-    //     let response = HandleSubmit(e, URL_STATEMENT, values);
-    // }
 
     const body = () => {
         let body_html =

@@ -73,7 +73,6 @@ const App = (props) => {
             callback(filterSelect(category, query))
         } else {
             getData(URL_CATEGORIES, {show_mode: 'all', module: 'finance'}).then(response => {
-                console.log(response);
                 let options = response == null ? {} : response.categories.map(i => ({value: i.id, label: i.name}))
                 callback(options);
                 setSelectedCategory(options.filter(category => category.value === values.category_id)[0]);

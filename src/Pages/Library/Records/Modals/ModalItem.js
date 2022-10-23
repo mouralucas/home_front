@@ -185,7 +185,6 @@ const ModalItem = (props) => {
             getData(URL_STATUS, {status_type: 'LIBRARY_ITEM'}).then(response => {
 
                 let options = response.status.map(i => ({value: i.id, label: i.name}))
-                console.log(options);
                 callback(options);
 
                 setStatus(options);

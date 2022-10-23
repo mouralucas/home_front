@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-import axios from "../../../../Services/Axios/Axios";
-import {URL_AUTHORS, URL_BILLS, URL_LANGUAGE} from "../../../../Services/Axios/ApiUrls";
+import {URL_AUTHORS} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
@@ -9,12 +8,12 @@ import {getData} from "../../../../Services/Axios/Get";
 
 const App = () => {
     const [author, setAuthor] = useState();
-    const [selectedBill, setSelectedBill] = useState()
+    const [selectedAuthor, setSelectedAuthor] = useState()
     const [modalState, setModalState] = useState(false)
 
     const showModal = (e) => {
         if (typeof e.row !== 'undefined') {
-            setSelectedBill(e.row.data);
+            setSelectedAuthor(e.row.data);
         }
         setModalState(true);
     }
@@ -122,7 +121,7 @@ const App = () => {
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            <ModalAuthor modalState={modalState} hideModal={hideModal} bill={selectedBill}/>
+            <ModalAuthor modalState={modalState} hideModal={hideModal} author={selectedAuthor}/>
         </>
     );
 }

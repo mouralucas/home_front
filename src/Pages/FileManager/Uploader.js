@@ -113,7 +113,6 @@ class App extends React.Component {
 
     sendToBack(file) {
         // TODO: mandar o file pra um state e enviar junto com o form
-        console.log('Entrou', file);
         const formData = new FormData();
         formData.append('file', file);
 

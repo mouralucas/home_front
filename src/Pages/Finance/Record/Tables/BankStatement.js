@@ -27,7 +27,7 @@ const App = () => {
 
     const getStatements = () => {
         axios.get(URL_STATEMENT, {
-            params: {'reference': 202206}
+            params: {'reference': 202210}
         }).then(response => {
                 setStatement(response.data.statement);
             }
