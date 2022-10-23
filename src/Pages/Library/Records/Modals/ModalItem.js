@@ -35,8 +35,8 @@ const ModalItem = (props) => {
     const [language, setLanguage] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState();
 
-    const [status, setStatus] = useState([])
-    const [selectedStatus, setSelectedStatus] = useState()
+    const [lastStatus, setLastStatus] = useState([])
+    const [selectedLastStatus, setSelectedLastStatus] = useState()
 
     // Form variables
     const [values, setValues] = useState({})
@@ -49,7 +49,7 @@ const ModalItem = (props) => {
         if (!props.modalState){
             setValues({
                 item_id: null,
-                status_id: 'comprado',
+                status_id: null,
                 dat_status: new Date(),
                 main_author_id: 0,
                 authors_id: [],
@@ -79,9 +79,68 @@ const ModalItem = (props) => {
                 thickness: '',
                 resumo: '',
             })
+
+            setSelectedMainAuthor(null);
+            setSelectedLastStatus(null);
+            setSelectedItemType(null);
+            setSelectedSerie(null);
+            setSelectedCollection(null);
+            setSelectedPublisher(null);
+            setSelectedItemFormat(null);
+            setSelectedLanguage(null);
         }
     }, [props.modalState, props.item])
 
+    // Set combo boxes default
+    useEffect(() => {
+        if (props.item){
+            setSelectedMainAuthor(mainAuthor.filter(i => i.value === props.item.main_author_id)[0]);
+        }
+    }, [mainAuthor, props.item])
+
+    useEffect(() => {
+        if (props.item) {
+            setSelectedLastStatus(lastStatus.filter(i => i.value === props.item.last_status_id))
+        }
+    }, [lastStatus, props.item])
+
+    useEffect(() => {
+        if (props.item) {
+            setSelectedItemType(itemType.filter(i => i.value === props.item.item_type))
+        }
+    }, [itemType, props.item])
+
+    useEffect(() => {
+        if (props.item) {
+            setSelectedSerie(serie.filter(i => i.value === props.item.serie_id))
+        }
+    }, [serie, props.item])
+
+    useEffect(() => {
+        if (props.item) {
+            setSelectedCollection(collection.filter(i => i.value === props.item.collection_id))
+        }
+    }, [collection, props.item])
+
+    useEffect(() => {
+        if (props.item) {
+            setSelectedPublisher(publisher.filter(i => i.value === props.item.publisher_id))
+        }
+    }, [publisher, props.item])
+
+    useEffect(() => {
+        if (props.item) {
+            setSelectedItemFormat(itemFormat.filter(i => i.value === props.item.format))
+        }
+    }, [itemFormat, props.item])
+
+    useEffect(() => {
+        if (props.item) {
+            setSelectedLanguage(language.filter(i => i.value === props.item.language_id))
+        }
+    }, [language, props.item])
+
+    // Get functions
     const getAuthors = (query, callback) => {
         if (query) {
             callback(filterSelect(mainAuthor, query));
@@ -180,19 +239,20 @@ const ModalItem = (props) => {
 
     const getStatus = (query, callback) => {
         if (query) {
-            callback(filterSelect(status, query))
+            callback(filterSelect(lastStatus, query))
         } else {
             getData(URL_STATUS, {status_type: 'LIBRARY_ITEM'}).then(response => {
 
                 let options = response.status.map(i => ({value: i.id, label: i.name}))
                 callback(options);
 
-                setStatus(options);
-                setSelectedStatus(options.filter(i => i.value === values.status_id)[0])
+                setLastStatus(options);
+                setSelectedLastStatus(options.filter(i => i.value === values.status_id)[0])
             })
         }
     }
 
+    // Set functions for specific componentes
     const set = (name) => {
         return ({target: {value}}) => {
             setValues(oldValues => ({...oldValues, [name]: value}));
@@ -222,27 +282,6 @@ const ModalItem = (props) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
 
-    // Form submit
-    // const setItem = async e => {
-    //     e.preventDefault();
-    //
-    //     const formData = new FormData();
-    //     Object.keys(values).forEach(key => formData.append(key, JSON.stringify(values[key])));
-    //
-    //     await axios({
-    //         method: 'post',
-    //         url: URL_ITEM,
-    //         data: formData,
-    //         headers: {
-    //             'Content-Type': 'application/x-www-form-urlencoded'
-    //         }
-    //     }).then(response => {
-    //         return response.data
-    //     }).catch(response => {
-    //         return {'error': response}
-    //     })
-    // }
-
     const body = () => {
         let body_html =
             <form>
@@ -269,9 +308,9 @@ const ModalItem = (props) => {
                             <label htmlFor="{'combo_status'}">Status: {values.status_id}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getStatus(query, callback)}
-                                         onChange={(e) => setCombo(e, 'status_id', setSelectedStatus)}
+                                         onChange={(e) => setCombo(e, 'status_id', setSelectedLastStatus)}
                                          defaultOptions
-                                         value={selectedStatus}/>
+                                         value={selectedLastStatus}/>
                         </div>
                         <div className="col-2">
                             <label htmlFor="">Data status:</label>
@@ -387,7 +426,7 @@ const ModalItem = (props) => {
                         <div className="col-3">
                             <label htmlFor="">Valor capa: {values.cover_price}</label>
                             <Currency className='form-control input-default'
-                                      defaultValue={values.cover_price * 100}
+                                      value={values.cover_price * 100}
                                       onFocus={event => event.target.select()}
                                       onValueChange={(values) => {
                                           setCurrency(values, 'cover_price')
@@ -396,7 +435,7 @@ const ModalItem = (props) => {
                         <div className="col-3">
                             <label htmlFor="">Valor pago: {values.payed_price}</label>
                             <Currency className='form-control input-default'
-                                      defaultValue={values.payed_price * 100}
+                                      value={values.payed_price * 100}
                                       onFocus={event => event.target.select()}
                                       onValueChange={(values) => {
                                           setCurrency(values, 'payed_price')
