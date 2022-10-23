@@ -4,16 +4,24 @@ import axios from "../../../../Services/Axios/Axios";
 import {URL_ITEM} from '../../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
 import {Button} from "devextreme-react/button";
+import {Button as Btn} from "devextreme-react/data-grid";
 
 const Manga = () => {
     const [mangas, setMangas] = useState();
+    const [selectedManga, setSelectedManga] = useState();
     const [modalState, setModalState] = useState(false)
 
     useEffect(() => {
         getMangas();
     }, []);
 
-    const showModalItem = () => {
+    const showModal = (e) => {
+        if (typeof e.row !== 'undefined') {
+            console.log(e.row.data);
+            setSelectedManga(e.row.data);
+        } else {
+            setSelectedManga(null);
+        }
         setModalState(true);
     }
 
@@ -91,6 +99,28 @@ const Manga = () => {
             format: {style: 'currency', currency: 'BRL', useGrouping: true, precision: 2},
             visible: false,
         },
+        {
+            caption: 'Ações',
+            type: 'buttons',
+            width: 110,
+            child: [
+                <Btn
+                    key={1}
+                    text="Editar"
+                    // icon="/url/to/my/icon.ico"
+                    icon="edit"
+                    hint="Editar"
+                    onClick={showModal}
+                />,
+                // <Btn
+                //     // text="My Command"
+                //     // // icon="/url/to/my/icon.ico"
+                //     icon="coffee"
+                //     hint="My Command"
+                //     onClick={myOtherCommand}
+                // />
+            ]
+        }
     ]
 
     let toolBarItems = [
@@ -103,7 +133,7 @@ const Manga = () => {
             location: 'after',
         },
         {
-            child: <Button icon={'add'} onClick={showModalItem}></Button>,
+            child: <Button icon={'add'} onClick={showModal}></Button>,
             location: "after",
             locateInMenu: 'auto'
         },
@@ -130,7 +160,7 @@ const Manga = () => {
                 loadPanel={false}
 
             />
-            <ModalItem modalState={modalState} hideModalItem={hideModalItem}/>
+            <ModalItem modalState={modalState} hideModalItem={hideModalItem} item={selectedManga}/>
         </>
     );
 }

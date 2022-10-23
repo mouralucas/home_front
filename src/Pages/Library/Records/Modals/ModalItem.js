@@ -64,8 +64,8 @@ const ModalItem = (props) => {
                 pages: 0,
                 volume: 1,
                 edition: 1,
-                dat_published: null,
-                dat_published_original: null,
+                // dat_published: '',
+                // dat_published_original: '',
                 serie_id: 0,
                 collection_id: 0,
                 publisher_id: 0,
@@ -387,7 +387,7 @@ const ModalItem = (props) => {
                         <div className="col-3">
                             <label htmlFor="">Valor capa: {values.cover_price}</label>
                             <Currency className='form-control input-default'
-                                      defaultValue={values.amount * 100}
+                                      defaultValue={values.cover_price * 100}
                                       onFocus={event => event.target.select()}
                                       onValueChange={(values) => {
                                           setCurrency(values, 'cover_price')
@@ -396,7 +396,7 @@ const ModalItem = (props) => {
                         <div className="col-3">
                             <label htmlFor="">Valor pago: {values.payed_price}</label>
                             <Currency className='form-control input-default'
-                                      defaultValue={values.amount * 100}
+                                      defaultValue={values.payed_price * 100}
                                       onFocus={event => event.target.select()}
                                       onValueChange={(values) => {
                                           setCurrency(values, 'payed_price')
