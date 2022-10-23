@@ -50,7 +50,7 @@ const ModalItem = (props) => {
             setValues({
                 item_id: null,
                 status_id: null,
-                dat_status: new Date(),
+                dat_last_status: new Date(),
                 main_author_id: 0,
                 authors_id: [],
                 translator_id: 0,
@@ -64,8 +64,8 @@ const ModalItem = (props) => {
                 pages: 0,
                 volume: 1,
                 edition: 1,
-                // dat_published: '',
-                // dat_published_original: '',
+                dat_published: null,
+                dat_published_original: null,
                 serie_id: 0,
                 collection_id: 0,
                 publisher_id: 0,
@@ -275,7 +275,11 @@ const ModalItem = (props) => {
     }
 
     const setDate = (e, name) => {
-        return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
+        if (e.value !== null) {
+            return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
+        } else {
+            return setValues(oldValues => ({...oldValues, [name]: e.value}))
+        }
     }
 
     const setCurrency = (values, name) => {
@@ -314,8 +318,8 @@ const ModalItem = (props) => {
                         </div>
                         <div className="col-2">
                             <label htmlFor="">Data status:</label>
-                            <DateBox value={values.dat_status} type="date" className='form-control input-default'
-                                     onValueChanged={(date) => setDate(date, 'dat_status')}/>
+                            <DateBox value={values.dat_last_status} type="date" className='form-control input-default'
+                                     onValueChanged={(date) => setDate(date, 'dat_last_status')}/>
                         </div>
                     </div>
                     <div className="row">
