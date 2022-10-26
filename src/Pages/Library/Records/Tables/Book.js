@@ -124,6 +124,10 @@ const Book = () => {
             location: 'after',
         },
         {
+            child: <Button icon='refresh' onClick={getBooks}/>,
+            location: "after"
+        },
+        {
             child: <Button icon={'add'} onClick={showModal}></Button>,
             location: "after",
             locateInMenu: 'auto'

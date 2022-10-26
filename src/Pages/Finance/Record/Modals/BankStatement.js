@@ -89,7 +89,11 @@ const App = (props) => {
     }
 
     const setDate = (e, name) => {
-        return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
+        if (e.value !== null) {
+            return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
+        } else {
+            return setValues(oldValues => ({...oldValues, [name]: e.value}))
+        }
     }
 
     const setCurrency = (values, name) => {

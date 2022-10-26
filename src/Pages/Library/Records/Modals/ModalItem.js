@@ -149,7 +149,7 @@ const ModalItem = (props) => {
                 let options = response?.authors.map(author => ({value: author.id, label: author.nm_full}))
                 callback(options);
                 setMainAuthor(options);
-                setSelectedMainAuthor(options.filter(category => category.value === values.main_author_id)[0])
+                setSelectedMainAuthor(options.filter(i => i.value === values.main_author_id)[0])
             })
 
         }

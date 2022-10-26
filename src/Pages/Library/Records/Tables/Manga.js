@@ -133,6 +133,10 @@ const Manga = () => {
             location: 'after',
         },
         {
+            child: <Button icon='refresh' onClick={getMangas}/>,
+            location: "after"
+        },
+        {
             child: <Button icon={'add'} onClick={showModal}></Button>,
             location: "after",
             locateInMenu: 'auto'
