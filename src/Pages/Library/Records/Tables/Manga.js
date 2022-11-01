@@ -17,7 +17,6 @@ const Manga = () => {
 
     const showModal = (e) => {
         if (typeof e.row !== 'undefined') {
-            console.log(e.row.data);
             setSelectedManga(e.row.data);
         } else {
             setSelectedManga(null);
@@ -27,6 +26,7 @@ const Manga = () => {
 
     const hideModalItem = () => {
         setModalState(false);
+        getMangas();
     }
 
     const getMangas = () => {
@@ -42,7 +42,7 @@ const Manga = () => {
 
     let colunasTabelaLivro = [
         {
-            dataField: "id",
+            dataField: "item_id",
             caption: "Id",
             dataType: "number",
             width: 50,

@@ -23,6 +23,7 @@ const App = () => {
 
     const hideModal = () => {
         setModalState(false);
+        getStatements();
     }
 
     const getStatements = () => {

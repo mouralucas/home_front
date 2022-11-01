@@ -57,7 +57,7 @@ const ModalItem = (props) => {
                 title: '',
                 subtitle: '',
                 title_original: '',
-                subtitle_original: '',
+                subtitle_original: null,
                 isbn: '',
                 isbn10: '',
                 itemType: 0,
@@ -77,7 +77,7 @@ const ModalItem = (props) => {
                 height: '',
                 width: '',
                 thickness: '',
-                resumo: '',
+                summary: '',
             })
 
             setSelectedMainAuthor(null);
@@ -130,7 +130,7 @@ const ModalItem = (props) => {
 
     useEffect(() => {
         if (props.item) {
-            setSelectedItemFormat(itemFormat.filter(i => i.value === props.item.format))
+            setSelectedItemFormat(itemFormat.filter(i => i.value === props.item.format_id))
         }
     }, [itemFormat, props.item])
 
@@ -318,7 +318,7 @@ const ModalItem = (props) => {
                         </div>
                         <div className="col-2">
                             <label htmlFor="">Data status:</label>
-                            <DateBox value={values.dat_last_status} type="date" className='form-control input-default'
+                            <DateBox value={values.dat_last_status} type="date" className='form-control input-default' useMaskValue={true}
                                      onValueChanged={(date) => setDate(date, 'dat_last_status')}/>
                         </div>
                     </div>
@@ -449,22 +449,22 @@ const ModalItem = (props) => {
                     <div className="row">
 
                         <div className="col-3">
-                            <label htmlFor="{'nm_author'}">Dimensões</label>
+                            <label htmlFor="{'nm_author'}">Dimensões: {values.dimensions}</label>
                             <input value={values.dimensions} onChange={set('dimensions')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-3">
-                            <label htmlFor="{'nm_author'}">Altura</label>
+                            <label htmlFor="{'nm_author'}">Altura: {values.height}</label>
                             <input value={values.height} onChange={set('height')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-3">
-                            <label htmlFor="{'nm_author'}">Largura</label>
+                            <label htmlFor="{'nm_author'}">Largura: {values.width}</label>
                             <input value={values.width} onChange={set('width')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-3">
-                            <label htmlFor="{'nm_author'}">Profundidade</label>
+                            <label htmlFor="{'nm_author'}">Profundidade: {values.thickness}</label>
                             <input value={values.thickness} onChange={set('thickness')} type="text"
                                    className='form-control input-default'/>
                         </div>
@@ -472,7 +472,7 @@ const ModalItem = (props) => {
                     <div className="row">
                         <div className="col-12">
                             <label htmlFor="">Resumo</label>
-                            <textarea className='form-control' value={values.resumo} id="" cols="30" rows="10" onChange={set('resumo')}></textarea>
+                            <textarea className='form-control' value={values.summary} id="" cols="30" rows="10" onChange={set('summary')}></textarea>
                         </div>
                     </div>
                 </div>

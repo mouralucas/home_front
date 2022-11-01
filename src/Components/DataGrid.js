@@ -55,20 +55,20 @@ class Table extends React.Component {
             let columns_list = [];
             this.props.tableColumns.forEach(function (column, index) {
                 columns_list.push(<Column
-                    key={index}
-                    type={column.type ?? null}
-                    dataField={column.dataField}
-                    caption={column.caption}
-                    dataType={column.dataType}
-                    format={column.format}
-                    alignment={column.alignment ?? 'center'}
-                    width={column.width ?? null}
-                    visible={column.visible ?? true}
-                    // cellTemplate={column.cellTemplate ?? null}
-                    customizeText={column.customizeText ?? null}
-                    calculateCellValue={column.calculateCellValue}
-                    cellRender={column.cellRender ?? null}
-                    groupIndex={column.groupIndex ?? null}
+                        key={index}
+                        type={column.type ?? null}
+                        dataField={column.dataField}
+                        caption={column.caption}
+                        dataType={column.dataType}
+                        format={column.format}
+                        alignment={column.alignment ?? 'center'}
+                        width={column.width ?? null}
+                        visible={column.visible ?? true}
+                        // cellTemplate={column.cellTemplate ?? null}
+                        customizeText={column.customizeText ?? null}
+                        calculateCellValue={column.calculateCellValue}
+                        cellRender={column.cellRender ?? null}
+                        groupIndex={column.groupIndex ?? null}
                     > {column.child} </Column>
                 )
             });
@@ -124,7 +124,8 @@ class Table extends React.Component {
         if (this.props.toolBarItems) {
             this.props.toolBarItems.forEach(function (item, index) {
                 lista_toolbar.push(
-                    <Item key={index} name={item.name ?? null} location={item.location ?? ''}>{item.child ?? null}</Item>
+                    <Item key={index} name={item.name ?? null}
+                          location={item.location ?? ''}>{item.child ?? null}</Item>
                 )
             });
         }
@@ -141,6 +142,7 @@ class Table extends React.Component {
         return export_data
     }
 
+
     render() {
         return (
             <DataGrid
@@ -155,13 +157,14 @@ class Table extends React.Component {
                 onExporting={this.onExporting}
                 // columnHidingEnabled={this.props.columnHidingEnabled ?? true}
                 focusedRowEnabled={this.props.focusedRowEnabled ?? false}
+                // onRowPrepared={}
             >
 
                 <GroupPanel visible={true}/>
                 <SearchPanel visible={true} highlightCaseSensitive={true}/>
-                <FilterRow visible={this.props.filterRow ?? true} />
+                <FilterRow visible={this.props.filterRow ?? true}/>
                 <Grouping autoExpandAll={false}/>
-                <HeaderFilter visible={this.props.headerFilter ?? true} />
+                <HeaderFilter visible={this.props.headerFilter ?? true}/>
 
                 <LoadPanel enable={this.props.loadPanel ?? false}/>
 
