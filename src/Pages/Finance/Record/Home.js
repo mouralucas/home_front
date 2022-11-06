@@ -1,6 +1,7 @@
 import Card from '../../../Components/Card'
 import CreditCardBillTable from './Tables/CreditCardBill'
 import BankStatementTable from './Tables/BankStatement'
+import InvestmentStatementTable from './Tables/InvestmentStatement'
 import {useEffect} from "react";
 import AsyncSelect from "react-select/async";
 
@@ -33,6 +34,17 @@ const App = () => {
                         <Card.Header>Extrato</Card.Header>
                         <Card.Body>
                             <BankStatementTable/>
+                        </Card.Body>
+                    </Card>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-12">
+                    <Card>
+                        <Card.Header>Extrato Investimento</Card.Header>
+                        <Card.Body>
+                            <InvestmentStatementTable/>
                         </Card.Body>
                     </Card>
                 </div>
