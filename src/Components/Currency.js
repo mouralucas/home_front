@@ -10,7 +10,7 @@ const App = (props) => {
 
         const amount = new Intl.NumberFormat("pt-BR", {
             style: "currency",
-            currency: "BRL",
+            currency: props.currency ?? 'BRL',
         }).format(value / 100);
 
         return `${amount}`;

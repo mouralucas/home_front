@@ -20,6 +20,7 @@ const App = () => {
 
     const hideModal = () => {
         setModalState(false);
+        getBills();
     }
 
     const getBills = () => {
@@ -55,7 +56,7 @@ const App = () => {
             dataField: "id",
             caption: "Id",
             dataType: "number",
-            visible: true,
+            width: 70
         },
         {
             dataField: "reference",
@@ -142,7 +143,7 @@ const App = () => {
             location: "after"
         },
         {
-            child: <Button text={'Adicionar Fatura'} icon={'add'} onClick={showModal}></Button>,
+            child: <Button icon={'add'} onClick={showModal}></Button>,
             location: "after"
         },
         {
