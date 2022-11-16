@@ -2,6 +2,7 @@ import PieChart from "../../../../Components/Charts/PieChart";
 import {useEffect, useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
 import {URL_EXPENSES} from "../../../../Services/Axios/ApiUrls";
+import getCurrentPeriod from "../../../../Utils/DateTime";
 
 
 const App = () => {
@@ -10,7 +11,7 @@ const App = () => {
     const getExpenses = () => {
         axios.get(URL_EXPENSES, {
             params: {
-                'reference': 202206,
+                'reference': getCurrentPeriod(),
                 'expense_type': 'fixed'
             }
         }).then(response => {

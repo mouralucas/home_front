@@ -5,6 +5,7 @@ import DataGrid from "../../../../Components/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalBill from '../Modals/CreditCardBill'
+import getCurrentPeriod from '../../../../Utils/DateTime'
 
 const App = () => {
     const [bills, setBills] = useState();
@@ -25,7 +26,7 @@ const App = () => {
 
     const getBills = () => {
         axios.get(URL_BILLS, {
-            params: {'reference': 202209}
+            params: {'reference': getCurrentPeriod()}
         }).then(response => {
                 setBills(response.data.bill);
             }
