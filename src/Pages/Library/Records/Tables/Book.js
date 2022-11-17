@@ -139,10 +139,6 @@ const Book = () => {
 
     ]
 
-    function updateBooks() {
-        getBooks();
-    }
-
     return (
         <>
             <DataGrid

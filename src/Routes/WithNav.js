@@ -3,7 +3,7 @@ import React from 'react';
 import NavBar from '../Components/Navbar';
 import { Outlet } from 'react-router-dom';
 
-export default () => {
+const App = () => {
     return (
         <>
             <NavBar />
@@ -11,3 +11,5 @@ export default () => {
         </>
     );
 };
+
+export default App;

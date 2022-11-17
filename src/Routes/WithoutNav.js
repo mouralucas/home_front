@@ -2,4 +2,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-export default () => <Outlet />
+const App = () => <Outlet />
+
+export default App;

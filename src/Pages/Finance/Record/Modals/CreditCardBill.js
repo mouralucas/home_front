@@ -31,7 +31,7 @@ const App = (props) => {
 
         if (!props.modalState) {
             setValues({
-                card_id: null,
+                credit_card_id: null,
                 category_id: null,
                 amount: 0,
                 dat_payment: new Date(),
@@ -51,7 +51,7 @@ const App = (props) => {
 
     useEffect(() => {
         if (props.bill) {
-            setSelectedCard(card.filter(i => i.value === props.bill.card_id)[0]);
+            setSelectedCard(card.filter(i => i.value === props.bill.credit_card_id)[0]);
         }
     }, [card, props.bill])
 
@@ -62,7 +62,7 @@ const App = (props) => {
             getData(URL_CREDIT_CARDS).then(response => {
                 let options = response === null ? {} : response.credit_cards.map(i => ({value: i.id, label: i.name}));
                 callback(options);
-                setSelectedCard(options.filter(card => card.value === values.card_id)[0]);
+                setSelectedCard(options.filter(card => card.value === values.credit_card_id)[0]);
                 setCard(options);
             });
         }

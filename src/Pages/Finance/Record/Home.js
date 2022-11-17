@@ -4,6 +4,8 @@ import BankStatementTable from './Tables/BankStatement'
 import InvestmentStatementTable from './Tables/InvestmentStatement'
 import {useEffect} from "react";
 import AsyncSelect from "react-select/async";
+import getCurrentPeriod, {getListPeriods} from "../../../Utils/DateTime";
+import Select from "react-select";
 
 const App = () => {
     useEffect(() => {
@@ -42,7 +44,17 @@ const App = () => {
             <div className="row">
                 <div className="col-12">
                     <Card>
-                        <Card.Header>Extrato Investimento</Card.Header>
+                        <Card.Header>
+                            <div
+                                className="row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100">
+                                <div className="col-10">
+                                    Extrato Investimento
+                                </div>
+                                <div className="col-2">
+                                    <Select formTarget={true} options={getListPeriods(201801, +getCurrentPeriod())} />
+                                </div>
+                            </div>
+                        </Card.Header>
                         <Card.Body>
                             <InvestmentStatementTable/>
                         </Card.Body>

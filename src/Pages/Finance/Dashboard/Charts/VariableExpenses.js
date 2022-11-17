@@ -29,9 +29,9 @@ const App = (props) => {
 
     return (
         <>
-            <AsyncSelect formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)}
-                         onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)} defaultOptions
-                         value={selectedCategory}/>
+            {/*<AsyncSelect formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)}*/}
+            {/*             onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)} defaultOptions*/}
+            {/*             value={selectedCategory}/>*/}
             <PieChart data={expenses}
                       axis={{argumentField: 'category', valueField: 'total_amount'}}
                       title={'Medalhas'}

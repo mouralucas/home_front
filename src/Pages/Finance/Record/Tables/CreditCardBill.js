@@ -26,7 +26,7 @@ const App = () => {
 
     const getBills = () => {
         axios.get(URL_BILLS, {
-            params: {'reference': getCurrentPeriod()}
+            params: {'period': getCurrentPeriod()}
         }).then(response => {
                 setBills(response.data.bill);
             }
@@ -66,7 +66,11 @@ const App = () => {
             visible: false,
         },
         {
-            dataField: "nm_card",
+            dataField: "credit_card_id",
+            visible: false
+        },
+        {
+            dataField: "nm_credit_card",
             caption: "Cartão",
             dataType: "string",
             width: 150,

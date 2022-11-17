@@ -148,11 +148,6 @@ const Manga = () => {
 
     ]
 
-
-    function updateBooks() {
-        getMangas();
-    }
-
     return (
         <>
             <DataGrid
