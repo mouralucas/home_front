@@ -1,6 +1,6 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_AUTHORS, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_FORMAT, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_LANGUAGE, URL_PUBLISHERS, URL_STATUS} from "../../../../Services/Axios/ApiUrls";
+import {URL_AUTHOR, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_FORMAT, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_LANGUAGE, URL_PUBLISHER, URL_STATUS} from "../../../../Services/Axios/ApiUrls";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import Currency from "../../../../Components/Currency";
@@ -145,7 +145,7 @@ const ModalItem = (props) => {
         if (query) {
             callback(filterSelect(mainAuthor, query));
         } else {
-            getData(URL_AUTHORS).then(response => {
+            getData(URL_AUTHOR).then(response => {
                 let options = response?.authors.map(author => ({value: author.id, label: author.nm_full}))
                 callback(options);
                 setMainAuthor(options);
@@ -199,7 +199,7 @@ const ModalItem = (props) => {
         if (query) {
             callback(filterSelect(publisher, query));
         } else {
-            getData(URL_PUBLISHERS).then(response => {
+            getData(URL_PUBLISHER).then(response => {
                 let options = response.publishers.map(publisher => ({value: publisher.id, label: publisher.name}));
                 callback(options);
 

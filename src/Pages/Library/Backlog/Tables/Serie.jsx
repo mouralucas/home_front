@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from "react";
-import {URL_AUTHOR} from "../../../../Services/Axios/ApiUrls";
+import {URL_ITEM_SERIE} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
-import ModalAuthor from '../Modals/Author'
+import ModalSerie from '../Modals/Serie'
 import {getData} from "../../../../Services/Axios/Get";
 
 const App = () => {
-    const [author, setAuthor] = useState();
-    const [selectedAuthor, setSelectedAuthor] = useState()
+    const [serie, setSerie] = useState();
+    const [selectedSerie, setSelectedSerie] = useState()
     const [modalState, setModalState] = useState(false)
 
     const showModal = (e) => {
         if (typeof e.row !== 'undefined') {
-            setSelectedAuthor(e.row.data);
+            setSelectedSerie(e.row.data);
         }
         setModalState(true);
     }
@@ -23,8 +23,8 @@ const App = () => {
     }
 
     const getAuthor = () => {
-        getData(URL_AUTHOR).then(response => {
-            setAuthor(response?.authors)
+        getData(URL_ITEM_SERIE).then(response => {
+            setSerie(response?.series)
         });
     }
 
@@ -41,27 +41,22 @@ const App = () => {
             dataField: "id",
             caption: "Id",
             dataType: "number",
-            width: 150,
+            width: 70,
         },
         {
-            dataField: "nm_full",
+            dataField: "name",
             caption: "Nome",
             dataType: "string",
         },
         {
-            dataField: "dat_birth",
-            caption: "Nascimento",
+            dataField: "nm_original",
+            caption: "Nome Original",
             dataType: "date",
             format: 'shortDate',
         },
         {
-            dataField: "nm_country",
-            caption: "Pais",
-            dataType: "string",
-        },
-        {
-            dataField: "nm_language",
-            caption: "Idioma",
+            dataField: "description",
+            caption: "Descrição",
             dataType: "string",
         },
         {
@@ -116,12 +111,12 @@ const App = () => {
             <DataGrid
                 keyExpr={'id'}
                 tableColumns={columns}
-                data={author}
+                data={serie}
                 toolBarRefresh={false}
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            <ModalAuthor modalState={modalState} hideModal={hideModal} author={selectedAuthor}/>
+            <ModalSerie modalState={modalState} hideModal={hideModal} serie={selectedSerie}/>
         </>
     );
 }

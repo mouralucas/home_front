@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {URL_AUTHOR} from "../../../../Services/Axios/ApiUrls";
+import {URL_PUBLISHER} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
-import ModalAuthor from '../Modals/Author'
+import ModalPublisher from '../Modals/Publisher'
 import {getData} from "../../../../Services/Axios/Get";
 
 const App = () => {
-    const [author, setAuthor] = useState();
+    const [publisher, setPublisher] = useState();
     const [selectedAuthor, setSelectedAuthor] = useState()
     const [modalState, setModalState] = useState(false)
 
@@ -23,8 +23,8 @@ const App = () => {
     }
 
     const getAuthor = () => {
-        getData(URL_AUTHOR).then(response => {
-            setAuthor(response?.authors)
+        getData(URL_PUBLISHER).then(response => {
+            setPublisher(response?.publishers)
         });
     }
 
@@ -41,15 +41,15 @@ const App = () => {
             dataField: "id",
             caption: "Id",
             dataType: "number",
-            width: 150,
+            width: 70,
         },
         {
-            dataField: "nm_full",
+            dataField: "name",
             caption: "Nome",
             dataType: "string",
         },
         {
-            dataField: "dat_birth",
+            dataField: "description",
             caption: "Nascimento",
             dataType: "date",
             format: 'shortDate',
@@ -57,11 +57,6 @@ const App = () => {
         {
             dataField: "nm_country",
             caption: "Pais",
-            dataType: "string",
-        },
-        {
-            dataField: "nm_language",
-            caption: "Idioma",
             dataType: "string",
         },
         {
@@ -116,12 +111,12 @@ const App = () => {
             <DataGrid
                 keyExpr={'id'}
                 tableColumns={columns}
-                data={author}
+                data={publisher}
                 toolBarRefresh={false}
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            <ModalAuthor modalState={modalState} hideModal={hideModal} author={selectedAuthor}/>
+            <ModalPublisher modalState={modalState} hideModal={hideModal} author={selectedAuthor}/>
         </>
     );
 }

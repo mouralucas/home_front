@@ -1,6 +1,6 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_AUTHOR, URL_COUNTRY, URL_LANGUAGE, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
+import {URL_AUTHOR, URL_COUNTRY, URL_LANGUAGE, URL_PUBLISHER, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import handleSubmit from '../../../../Services/Axios/Post'
@@ -128,10 +128,10 @@ const App = (props) => {
             <Modal
                 showModal={props.modalState}
                 hideModal={props.hideModal}
-                title={'Autor'}
+                title={'Editora'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e) => handleSubmit(e, URL_AUTHOR, values)}
+                actionModal={(e) => handleSubmit(e, URL_PUBLISHER, values)}
                 size={'lg'}
             />
         </div>

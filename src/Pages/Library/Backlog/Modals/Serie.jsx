@@ -1,6 +1,6 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_AUTHOR, URL_COUNTRY, URL_LANGUAGE, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
+import {URL_AUTHOR, URL_COUNTRY, URL_LANGUAGE, URL_PUBLISHER, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import handleSubmit from '../../../../Services/Axios/Post'
@@ -19,11 +19,12 @@ const App = (props) => {
     const [values, setValues] = useState({});
 
     useEffect(() => {
-        if (props.author && props.modalState) {
-            setValues(props.author);
+        if (props.serie && props.modalState) {
+            setValues(props.serie);
         }
 
         if (!props.modalState) {
+            //TODO: change values
             setValues({
                 nm_full: null,
                 country_id: 0,
@@ -33,7 +34,7 @@ const App = (props) => {
             setSelectedCountry(null);
             setSelectedLanguage(null);
         }
-    }, [props.modalState, props.author])
+    }, [props.modalState, props.serie])
 
 
     const getCountry = (query, callback) => {
@@ -128,10 +129,10 @@ const App = (props) => {
             <Modal
                 showModal={props.modalState}
                 hideModal={props.hideModal}
-                title={'Autor'}
+                title={'Série'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e) => handleSubmit(e, URL_AUTHOR, values)}
+                actionModal={(e) => handleSubmit(e, URL_PUBLISHER, values)}
                 size={'lg'}
             />
         </div>
