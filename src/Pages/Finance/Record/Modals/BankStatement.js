@@ -8,6 +8,7 @@ import handleSubmit from '../../../../Services/Axios/Post'
 import AsyncSelect from "react-select/async";
 import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";
+import {format as formatDate} from "../../../../Utils/DateTime";
 
 
 const App = (props) => {
@@ -30,6 +31,8 @@ const App = (props) => {
                 category_id: null,
                 dat_purchase: new Date(),
                 description: '',
+                datCreated: null,
+                datLastEdited: null
             });
             setSelectedCategory(null);
             setSelectedAccount(null);
@@ -132,6 +135,14 @@ const App = (props) => {
                             <label htmlFor="">Descrição</label>
                             <textarea className='form-control' value={values.description} id="" cols="30" rows="10" onChange={set('description')}></textarea>
                         </div>
+                    </div>
+                    <div className="row mt-2">
+                        <span className='text-small text-muted'>
+                            Criado em: {formatDate(values.datCreated)}
+                        </span>
+                        <span className="text-small text-muted">
+                            Editado em: {formatDate(values.datLastEdited)}
+                        </span>
                     </div>
                 </div>
             </form>;

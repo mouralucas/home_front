@@ -1,9 +1,14 @@
 import Card from "../../../Components/Card";
 import TableBook from "./Tables/Book";
 import TableManga from "./Tables/Manga";
+import {useEffect} from "react";
 
 
 const Home = () => {
+    useEffect(() => {
+        document.title = 'Biblioteca';
+    }, [])
+
     return (
         <div className="App">
             <Card>

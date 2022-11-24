@@ -107,13 +107,6 @@ const Book = () => {
                     hint="Editar"
                     onClick={showModal}
                 />,
-                // <Btn
-                //     // text="My Command"
-                //     // // icon="/url/to/my/icon.ico"
-                //     icon="coffee"
-                //     hint="My Command"
-                //     onClick={myOtherCommand}
-                // />
             ]
         }
     ]

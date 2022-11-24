@@ -8,6 +8,7 @@ import Currency from '../../../../Components/Currency'
 import AsyncSelect from "react-select/async";
 import {getData} from "../../../../Services/Axios/Get";
 import filterSelect from "../../../../Utils/DataHandling";
+import {format as formatDate} from "../../../../Utils/DateTime";
 
 /**
  * Modal to create new entry for the credit card bill
@@ -37,6 +38,8 @@ const App = (props) => {
                 dat_payment: new Date(),
                 dat_purchase: new Date(),
                 description: '',
+                datCreated: null,
+                datLastEdited: null
             });
             setSelectedCategory(null);
             setSelectedCard(null);
@@ -167,6 +170,14 @@ const App = (props) => {
                             <label htmlFor="">Descrição</label>
                             <textarea className='form-control' value={values.description} id="" cols="30" rows="10" onChange={set('description')}></textarea>
                         </div>
+                    </div>
+                    <div className="row mt-2">
+                        <span className='text-small text-muted'>
+                            Criado em: {formatDate(values.datCreated)}
+                        </span>
+                        <span className="text-small text-muted">
+                            Editado em: {formatDate(values.datLastEdited)}
+                        </span>
                     </div>
                 </div>
             </form>;

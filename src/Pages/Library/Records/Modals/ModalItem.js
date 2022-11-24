@@ -1,6 +1,16 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_AUTHOR, URL_ITEM, URL_ITEM_COLLECTION, URL_ITEM_FORMAT, URL_ITEM_SERIE, URL_ITEM_TYPES, URL_LANGUAGE, URL_PUBLISHER, URL_STATUS} from "../../../../Services/Axios/ApiUrls";
+import {
+    URL_AUTHOR,
+    URL_ITEM,
+    URL_ITEM_COLLECTION,
+    URL_ITEM_FORMAT,
+    URL_ITEM_SERIE,
+    URL_ITEM_TYPES,
+    URL_LANGUAGE,
+    URL_PUBLISHER,
+    URL_STATUS
+} from "../../../../Services/Axios/ApiUrls";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import Currency from "../../../../Components/Currency";
@@ -8,6 +18,7 @@ import AsyncSelect from "react-select/async";
 import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";
 import handleSubmit from "../../../../Services/Axios/Post";
+import {format as formatDate} from "../../../../Utils/DateTime";
 
 const ModalItem = (props) => {
     // Combo boxes variables
@@ -46,7 +57,7 @@ const ModalItem = (props) => {
             setValues(props.item);
         }
 
-        if (!props.modalState){
+        if (!props.modalState) {
             setValues({
                 item_id: null,
                 status_id: null,
@@ -78,6 +89,11 @@ const ModalItem = (props) => {
                 width: '',
                 thickness: '',
                 summary: '',
+
+                createdBy: null,
+                datCreated: null,
+                lastEditedBy: null,
+                datLastEdited: null
             })
 
             setSelectedMainAuthor(null);
@@ -93,7 +109,7 @@ const ModalItem = (props) => {
 
     // Set combo boxes default
     useEffect(() => {
-        if (props.item){
+        if (props.item) {
             setSelectedMainAuthor(mainAuthor.filter(i => i.value === props.item.main_author_id)[0]);
         }
     }, [mainAuthor, props.item])
@@ -318,38 +334,45 @@ const ModalItem = (props) => {
                         </div>
                         <div className="col-2">
                             <label htmlFor="">Data status:</label>
-                            <DateBox value={values.dat_last_status} type="date" className='form-control input-default' useMaskValue={true}
+                            <DateBox value={values.dat_last_status} type="date" className='form-control input-default'
+                                     useMaskValue={true}
                                      onValueChanged={(date) => setDate(date, 'dat_last_status')}/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-6">
                             <label htmlFor="{'nm_title'}">Título</label>
-                            <input value={values.title} onChange={set('title')} type="text" className='form-control input-default'/>
+                            <input value={values.title} onChange={set('title')} type="text"
+                                   className='form-control input-default'/>
                         </div>
                         <div className="col-6">
                             <label htmlFor="{'subtitle'}">Sub-título</label>
-                            <input value={values.subtitle} onChange={set('subtitle')} type="text" className='form-control input-default'/>
+                            <input value={values.subtitle} onChange={set('subtitle')} type="text"
+                                   className='form-control input-default'/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-6">
                             <label htmlFor="{'nm_author'}">Título original</label>
-                            <input value={values.title_original} onChange={set('title_original')} type="text" className='form-control input-default'/>
+                            <input value={values.title_original} onChange={set('title_original')} type="text"
+                                   className='form-control input-default'/>
                         </div>
                         <div className="col-6">
                             <label htmlFor="{'subtitle'}">Sub-título original</label>
-                            <input value={values.subtitle_original} onChange={set('subtitle_original')} type="text" className='form-control input-default'/>
+                            <input value={values.subtitle_original} onChange={set('subtitle_original')} type="text"
+                                   className='form-control input-default'/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-3">
                             <label htmlFor="{'nm_author'}">ISBN</label>
-                            <input value={values.isbn} onChange={set('isbn')} type="text" className='form-control input-default'/>
+                            <input value={values.isbn} onChange={set('isbn')} type="text"
+                                   className='form-control input-default'/>
                         </div>
                         <div className="col-3">
                             <label htmlFor="{'subtitle'}">ISBN-10</label>
-                            <input value={values.isbn10} onChange={set('isbn10')} type="text" className='form-control input-default'/>
+                            <input value={values.isbn10} onChange={set('isbn10')} type="text"
+                                   className='form-control input-default'/>
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Tipo: {values.itemType}</label>
@@ -357,19 +380,22 @@ const ModalItem = (props) => {
                                          loadOptions={(query, callback) => getItemTypes(query, callback)}
                                          onChange={(e) => setCombo(e, 'itemType', setSelectedItemType)}
                                          defaultOptions
-                                         value={selectedItemType} />
+                                         value={selectedItemType}/>
                         </div>
                         <div className="col-1">
                             <label htmlFor="{'pages'}">Páginas</label>
-                            <input value={values.pages} onChange={set('pages')} type="text" className='form-control input-default'/>
+                            <input value={values.pages} onChange={set('pages')} type="text"
+                                   className='form-control input-default'/>
                         </div>
                         <div className="col-1">
                             <label htmlFor="{volume'}">Volume</label>
-                            <input value={values.volume} onChange={set('volume')} type="text" className='form-control input-default'/>
+                            <input value={values.volume} onChange={set('volume')} type="text"
+                                   className='form-control input-default'/>
                         </div>
                         <div className="col-1">
                             <label htmlFor="{'edition'}">Edição</label>
-                            <input value={values.edition} onChange={set('edition')} type="text" className='form-control input-default'/>
+                            <input value={values.edition} onChange={set('edition')} type="text"
+                                   className='form-control input-default'/>
                         </div>
                     </div>
                     <div className="row">
@@ -380,7 +406,8 @@ const ModalItem = (props) => {
                         </div>
                         <div className="col-2">
                             <label htmlFor="">Lançamento original: {values.dat_published_original}</label>
-                            <DateBox value={values.dat_published_original} type="date" className='form-control input-default'
+                            <DateBox value={values.dat_published_original} type="date"
+                                     className='form-control input-default'
                                      onValueChanged={(date) => setDate(date, 'dat_published_original')}/>
                         </div>
                         <div className="col-4">
@@ -389,7 +416,7 @@ const ModalItem = (props) => {
                                          loadOptions={(query, callback) => getSerie(query, callback)}
                                          onChange={(e) => setCombo(e, 'serie_id', setSelectedSerie)}
                                          defaultOptions
-                                         value={selectedSerie} />
+                                         value={selectedSerie}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Coleção: {values.collection_id}</label>
@@ -397,7 +424,7 @@ const ModalItem = (props) => {
                                          loadOptions={(query, callback) => getCollection(query, callback)}
                                          onChange={(e) => setCombo(e, 'collection_id', setSelectedCollection)}
                                          defaultOptions
-                                         value={selectedCollection} />
+                                         value={selectedCollection}/>
                         </div>
                     </div>
                     <div className="row">
@@ -407,7 +434,7 @@ const ModalItem = (props) => {
                                          loadOptions={(query, callback) => getPublishers(query, callback)}
                                          onChange={(e) => setCombo(e, 'publisher_id', setSelectedPublisher)}
                                          defaultOptions
-                                         value={selectedPublisher} />
+                                         value={selectedPublisher}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Formato: {values.format_id}</label>
@@ -415,7 +442,7 @@ const ModalItem = (props) => {
                                          loadOptions={(query, callback) => getItemFormat(query, callback)}
                                          onChange={(e) => setCombo(e, 'format_id', setSelectedItemFormat)}
                                          defaultOptions
-                                         value={selectedItemFormat} />
+                                         value={selectedItemFormat}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Idioma: {values.language_id}</label>
@@ -423,7 +450,7 @@ const ModalItem = (props) => {
                                          loadOptions={(query, callback) => getLanguage(query, callback)}
                                          onChange={(e) => setCombo(e, 'language_id', setSelectedLanguage)}
                                          defaultOptions
-                                         value={selectedLanguage} />
+                                         value={selectedLanguage}/>
                         </div>
                     </div>
                     <div className="row">
@@ -472,8 +499,17 @@ const ModalItem = (props) => {
                     <div className="row">
                         <div className="col-12">
                             <label htmlFor="">Resumo</label>
-                            <textarea className='form-control' value={values.summary} id="" cols="30" rows="10" onChange={set('summary')}></textarea>
+                            <textarea className='form-control' value={values.summary} id="" cols="30" rows="10"
+                                      onChange={set('summary')}></textarea>
                         </div>
+                    </div>
+                    <div className="row">
+                        <span className='text-small text-muted'>
+                            Criado em: {formatDate(values.datCreated)}
+                        </span>
+                        <span className="text-small text-muted">
+                            Editado em: {formatDate(values.datLastEdited)}
+                        </span>
                     </div>
                 </div>
             </form>;
