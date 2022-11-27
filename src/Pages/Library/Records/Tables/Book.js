@@ -26,8 +26,8 @@ const Book = () => {
 
     const hideModalItem = () => {
         setModalState(false);
+        getBooks();
     }
-
 
     const getBooks = () => {
         axios.get(URL_ITEM, {
@@ -38,6 +38,15 @@ const Book = () => {
         ).catch(response => {
             return {'error': response}
         })
+    }
+
+    /**
+     * Custom function to show the installments in the table it shows the current installment and the total in the format xx/xx
+     * @param cellInfo
+     * @returns the installments in xx/xx format
+     */
+    function priceCustomCell(cellInfo) {
+        return cellInfo.payed_price+ '/' + cellInfo.cover_price;
     }
 
     let colunasTabelaLivro = [
@@ -76,7 +85,8 @@ const Book = () => {
             caption: "Pago/Capa",
             dataType: "number",
             width: 150,
-            format: {style: 'currency', currency: 'BRL', useGrouping: true, precision: 2}
+            calculateCellValue: priceCustomCell,
+            // format: {style: 'currency', currency: 'BRL', useGrouping: true, precision: 2}
         },
         {
             dataField: "nm_serie",

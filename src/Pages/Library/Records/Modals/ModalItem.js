@@ -69,8 +69,8 @@ const ModalItem = (props) => {
                 subtitle: '',
                 title_original: '',
                 subtitle_original: null,
-                isbn: '',
-                isbn10: '',
+                isbn_formatted: '',
+                isbn10_formatted: '',
                 itemType: 0,
                 pages: 0,
                 volume: 1,
@@ -366,12 +366,12 @@ const ModalItem = (props) => {
                     <div className="row">
                         <div className="col-3">
                             <label htmlFor="{'nm_author'}">ISBN</label>
-                            <input value={values.isbn} onChange={set('isbn')} type="text"
+                            <input value={values.isbn_formatted} onChange={set('isbn_formatted')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-3">
                             <label htmlFor="{'subtitle'}">ISBN-10</label>
-                            <input value={values.isbn10} onChange={set('isbn10')} type="text"
+                            <input value={values.isbn10_formatted} onChange={set('isbn10_formatted')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-3">

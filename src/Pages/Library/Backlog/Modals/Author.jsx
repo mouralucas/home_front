@@ -1,13 +1,13 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_AUTHOR, URL_COUNTRY, URL_LANGUAGE, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
+import {URL_AUTHOR, URL_COUNTRY, URL_LANGUAGE} from "../../../../Services/Axios/ApiUrls";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import handleSubmit from '../../../../Services/Axios/Post'
 import AsyncSelect from "react-select/async";
 import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";
-
+import {CheckBox} from 'devextreme-react/check-box';
 
 const App = (props) => {
     const [country, setCountry] = useState([])
@@ -27,6 +27,7 @@ const App = (props) => {
             setValues({
                 nm_full: null,
                 country_id: 0,
+                dat_birth: null,
                 language_id: 0,
                 description: '',
             });
@@ -78,7 +79,11 @@ const App = (props) => {
     }
 
     const setDate = (e, name) => {
-        return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
+        if (e.value !== null) {
+            return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
+        } else {
+            return setValues(oldValues => ({...oldValues, [name]: e.value}))
+        }
     }
 
     const body = () => {
@@ -88,12 +93,12 @@ const App = (props) => {
                     <div className="row">
                         <div className="col-3">
                             <label htmlFor="">Nome: {values.nm_full}</label>
-                            <input type="text" value={values.nm_full} className="form-control input-default"/>
+                            <input type="text" value={values.nm_full} className="form-control input-default" onChange={set('nm_full')}/>
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Data nascimento</label>
                             <DateBox value={values.dat_birth} type="date" className='form-control input-default'
-                                     onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
+                                     onValueChanged={(date) => setDate(date, 'dat_birth')}/>
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Country {values.country_id}</label>
@@ -108,6 +113,15 @@ const App = (props) => {
                                          loadOptions={(query, callback) => getLanguage(query, callback)}
                                          onChange={(e) => setCombo(e, 'language_id', setSelectedLanguage)}
                                          defaultOptions value={selectedLanguage}/>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12 mt-2">
+                            <CheckBox
+                                text="É tradutor"
+                                hint="Approve"
+                                iconSize="25"
+                            />
                         </div>
                     </div>
                     <div className="row">
