@@ -68,9 +68,9 @@ const Login = () => {
                                             <img src={logo} alt="Logo" className='mb-4'/>
                                             <form onSubmit={handleSubmit}>
                                                 <label htmlFor="">Username</label>
-                                                <Input name={'username'} placeholder={'Username'} onChange={e => setUserName(e.target.value)} className='form-control'/>
+                                                <input name={'username'} placeholder={'Username'} onChange={e => setUserName(e.target.value)} className='form-control'/>
                                                 <label htmlFor="">Password</label>
-                                                <Input type={'password'} name={'password'} placeholder={'Password'} onChange={e => setPassword(e.target.value)} className='form-control'/>
+                                                <input type={'password'} name={'password'} placeholder={'Password'} onChange={e => setPassword(e.target.value)} className='form-control'/>
                                                 <div className="text-center">
                                                     <button type='submit' className="mt-4 btn btn-primary btn-block w-100">Entrar</button>
                                                 </div>
