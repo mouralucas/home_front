@@ -1,4 +1,6 @@
+
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react'
 import {Modal} from 'react-bootstrap';
 import '../Assets/Core/Components/Modal.css'
 
