@@ -75,18 +75,15 @@ const Book = () => {
             width: 150,
         },
         {
-            dataField: "volume",
-            caption: "Vol.",
-            dataType: "number",
+            dataField: "itemType",
+            caption: "Tipo",
+            dataType: "string",
             width: 150,
         },
         {
-            dataField: "cover_price",
-            caption: "Pago/Capa",
-            dataType: "number",
-            width: 150,
-            calculateCellValue: priceCustomCell,
-            // format: {style: 'currency', currency: 'BRL', useGrouping: true, precision: 2}
+          dataField: "itemFormatId",
+          caption: "Formato",
+          dataType: "string"
         },
         {
             dataField: "nm_serie",
