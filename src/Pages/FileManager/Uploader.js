@@ -57,7 +57,7 @@ class App extends React.Component {
                     dropZone="#dropzone-external"
                     multiple={false}
                     allowedFileExtensions={this.allowedFileExtensions}
-                    uploadMode={this.props.uploadMode ?? "useForm"}
+                    uploadMode={"instantly"}
                     uploadUrl={URL_BASE + '/' + URL_UPLOADS}
                     visible={false}
                     onDropZoneEnter={this.onDropZoneEnter}

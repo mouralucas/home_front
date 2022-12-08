@@ -80,7 +80,7 @@ const ModalItem = (props) => {
                 serie_id: 0,
                 collection_id: 0,
                 publisher_id: 0,
-                format_id: 0,
+                itemFormatId: 0,
                 language_id: 'PT',
                 cover_price: 0,
                 payed_price: 0,
@@ -116,43 +116,43 @@ const ModalItem = (props) => {
 
     useEffect(() => {
         if (props.item) {
-            setSelectedLastStatus(lastStatus.filter(i => i.value === props.item.last_status_id))
+            setSelectedLastStatus(lastStatus.filter(i => i.value === props.item.last_status_id)[0])
         }
     }, [lastStatus, props.item])
 
     useEffect(() => {
         if (props.item) {
-            setSelectedItemType(itemType.filter(i => i.value === props.item.item_type))
+            setSelectedItemType(itemType.filter(i => i.value === props.item.item_type)[0])
         }
     }, [itemType, props.item])
 
     useEffect(() => {
         if (props.item) {
-            setSelectedSerie(serie.filter(i => i.value === props.item.serie_id))
+            setSelectedSerie(serie.filter(i => i.value === props.item.serie_id)[0])
         }
     }, [serie, props.item])
 
     useEffect(() => {
         if (props.item) {
-            setSelectedCollection(collection.filter(i => i.value === props.item.collection_id))
+            setSelectedCollection(collection.filter(i => i.value === props.item.collection_id)[0])
         }
     }, [collection, props.item])
 
     useEffect(() => {
         if (props.item) {
-            setSelectedPublisher(publisher.filter(i => i.value === props.item.publisher_id))
+            setSelectedPublisher(publisher.filter(i => i.value === props.item.publisher_id)[0])
         }
     }, [publisher, props.item])
 
     useEffect(() => {
         if (props.item) {
-            setSelectedItemFormat(itemFormat.filter(i => i.value === props.item.format_id))
+            setSelectedItemFormat(itemFormat.filter(i => i.value === props.item.itemFormatId)[0])
         }
     }, [itemFormat, props.item])
 
     useEffect(() => {
         if (props.item) {
-            setSelectedLanguage(language.filter(i => i.value === props.item.language_id))
+            setSelectedLanguage(language.filter(i => i.value === props.item.language_id)[0])
         }
     }, [language, props.item])
 
@@ -234,7 +234,7 @@ const ModalItem = (props) => {
                 callback(options);
 
                 setItemFormat(options);
-                setSelectedItemFormat(options.filter(i => i.value === values.format_id)[0]);
+                setSelectedItemFormat(options.filter(i => i.value === values.itemFormatId)[0]);
             });
         }
     }
@@ -437,10 +437,10 @@ const ModalItem = (props) => {
                                          value={selectedPublisher}/>
                         </div>
                         <div className="col-4">
-                            <label htmlFor="">Formato: {values.format_id}</label>
+                            <label htmlFor="">Formato: {values.itemFormatId}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getItemFormat(query, callback)}
-                                         onChange={(e) => setCombo(e, 'format_id', setSelectedItemFormat)}
+                                         onChange={(e) => setCombo(e, 'itemFormatId', setSelectedItemFormat)}
                                          defaultOptions
                                          value={selectedItemFormat}/>
                         </div>

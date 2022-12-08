@@ -23,7 +23,7 @@ instance.interceptors.response.use(
     },
     async function (error) {
         if (error.response.status === 401 && getToken()) {
-            //Your logic to refresh token and reattempt request
+            localStorage.clear();
         } else {
             console.error('Error', error);
         }
