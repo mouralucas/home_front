@@ -8,7 +8,7 @@ import {getData} from "../../../../Services/Axios/Get";
 
 const App = () => {
     const [serie, setSerie] = useState();
-    const [selectedSerie, setSelectedSerie] = useState()
+    const [selectedSerie, setSelectedSerie] = useState({})
     const [modalState, setModalState] = useState(false)
 
     const showModal = (e) => {
@@ -20,16 +20,18 @@ const App = () => {
 
     const hideModal = () => {
         setModalState(false);
+        setSelectedSerie({});
+        getSerie();
     }
 
-    const getAuthor = () => {
+    const getSerie = () => {
         getData(URL_ITEM_SERIE).then(response => {
             setSerie(response?.series)
         });
     }
 
     useEffect(() => {
-        getAuthor();
+        getSerie();
     }, []);
 
     function myOtherCommand(e) {
@@ -58,6 +60,11 @@ const App = () => {
             dataField: "description",
             caption: "Descrição",
             dataType: "string",
+        },
+        {
+            dataField: "nm_country",
+            caption: "País",
+            dataType: "string"
         },
         {
             caption: 'Ações',
@@ -92,7 +99,7 @@ const App = () => {
             location: 'after',
         },
         {
-            child: <Button icon={'refresh'} onClick={getAuthor}/>,
+            child: <Button icon={'refresh'} onClick={getSerie}/>,
             location: "after"
         },
         {

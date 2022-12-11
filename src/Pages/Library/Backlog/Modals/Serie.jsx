@@ -1,7 +1,6 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_AUTHOR, URL_COUNTRY, URL_LANGUAGE, URL_PUBLISHER, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
-import DateBox from "devextreme-react/date-box";
+import {URL_COUNTRY, URL_ITEM_SERIE} from "../../../../Services/Axios/ApiUrls";
 import Moment from "moment/moment";
 import handleSubmit from '../../../../Services/Axios/Post'
 import AsyncSelect from "react-select/async";
@@ -13,53 +12,41 @@ const App = (props) => {
     const [country, setCountry] = useState([])
     const [selectedCountry, setSelectedCountry] = useState()
 
-    const [language, setLanguage] = useState([]);
-    const [selectedLanguage, setSelectedLanguage] = useState();
-
     const [values, setValues] = useState({});
 
     useEffect(() => {
+        console.log(props.serie)
         if (props.serie && props.modalState) {
             setValues(props.serie);
         }
 
         if (!props.modalState) {
-            //TODO: change values
             setValues({
-                nm_full: null,
+                serie_id: null,
+                name: null,
+                nm_original: null,
+                description: null,
                 country_id: 0,
-                language_id: 0,
-                description: '',
             });
             setSelectedCountry(null);
-            setSelectedLanguage(null);
         }
     }, [props.modalState, props.serie])
 
+    useEffect(() => {
+        if (props.serie) {
+            setSelectedCountry(country.filter(i => i.value === props.serie.country_id)[0]);
+        }
+    }, [country, props.serie])
 
     const getCountry = (query, callback) => {
         if (query) {
             callback(filterSelect(country, query));
         } else {
             getData(URL_COUNTRY).then(response => {
-                let options = response == null ? {} : response.countries.map(i => ({value: i.id, label: i.name}))
+                let options = response == null ? {} : response?.countries.map(i => ({value: i.id, label: i.name}))
                 callback(options);
-                setSelectedCountry(options?.filter(category => category.value === values.category_id)[0]);
                 setCountry(options);
-            });
-        }
-    }
-
-    const getLanguage = (query, callback) => {
-        if (query) {
-            callback(filterSelect(language, query));
-        } else {
-            getData(URL_LANGUAGE).then(response => {
-                let options = response.languages.map(i => ({value: i.id, label: i.name}));
-                callback(options);
-
-                setLanguage(options);
-                setSelectedLanguage(options?.filter(i => i.value === values.language_id)[0]);
+                setSelectedCountry(options?.filter(country => country.value === values.country_id)[0]);
             });
         }
     }
@@ -78,37 +65,26 @@ const App = (props) => {
         return setValues(oldValues => ({...oldValues, [name]: e.value}));
     }
 
-    const setDate = (e, name) => {
-        return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
-    }
-
     const body = () => {
         let body_html =
             <form>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-3">
-                            <label htmlFor="">Nome: {values.nm_full}</label>
-                            <input type="text" value={values.nm_full} className="form-control input-default"/>
+                        <div className="col-4">
+                            <label htmlFor="">Nome: {values.name}</label>
+                            <input type="text" value={values.name} onChange={set('name')} className="form-control input-default"/>
                         </div>
-                        <div className="col-3">
-                            <label htmlFor="">Data nascimento</label>
-                            <DateBox value={values.dat_birth} type="date" className='form-control input-default'
-                                     onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
+                        <div className="col-4">
+                            <label htmlFor="">Original: {values.nm_original}</label>
+                            <input type="text" value={values.nm_original} onChange={set('nm_original')} className="form-control input-default"/>
                         </div>
-                        <div className="col-3">
+                        <div className="col-4">
                             <label htmlFor="">Country {values.country_id}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getCountry(query, callback)}
-                                         onChange={(e) => setCombo(e, 'country_id', setSelectedCountry)} defaultOptions
+                                         onChange={(e) => setCombo(e, 'country_id', setSelectedCountry)}
+                                         defaultOptions
                                          value={selectedCountry}/>
-                        </div>
-                        <div className="col-3">
-                            <label htmlFor="">Idioma {values.language_id}</label>
-                            <AsyncSelect formTarget={true}
-                                         loadOptions={(query, callback) => getLanguage(query, callback)}
-                                         onChange={(e) => setCombo(e, 'language_id', setSelectedLanguage)}
-                                         defaultOptions value={selectedLanguage}/>
                         </div>
                     </div>
                     <div className="row">
@@ -132,7 +108,7 @@ const App = (props) => {
                 title={'Série'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e) => handleSubmit(e, URL_PUBLISHER, values)}
+                actionModal={(e) => handleSubmit(e, URL_ITEM_SERIE, values)}
                 size={'lg'}
             />
         </div>
