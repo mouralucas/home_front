@@ -25,6 +25,7 @@ const App = (props) => {
 
         if (!props.modalState) {
             setValues({
+                author_id: null,
                 nm_full: null,
                 country_id: 0,
                 dat_birth: null,
