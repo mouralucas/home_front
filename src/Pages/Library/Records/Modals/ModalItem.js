@@ -60,7 +60,7 @@ const ModalItem = (props) => {
         if (!props.modalState) {
             setValues({
                 item_id: null,
-                status_id: null,
+                last_status_id: null,
                 dat_last_status: new Date(),
                 main_author_id: 0,
                 authors_id: [],
@@ -263,7 +263,7 @@ const ModalItem = (props) => {
                 callback(options);
 
                 setLastStatus(options);
-                setSelectedLastStatus(options.filter(i => i.value === values.status_id)[0])
+                setSelectedLastStatus(options.filter(i => i.value === values.last_status_id)[0])
             })
         }
     }
@@ -325,10 +325,10 @@ const ModalItem = (props) => {
                                          isMulti={true}/>
                         </div>
                         <div className="col-2">
-                            <label htmlFor="{'combo_status'}">Status: {values.status_id}</label>
+                            <label htmlFor="{'combo_status'}">Status: {values.last_status_id}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getStatus(query, callback)}
-                                         onChange={(e) => setCombo(e, 'status_id', setSelectedLastStatus)}
+                                         onChange={(e) => setCombo(e, 'last_status_id', setSelectedLastStatus)}
                                          defaultOptions
                                          value={selectedLastStatus}/>
                         </div>
