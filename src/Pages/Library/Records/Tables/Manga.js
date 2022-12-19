@@ -157,6 +157,7 @@ const Manga = () => {
                 tooBarRefresh={false}
                 toolBarItems={toolBarItems}
                 loadPanel={false}
+                paging={20}
 
             />
             <ModalItem modalState={modalState} hideModalItem={hideModalItem} item={selectedManga}/>

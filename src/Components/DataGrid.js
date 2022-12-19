@@ -173,7 +173,7 @@ class Table extends React.Component {
 
                 {/* Page elements */}
                 {this.setPager()}
-                {this.setPaging()}
+                <Paging defaultPageSize={this.props.paging ?? 10}/>;
 
                 {/* Toolbar elements */}
                 {this.setExport()}
