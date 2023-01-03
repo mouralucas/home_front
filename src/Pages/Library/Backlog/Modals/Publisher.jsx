@@ -1,7 +1,6 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
 import {URL_COUNTRY, URL_PUBLISHER} from "../../../../Services/Axios/ApiUrls";
-import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import handleSubmit from '../../../../Services/Axios/Post'
 import AsyncSelect from "react-select/async";
@@ -11,10 +10,7 @@ import {getData} from "../../../../Services/Axios/Get";
 
 const App = (props) => {
     const [country, setCountry] = useState([])
-    const [selectedCountry, setSelectedCountry] = useState()
-
-    const [selectedLanguage, setSelectedLanguage] = useState();
-
+    const [selectedCountry, setSelectedCountry] = useState();
     const [values, setValues] = useState({});
 
     useEffect(() => {
@@ -29,9 +25,14 @@ const App = (props) => {
                 description: '',
             });
             setSelectedCountry(null);
-            setSelectedLanguage(null);
         }
     }, [props.modalState, props.author])
+
+    useEffect(() => {
+        if (props.publisher) {
+            setSelectedCountry(country.filter(i => i.value === props.publisher.country_id)[0]);
+        }
+    }, [country, props.publisher])
 
     const getCountry = (query, callback) => {
         if (query) {
