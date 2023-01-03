@@ -61,7 +61,7 @@ const App = () => {
         {
             dataField: "amount",
             caption: "Valor",
-            dataType: "number",
+            dataType: "currency",
             width: 110,
         },
         {

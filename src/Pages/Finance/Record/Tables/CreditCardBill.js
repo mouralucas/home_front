@@ -85,13 +85,13 @@ const App = () => {
         {
             dataField: "dat_payment",
             caption: "Pagamento",
-            dataType: "date",
+            dataType: "shortDate",
             width: 150,
         },
         {
             dataField: "amount",
             caption: "Valor",
-            dataType: "number",
+            dataType: "currency",
             width: 110,
         },
         {
