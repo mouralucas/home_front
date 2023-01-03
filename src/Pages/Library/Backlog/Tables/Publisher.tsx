@@ -8,12 +8,12 @@ import {getData} from "../../../../Services/Axios/Get";
 
 const App = () => {
     const [publisher, setPublisher] = useState();
-    const [selectedAuthor, setSelectedAuthor] = useState()
+    const [selectedPublisher, setSelectedPublisher] = useState()
     const [modalState, setModalState] = useState(false)
 
     const showModal = (e) => {
         if (typeof e.row !== 'undefined') {
-            setSelectedAuthor(e.row.data);
+            setSelectedPublisher(e.row.data);
         }
         setModalState(true);
     }
@@ -116,7 +116,7 @@ const App = () => {
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            <ModalPublisher modalState={modalState} hideModal={hideModal} author={selectedAuthor}/>
+            <ModalPublisher modalState={modalState} hideModal={hideModal} publisher={selectedPublisher}/>
         </>
     );
 }

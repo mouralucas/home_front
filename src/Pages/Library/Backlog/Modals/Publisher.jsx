@@ -1,6 +1,6 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_AUTHOR, URL_COUNTRY, URL_LANGUAGE, URL_PUBLISHER, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
+import {URL_COUNTRY, URL_PUBLISHER} from "../../../../Services/Axios/ApiUrls";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import handleSubmit from '../../../../Services/Axios/Post'
@@ -13,28 +13,25 @@ const App = (props) => {
     const [country, setCountry] = useState([])
     const [selectedCountry, setSelectedCountry] = useState()
 
-    const [language, setLanguage] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState();
 
     const [values, setValues] = useState({});
 
     useEffect(() => {
-        if (props.author && props.modalState) {
-            setValues(props.author);
+        if (props.publisher && props.modalState) {
+            setValues(props.publisher);
         }
 
         if (!props.modalState) {
             setValues({
-                nm_full: null,
+                name: null,
                 country_id: 0,
-                language_id: 0,
                 description: '',
             });
             setSelectedCountry(null);
             setSelectedLanguage(null);
         }
     }, [props.modalState, props.author])
-
 
     const getCountry = (query, callback) => {
         if (query) {
@@ -45,20 +42,6 @@ const App = (props) => {
                 callback(options);
                 setSelectedCountry(options?.filter(category => category.value === values.category_id)[0]);
                 setCountry(options);
-            });
-        }
-    }
-
-    const getLanguage = (query, callback) => {
-        if (query) {
-            callback(filterSelect(language, query));
-        } else {
-            getData(URL_LANGUAGE).then(response => {
-                let options = response.languages.map(i => ({value: i.id, label: i.name}));
-                callback(options);
-
-                setLanguage(options);
-                setSelectedLanguage(options?.filter(i => i.value === values.language_id)[0]);
             });
         }
     }
@@ -86,28 +69,16 @@ const App = (props) => {
             <form>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-3">
-                            <label htmlFor="">Nome: {values.nm_full}</label>
-                            <input type="text" value={values.nm_full} className="form-control input-default"/>
+                        <div className="col-6">
+                            <label htmlFor="">Nome: {values.name}</label>
+                            <input type="text" value={values.name} className="form-control input-default"/>
                         </div>
-                        <div className="col-3">
-                            <label htmlFor="">Data nascimento</label>
-                            <DateBox value={values.dat_birth} type="date" className='form-control input-default'
-                                     onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
-                        </div>
-                        <div className="col-3">
+                        <div className="col-6">
                             <label htmlFor="">Country {values.country_id}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getCountry(query, callback)}
                                          onChange={(e) => setCombo(e, 'country_id', setSelectedCountry)} defaultOptions
                                          value={selectedCountry}/>
-                        </div>
-                        <div className="col-3">
-                            <label htmlFor="">Idioma {values.language_id}</label>
-                            <AsyncSelect formTarget={true}
-                                         loadOptions={(query, callback) => getLanguage(query, callback)}
-                                         onChange={(e) => setCombo(e, 'language_id', setSelectedLanguage)}
-                                         defaultOptions value={selectedLanguage}/>
                         </div>
                     </div>
                     <div className="row">
