@@ -12,9 +12,8 @@ const App = () => {
     const [modalState, setModalState] = useState(false)
 
     const showModal = (e) => {
-        if (typeof e.row !== 'undefined') {
-            setSelectedPublisher(e.row.data);
-        }
+        const row_state = typeof e.row === 'undefined' ? null : e.row.data
+        setSelectedPublisher(row_state);
         setModalState(true);
     }
 

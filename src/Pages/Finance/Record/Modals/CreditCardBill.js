@@ -148,27 +148,38 @@ const App = (props) => {
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data compra</label>
-                            <DateBox value={values.dat_purchase} type="date" className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
+                            <DateBox value={values.dat_purchase} type="date" className='form-control input-default'
+                                     useMaskBehavior={true}
+                                     onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data pagamento</label>
-                            <DateBox value={values.dat_payment} className='form-control input-default' onValueChanged={(date) => setDate(date, 'dat_payment')}/>
+                            <DateBox value={values.dat_payment} className='form-control input-default'
+                                     useMaskBehavior={true}
+                                     onValueChanged={(date) => setDate(date, 'dat_payment')}/>
                         </div>
                     </div>
                     <div className='row'>
                         <div className="col-4">
                             <label htmlFor="">Cartão: {values.card_id}</label>
-                            <AsyncSelect id={'combo_cards'} formTarget={true} loadOptions={(query, callback) => getCreditCard(query, callback)} onChange={(e) => setCombo(e, 'card_id', setSelectedCard)} defaultOptions value={selectedCard}/>
+                            <AsyncSelect id={'combo_cards'} formTarget={true}
+                                         loadOptions={(query, callback) => getCreditCard(query, callback)}
+                                         onChange={(e) => setCombo(e, 'card_id', setSelectedCard)} defaultOptions
+                                         value={selectedCard}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Categoria: {values.category_id}</label>
-                            <AsyncSelect id={'combo_categories'} formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)} onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)} defaultOptions value={selectedCategory}/>
+                            <AsyncSelect id={'combo_categories'} formTarget={true}
+                                         loadOptions={(query, callback) => getCategory(query, callback)}
+                                         onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)}
+                                         defaultOptions value={selectedCategory}/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-12">
                             <label htmlFor="">Descrição</label>
-                            <textarea className='form-control' value={values.description} id="" cols="30" rows="10" onChange={set('description')}></textarea>
+                            <textarea className='form-control' value={values.description} id="" cols="30" rows="10"
+                                      onChange={set('description')}></textarea>
                         </div>
                     </div>
                     <div className="row mt-2">

@@ -8,13 +8,13 @@ import {getData} from "../../../../Services/Axios/Get";
 
 const App = () => {
     const [author, setAuthor] = useState();
+    // TODO: ver vídeo sobre uso de states desnecessários
     const [selectedAuthor, setSelectedAuthor] = useState()
     const [modalState, setModalState] = useState(false)
 
     const showModal = (e) => {
-        if (typeof e.row !== 'undefined') {
-            setSelectedAuthor(e.row.data);
-        }
+        const row_state = typeof e.row === 'undefined' ? null : e.row.data
+        setSelectedAuthor(row_state);
         setModalState(true);
     }
 

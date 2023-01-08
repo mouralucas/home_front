@@ -24,19 +24,33 @@ const App = (props) => {
         }
 
         if (!props.modalState) {
-            setValues({
+
+            setValues(oldValues => ({
+                ...oldValues,
                 author_id: null,
                 nm_full: null,
-                country_id: 0,
+                country_id: null,
                 dat_birth: null,
-                language_id: 0,
+                language_id: null,
                 description: '',
-            });
+            }));
+
             setSelectedCountry(null);
             setSelectedLanguage(null);
         }
     }, [props.modalState, props.author])
 
+    useEffect(() => {
+        if (props.author) {
+            setSelectedLanguage(language.filter(i => i.value === props.author.language_id)[0])
+        }
+    }, [language, props.author])
+
+    useEffect(() => {
+        if (props.author) {
+            setSelectedCountry(country.filter(i => i.value === props.author.country_id)[0])
+        }
+    }, [country, props.author])
 
     const getCountry = (query, callback) => {
         if (query) {
@@ -98,7 +112,7 @@ const App = (props) => {
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Data nascimento</label>
-                            <DateBox value={values.dat_birth} type="date" className='form-control input-default'
+                            <DateBox value={values.dat_birth} type="date" className='form-control input-default' useMaskBehavior={true}
                                      onValueChanged={(date) => setDate(date, 'dat_birth')}/>
                         </div>
                         <div className="col-3">

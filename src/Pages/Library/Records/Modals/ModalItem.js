@@ -335,7 +335,7 @@ const ModalItem = (props) => {
                         <div className="col-2">
                             <label htmlFor="">Data status:</label>
                             <DateBox value={values.dat_last_status} type="date" className='form-control input-default'
-                                     useMaskValue={true}
+                                     useMaskValue={true} useMaskBehavior={true}
                                      onValueChanged={(date) => setDate(date, 'dat_last_status')}/>
                         </div>
                     </div>
@@ -402,12 +402,14 @@ const ModalItem = (props) => {
                         <div className="col-2">
                             <label htmlFor="">Lançamento: {values.dat_published}</label>
                             <DateBox value={values.dat_published} type="date" className='form-control input-default'
+                                     useMaskBehavior={true}
                                      onValueChanged={(date) => setDate(date, 'dat_published')}/>
                         </div>
                         <div className="col-2">
                             <label htmlFor="">Lançamento original: {values.dat_published_original}</label>
                             <DateBox value={values.dat_published_original} type="date"
                                      className='form-control input-default'
+                                     useMaskBehavior={true}
                                      onValueChanged={(date) => setDate(date, 'dat_published_original')}/>
                         </div>
                         <div className="col-4">

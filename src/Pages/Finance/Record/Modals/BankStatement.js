@@ -119,6 +119,7 @@ const App = (props) => {
                         <div className="col-3">
                             <label htmlFor="">Data compra</label>
                             <DateBox value={values.dat_purchase} type="date" className='form-control input-default'
+                                     useMaskBehavior={true}
                                      onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
                         </div>
                         <div className="col-3">
