@@ -298,8 +298,8 @@ const ModalItem = (props) => {
         }
     }
 
-    const setCurrency = (values, name) => {
-        return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
+    const setCurrency = (e, name) => {
+        return setValues(oldValues => ({...oldValues, [name]: e.value / 100}));
     }
 
     const body = () => {

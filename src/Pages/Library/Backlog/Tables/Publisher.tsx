@@ -49,8 +49,8 @@ const App = () => {
         },
         {
             dataField: "description",
-            caption: "Nascimento",
-            dataType: "date",
+            caption: "Descrição",
+            dataType: "string",
             format: 'shortDate',
         },
         {
