@@ -1,7 +1,7 @@
 import axios from "./Axios";
 
 
-const HandleSubmit = async (e, url, values) => {
+const HandleSubmit = async (e, url, values, hideModal) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -19,6 +19,10 @@ const HandleSubmit = async (e, url, values) => {
     }).catch(response => {
         return {'error': response.data}
     })
+
+    if (hideModal){
+        hideModal()
+    }
 }
 
 export default HandleSubmit;

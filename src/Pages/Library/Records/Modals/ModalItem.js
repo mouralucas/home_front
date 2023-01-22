@@ -1,5 +1,5 @@
 import Modal from "../../../../Components/Modal";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     URL_AUTHOR,
     URL_ITEM,
@@ -122,7 +122,7 @@ const ModalItem = (props) => {
 
     useEffect(() => {
         if (props.item) {
-            setSelectedItemType(itemType.filter(i => i.value === props.item.item_type)[0])
+            setSelectedItemType(itemType.filter(i => i.value === props.item.itemType)[0])
         }
     }, [itemType, props.item])
 
