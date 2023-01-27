@@ -9,6 +9,9 @@ import AsyncSelect from "react-select/async";
 import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";
 import {format as formatDate} from "../../../../Utils/DateTime";
+import Select from "react-select";
+
+
 
 
 const App = (props) => {
@@ -16,6 +19,7 @@ const App = (props) => {
     const [selectedAccount, setSelectedAccount] = useState();
     const [category, setCategory] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState();
+    const [selectedOperation, setSelectedOperation] = useState();
 
     const [values, setValues] = useState({});
 
@@ -32,7 +36,8 @@ const App = (props) => {
                 dat_purchase: new Date(),
                 description: '',
                 datCreated: null,
-                datLastEdited: null
+                datLastEdited: null,
+                operationId: null
             });
             setSelectedCategory(null);
             setSelectedAccount(null);
@@ -102,13 +107,19 @@ const App = (props) => {
     const setCurrency = (values, name) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
+    
+    const operationOptions = [
+        { value: 'chocolate', label: 'Chocolate' },
+        { value: 'strawberry', label: 'Strawberry' },
+        { value: 'vanilla', label: 'Vanilla' }
+    ]
 
     const body = () => {
         let body_html =
             <form>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-3">
+                        <div className="col-4">
                             <label htmlFor="">Valor: {values.amount}</label>
                             <Currency className='form-control input-default'
                                       value={values.amount * 100}
@@ -116,17 +127,29 @@ const App = (props) => {
                                           setCurrency(values, 'amount')
                                       }}/>
                         </div>
-                        <div className="col-3">
+                        <div className="col-4">
                             <label htmlFor="">Data compra</label>
                             <DateBox value={values.dat_purchase} type="date" className='form-control input-default'
                                      useMaskBehavior={true}
                                      onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
                         </div>
-                        <div className="col-3">
+                        <div className="col-4">
                             <label htmlFor="">Conta {values.account_id}</label>
-                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => getAccounts(query, callback)} onChange={(e) => setCombo(e, 'account_id', setSelectedAccount)} defaultOptions value={selectedAccount}/>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getAccounts(query, callback)}
+                                         onChange={(e) => setCombo(e, 'account_id', setSelectedAccount)} defaultOptions
+                                         value={selectedAccount}/>
                         </div>
-                        <div className="col-3">
+                    </div>
+                    <div className="row">
+                        <div className="col-6">
+                            <label htmlFor="">Operação {values.category_id}</label>
+                            <Select defaultValue={operationOptions[0]}
+                                    options={operationOptions}
+                                    onChange={(e) => setCombo(e, 'operationId', setSelectedOperation)}/>
+                            {/*<AsyncSelect formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)} onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)} defaultOptions value={selectedCategory}/>*/}
+                        </div>
+                        <div className="col-6">
                             <label htmlFor="">Categoria {values.category_id}</label>
                             <AsyncSelect formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)} onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)} defaultOptions value={selectedCategory}/>
                         </div>
@@ -134,7 +157,8 @@ const App = (props) => {
                     <div className="row">
                         <div className="col-12">
                             <label htmlFor="">Descrição</label>
-                            <textarea className='form-control' value={values.description} id="" cols="30" rows="10" onChange={set('description')}></textarea>
+                            <textarea className='form-control' value={values.description} id="" cols="30" rows="10"
+                                      onChange={set('description')}></textarea>
                         </div>
                     </div>
                     <div className="row mt-2">
