@@ -85,7 +85,7 @@ const App = () => {
         {
             dataField: "dat_payment",
             caption: "Pagamento",
-            dataType: "shortDate",
+            dataType: "date",
             width: 150,
         },
         {

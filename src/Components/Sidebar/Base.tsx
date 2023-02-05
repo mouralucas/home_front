@@ -10,35 +10,33 @@ import Card from '../../Components/Card'
 const App = () => {
     return (
         <>
-            <div style={{display: 'flex', height: '100%'}}>
-                <Sidebar defaultCollapsed={true}
-                         transitionDuration={2000}>
-                    <Menu
-                        rootStyles={{
-                            [`.${sidebarClasses.container}`]: {
-                                backgroundColor: 'red',
-                            },
-                        }}
-                    >
-                        <MenuItem
-                            icon={<BarChart/>}
-                        >Item</MenuItem>
-                        <SubMenu
-                            label="Charts"
-                            icon={<BarChart/>}
-                            suffix={
-                                <Badge>
-                                    6
-                                </Badge>
-                            }>
-                            <MenuItem> Pie charts </MenuItem>
-                            <MenuItem> Line charts </MenuItem>
-                        </SubMenu>
-                    </Menu>
-                    <SidebarFooter collapsed={true}/>
-                </Sidebar>
+            <Sidebar defaultCollapsed={true}
+                     transitionDuration={2000}>
+                <Menu
+                    rootStyles={{
+                        [`.${sidebarClasses.container}`]: {
+                            backgroundColor: 'red',
+                        },
+                    }}
+                >
+                    <MenuItem
+                        icon={<BarChart/>}
+                    >Item</MenuItem>
+                    <SubMenu
+                        label="Charts"
+                        icon={<BarChart/>}
+                        suffix={
+                            <Badge>
+                                6
+                            </Badge>
+                        }>
+                        <MenuItem> Pie charts </MenuItem>
+                        <MenuItem> Line charts </MenuItem>
+                    </SubMenu>
+                </Menu>
+                <SidebarFooter collapsed={true}/>
+            </Sidebar>
 
-            </div>
         </>
     );
 }
