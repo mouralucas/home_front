@@ -5,6 +5,7 @@ import DataGrid from "../../../../Components/DataGrid";
 import Button from "devextreme-react/button";
 import ModalStatement from '../Modals/BankStatement'
 import {Button as Btn} from "devextreme-react/data-grid";
+import {toast} from "react-toastify";
 
 
 const App = () => {
@@ -40,6 +41,10 @@ const App = () => {
     useEffect(() => {
         getStatements();
     }, []);
+
+    const coffeeCommand = (e) => {
+        toast('🦄 Wow so easy!');
+    }
 
     const columns = [
         {
@@ -87,13 +92,13 @@ const App = () => {
                     hint="Editar"
                     onClick={showModal}
                 />,
-                // <Btn
-                //     // text="My Command"
-                //     // // icon="/url/to/my/icon.ico"
-                //     icon="coffee"
-                //     hint="My Command"
-                //     onClick={myOtherCommand}
-                // />
+                <Btn
+                    // text="My Command"
+                    // // icon="/url/to/my/icon.ico"
+                    icon="coffee"
+                    hint="Coffee"
+                    onClick={coffeeCommand}
+                />
             ]
         }
     ]
@@ -116,6 +121,10 @@ const App = () => {
             location: "after"
         },
         {
+            child: <Button icon={'add'} onClick={coffeeCommand}>T</Button>,
+            location: "after"
+        },
+        {
             name: 'searchPanel',
             location: "after",
         },
@@ -132,7 +141,7 @@ const App = () => {
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            <ModalStatement modalState={modalState} hideModal={hideModal} statement={selectedStatement} />
+            <ModalStatement modalState={modalState} hideModal={hideModal} statement={selectedStatement}/>
         </>
     );
 }
