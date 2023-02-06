@@ -12,7 +12,7 @@ import CollectionTable from '../Backlog/Tables/Collection'
 const App = () => {
     return (
         <>
-            <div style={{display: 'flex', height: '100%'}}>
+            <div className='page-with-menu'>
                 <Sidebar/>
                 <div className='App'>
                     <div className="row">

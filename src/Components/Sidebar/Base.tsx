@@ -19,9 +19,9 @@ const App = () => {
                         },
                     }}
                 >
-                    <MenuItem
-                        icon={<BarChart/>}
-                    >Item</MenuItem>
+                    <MenuItem icon={<BarChart/>}>
+                        Item
+                    </MenuItem>
                     <SubMenu
                         label="Charts"
                         icon={<BarChart/>}

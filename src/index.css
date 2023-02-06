@@ -76,3 +76,8 @@ nav p {
     margin-left: 15px;
     font-size: 25px;
 }
+
+.page-with-menu {
+    display: flex;
+    height: 100%;
+}
