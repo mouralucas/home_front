@@ -1,7 +1,8 @@
 import axios from "./Axios";
+import {toast} from "react-toastify";
 
 
-const HandleSubmit = async (e, url, values, hideModal) => {
+const HandleSubmit = async (e, url, values, hideModal, toastMessage) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -15,6 +16,9 @@ const HandleSubmit = async (e, url, values, hideModal) => {
             'Content-Type': 'multipart/form-data'
         }
     }).then(response => {
+        if(toastMessage) {
+            toast(toastMessage)
+        }
         return response.data
     }).catch(response => {
         return {'error': response.data}

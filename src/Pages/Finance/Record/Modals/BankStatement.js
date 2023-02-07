@@ -183,7 +183,7 @@ const App = (props) => {
                 title={'Extrato'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e) => handleSubmit(e, URL_STATEMENT, values)}
+                actionModal={(e) => handleSubmit(e, URL_STATEMENT, values, false, "Extrato salvo")}
                 size={'lg'}
             />
         </div>
