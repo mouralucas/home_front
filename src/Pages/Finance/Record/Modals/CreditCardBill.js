@@ -1,6 +1,6 @@
 import Modal from '../../../../Components/Modal'
 import {useEffect, useState} from "react";
-import {URL_BILLS, URL_CATEGORIES, URL_CREDIT_CARDS} from "../../../../Services/Axios/ApiUrls";
+import {URL_BILLS, URL_CATEGORIES, URL_CREDIT_CARDS, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import axios from "../../../../Services/Axios/Axios";
 import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
@@ -9,6 +9,7 @@ import AsyncSelect from "react-select/async";
 import {getData} from "../../../../Services/Axios/Get";
 import filterSelect from "../../../../Utils/DataHandling";
 import {format as formatDate} from "../../../../Utils/DateTime";
+import handleSubmit from "../../../../Services/Axios/Post";
 
 /**
  * Modal to create new entry for the credit card bill
@@ -112,25 +113,25 @@ const App = (props) => {
     }
 
     // Form submit
-    const setBill = async e => {
-        e.preventDefault();
-
-        const formData = new FormData();
-        Object.keys(values).forEach(key => formData.append(key, values[key]));
-
-        await axios({
-            method: 'post',
-            url: URL_BILLS,
-            data: formData,
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then(response => {
-            return response.data
-        }).catch(response => {
-            return {'error': response}
-        })
-    }
+    // const setBill = async e => {
+    //     e.preventDefault();
+    //
+    //     const formData = new FormData();
+    //     Object.keys(values).forEach(key => formData.append(key, values[key]));
+    //
+    //     await axios({
+    //         method: 'post',
+    //         url: URL_BILLS,
+    //         data: formData,
+    //         headers: {
+    //             'Content-Type': 'multipart/form-data'
+    //         }
+    //     }).then(response => {
+    //         return response.data
+    //     }).catch(response => {
+    //         return {'error': response}
+    //     })
+    // }
 
     const body = () => {
         let body_html =
@@ -205,7 +206,7 @@ const App = (props) => {
                 title={'Fatura'}
                 body={body()}
                 fullscreen={false}
-                actionModal={setBill}
+                actionModal={(e) => handleSubmit(e, URL_BILLS, values, false, "Item de fatura salvo")}
                 size={'lg'}
             />
         </div>
