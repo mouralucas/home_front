@@ -135,7 +135,7 @@ const App = (props) => {
 
     const body = () => {
         let body_html =
-            <form onSubmit={setBill}>
+            <form>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-4">
