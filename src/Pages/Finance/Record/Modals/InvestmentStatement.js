@@ -1,6 +1,6 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_ACCOUNTS, URL_CATEGORIES, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
+import {URL_INVESTMENT, URL_INVESTMENT_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import Currency from "../../../../Components/Currency";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
@@ -11,10 +11,8 @@ import {getData} from "../../../../Services/Axios/Get";
 
 
 const App = (props) => {
-    const [account, setAccount] = useState([]);
-    const [selectedAccount, setSelectedAccount] = useState();
-    const [category, setCategory] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState();
+    const [investments, setInvestments] = useState([]);
+    const [selectedInvestments, setSelectedInvestments] = useState();
 
     const [values, setValues] = useState({});
 
@@ -25,51 +23,33 @@ const App = (props) => {
 
         if (!props.modalState) {
             setValues({
-                amount: 0,
-                account_id: null,
-                category_id: null,
-                dat_purchase: new Date(),
-                description: '',
+                investmentId: null
             });
-            setSelectedCategory(null);
-            setSelectedAccount(null);
+            setSelectedInvestments(null);
         }
     }, [props.modalState, props.statement])
 
     useEffect(() => {
         if (props.statement) {
-            setSelectedCategory(category.filter(i => i.value === props.statement.category_id)[0]);
+            setSelectedInvestments(investments.filter(i => i.value === props.statement.category_id)[0]);
         }
-    }, [category, props.statement])
+    }, [investments, props.statement])
 
-    useEffect(() => {
-        if (props.statement) {
-            setSelectedAccount(account.filter(i => i.value === props.statement.account_id)[0]);
-        }
-    }, [account, props.statement])
+    // useEffect(() => {
+    //     if (props.statement) {
+    //         setSelectedAccount(account.filter(i => i.value === props.statement.account_id)[0]);
+    //     }
+    // }, [account, props.statement])
 
-    const getCategory = (query, callback) => {
+    const getInvestments = (query, callback) => {
         if (query) {
-            callback(filterSelect(category, query));
+            callback(filterSelect(investments, query));
         } else {
-            getData(URL_CATEGORIES, {show_mode: 'all', module: 'finance'}).then(response => {
-                let options = response == null ? {} : response.categories.map(i => ({value: i.id, label: i.name}))
+            getData(URL_INVESTMENT).then(response => {
+                let options = response == null ? {} : response.investments.map(i => ({value: i.id, label: i.name}))
                 callback(options);
-                setSelectedCategory(options.filter(category => category.value === values.category_id)[0]);
-                setCategory(options);
-            });
-        }
-    }
-
-    const getAccounts = (query, callback) => {
-        if (query) {
-            callback(filterSelect(account, query));
-        } else {
-            getData(URL_ACCOUNTS).then(response => {
-                let options = response.bank_accounts.map(i => ({value: i.id, label: i.nm_bank}))
-                callback(options);
-                setSelectedAccount(options?.filter(account => account.value === values.account_id))
-                setAccount(options)
+                setSelectedInvestments(options.filter(category => category.value === values.investmentId)[0]);
+                setInvestments(options);
             });
         }
     }
@@ -106,6 +86,14 @@ const App = (props) => {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-3">
+                            <label htmlFor="">Categoria {values.category_id}</label>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getInvestments(query, callback)}
+                                         onChange={(e) => setCombo(e, 'category_id', setSelectedInvestments)}
+                                         defaultOptions
+                                         value={selectedInvestments}/>
+                        </div>
+                        <div className="col-3">
                             <label htmlFor="">Valor: {values.amount}</label>
                             <Currency className='form-control input-default'
                                       value={values.amount * 100}
@@ -118,14 +106,10 @@ const App = (props) => {
                             <DateBox value={values.dat_purchase} type="date" className='form-control input-default'
                                      onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
                         </div>
-                        <div className="col-3">
-                            <label htmlFor="">Conta {values.account_id}</label>
-                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => getAccounts(query, callback)} onChange={(e) => setCombo(e, 'account_id', setSelectedAccount)} defaultOptions value={selectedAccount}/>
-                        </div>
-                        <div className="col-3">
-                            <label htmlFor="">Categoria {values.category_id}</label>
-                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)} onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)} defaultOptions value={selectedCategory}/>
-                        </div>
+                        {/*<div className="col-3">*/}
+                        {/*    <label htmlFor="">Conta {values.account_id}</label>*/}
+                        {/*    <AsyncSelect formTarget={true} loadOptions={(query, callback) => getAccounts(query, callback)} onChange={(e) => setCombo(e, 'account_id', setSelectedAccount)} defaultOptions value={selectedAccount}/>*/}
+                        {/*</div>*/}
                     </div>
                     <div className="row">
                         <div className="col-12">
@@ -144,10 +128,10 @@ const App = (props) => {
             <Modal
                 showModal={props.modalState}
                 hideModal={props.hideModal}
-                title={'Extrato'}
+                title={'Extrato de Investimento'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e) => handleSubmit(e, URL_STATEMENT, values)}
+                actionModal={(e) => handleSubmit(e, URL_INVESTMENT_STATEMENT, values, false, 'Registro de extrato salvo!')}
                 size={'lg'}
             />
         </div>

@@ -16,9 +16,12 @@ const URL_LANGUAGE = 'library/language';
 
 // Finance URL
 const URL_BILLS = '/finance/bill'
-const URL_STATEMENT = '/finance/statement'
-const URL_CREDIT_CARDS = '/finance/card'
+
+const URL_CREDIT_CARD = '/finance/card'
 const URL_ACCOUNTS = '/finance/account'
+const URL_ACCOUNT_STATEMENT = '/finance/account/statement'
+const URL_INVESTMENT = '/finance/investment'
+const URL_INVESTMENT_STATEMENT = '/finance/investment/statement'
 const URL_EXPENSES = '/finance/expenses'
 
 // Files URLs
@@ -34,7 +37,7 @@ const URL_PERIOD = 'core/period'
 export {
     URL_BASE, URL_LOGIN, URL_ITEM,
     URL_AUTHOR, URL_ITEM_TYPES, URL_ITEM_FORMAT, URL_ITEM_SERIE, URL_ITEM_COLLECTION, URL_PUBLISHER, URL_LANGUAGE,
-    URL_BILLS, URL_STATEMENT, URL_EXPENSES, URL_CREDIT_CARDS, URL_ACCOUNTS,
+    URL_BILLS, URL_ACCOUNTS, URL_ACCOUNT_STATEMENT, URL_INVESTMENT, URL_INVESTMENT_STATEMENT, URL_EXPENSES, URL_CREDIT_CARD,
     URL_CATEGORIES, URL_STATUS, URL_COUNTRY, URL_PERIOD,
     URL_UPLOADS,
 }

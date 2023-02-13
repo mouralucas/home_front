@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
-import {URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
+import {URL_ACCOUNT_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import Button from "devextreme-react/button";
 import ModalStatement from '../Modals/BankStatement'
@@ -28,7 +28,7 @@ const App = () => {
     }
 
     const getStatements = () => {
-        axios.get(URL_STATEMENT, {
+        axios.get(URL_ACCOUNT_STATEMENT, {
             params: {'reference': 202210}
         }).then(response => {
                 setStatement(response.data.statement);

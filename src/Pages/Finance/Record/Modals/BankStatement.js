@@ -1,6 +1,6 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_ACCOUNTS, URL_CATEGORIES, URL_STATEMENT} from "../../../../Services/Axios/ApiUrls";
+import {URL_ACCOUNTS, URL_CATEGORIES, URL_ACCOUNT_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import Currency from "../../../../Components/Currency";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
@@ -183,7 +183,7 @@ const App = (props) => {
                 title={'Extrato'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e) => handleSubmit(e, URL_STATEMENT, values, false, "Item de extrato salvo")}
+                actionModal={(e) => handleSubmit(e, URL_ACCOUNT_STATEMENT, values, false, "Item de extrato salvo")}
                 size={'lg'}
             />
         </div>
