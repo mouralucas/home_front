@@ -1,6 +1,6 @@
 import Modal from '../../../../Components/Modal'
 import {useEffect, useState} from "react";
-import {URL_BILLS, URL_CATEGORIES, URL_CREDIT_CARD, URL_ACCOUNT_STATEMENT} from "../../../../Services/Axios/ApiUrls";
+import {URL_CREDIT_CARD_BILL, URL_CATEGORIES, URL_CREDIT_CARD, URL_ACCOUNT_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import axios from "../../../../Services/Axios/Axios";
 import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
@@ -112,27 +112,6 @@ const App = (props) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
 
-    // Form submit
-    // const setBill = async e => {
-    //     e.preventDefault();
-    //
-    //     const formData = new FormData();
-    //     Object.keys(values).forEach(key => formData.append(key, values[key]));
-    //
-    //     await axios({
-    //         method: 'post',
-    //         url: URL_BILLS,
-    //         data: formData,
-    //         headers: {
-    //             'Content-Type': 'multipart/form-data'
-    //         }
-    //     }).then(response => {
-    //         return response.data
-    //     }).catch(response => {
-    //         return {'error': response}
-    //     })
-    // }
-
     const body = () => {
         let body_html =
             <form>
@@ -206,7 +185,7 @@ const App = (props) => {
                 title={'Fatura'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e) => handleSubmit(e, URL_BILLS, values, false, "Item de fatura salvo")}
+                actionModal={(e) => handleSubmit(e, URL_CREDIT_CARD_BILL, values, false, "Item de fatura salvo")}
                 size={'lg'}
             />
         </div>

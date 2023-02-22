@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
-import {URL_BILLS} from "../../../../Services/Axios/ApiUrls";
+import {URL_CREDIT_CARD_BILL} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
@@ -25,7 +25,7 @@ const App = () => {
     }
 
     const getBills = () => {
-        axios.get(URL_BILLS, {
+        axios.get(URL_CREDIT_CARD_BILL, {
             params: {'period': getCurrentPeriod()}
         }).then(response => {
                 setBills(response.data.bill);

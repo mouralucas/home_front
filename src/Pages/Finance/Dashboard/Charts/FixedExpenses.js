@@ -1,22 +1,29 @@
 import PieChart from "../../../../Components/Charts/PieChart";
 import {useEffect, useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
-import {URL_EXPENSES} from "../../../../Services/Axios/ApiUrls";
+import {URL_COUNTRY, URL_EXPENSES} from "../../../../Services/Axios/ApiUrls";
 import getCurrentPeriod from "../../../../Utils/DateTime";
+import {getData} from "../../../../Services/Axios/Get";
+import {toast} from "react-toastify";
 
 
 const App = () => {
     const [expenses, setExpenses] = useState()
 
     const getExpenses = () => {
-        axios.get(URL_EXPENSES, {
-            params: {
-                'reference': getCurrentPeriod(),
+        getData(URL_EXPENSES, {
+                // 'period': getCurrentPeriod(),
+                'period': 202302,
                 'expense_type': 'fixed'
             }
-        }).then(response => {
-            setExpenses(response.data.expenses.map(expense => ({category:expense.category, total_amount: expense.total_amount})))
-        });
+        ).then(response => {
+            let options = response == null ? {} : response.expenses.map(i => ({category: i.category, total_amount: i.total_amount}))
+            console.log(response)
+            setExpenses(options)
+        }).catch(err => {
+                toast.error('Houve um erro ao buscar as despesas', err)
+            }
+        );
     }
 
     useEffect(() => {
@@ -26,7 +33,7 @@ const App = () => {
     return (
         <PieChart data={expenses}
                   axis={{argumentField: 'category', valueField: 'total_amount'}}
-                  // title={''}
+            // title={''}
         />
     );
 }

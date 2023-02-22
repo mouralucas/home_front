@@ -12,7 +12,7 @@ const App = (props) => {
     const getExpenses = () => {
         axios.get(URL_EXPENSES, {
             params: {
-                'reference': getCurrentPeriod(),
+                'period': getCurrentPeriod(),
                 'expense_type': 'variable'
             }
         }).then(response => {
@@ -34,7 +34,7 @@ const App = (props) => {
             {/*             value={selectedCategory}/>*/}
             <PieChart data={expenses}
                       axis={{argumentField: 'category', valueField: 'total_amount'}}
-                      title={'Medalhas'}
+                      // title={'Medalhas'}
             />
         </>
     );

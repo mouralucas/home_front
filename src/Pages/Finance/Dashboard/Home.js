@@ -11,7 +11,7 @@ const Home = () => {
     return (
         <div className="page-with-menu">
             <Sidebar/>
-            <div className='App'>
+            <div className='app'>
                 <div className="row">
                     <div className="col-xl-6 col-lg-6 col-sm-12">
                         <Card>
