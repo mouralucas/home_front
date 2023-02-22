@@ -17,8 +17,10 @@ const App = () => {
                 'expense_type': 'fixed'
             }
         ).then(response => {
-            let options = response == null ? {} : response.expenses.map(i => ({category: i.category, total_amount: i.total_amount}))
-            console.log(response)
+            let options = response == null ? {} : response.expenses.map(i => ({
+                category: i.category,
+                total_amount: i.total_amount
+            }))
             setExpenses(options)
         }).catch(err => {
                 toast.error('Houve um erro ao buscar as despesas', err)
@@ -33,7 +35,7 @@ const App = () => {
     return (
         <PieChart data={expenses}
                   axis={{argumentField: 'category', valueField: 'total_amount'}}
-            // title={''}
+                  title={'Despesas fixas'}
         />
     );
 }

@@ -14,7 +14,6 @@ const URL_ITEM_COLLECTION = 'library/collection';
 const URL_PUBLISHER = 'library/publisher';
 const URL_LANGUAGE = 'library/language';
 
-// Finance URL
 // Credit Card
 const URL_CREDIT_CARD = '/finance/credit-card'
 const URL_CREDIT_CARD_BILL = '/finance/credit-card/bill'
