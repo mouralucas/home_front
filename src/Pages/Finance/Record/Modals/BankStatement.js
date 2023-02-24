@@ -24,7 +24,8 @@ const App = (props) => {
     const [currency, setCurrency] = useState([])
     const [selectedCurrency, setSelectedCurrency] = useState([])
 
-    const [selectedOperation, setSelectedOperation] = useState();
+    const [cashFlow, setCashFlow] = useState([])
+    const [selectedCashFlow, setSelectedCashFlow] = useState();
 
     const [values, setValues] = useState({});
 
@@ -43,7 +44,7 @@ const App = (props) => {
                 description: '',
                 datCreated: null,
                 datLastEdited: null,
-                operationId: null
+                cashFlowId: 'outcoming'
             });
             setSelectedCategory(null);
             setSelectedAccount(null);
@@ -62,6 +63,16 @@ const App = (props) => {
         }
     }, [account, props.statement])
 
+    useEffect(() => {
+        if (values.cashFlowId === 'outcoming' || values.cashFlowId === 'undefined'){
+            let name = 'amount'
+            let newValue = values.amount * -1
+            setValues(oldValues => ({...oldValues, [name]: newValue}));
+        } else {
+            console.log('in')
+        }
+    }, [values.cashFlowId])
+
     const getCurrency = (query, callback) => {
         if (query) {
             callback(filterSelect(currency, query));
@@ -69,7 +80,6 @@ const App = (props) => {
             getData(URL_CURRENCY).then(response => {
                 let options = response == null ? {} : response.currency.map(i => ({value: i.id, label:i.symbol}))
                 callback(options);
-                console.log(options);
                 setSelectedCurrency(options.filter(currency => currency.value === values.currencyId))
                 setCurrency(options)
             })
@@ -82,6 +92,7 @@ const App = (props) => {
         } else {
             getData(URL_CATEGORIES, {show_mode: 'all', module: 'finance'}).then(response => {
                 let options = response == null ? {} : response.categories.map(i => ({value: i.id, label: i.name}))
+
                 callback(options);
                 setSelectedCategory(options.filter(category => category.value === values.category_id)[0]);
                 setCategory(options);
@@ -96,9 +107,23 @@ const App = (props) => {
             getData(URL_ACCOUNTS).then(response => {
                 let options = response.bank_accounts.map(i => ({value: i.id, label: i.nm_bank}))
                 callback(options);
-                setSelectedAccount(options?.filter(account => account.value === values.account_id))
+                setSelectedAccount(options?.filter(account => account.value === values.account_id)[0])
                 setAccount(options)
             });
+        }
+    }
+
+    const getCashFlow = (query, callback) => {
+        if (query){
+            callback(filterSelect(cashFlow, query));
+        }else {
+            let options = [
+                { value: 'incoming', label: 'Entrada' },
+                { value: 'outcoming', label: 'Saída' }
+            ]
+            callback(options)
+            setSelectedCashFlow(options?.filter(cashFlow => cashFlow.value === values.cashFlowId)[0])
+            setCashFlow(options)
         }
     }
 
@@ -127,12 +152,8 @@ const App = (props) => {
     const setCurrencyValues = (values, name) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
-    
-    const operationOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
-    ]
+
+
 
     const body = () => {
         let body_html =
@@ -171,14 +192,21 @@ const App = (props) => {
                     <div className="row">
                         <div className="col-6">
                             <label htmlFor="">Operação {values.category_id}</label>
-                            <Select defaultValue={operationOptions[0]}
-                                    options={operationOptions}
-                                    onChange={(e) => setComboValues(e, 'operationId', setSelectedOperation)}/>
-                            {/*<AsyncSelect formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)} onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)} defaultOptions value={selectedCategory}/>*/}
+                            {/*<Select defaultValue={operationOptions[1]}*/}
+                            {/*        options={operationOptions}*/}
+                            {/*        onChange={(e) => setComboValues(e, 'cashFlowId', setSelectedCashFlow)}/>*/}
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getCashFlow(query, callback)}
+                                         onChange={(e) => setComboValues(e, 'cashFlowId', setSelectedCashFlow)}
+                                         defaultOptions
+                                         value={selectedCashFlow}/>
                         </div>
                         <div className="col-6">
                             <label htmlFor="">Categoria {values.category_id}</label>
-                            <AsyncSelect formTarget={true} loadOptions={(query, callback) => getCategory(query, callback)} onChange={(e) => setComboValues(e, 'category_id', setSelectedCategory)} defaultOptions value={selectedCategory}/>
+                            <AsyncSelect formTarget={true}
+                                         loadOptions={(query, callback) => getCategory(query, callback)}
+                                         onChange={(e) => setComboValues(e, 'category_id', setSelectedCategory)}
+                                         defaultOptions value={selectedCategory}/>
                         </div>
                     </div>
                     <div className="row">
