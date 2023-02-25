@@ -5,23 +5,32 @@ import {SidebarFooter} from "../../Assets/Core/Components/Sidebar/Footer";
 import AuthorTable from "../../Pages/Library/Backlog/Tables/Author";
 import React from "react";
 import Card from '../../Components/Card'
+import {Link} from "react-router-dom";
 
 
-const App = () => {
+const App = (props) => {
+
+
     return (
         <>
             <Sidebar defaultCollapsed={true}
                      transitionDuration={2000}>
-                <Menu
-                    rootStyles={{
-                        [`.${sidebarClasses.container}`]: {
-                            backgroundColor: 'red',
-                        },
-                    }}
-                >
-                    <MenuItem icon={<BarChart/>}>
-                        Item
-                    </MenuItem>
+                <Menu>
+                    <SubMenu
+                        label={"Fianceiro"}
+                        icon={<BarChart/>}
+                        component={<Link to="/finance/dashboard" />}
+                        active={true}
+                    >
+                        <MenuItem component={<Link to="/finance/dashboard" />}>Dashboard</MenuItem>
+                        <MenuItem component={<Link to="/finance/records" />}>Registros</MenuItem>
+                    </SubMenu>
+                    <SubMenu
+                        label={"Biblioteca"}
+                        icon={<BarChart/>}>
+                        <MenuItem component={<Link to="/library/home" />}>Home</MenuItem>
+                        <MenuItem component={<Link to="/library/backlog" />}>Backlog</MenuItem>
+                    </SubMenu>
                     <SubMenu
                         label="Charts"
                         icon={<BarChart/>}
