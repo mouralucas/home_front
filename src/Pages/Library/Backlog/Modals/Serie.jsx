@@ -14,7 +14,6 @@ const App = (props) => {
     const [values, setValues] = useState({});
 
     useEffect(() => {
-        console.log(props.serie)
         if (props.serie && props.modalState) {
             setValues(props.serie);
         }

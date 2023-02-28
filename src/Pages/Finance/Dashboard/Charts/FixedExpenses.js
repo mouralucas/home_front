@@ -1,8 +1,6 @@
 import PieChart from "../../../../Components/Charts/PieChart";
 import {useEffect, useState} from "react";
-import axios from "../../../../Services/Axios/Axios";
-import {URL_COUNTRY, URL_EXPENSES} from "../../../../Services/Axios/ApiUrls";
-import getCurrentPeriod from "../../../../Utils/DateTime";
+import {URL_EXPENSES} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";
 import {toast} from "react-toastify";
 

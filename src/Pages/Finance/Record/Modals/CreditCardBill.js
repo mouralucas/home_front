@@ -112,10 +112,18 @@ const App = (props) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
 
+    const getPaymentDate = (e, purchaseDate) => {
+        e.preventDefault()
+        console.log('puta que pariu')
+    }
+
     const body = () => {
         let body_html =
             <form>
                 <div className="container-fluid">
+                    <div className="row">
+                        <button onClick={e => getPaymentDate(e, '2023-01-05')}>Teste de data de pagamento</button>
+                    </div>
                     <div className="row">
                         <div className="col-4">
                             <label htmlFor="">Valor: {values.amount}</label>
