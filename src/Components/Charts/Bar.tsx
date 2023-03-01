@@ -1,27 +1,37 @@
 import React, {useState} from 'react';
-import {Chart, ConstantLine, Export, Label, Legend, Series, ValueAxis, VisualRange} from 'devextreme-react/chart';
+import {ArgumentAxis, Chart, ConstantLine, Export, Label, Legend, Series, ValueAxis} from 'devextreme-react/chart';
 
 
 const App = (props) => {
-    const [highAverage, setHighAverage] = useState(77)
-    const [lowAverage, setLowAverage] = useState(58)
+    // TODO: esses states devem vir como props no respectivo componente
+    const [expenseGoal, setExpenseGoal] = useState(2300)
+    const [expenseAvg, setExpenseAvg] = useState(3000)
 
+    // TODO: essa função deve vir como props e ter uma validação de existência
     const customizeText = (arg) => {
-        return `${arg.valueText}&#176F`;
+        // return `${arg.valueText}&#176F`;
+        return null;
     }
 
+    // TODO: essa função deve vir como props e ter uma validação de existência
+    const customizeArgumentText = (e) => {
+        return `${e.value}`;
+    }
+
+    // TODO: essa função deve vir como props e ter uma validação de existência
     const customizePoint = (arg) => {
-        if (arg.value > highAverage) {
-            return { color: '#ff7c7c', hoverStyle: { color: '#ff7c7c' } };
+        if (arg.value > expenseGoal) {
+            return {color: '#ff7c7c', hoverStyle: {color: '#ff7c7c'}};
         }
-        if (arg.value < lowAverage) {
-            return { color: '#8c8cff', hoverStyle: { color: '#8c8cff' } };
+        if (arg.value < expenseAvg) {
+            return {color: '#8c8cff', hoverStyle: {color: '#8c8cff'}};
         }
         return null;
     }
 
+    // TODO: essa função deve vir como props e ter uma validação de existência
     const customizeLabel = (arg) => {
-        if (arg.value > highAverage) {
+        if (arg.value > expenseGoal) {
             return {
                 visible: true,
                 backgroundColor: '#ff7c7c',
@@ -33,37 +43,60 @@ const App = (props) => {
         return null;
     }
 
+    const caralho = [
+        {
+            width: 2,
+            value: 3000,
+            color: "#8c8cff",
+            dashStyle: "dash",
+            label: {
+                text: "Média"
+            }
+        },
+        {
+            width: 2,
+            value: 2300,
+            color: "#8c8cff",
+            dashStyle: "dash",
+            // label: {
+            //     text: "Meta de gasto"
+            // }
+        },
+
+    ]
+
+    const setConstantLine = () => {
+        return caralho.map((item) =>
+            <ConstantLine
+                width={item.width}
+                value={item.value}
+                color={item.color}
+                dashStyle={item.dashStyle}
+            >
+                {item.label && <Label text={item.label.text} />}
+            </ConstantLine>)
+    }
+
     return (
         <Chart id="chart"
                title="Daily Temperature in May"
                dataSource={props.dataSource}
-               customizePoint={customizePoint}
-               customizeLabel={customizeLabel}>
+               customizePoint={props.customizePoint}
+               customizeLabel={customizeLabel}
+        >
             <Series
                 argumentField={props.argumentField}
                 valueField={props.valueField}
                 type="bar"
                 color="#e7d19a"
             />
+            <ArgumentAxis>
+                <Label customizeText={customizeArgumentText}/>
+            </ArgumentAxis>
             <ValueAxis maxValueMargin={0.01}>
-                <VisualRange startValue={40}/>
-                <Label customizeText={customizeText}/>
-                <ConstantLine
-                    width={2}
-                    value={lowAverage}
-                    color="#8c8cff"
-                    dashStyle="dash"
-                >
-                    <Label text="Low Average"/>
-                </ConstantLine>
-                <ConstantLine
-                    width={2}
-                    value={highAverage}
-                    color="#ff7c7c"
-                    dashStyle="dash"
-                >
-                    <Label text="High Average"/>
-                </ConstantLine>
+                {/*<VisualRange startValue={40}/>*/}
+                {/*<Label customizeText={customizeText}/>*/}
+                {setConstantLine()}
             </ValueAxis>
             <Legend visible={false}/>
             <Export enabled={true}/>

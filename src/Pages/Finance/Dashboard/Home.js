@@ -83,7 +83,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-12">
+                    <div className="col-6">
                         <Card>
                             <Card.Header>Outra evolução</Card.Header>
                             <Card.Body>
