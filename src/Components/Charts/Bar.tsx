@@ -31,7 +31,7 @@ const App = (props) => {
 
     // TODO: essa função deve vir como props e ter uma validação de existência
     const customizeLabel = (arg) => {
-        if (arg.value > expenseGoal) {
+        if (arg.value > 70000) {
             return {
                 visible: true,
                 backgroundColor: '#ff7c7c',
@@ -43,38 +43,20 @@ const App = (props) => {
         return null;
     }
 
-    const caralho = [
-        {
-            width: 2,
-            value: 3000,
-            color: "#8c8cff",
-            dashStyle: "dash",
-            label: {
-                text: "Média"
-            }
-        },
-        {
-            width: 2,
-            value: 2300,
-            color: "#8c8cff",
-            dashStyle: "dash",
-            // label: {
-            //     text: "Meta de gasto"
-            // }
-        },
-
-    ]
-
     const setConstantLine = () => {
-        return caralho.map((item) =>
-            <ConstantLine
-                width={item.width}
-                value={item.value}
-                color={item.color}
-                dashStyle={item.dashStyle}
-            >
-                {item.label && <Label text={item.label.text} />}
-            </ConstantLine>)
+        if (props.constantLine) {
+            return props.constantLine.map((item) =>
+                <ConstantLine
+                    width={item.width}
+                    value={item.value}
+                    color={item.color}
+                    dashStyle={item.dashStyle}
+                >
+                    {item.label && <Label text={item.label.text}/>}
+                </ConstantLine>)
+        } else {
+            return null
+        }
     }
 
     return (

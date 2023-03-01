@@ -1,6 +1,6 @@
 import axios from "../../Services/Axios/Axios";
 
-const getData = async (url, params) => {
+const getData = async (url, params=null) => {
     let response;
 
     try {

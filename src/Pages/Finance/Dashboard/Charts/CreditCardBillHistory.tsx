@@ -7,6 +7,7 @@ import {getData} from "../../../../Services/Axios/Get";
 
 const App = () => {
     const [billHistory, setBillHistory] = useState([])
+    const [expenseAvg, setExpenseAvg] = useState(0)
 
     useEffect(() => {
         getBillHistory();
@@ -23,18 +24,42 @@ const App = () => {
                 period: i.period,
                 total_amount: i.total_amount * -1
             }))
-            setBillHistory(options)
+            setExpenseAvg(response.average*-1);
+            setBillHistory(options);
         }).catch((err: string | ToastOptions) => {
                 toast.error('Houve um erro ao buscar o histórico de faturas' + err)
             }
         );
     }
 
+    const constantLine = [
+        {
+            width: 2,
+            value: 2300,
+            color: "#8c8cff",
+            dashStyle: "dash",
+            label: {
+                text: "Meta"
+            }
+        },
+        {
+            width: 2,
+            value: expenseAvg,
+            color: "#8c8cff",
+            dashStyle: "dash",
+            label: {
+                text: "Média"
+            }
+        },
+
+    ]
+
     return (
         <CreditCardBillHistory
             dataSource={billHistory}
             argumentField={"period"}
             valueField={"total_amount"}
+            constantLine={constantLine}
         />
     );
 }
