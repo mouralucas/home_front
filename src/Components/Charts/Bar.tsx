@@ -1,32 +1,23 @@
-import React, {useState} from 'react';
-import {ArgumentAxis, Chart, ConstantLine, Export, Label, Legend, Series, ValueAxis} from 'devextreme-react/chart';
+import React from 'react';
+import {
+    ArgumentAxis,
+    Chart,
+    ConstantLine,
+    Export,
+    Font,
+    Label,
+    Legend,
+    Series,
+    Title,
+    ValueAxis,
+    VisualRange
+} from 'devextreme-react/chart';
 
 
 const App = (props) => {
-    // TODO: esses states devem vir como props no respectivo componente
-    const [expenseGoal, setExpenseGoal] = useState(2300)
-    const [expenseAvg, setExpenseAvg] = useState(3000)
-
-    // TODO: essa função deve vir como props e ter uma validação de existência
-    const customizeText = (arg) => {
-        // return `${arg.valueText}&#176F`;
-        return null;
-    }
-
     // TODO: essa função deve vir como props e ter uma validação de existência
     const customizeArgumentText = (e) => {
         return `${e.value}`;
-    }
-
-    // TODO: essa função deve vir como props e ter uma validação de existência
-    const customizePoint = (arg) => {
-        if (arg.value > expenseGoal) {
-            return {color: '#ff7c7c', hoverStyle: {color: '#ff7c7c'}};
-        }
-        if (arg.value < expenseAvg) {
-            return {color: '#8c8cff', hoverStyle: {color: '#8c8cff'}};
-        }
-        return null;
     }
 
     // TODO: essa função deve vir como props e ter uma validação de existência
@@ -44,44 +35,55 @@ const App = (props) => {
     }
 
     const setConstantLine = () => {
-        if (props.constantLine) {
-            return props.constantLine.map((item) =>
-                <ConstantLine
-                    width={item.width}
-                    value={item.value}
-                    color={item.color}
-                    dashStyle={item.dashStyle}
-                >
-                    {item.label && <Label text={item.label.text}/>}
-                </ConstantLine>)
-        } else {
-            return null
-        }
+        return props.constantLine.map((item) =>
+            <ConstantLine
+                width={item.width}
+                value={item.value}
+                color={item.color}
+                dashStyle={item.dashStyle}
+            >
+                {item.label && <Label text={item.label.text}/>}
+            </ConstantLine>)
+    }
+
+    const setValueAxisTitle = () => {
+        return <Title text={props.valueAxisConfig.title.value ?? null}>
+            {/* Add font if defined in props */}
+            {props.valueAxisConfig.title.font
+                &&
+                <Font color={props.valueAxisConfig.title.font.color ?? "#03a9f4"}/>
+            }
+        </Title>
     }
 
     return (
         <Chart id="chart"
-               title="Daily Temperature in May"
+               title={props.title ?? "Title"}
                dataSource={props.dataSource}
-               customizePoint={props.customizePoint}
+               customizePoint={props.customizePoint ?? null}
                customizeLabel={customizeLabel}
         >
             <Series
+                axis={'amount'}
                 argumentField={props.argumentField}
                 valueField={props.valueField}
                 type="bar"
                 color="#e7d19a"
             />
-            <ArgumentAxis>
+            <ArgumentAxis argumentType={props.argumentAxisConfig.argumentType}>
                 <Label customizeText={customizeArgumentText}/>
             </ArgumentAxis>
-            <ValueAxis maxValueMargin={0.01}>
-                {/*<VisualRange startValue={40}/>*/}
-                {/*<Label customizeText={customizeText}/>*/}
-                {setConstantLine()}
+            <ValueAxis maxValueMargin={props.valueAxisConfig.maxValueMargin ?? 0.01} name={'amount'}>
+
+                <VisualRange startValue={props.valueAxisConfig.visualRange ?? null}/>
+                {props.valueAxisConfig && <Label customizeText={props.valueAxisConfig.customizedText}/>}
+
+                {/* Function based props */}
+                {props.valueAxisConfig.title && setValueAxisTitle()} {/* Set the valeu axis title if defined */}
+                {props.constantLine && setConstantLine()} {/* Set constant lines if defined */}
             </ValueAxis>
-            <Legend visible={false}/>
-            <Export enabled={true}/>
+            <Legend visible={props.legend ?? false}/>
+            <Export enabled={props.export ?? true}/>
         </Chart>
     )
 }
