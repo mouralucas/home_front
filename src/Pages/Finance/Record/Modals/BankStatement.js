@@ -63,15 +63,15 @@ const App = (props) => {
         }
     }, [account, props.statement])
 
-    useEffect(() => {
-        if (values.cashFlowId === 'outcoming' || values.cashFlowId === 'undefined'){
-            let name = 'amount'
-            let newValue = values.amount * -1
-            setValues(oldValues => ({...oldValues, [name]: newValue}));
-        } else {
-            console.log('in')
-        }
-    }, [values.cashFlowId])
+    // useEffect(() => {
+    //     if (values.cashFlowId === 'outcoming' || values.cashFlowId === 'undefined'){
+    //         let name = 'amount'
+    //         let newValue = values.amount * -1
+    //         setValues(oldValues => ({...oldValues, [name]: newValue}));
+    //     } else {
+    //         console.log('in')
+    //     }
+    // }, [values.cashFlowId])
 
     const getCurrency = (query, callback) => {
         if (query) {
@@ -164,7 +164,8 @@ const App = (props) => {
                             <label htmlFor=""></label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getCurrency(query, callback)}
-                                         onChange={(e) => setComboValues(e, 'currencyId', setSelectedCurrency())} defaultOptions
+                                         onChange={(e) => setComboValues(e, 'currencyId', setSelectedCurrency)}
+                                         defaultOptions
                                          value={selectedCurrency}/>
                         </div>
                         <div className="col-3">

@@ -1,8 +1,20 @@
 import React, {useEffect, useState} from "react";
-import CreditCardBillHistory from "../../../../Components/Charts/Bar";
 import {toast, ToastOptions} from "react-toastify";
 import {URL_CREDIT_CARD_BILL_HISTORY} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";
+import {
+    ArgumentAxis,
+    Chart, ConstantLine,
+    Export,
+    Font,
+    Label,
+    Legend,
+    Series,
+    Title,
+    ValueAxis,
+    VisualRange
+} from "devextreme-react/chart";
+import getCurrentPeriod from "../../../../Utils/DateTime";
 
 
 const App = () => {
@@ -16,9 +28,8 @@ const App = () => {
 
     const getBillHistory = () => {
         getData(URL_CREDIT_CARD_BILL_HISTORY, {
-                // 'period': getCurrentPeriod(),
-                'period': 202302,
-                'expense_type': 'fixed'
+                'periodStart': 202201,
+                'periodEnd': getCurrentPeriod(),
             }
         ).then(response => {
             let options = response == null ? {} : response.history.map(i => ({
@@ -51,57 +62,60 @@ const App = () => {
         return null;
     }
 
-    const valueAxisText = (arg) => {
+    const valueAxisLabel = (arg) => {
         return `R$ ${arg.valueText}`;
     }
 
-    const constantLine = [
-        {
-            width: 2,
-            value: expenseGoal,
-            color: "#8c8cff",
-            dashStyle: "dash",
-            label: {
-                text: "Meta"
-            }
-        },
-        {
-            width: 2,
-            value: expenseAvg,
-            color: "#8c8cff",
-            dashStyle: "dash",
-            label: {
-                text: "Média"
-            }
-        },
-    ]
-
-    const valueAxisConfig = {
-        'customizedText': valueAxisText,
-        'visualRange': 500,
-        'title': {
-            'value': 'Gasto em reais',
-            'font': {
-                'color': "#e91e63"
-            }
-        }
+    const customizeArgumentLabel = (e) => {
+        return `${e.value}`;
     }
 
-    const argumentAxisConfig = {
-        'argumentType': 'string' // number | date
+    const customizeLabel = (arg) => {
+        if (arg.value > 70000) {
+            return {
+                visible: true,
+                backgroundColor: '#ff7c7c',
+                customizeText(e) {
+                    return `${e.valueText}&#176F`;
+                },
+            };
+        }
+        return null;
     }
 
     return (
-        <CreditCardBillHistory
-            title={"Evolução de crédito"}
-            dataSource={billHistory}
-            argumentField={"period"}
-            valueField={"total_amount"}
-            constantLine={constantLine}
-            customizePoint={customizePoint}
-            valueAxisConfig={valueAxisConfig}
-            argumentAxisConfig={argumentAxisConfig}
-        />
+        <Chart id="bill_history"
+               title={"Histórico de faturas"}
+               dataSource={billHistory}
+               customizePoint={customizePoint}
+               customizeLabel={customizeLabel}
+        >
+            <Series
+                axis={'amount'}
+                argumentField={"period"}
+                valueField={"total_amount"}
+                type="bar"
+                color="#e7d19a"
+            />
+            <ArgumentAxis argumentType={"string"}>
+                {/*<Label customizeText={customizeArgumentLabel}/>*/}
+            </ArgumentAxis>
+            <ValueAxis maxValueMargin={0.01} name={'amount'}>
+                <VisualRange startValue={500}/>
+                <Label customizeText={valueAxisLabel}/>
+                <Title text={"Gasto em reais"}>
+                    <Font color={"#e91e63"}/>
+                </Title>
+                <ConstantLine width={2} value={expenseGoal} color={"#8c8cff"} dashStyle={"dash"}>
+                    <Label text={"Meta"}/>
+                </ConstantLine>
+                <ConstantLine width={2} value={expenseAvg} color={"#8c8cff"} dashStyle={"dash"}>
+                    <Label text={"Média"}/>
+                </ConstantLine>
+            </ValueAxis>
+            <Legend visible={false}/>
+            <Export enabled={true}/>
+        </Chart>
     );
 }
 
