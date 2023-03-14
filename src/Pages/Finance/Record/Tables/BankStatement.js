@@ -121,10 +121,6 @@ const App = () => {
             location: "after"
         },
         {
-            child: <Button icon={'add'} onClick={coffeeCommand}>T</Button>,
-            location: "after"
-        },
-        {
             name: 'searchPanel',
             location: "after",
         },

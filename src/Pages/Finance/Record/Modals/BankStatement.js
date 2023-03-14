@@ -44,7 +44,7 @@ const App = (props) => {
                 description: '',
                 datCreated: null,
                 datLastEdited: null,
-                cashFlowId: 'outcoming'
+                cashFlowId: 'outgoing'
             });
             setSelectedCategory(null);
             setSelectedAccount(null);
@@ -119,7 +119,7 @@ const App = (props) => {
         }else {
             let options = [
                 { value: 'incoming', label: 'Entrada' },
-                { value: 'outcoming', label: 'Saída' }
+                { value: 'outgoing', label: 'Saída' }
             ]
             callback(options)
             setSelectedCashFlow(options?.filter(cashFlow => cashFlow.value === values.cashFlowId)[0])
