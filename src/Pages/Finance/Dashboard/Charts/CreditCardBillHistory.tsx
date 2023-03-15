@@ -84,7 +84,6 @@ const App = () => {
     }
 
     function formatText(arg) {
-        console.log(arg)
         return `${arg.value}`;
     }
 

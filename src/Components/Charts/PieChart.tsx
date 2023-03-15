@@ -1,4 +1,5 @@
 import PieChart, {Series, Label, Margin, Export, Legend, Animation} from 'devextreme-react/pie-chart';
+import React from 'react';
 
 const App = (props) => {
     function formatText(arg) {

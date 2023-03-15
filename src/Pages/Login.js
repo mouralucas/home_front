@@ -1,11 +1,9 @@
 import React, {useState} from "react";
-import {Navigate, useLocation, useNavigate} from 'react-router-dom';
+import {Link, Navigate, useLocation, useNavigate} from 'react-router-dom';
 import '../Assets/Login/Login.css';
 import logo from '../Assets/Core/Images/Logo/logo_lucas.svg';
 import axios from "../Services/Axios/Axios";
 import {isAuthenticated, setToken} from '../Services/Auth/Auth'
-import Input from "../Components/Input";
-import {Link} from 'react-router-dom'
 import {URL_LOGIN} from "../Services/Axios/ApiUrls";
 
 async function loginAPI(credentials) {

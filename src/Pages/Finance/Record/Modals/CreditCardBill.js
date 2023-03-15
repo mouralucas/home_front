@@ -114,7 +114,6 @@ const App = (props) => {
 
     const getPaymentDate = (e, purchaseDate) => {
         e.preventDefault()
-        console.log('puta que pariu')
     }
 
     const body = () => {
