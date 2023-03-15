@@ -83,6 +83,11 @@ const App = () => {
         return null;
     }
 
+    function formatText(arg) {
+        console.log(arg)
+        return `${arg.value}`;
+    }
+
     return (
         <Chart id="bill_history"
                title={"Histórico de faturas"}
@@ -96,7 +101,11 @@ const App = () => {
                 valueField={"total_amount"}
                 type="bar"
                 color="#e7d19a"
-            />
+                // hoverMode="onlyPoints" //<!-- or "onlyPoint" | "allArgumentPoints" | "none" -->
+
+            >
+                <Label visible={true} customizeText={formatText}></Label>
+            </Series>
             <ArgumentAxis argumentType={"string"}>
                 {/*<Label customizeText={customizeArgumentLabel}/>*/}
             </ArgumentAxis>
