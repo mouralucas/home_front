@@ -118,8 +118,8 @@ const App = (props) => {
             callback(filterSelect(cashFlow, query));
         }else {
             let options = [
-                { value: 'incoming', label: 'Entrada' },
-                { value: 'outgoing', label: 'Saída' }
+                { value: 'INCOMING', label: 'Entrada' },
+                { value: 'OUTGOING', label: 'Saída' }
             ]
             callback(options)
             setSelectedCashFlow(options?.filter(cashFlow => cashFlow.value === values.cashFlowId)[0])
@@ -192,10 +192,7 @@ const App = (props) => {
                     </div>
                     <div className="row">
                         <div className="col-6">
-                            <label htmlFor="">Operação {values.category_id}</label>
-                            {/*<Select defaultValue={operationOptions[1]}*/}
-                            {/*        options={operationOptions}*/}
-                            {/*        onChange={(e) => setComboValues(e, 'cashFlowId', setSelectedCashFlow)}/>*/}
+                            <label htmlFor="">Operação {values.cashFlowId}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getCashFlow(query, callback)}
                                          onChange={(e) => setComboValues(e, 'cashFlowId', setSelectedCashFlow)}

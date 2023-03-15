@@ -43,7 +43,7 @@ const App = () => {
     }, []);
 
     const coffeeCommand = (e) => {
-        toast('🦄 Wow so easy!');
+        toast('🦄 Cafezinho delícia!');
     }
 
     const columns = [
