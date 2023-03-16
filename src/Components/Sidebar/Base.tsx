@@ -19,17 +19,17 @@ const App = (props) => {
                     <SubMenu
                         label={"Fianceiro"}
                         icon={<BarChart/>}
-                        component={<Link to="/finance/dashboard" />}
+                        component={<Link to="/finance/dashboard"/>}
                         active={true}
                     >
-                        <MenuItem component={<Link to="/finance/dashboard" />}>Dashboard</MenuItem>
-                        <MenuItem component={<Link to="/finance/records" />}>Registros</MenuItem>
+                        <MenuItem component={<Link to="/finance/dashboard"/>}>Dashboard</MenuItem>
+                        <MenuItem component={<Link to="/finance/records"/>}>Registros</MenuItem>
                     </SubMenu>
                     <SubMenu
                         label={"Biblioteca"}
                         icon={<BarChart/>}>
-                        <MenuItem component={<Link to="/library/home" />}>Home</MenuItem>
-                        <MenuItem component={<Link to="/library/backlog" />}>Backlog</MenuItem>
+                        <MenuItem component={<Link to="/library/home"/>}>Home</MenuItem>
+                        <MenuItem component={<Link to="/library/backlog"/>}>Backlog</MenuItem>
                     </SubMenu>
                     <SubMenu
                         label="Charts"
@@ -41,6 +41,11 @@ const App = (props) => {
                         }>
                         <MenuItem> Pie charts </MenuItem>
                         <MenuItem> Line charts </MenuItem>
+                    </SubMenu>
+                    <SubMenu
+                        label={'Usuários'}
+                        icon={<BarChart/>}>
+                        <MenuItem>Cadastre-se</MenuItem>
                     </SubMenu>
                 </Menu>
                 <SidebarFooter collapsed={true}/>

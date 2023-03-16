@@ -7,6 +7,7 @@ import FinanceRecord from '../Pages/Finance/Record/Home'
 import Files from '../Pages/FileManager/Home'
 import Uploader from '../Pages/FileManager/Uploader'
 import Login from "../Pages/Login";
+import LandingPage from "../Pages/LandingPage";
 import Error404 from "../Pages/Errors/404";
 import RequireAuth from "../Services/Auth/Auth";
 import WithNav from "./WithNav";
@@ -28,7 +29,8 @@ function HomeRoutes() {
                 </Route>
 
                 <Route element={<WithoutNav/>}>
-                    <Route element={<Login/>} path=""/>
+                    <Route element={<LandingPage/>} path=""/>
+                    <Route element={<Login/>} path="/login"/>
                     <Route path="*" element={<Error404/>}/>
                 </Route>
             </Routes>
