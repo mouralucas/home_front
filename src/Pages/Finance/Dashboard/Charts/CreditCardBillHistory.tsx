@@ -29,14 +29,14 @@ const App = () => {
     const getBillHistory = () => {
         getData(URL_CREDIT_CARD_BILL_HISTORY, {
                 'periodStart': 202201,
-                'periodEnd': getCurrentPeriod(),
+                'periodEnd': 202306,
             }
         ).then(response => {
             let options = response == null ? {} : response.history.map(i => ({
                 period: i.period,
-                total_amount: i.total_amount * -1
+                amount: Number(i.total_amount_absolute)
             }))
-            setExpenseAvg(response.average * -1);
+            setExpenseAvg(response.average);
             setBillHistory(options);
             setExpenseGoal(response.goal)
         }).catch((err: string | ToastOptions) => {
@@ -53,11 +53,11 @@ const App = () => {
     const customizePoint = (arg) => {
         // TODO: existe problema quando a média é menor que a meta!!!
         if (arg.value < expenseGoal) {
-            return {color: '#8c8cff', hoverStyle: {color: '#8c8cff'}};
+            return {color: '#77dd77', hoverStyle: {color: '#77dd77'}};
         } else if (arg.value >= expenseGoal && arg.value <= expenseAvg) {
-            return {color: '#efff2f', hoverStyle: {color: '#efff2f'}}
+            return {color: '#fdfd96', hoverStyle: {color: '#fdfd96'}}
         } else if (arg.value > expenseAvg) {
-            return {color: '#ff7c7c', hoverStyle: {color: '#ff7c7c'}};
+            return {color: '#ff6961', hoverStyle: {color: '#ff6961'}};
         }
         return null;
     }
@@ -97,16 +97,16 @@ const App = () => {
             <Series
                 axis={'amount'}
                 argumentField={"period"}
-                valueField={"total_amount"}
+                valueField={"amount"}
                 type="bar"
                 color="#e7d19a"
                 // hoverMode="onlyPoints" //<!-- or "onlyPoint" | "allArgumentPoints" | "none" -->
 
             >
-                <Label visible={true} customizeText={formatText}></Label>
+                <Label visible={false} customizeText={formatText}></Label>
             </Series>
             <ArgumentAxis argumentType={"string"}>
-                {/*<Label customizeText={customizeArgumentLabel}/>*/}
+                <Label customizeText={customizeArgumentLabel}/>
             </ArgumentAxis>
             <ValueAxis maxValueMargin={0.01} name={'amount'}>
                 <VisualRange startValue={500}/>
