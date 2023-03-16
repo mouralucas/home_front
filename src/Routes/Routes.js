@@ -1,9 +1,6 @@
-import React from "react";
+import React, {lazy } from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Library from '../Pages/Library/Records/Home';
-import LibraryRecord from '../Pages/Library/Backlog/Home';
-import FinanceDashboard from '../Pages/Finance/Dashboard/Home'
-import FinanceRecord from '../Pages/Finance/Record/Home'
+
 import Files from '../Pages/FileManager/Home'
 import Uploader from '../Pages/FileManager/Uploader'
 import Login from "../Pages/Login";
@@ -13,13 +10,17 @@ import RequireAuth from "../Services/Auth/Auth";
 import WithNav from "./WithNav";
 import WithoutNav from "./WithoutNav";
 
+const Library = lazy(() => import('../Pages/Library/Records/Home'))
+const LibraryRecord = lazy(() => import('../Pages/Library/Backlog/Home'))
+const FinanceDashboard = lazy(() => import('../Pages/Finance/Dashboard/Home'))
+const FinanceRecord = lazy(() => import('../Pages/Finance/Record/Home'))
+
 
 function HomeRoutes() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route element={<WithNav/>}>
-                    <Route element={<RequireAuth><Library/></RequireAuth>} path="/library/home"/>
                     <Route element={<RequireAuth><Library/></RequireAuth>} path="/library/home"/>
                     <Route element={<RequireAuth><LibraryRecord/></RequireAuth>} path="/library/backlog"/>
                     <Route element={<RequireAuth><FinanceDashboard/></RequireAuth>} path="/finance/dashboard"/>

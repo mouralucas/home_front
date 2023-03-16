@@ -1,26 +1,30 @@
 import Card from "../../../Components/Card";
+import PieChartFixedExpenses from './Charts/FixedExpenses'
+import PieChartVariableExpenses from './Charts/VariableExpenses'
 import PieChartCategoryExpenses from './Charts/ExpensesCategory'
 import CreditCardBillHistoryChart from './Charts/CreditCardBillHistory'
 import LineChart from '../../../Components/Charts/LineChart'
 import Sidebar from '../../../Components/Sidebar/Base'
-import {useEffect, useRef} from "react";
+import {useEffect, useState} from "react";
 import React from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
 
 
 const Home = () => {
-    const periodBalanceRef = useRef(0)
-    const periodIncomingRef = useRef(0)
-    const periodOutgoingRef = useRef(0)
-    const periodCreditCardBillRef = useRef(0)
+    const [periodBalance, setPeriodBalance] = useState(0)
+    const [periodIncoming, setPeriodIncoming] = useState(0)
+    const [periodOutgoing, setPeriodOutgoing] = useState(0)
+    const [periodCreditCardBill, setPeriodCreditCardBill] = useState(0)
+    const [periodCreditCardBillQtd, setPeriodCreditCardBillQtd] = useState(0)
 
     useEffect(() => {
         getData(URL_FINANCE_SUMMARY).then(response => {
-            periodBalanceRef.current = response.balance 
-            periodIncomingRef.current = response.incoming
-            periodOutgoingRef.current = response.outgoing
-            periodCreditCardBillRef.current = response.balance
+            setPeriodBalance(response.balance)
+            setPeriodIncoming(response.incoming)
+            setPeriodOutgoing(response.outgoing)
+            setPeriodCreditCardBill(response.credit)
+            setPeriodCreditCardBillQtd(response.credit_qtd)
         })
     })
 
@@ -33,7 +37,7 @@ const Home = () => {
                         <Card>
                             <Card.Body>
                                 <p>Saldo em dd/mm/yy</p>
-                                R$ {periodBalanceRef.current}
+                                R$ {periodBalance}
                             </Card.Body>
                         </Card>
                     </div>
@@ -41,7 +45,7 @@ const Home = () => {
                         <Card>
                             <Card.Body>
                                 <p>Entradas</p>
-                                R$ {periodIncomingRef.current}
+                                R$ {periodIncoming}
                             </Card.Body>
                         </Card>
                     </div>
@@ -49,7 +53,7 @@ const Home = () => {
                         <Card>
                             <Card.Body>
                                 <p>Saídas</p>
-                                R$ {periodOutgoingRef.current}
+                                R$ {periodOutgoing}
                             </Card.Body>
                         </Card>
                     </div>
@@ -57,7 +61,7 @@ const Home = () => {
                         <Card>
                             <Card.Body>
                                 <p>Crédito</p>
-                                R$ {periodCreditCardBillRef.current} em X compras
+                                R$ {periodCreditCardBill} em {periodCreditCardBillQtd} compras
                             </Card.Body>
                         </Card>
                     </div>

@@ -1,5 +1,5 @@
 // WithNav.js (Stand-alone Functional Component)
-import React from 'react';
+import React, {Suspense} from 'react';
 import NavBar from '../Components/Navbar';
 import {Outlet} from 'react-router-dom';
 import {ProSidebarProvider} from "react-pro-sidebar";
@@ -9,7 +9,9 @@ const App = () => {
         <>
             <ProSidebarProvider>
                 <NavBar/>
-                <Outlet/>
+                <Suspense fallback={<h2>Loading...</h2>}>
+                    <Outlet/>
+                </Suspense>
             </ProSidebarProvider>
         </>
     );
