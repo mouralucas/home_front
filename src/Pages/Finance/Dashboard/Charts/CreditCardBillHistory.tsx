@@ -4,7 +4,8 @@ import {URL_CREDIT_CARD_BILL_HISTORY} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";
 import {
     ArgumentAxis,
-    Chart, ConstantLine,
+    Chart,
+    ConstantLine,
     Export,
     Font,
     Label,
@@ -14,7 +15,6 @@ import {
     ValueAxis,
     VisualRange
 } from "devextreme-react/chart";
-import getCurrentPeriod from "../../../../Utils/DateTime";
 
 
 const App = () => {
@@ -32,13 +32,13 @@ const App = () => {
                 'periodEnd': 202306,
             }
         ).then(response => {
-            let options = response == null ? {} : response.history.map(i => ({
+            let options = response == null ? {} : response.history.map((i: { period: string; total_amount_absolute: number; }) => ({
                 period: i.period,
                 amount: Number(i.total_amount_absolute)
             }))
-            setExpenseAvg(response.average);
             setBillHistory(options);
-            setExpenseGoal(response.goal)
+            setExpenseGoal(response.goal);
+            setExpenseAvg(response.average);
         }).catch((err: string | ToastOptions) => {
                 toast.error('Houve um erro ao buscar o histórico de faturas' + err)
             }
@@ -50,7 +50,7 @@ const App = () => {
      * @param arg
      * Get the colour of the column based in the average and goal
      */
-    const customizePoint = (arg) => {
+    const customizePoint = (arg: { value: number; }) => {
         // TODO: existe problema quando a média é menor que a meta!!!
         if (arg.value < expenseGoal) {
             return {color: '#77dd77', hoverStyle: {color: '#77dd77'}};
