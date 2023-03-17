@@ -527,7 +527,7 @@ const ModalItem = (props) => {
                 title={'Item'}
                 body={body()}
                 fullscreen={true}
-                actionModal={(e) => handleSubmit(e, URL_ITEM, values)}
+                actionModal={(e) => handleSubmit(e, URL_ITEM, values, false, 'Item cadastrado com sucesso')}
             />
         </div>
     );
