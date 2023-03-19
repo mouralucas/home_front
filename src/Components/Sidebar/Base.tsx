@@ -1,16 +1,12 @@
-import {Menu, MenuItem, Sidebar, sidebarClasses, SubMenu} from "react-pro-sidebar";
+import {Menu, MenuItem, Sidebar, SubMenu} from "react-pro-sidebar";
 import {BarChart} from "../../Assets/Core/Images/icons/BarChart";
 import {Badge} from "react-bootstrap";
 import {SidebarFooter} from "../../Assets/Core/Components/Sidebar/Footer";
-import AuthorTable from "../../Pages/Library/Backlog/Tables/Author";
 import React from "react";
-import Card from '../../Components/Card'
 import {Link} from "react-router-dom";
 
 
 const App = (props) => {
-
-
     return (
         <>
             <Sidebar defaultCollapsed={true}
