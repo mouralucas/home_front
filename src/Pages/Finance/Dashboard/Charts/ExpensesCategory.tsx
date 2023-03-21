@@ -14,7 +14,6 @@ const App = (props) => {
                 'period': 202302,
             }
         ).then(response => {
-            console.log(response)
                 let options = response == null ? {} : response.expenses.map(i => ({
                     category: i.category,
                     total: i.total

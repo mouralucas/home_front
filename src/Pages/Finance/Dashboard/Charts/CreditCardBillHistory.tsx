@@ -15,12 +15,15 @@ import {
     ValueAxis,
     VisualRange
 } from "devextreme-react/chart";
+import { Slider, Tooltip } from 'devextreme-react/slider';
 
 
 const App = () => {
     const [billHistory, setBillHistory] = useState([])
     const [expenseAvg, setExpenseAvg] = useState(0)
     const [expenseGoal, setExpenseGoal] = useState(0)
+
+    const [sliderValue, setSliderValue] = useState(500)
 
     useEffect(() => {
         getBillHistory();
@@ -32,6 +35,7 @@ const App = () => {
                 'periodEnd': 202306,
             }
         ).then(response => {
+            console.log(response)
             let options = response == null ? {} : response.history.map((i: { period: string; total_amount_absolute: number; }) => ({
                 period: i.period,
                 amount: Number(i.total_amount_absolute)
@@ -87,7 +91,10 @@ const App = () => {
         return `${arg.value}`;
     }
 
+    console.log(sliderValue)
+
     return (
+        <>
         <Chart id="bill_history"
                title={"Histórico de faturas"}
                dataSource={billHistory}
@@ -109,7 +116,7 @@ const App = () => {
                 <Label customizeText={customizeArgumentLabel}/>
             </ArgumentAxis>
             <ValueAxis maxValueMargin={0.01} name={'amount'}>
-                <VisualRange startValue={500}/>
+                <VisualRange startValue={sliderValue}/>
                 <Label customizeText={valueAxisLabel}/>
                 <Title text={"Gasto em reais"}>
                     <Font color={"#e91e63"}/>
@@ -124,7 +131,21 @@ const App = () => {
             <Legend visible={false}/>
             <Export enabled={true}/>
         </Chart>
+
+        <Slider min={0}
+                max={1000}
+                value={sliderValue}
+                onValueChange={setSliderValue}
+                step={500}
+                >
+            <Tooltip enabled={true} showMode="always" position="bottom" format={format} />
+        </Slider>
+    </>
     );
+
+    function format(value: any) {
+        return `Starts with ${value}`;
+      }
 }
 
 export default App;
