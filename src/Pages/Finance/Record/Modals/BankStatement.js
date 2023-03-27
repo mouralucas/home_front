@@ -44,7 +44,7 @@ const App = (props) => {
                 description: '',
                 datCreated: null,
                 datLastEdited: null,
-                cashFlowId: 'outgoing'
+                cashFlowId: 'OUTGOING'
             });
             setSelectedCategory(null);
             setSelectedAccount(null);
