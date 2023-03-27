@@ -29,7 +29,7 @@ class Table extends React.Component {
         super(props);
 
         loadMessages(ptMessages);
-        locale(navigator.language);
+        locale('pt-br');
 
         this.state = {
             collapsed: false,
