@@ -105,7 +105,7 @@ const App = (props) => {
             callback(filterSelect(account, query));
         } else {
             getData(URL_ACCOUNTS).then(response => {
-                let options = response.bank_accounts.map(i => ({value: i.id, label: i.nm_bank}))
+                let options = response.accounts.map(i => ({value: i.id, label: i.nickname}))
                 callback(options);
                 setSelectedAccount(options?.filter(account => account.value === values.account_id)[0])
                 setAccount(options)
