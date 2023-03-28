@@ -169,9 +169,10 @@ const App = (props) => {
                                          value={selectedCurrency}/>
                         </div>
                         <div className="col-3">
-                            <label htmlFor="">Valor: {values.amount}</label>
+                            <label htmlFor="">Valor</label>
                             <Currency className='form-control input-default'
                                       value={values.amount * 100}
+                                      onFocus={event => event.target.select()}
                                       onValueChange={(values, sourceInfo) => {
                                           setCurrencyValues(values, 'amount')
                                       }}/>
@@ -183,7 +184,7 @@ const App = (props) => {
                                      onValueChanged={(date) => setDateValues(date, 'dat_purchase')}/>
                         </div>
                         <div className="col-4">
-                            <label htmlFor="">Conta {values.account_id}</label>
+                            <label htmlFor="">Conta</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getAccounts(query, callback)}
                                          onChange={(e) => setComboValues(e, 'account_id', setSelectedAccount)} defaultOptions
@@ -200,7 +201,7 @@ const App = (props) => {
                                          value={selectedCashFlow}/>
                         </div>
                         <div className="col-6">
-                            <label htmlFor="">Categoria {values.category_id}</label>
+                            <label htmlFor="">Categoria</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getCategory(query, callback)}
                                          onChange={(e) => setComboValues(e, 'category_id', setSelectedCategory)}

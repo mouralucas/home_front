@@ -9,6 +9,7 @@ import {useEffect, useState} from "react";
 import React from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
+import getCurrentPeriod from "../../../Utils/DateTime";
 
 
 const Home = () => {
@@ -17,6 +18,8 @@ const Home = () => {
     const [periodOutgoing, setPeriodOutgoing] = useState(0)
     const [periodCreditCardBill, setPeriodCreditCardBill] = useState(0)
     const [periodCreditCardBillQtd, setPeriodCreditCardBillQtd] = useState(0)
+
+    const [selectedPeriod, setSelectedPeriod] = useState(getCurrentPeriod())
 
     useEffect(() => {
         getData(URL_FINANCE_SUMMARY).then(response => {
