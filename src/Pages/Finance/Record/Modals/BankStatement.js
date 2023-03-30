@@ -1,6 +1,6 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_ACCOUNTS, URL_CATEGORIES, URL_ACCOUNT_STATEMENT, URL_CURRENCY} from "../../../../Services/Axios/ApiUrls";
+import {URL_ACCOUNT_STATEMENT, URL_ACCOUNTS, URL_CATEGORIES, URL_CURRENCY} from "../../../../Services/Axios/ApiUrls";
 import Currency from "../../../../Components/Currency";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
@@ -9,9 +9,6 @@ import AsyncSelect from "react-select/async";
 import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";
 import {format as formatDate} from "../../../../Utils/DateTime";
-import Select from "react-select";
-
-
 
 
 const App = (props) => {
@@ -25,7 +22,7 @@ const App = (props) => {
     const [selectedCurrency, setSelectedCurrency] = useState([])
 
     const [cashFlow, setCashFlow] = useState([])
-    const [selectedCashFlow, setSelectedCashFlow] = useState();
+    const [selectedCashFlow, setSelectedCashFlow] = useState([]);
 
     const [values, setValues] = useState({});
 
@@ -63,22 +60,18 @@ const App = (props) => {
         }
     }, [account, props.statement])
 
-    // useEffect(() => {
-    //     if (values.cashFlowId === 'outcoming' || values.cashFlowId === 'undefined'){
-    //         let name = 'amount'
-    //         let newValue = values.amount * -1
-    //         setValues(oldValues => ({...oldValues, [name]: newValue}));
-    //     } else {
-    //         console.log('in')
-    //     }
-    // }, [values.cashFlowId])
+    useEffect(() => {
+        if (props.statement) {
+            setSelectedCashFlow(cashFlow.filter(i => i.value === props.statement.cashFlowId)[0])
+        }
+    }, [cashFlow, props.statement])
 
     const getCurrency = (query, callback) => {
         if (query) {
             callback(filterSelect(currency, query));
         } else {
             getData(URL_CURRENCY).then(response => {
-                let options = response == null ? {} : response.currency.map(i => ({value: i.id, label:i.symbol}))
+                let options = response == null ? {} : response.currency.map(i => ({value: i.id, label: i.symbol}))
                 callback(options);
                 setSelectedCurrency(options.filter(currency => currency.value === values.currencyId))
                 setCurrency(options)
@@ -114,12 +107,12 @@ const App = (props) => {
     }
 
     const getCashFlow = (query, callback) => {
-        if (query){
+        if (query) {
             callback(filterSelect(cashFlow, query));
-        }else {
+        } else {
             let options = [
-                { value: 'INCOMING', label: 'Entrada' },
-                { value: 'OUTGOING', label: 'Saída' }
+                {value: 'INCOMING', label: 'Entrada'},
+                {value: 'OUTGOING', label: 'Saída'}
             ]
             callback(options)
             setSelectedCashFlow(options?.filter(cashFlow => cashFlow.value === values.cashFlowId)[0])
@@ -152,7 +145,6 @@ const App = (props) => {
     const setCurrencyValues = (values, name) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
-
 
 
     const body = () => {
