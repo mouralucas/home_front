@@ -4,7 +4,7 @@ import {loadMessages, locale} from "devextreme/localization";
 import DataGrid, {
     Column,
     ColumnChooser,
-    Export,
+    Export, Format,
     Grouping,
     GroupPanel,
     HeaderFilter,
@@ -54,7 +54,8 @@ class Table extends React.Component {
         } else {
             let columns_list = [];
             this.props.tableColumns.forEach(function (column, index) {
-                columns_list.push(<Column
+                columns_list.push(
+                    <Column
                         key={index}
                         type={column.type ?? null}
                         dataField={column.dataField}
@@ -69,7 +70,11 @@ class Table extends React.Component {
                         calculateCellValue={column.calculateCellValue}
                         cellRender={column.cellRender ?? null}
                         groupIndex={column.groupIndex ?? null}
-                    > {column.child} </Column>
+
+                    >
+                        {column.child}
+                        {column.format && <Format type="currency" precision={5} />}
+                    </Column>
                 )
             });
 

@@ -1,6 +1,7 @@
 .dx-datagrid-headers {
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+    font-weight: bold;
     background-color: var(--color-primay);
 }
 
@@ -52,12 +53,12 @@
 }
 
 .dx-button-content {
-    background-color: var(--color-primay);
+    /*background-color: var(--color-primay);*/
     font-weight: bold !important;
 }
 
 .dx-button-content:hover {
-    background-color: var(--color-secondary) !important;
+    /*background-color: var(--color-secondary) !important;*/
     font-weight: bold !important;
 }
 

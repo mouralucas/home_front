@@ -23,20 +23,20 @@
     margin-right: .5rem;
 }
 
-.btn-default {
-    background-color: var(--color-primay);
-    border-color: var(--color-primay);
-}
+/*.btn-default {*/
+/*    background-color: var(--color-primay);*/
+/*    border-color: var(--color-primay);*/
+/*}*/
 
-.btn-default:hover {
-    background-color: var(--color-secondary);
-    border-color: var(--color-primay);
-}
+/*.btn-default:hover {*/
+/*    background-color: var(--color-secondary);*/
+/*    border-color: var(--color-primay);*/
+/*}*/
 
-.btn-default-hollow {
-    border-color: var(--color-primay);
-    color: var(--color-primay) !important;
-}
+/*.btn-default-hollow {*/
+/*    border-color: var(--color-primay);*/
+/*    color: var(--color-primay) !important;*/
+/*}*/
 
 .input-default {
     height: 40px;

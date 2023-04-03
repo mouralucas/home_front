@@ -6,6 +6,7 @@ import Button from "devextreme-react/button";
 import ModalStatement from '../Modals/BankStatement'
 import {Button as Btn} from "devextreme-react/data-grid";
 import {toast} from "react-toastify";
+import {getData} from "../../../../Services/Axios/Get";
 
 
 const App = () => {
@@ -28,13 +29,11 @@ const App = () => {
     }
 
     const getStatements = () => {
-        axios.get(URL_ACCOUNT_STATEMENT, {
-            params: {'reference': 202210}
-        }).then(response => {
-                setStatement(response.data.statement);
+        getData(URL_ACCOUNT_STATEMENT, {reference: 202303}).then(response => {
+                setStatement(response.statement);
             }
-        ).catch(response => {
-            return {'error': response}
+        ).catch(err => {
+            toast.error('Houve um erro ao buscar extratos: ' + err)
         })
     }
 
@@ -68,6 +67,10 @@ const App = () => {
             caption: "Valor",
             dataType: "currency",
             width: 110,
+            format: {
+                type: 'currency',
+                precision: 3
+            }
         },
         {
             dataField: "description",

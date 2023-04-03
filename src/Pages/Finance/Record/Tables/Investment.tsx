@@ -4,6 +4,7 @@ import { URL_INVESTMENT } from "../../../../Services/Axios/ApiUrls";
 import { getData } from "../../../../Services/Axios/Get";
 import Button from "devextreme-react/button";
 import DataGrid from "../../../../Components/DataGrid";
+import {Button as Btn} from "devextreme-react/data-grid";
 
 
 const App = () => {
@@ -52,17 +53,20 @@ const App = () => {
         {
             dataField: "date",
             caption: "Data",
-            dataType: "date"
+            dataType: "date",
+            width: 130
         },
         {
             dataField: "dat_maturity",
             caption: "Vencimento",
-            dataType: "date"
+            dataType: "date",
+            width: 130
         },
         {
             dataField: "amount",
             caption: "Valor",
-            dataType: "currency"
+            dataType: "currency",
+            width: 200
         }, 
         {
             dataField: "interest_index",
@@ -79,6 +83,21 @@ const App = () => {
             caption: 'Id dgente de custódia',
             dataType: "string",
             visible: false
+        },
+        {
+            caption: 'Ações',
+            type: 'buttons',
+            width: 110,
+            child: [
+                <Btn
+                    key={1}
+                    text="Editar"
+                    // icon="/url/to/my/icon.ico"
+                    icon="edit"
+                    hint="Editar"
+                    onClick={showModal}
+                />,
+            ]
         }
 
     ]
