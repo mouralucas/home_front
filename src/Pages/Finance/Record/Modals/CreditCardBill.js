@@ -121,9 +121,6 @@ const App = (props) => {
             <form>
                 <div className="container-fluid">
                     <div className="row">
-                        <button onClick={e => getPaymentDate(e, '2023-01-05')}>Teste de data de pagamento</button>
-                    </div>
-                    <div className="row">
                         <div className="col-4">
                             <label htmlFor="">Valor: {values.amount}</label>
                             <Currency className='form-control input-default'

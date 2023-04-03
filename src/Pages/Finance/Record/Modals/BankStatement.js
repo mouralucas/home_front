@@ -165,6 +165,7 @@ const App = (props) => {
                             <Currency className='form-control input-default'
                                       value={values.amount * 100}
                                       onFocus={event => event.target.select()}
+                                      currency={values.currencyId}
                                       onValueChange={(values, sourceInfo) => {
                                           setCurrencyValues(values, 'amount')
                                       }}/>

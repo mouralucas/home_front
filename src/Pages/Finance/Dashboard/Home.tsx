@@ -1,12 +1,9 @@
 import Card from "../../../Components/Card";
-import PieChartFixedExpenses from './Charts/FixedExpenses'
-import PieChartVariableExpenses from './Charts/VariableExpenses'
 import PieChartCategoryExpenses from './Charts/ExpensesCategory'
 import CreditCardBillHistoryChart from './Charts/CreditCardBillHistory'
 import LineChart from '../../../Components/Charts/LineChart'
 import Sidebar from '../../../Components/Sidebar/Base'
-import {useEffect, useState} from "react";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
 import getCurrentPeriod from "../../../Utils/DateTime";
@@ -20,6 +17,10 @@ const Home = () => {
     const [periodCreditCardBillQtd, setPeriodCreditCardBillQtd] = useState(0)
 
     const [selectedPeriod, setSelectedPeriod] = useState(getCurrentPeriod())
+
+    useEffect(() => {
+        document.title = 'Dashboard';
+    }, [])
 
     useEffect(() => {
         getData(URL_FINANCE_SUMMARY).then(response => {
