@@ -4,45 +4,32 @@ export const menuItems = [
         url: '/',
     },
     {
-        title: 'Services',
-        url: '/services',
+        title: 'Biblioteca',
+        url: 'library/home',
         submenu: [
             {
-                title: 'Web Development',
-                url: 'web-dev',
-                submenu: [
-                    {
-                        title: 'Frontend',
-                        url: 'frontend',
-                    },
-                    {
-                        title: 'Backend',
-                        submenu: [
-                            {
-                                title: 'NodeJS',
-                                url: 'node',
-                            },
-                            {
-                                title: 'PHP',
-                                url: 'php',
-                            },
-                        ],
-                    },
-                ],
+                title: 'Home',
+                url: 'library/home',
             },
             {
-                title: 'web design',
-                url: 'web-design',
-            },
-            {
-                title: 'web development',
-                url: 'web-dev',
-            },
-            {
-                title: 'SEO',
-                url: 'seo',
+                title: 'Backlog',
+                url: 'library/backlog',
             },
         ],
+    },
+    {
+        title: 'Financeiro',
+        // url: 'finance/home'
+        submenu: [
+            {
+                title: 'Dashboard',
+                url: 'finance/dashboard'
+            },
+            {
+                title: 'Registros',
+                url: 'finance/records'
+            }
+        ]
     },
     {
         title: 'About',

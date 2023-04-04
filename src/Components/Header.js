@@ -1,13 +1,18 @@
 import React from 'react'
-import Styles from '../Assets/Header/Header.module.css'
+import {Link} from "react-router-dom";
+import '../Assets/Header/header.css'
+import Navbar from '../Components/Navbar/Base'
 
 class Header extends React.Component {
     render() {
         return (
-            <header className={Styles.Header}>
-            <span className={Styles.HeaderTitle}>
-                Header
-            </span>
+            <header>
+                <div className="nav-area">
+                    <Link to="/" className="logo">
+                        Logo
+                    </Link>
+                    <Navbar/>
+                </div>
             </header>
         );
     }
