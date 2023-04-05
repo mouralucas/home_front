@@ -2,6 +2,9 @@ import {menuItems} from './menuItems';
 import MenuItems from './MenuItems';
 import React from 'react';
 
+// Project reference:
+// https://blog.logrocket.com/how-create-multilevel-dropdown-menu-react/
+
 const Navbar = () => {
     return (
         <nav>
