@@ -37,6 +37,10 @@ const App = () => {
         })
     }
 
+    function amountCustomCell(cellInfo) {
+        return cellInfo.currencySymbol + ' ' + cellInfo.amount;
+    }
+
     useEffect(() => {
         getStatements();
     }, []);
@@ -67,10 +71,8 @@ const App = () => {
             caption: "Valor",
             dataType: "currency",
             width: 110,
-            format: {
-                type: 'currency',
-                precision: 3
-            }
+            alignment: 'justify',
+            calculateCellValue: amountCustomCell,
         },
         {
             dataField: "description",

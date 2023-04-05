@@ -62,6 +62,12 @@ const App = (props) => {
 
     useEffect(() => {
         if (props.statement) {
+            setSelectedCurrency(currency.filter(i => i.value === props.statement.currencyId)[0])
+        }
+    }, [currency, props.statement])
+
+    useEffect(() => {
+        if (props.statement) {
             setSelectedCashFlow(cashFlow.filter(i => i.value === props.statement.cashFlowId)[0])
         }
     }, [cashFlow, props.statement])
