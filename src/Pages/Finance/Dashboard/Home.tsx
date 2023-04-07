@@ -2,6 +2,8 @@ import Card from "../../../Components/Card";
 import PieChartCategoryExpenses from './Charts/ExpensesCategory'
 import CreditCardBillHistoryChart from './Charts/CreditCardBillHistory'
 import LineChart from '../../../Components/Charts/LineChart'
+import RealDollarChart from "../../../Components/Charts/Doughnut";
+import IncomingOutgoingChart from "./Charts/CurrencyProportion";
 import Sidebar from '../../../Components/Sidebar/Base'
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
@@ -84,6 +86,25 @@ const Home = () => {
                             {/*<Card.Header>Outra evolução</Card.Header>*/}
                             <Card.Body>
                                 <CreditCardBillHistoryChart/>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-6">
+                        <Card>
+                            {/*<Card.Header>Outra evolução</Card.Header>*/}
+                            <Card.Body>
+                                <IncomingOutgoingChart/>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                    <div className="col-6">
+                        <Card>
+                            {/*<Card.Header>Outra evolução</Card.Header>*/}
+                            <Card.Body>
+                                <RealDollarChart
+                                title={'Proporção Real/Dólar'}/>
                             </Card.Body>
                         </Card>
                     </div>

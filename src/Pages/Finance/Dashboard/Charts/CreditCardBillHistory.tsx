@@ -35,7 +35,6 @@ const App = () => {
                 'periodEnd': 202306,
             }
         ).then(response => {
-            console.log(response)
             let options = response == null ? {} : response.history.map((i: { period: string; total_amount_absolute: number; }) => ({
                 period: i.period,
                 amount: Number(i.total_amount_absolute)
@@ -90,8 +89,6 @@ const App = () => {
     function formatText(arg) {
         return `${arg.value}`;
     }
-
-    console.log(sliderValue)
 
     return (
         <>
