@@ -4,11 +4,13 @@ import CreditCardBillHistoryChart from './Charts/CreditCardBillHistory'
 import LineChart from '../../../Components/Charts/LineChart'
 import RealDollarChart from "../../../Components/Charts/Doughnut";
 import IncomingOutgoingChart from "./Charts/CurrencyProportion";
+import InvestmentProportionChart from "./Charts/InvestmentProportion";
 import Sidebar from '../../../Components/Sidebar/Base'
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
 import getCurrentPeriod from "../../../Utils/DateTime";
+import InvestmentProportion from "./Charts/InvestmentProportion";
 
 
 const Home = () => {
@@ -32,7 +34,7 @@ const Home = () => {
             setPeriodCreditCardBill(response.credit)
             setPeriodCreditCardBillQtd(response.credit_qtd)
         })
-    })
+    }, [])
 
     return (
         <div className="page-with-menu">
@@ -95,7 +97,7 @@ const Home = () => {
                         <Card>
                             {/*<Card.Header>Outra evolução</Card.Header>*/}
                             <Card.Body>
-                                <IncomingOutgoingChart/>
+                                <InvestmentProportion/>
                             </Card.Body>
                         </Card>
                     </div>
@@ -104,7 +106,7 @@ const Home = () => {
                             {/*<Card.Header>Outra evolução</Card.Header>*/}
                             <Card.Body>
                                 <RealDollarChart
-                                title={'Proporção Real/Dólar'}/>
+                                title={'Proporção Investment'}/>
                             </Card.Body>
                         </Card>
                     </div>

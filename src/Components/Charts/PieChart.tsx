@@ -2,16 +2,26 @@ import PieChart, {Series, Label, Margin, Export, Legend, Animation} from 'devext
 import React from 'react';
 
 const App = (props) => {
-    function formatText(arg) {
-        return `${arg.argumentText} (${arg.percentText})`;
+    const formatText = (arg) => {
+        // let value =  (Math.round(arg.value * 100) / 100).toFixed(2)
+        let value =  Number(arg.value).toFixed(2)
+
+        return `${arg.argumentText}: ${value} (${arg.percentText})`;
     }
+
+    const pointClickHandler = (arg) => {
+        console.log(arg)
+        arg.target.select();
+    }
+
     return (
         <PieChart
             id="pie"
             dataSource={props.data}
-            palette={props.pallete ?? "Bright"}
+            palette={props.pallete ?? "Pastel"}
             title={props.title}
             resolveLabelOverlapping={'shift'}
+            onPointClick={pointClickHandler}
         >
             <Series
                 argumentField={props.axis.argumentField}

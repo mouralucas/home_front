@@ -74,6 +74,11 @@ const App = () => {
             dataType: "string"
         },
         {
+            dataField: 'nm_type',
+            caption: 'Tipo',
+            dataType: 'string'
+        },
+        {
             dataField: 'nm_custodian',
             caption: 'Agente de custódia',
             dataType: "string"

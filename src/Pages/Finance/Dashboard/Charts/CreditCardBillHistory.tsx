@@ -97,6 +97,7 @@ const App = () => {
                dataSource={billHistory}
                customizePoint={customizePoint}
                customizeLabel={customizeLabel}
+               palette={'Pastel'}
         >
             <Series
                 axis={'amount'}
