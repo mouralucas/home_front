@@ -1,13 +1,6 @@
 import Modal from '../../../../Components/Modal'
 import {useEffect, useState} from "react";
-import {
-    URL_CREDIT_CARD_BILL,
-    URL_CATEGORIES,
-    URL_CREDIT_CARD,
-    URL_ACCOUNT_STATEMENT,
-    URL_INVESTMENT
-} from "../../../../Services/Axios/ApiUrls";
-import axios from "../../../../Services/Axios/Axios";
+import {URL_CREDIT_CARD, URL_INVESTMENT} from "../../../../Services/Axios/ApiUrls";
 import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
 import Currency from '../../../../Components/Currency'
@@ -27,19 +20,21 @@ const App = (props) => {
     // Combo boxes
     const [card, setCard] = useState([]);
     const [selectedCard, setSelectedCard] = useState();
-    const [category, setCategory] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState();
+
+    const [investment, setInvestment] = useState([])
+    const [selectedInvestment, setSelectedInvestment] = useState([])
 
     const [values, setValues] = useState({})
 
     useEffect(() => {
-        if (props.bill && props.modalState) {
-            setValues(props.bill);
+        if (props.investment && props.modalState) {
+            setValues(props.investment);
         }
 
         if (!props.modalState) {
+            // TODO: ajustar campos
             setValues({
-                credit_card_id: null,
+                investment_id: null,
                 category_id: null,
                 amount: 0,
                 dat_payment: new Date(),
@@ -48,16 +43,11 @@ const App = (props) => {
                 datCreated: null,
                 datLastEdited: null
             });
-            setSelectedCategory(null);
+            setSelectedInvestment(null);
             setSelectedCard(null);
         }
     }, [props.modalState, props.bill])
 
-    useEffect(() => {
-        if (props.bill) {
-            setSelectedCategory(category.filter(i => i.value === props.bill.category_id)[0]);
-        }
-    }, [category, props.bill])
 
     useEffect(() => {
         if (props.bill) {
@@ -77,6 +67,21 @@ const App = (props) => {
             });
         }
     }
+
+    const getInvestments = (query, callback) => {
+        if (query) {
+            callback(filterSelect(investment, query));
+        } else {
+            getData(URL_INVESTMENT).then(response => {
+                console.log(response)
+                let options = response === null ? {} : response?.investment.map(i => ({value: i.id, label: i.name}));
+                callback(options);
+                setInvestment(options)
+            })
+        }
+    }
+
+
     const set = name => {
         return ({target: {value}}) => {
             setValues(oldValues => ({...oldValues, [name]: value}));
@@ -108,6 +113,10 @@ const App = (props) => {
             <form>
                 <div className="container-fluid">
                     <div className="row">
+                        <div className="col-8">
+                            <label htmlFor="">Título/descrição</label>
+                            <input className='form-control input-default'/>
+                        </div>
                         <div className="col-4">
                             <label htmlFor="">Valor: {values.amount}</label>
                             <Currency className='form-control input-default'
@@ -117,33 +126,20 @@ const App = (props) => {
                                           setCurrency(values, 'amount')
                                       }}/>
                         </div>
+                    </div>
+                    <div className='row'>
+                        <div className="col-6">
+                            <label htmlFor="">Investimento</label>
+                            <AsyncSelect id={'combo_cards'} formTarget={true}
+                                         loadOptions={(query, callback) => getInvestments(query, callback)}
+                                         onChange={(e) => setCombo(e, 'investment_id', setSelectedInvestment)} defaultOptions
+                                         value={selectedInvestment}/>
+                        </div>
                         <div className="col-4">
                             <label htmlFor="">Data compra</label>
                             <DateBox value={values.dat_purchase} type="date" className='form-control input-default'
                                      useMaskBehavior={true}
                                      onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
-                        </div>
-                        <div className="col-4">
-                            <label htmlFor="">Data pagamento</label>
-                            <DateBox value={values.dat_payment} className='form-control input-default'
-                                     useMaskBehavior={true}
-                                     onValueChanged={(date) => setDate(date, 'dat_payment')}/>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className="col-4">
-                            <label htmlFor="">Cartão: {values.card_id}</label>
-                            <AsyncSelect id={'combo_cards'} formTarget={true}
-                                         loadOptions={(query, callback) => getCreditCard(query, callback)}
-                                         onChange={(e) => setCombo(e, 'card_id', setSelectedCard)} defaultOptions
-                                         value={selectedCard}/>
-                        </div>
-                        <div className="col-4">
-                            <label htmlFor="">Categoria: {values.category_id}</label>
-                            <AsyncSelect id={'combo_categories'} formTarget={true}
-                                         loadOptions={(query, callback) => getCategory(query, callback)}
-                                         onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)}
-                                         defaultOptions value={selectedCategory}/>
                         </div>
                     </div>
                     <div className="row">
@@ -183,4 +179,4 @@ const App = (props) => {
     );
 }
 
-export default App
+export default App;

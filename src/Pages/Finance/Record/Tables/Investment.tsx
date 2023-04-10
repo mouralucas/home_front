@@ -3,8 +3,9 @@ import { toast } from "react-toastify";
 import { URL_INVESTMENT } from "../../../../Services/Axios/ApiUrls";
 import { getData } from "../../../../Services/Axios/Get";
 import Button from "devextreme-react/button";
-import DataGrid from "../../../../Components/DataGrid";
 import {Button as Btn} from "devextreme-react/data-grid";
+import TreeList from "../../../../Components/TreeList";
+import ModalInvestmento from '../Modals/Investment'
 
 
 const App = () => {
@@ -12,11 +13,21 @@ const App = () => {
     const [selectedInvestment, setSelectedInvestment] = useState([])
     const [modalState, setModalState] = useState(false)
 
+
+    // tocar tabela para tree list
+    // Cada linha principal contém o total aplicado naquele investimento
+    // Para investimentos recorrentes (rendimento de conta-corrente, etc.) é criado um pai com com o valor total investido
+    //  e cada filho indica um depósito específico
+
     const showModal = (e) => {
         if (typeof e.row !== 'undefined') {
             setSelectedInvestment(e.row.data);
         }
         setModalState(true);
+    }
+
+    const hideModal = () => {
+        setModalState(false);
     }
 
     useEffect(() => {
@@ -133,14 +144,16 @@ const App = () => {
 
     return(
         <>
-            <DataGrid
-                keyExpr={'id'}
+            <TreeList
                 tableColumns={columns}
-                data={investment}
+                keyExpr={'id'}
+                parentIdExpr={'parent_id'}
+                dataSource={investment}
                 toolBarRefresh={false}
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
+            <ModalInvestmento modalState={modalState} hideModal={hideModal}></ModalInvestmento>
         </>
     )
 }

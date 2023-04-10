@@ -3,6 +3,7 @@ import CreditCardBillTable from './Tables/CreditCardBill'
 import BankStatementTable from './Tables/BankStatement'
 import InvestmentStatementTable from './Tables/InvestmentStatement'
 import InvestmentTable from './Tables/Investment'
+// import InvestmentTable from '../../../Components/TreeList'
 import {useEffect} from "react";
 import Sidebar from '../../../Components/Sidebar/Base'
 import getCurrentPeriod, {getListPeriods} from "../../../Utils/DateTime";
@@ -17,6 +18,27 @@ const App = () => {
         <div className="page-with-menu">
             <Sidebar/>
             <div className="App">
+                <div className="row">
+                    <div className="col-12">
+                        <Card>
+                            <Card.Header>
+                                <div
+                                    className="row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100">
+                                    <div className="col-10">
+                                        Investimentos
+                                    </div>
+                                    <div className="col-2">
+                                        <Select formTarget={true}
+                                                options={getListPeriods(201801, +getCurrentPeriod())}/>
+                                    </div>
+                                </div>
+                            </Card.Header>
+                            <Card.Body>
+                                <InvestmentTable/>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-12">
                         <Card>
@@ -44,27 +66,7 @@ const App = () => {
                     </div>
                 </div>
 
-                <div className="row">
-                    <div className="col-12">
-                        <Card>
-                            <Card.Header>
-                                <div
-                                    className="row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100">
-                                    <div className="col-10">
-                                        Investimentos
-                                    </div>
-                                    <div className="col-2">
-                                        <Select formTarget={true}
-                                                options={getListPeriods(201801, +getCurrentPeriod())}/>
-                                    </div>
-                                </div>
-                            </Card.Header>
-                            <Card.Body>
-                                <InvestmentTable/>
-                            </Card.Body>
-                        </Card>
-                    </div>
-                </div>
+
 
                 {/* <div className="row">
                     <div className="col-12">
