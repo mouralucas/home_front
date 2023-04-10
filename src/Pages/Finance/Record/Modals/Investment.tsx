@@ -22,8 +22,7 @@ const App = (props): JSX.Element => {
     const [selectedInvestment, setSelectedInvestment] = useState([])
 
     const [values, setValues] = useState({
-        investment_id: undefined,
-        category_id: undefined,
+        investmentId: undefined,
         amount: undefined,
         dat_payment: undefined,
         dat_purchase: undefined,
@@ -40,8 +39,7 @@ const App = (props): JSX.Element => {
         if (!props.modalState) {
             // TODO: ajustar campos
             setValues({
-                investment_id: null,
-                category_id: null,
+                investmentId: null,
                 amount: 0,
                 dat_payment: new Date(),
                 dat_purchase: new Date(),
@@ -56,7 +54,7 @@ const App = (props): JSX.Element => {
 
     useEffect(() => {
         if (props.investment) {
-            setSelectedInvestment(investment.filter(i => i.value === props.investment.investment_id)[0]);
+            setSelectedInvestment(investment.filter(i => i.value === props.investment.investmentId)[0]);
         }
     }, [investment, props.investment])
 
@@ -105,9 +103,31 @@ const App = (props): JSX.Element => {
             <form>
                 <div className="container-fluid">
                     <div className="row">
+                        <div className="col-12">
+                            <label htmlFor="">Investimento</label>
+                            <AsyncSelect id={'combo_cards'}
+                                         loadOptions={(query, callback) => getInvestments(query, callback)}
+                                         onChange={(e) => setCombo(e, 'investmentId', setSelectedInvestment)}
+                                         defaultOptions
+                                         value={selectedInvestment}/>
+                        </div>
+                    </div>
+                    <div className="row">
                         <div className="col-8">
                             <label htmlFor="">Título/descrição</label>
                             <input className='form-control input-default'/>
+                        </div>
+                        <div className="col-4">
+                            <label htmlFor="">Data compra</label>
+                            <DateBox value={values.dat_purchase} type="date" className='form-control input-default'
+                                     useMaskBehavior={true}
+                                     onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className="col-4">
+                            <label htmlFor="">Quantidade</label>
+                            <input type="text" className={'form-control input-default'}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Valor: {values.amount}</label>
@@ -118,22 +138,7 @@ const App = (props): JSX.Element => {
                                           setCurrency(values, 'amount')
                                       }}/>
                         </div>
-                    </div>
-                    <div className='row'>
-                        <div className="col-6">
-                            <label htmlFor="">Investimento</label>
-                            <AsyncSelect id={'combo_cards'}
-                                         loadOptions={(query, callback) => getInvestments(query, callback)}
-                                         onChange={(e) => setCombo(e, 'investment_id', setSelectedInvestment)}
-                                         defaultOptions
-                                         value={selectedInvestment}/>
-                        </div>
-                        <div className="col-4">
-                            <label htmlFor="">Data compra</label>
-                            <DateBox value={values.dat_purchase} type="date" className='form-control input-default'
-                                     useMaskBehavior={true}
-                                     onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
-                        </div>
+
                     </div>
                     <div className="row">
                         <div className="col-12">
