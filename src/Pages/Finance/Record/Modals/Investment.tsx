@@ -1,6 +1,6 @@
 import Modal from '../../../../Components/Modal'
-import {useEffect, useState} from "react";
-import {URL_CREDIT_CARD, URL_INVESTMENT} from "../../../../Services/Axios/ApiUrls";
+import React, {useEffect, useState} from "react";
+import {URL_INVESTMENT} from "../../../../Services/Axios/ApiUrls";
 import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
 import Currency from '../../../../Components/Currency'
@@ -10,21 +10,27 @@ import filterSelect from "../../../../Utils/DataHandling";
 import {format as formatDate} from "../../../../Utils/DateTime";
 import handleSubmit from "../../../../Services/Axios/Post";
 
+
 /**
  * Modal to create new entry for the credit card bill
  * @param props
  * @returns {JSX.Element}
  * @constructor
  */
-const App = (props) => {
-    // Combo boxes
-    const [card, setCard] = useState([]);
-    const [selectedCard, setSelectedCard] = useState();
-
+const App = (props): JSX.Element => {
     const [investment, setInvestment] = useState([])
     const [selectedInvestment, setSelectedInvestment] = useState([])
 
-    const [values, setValues] = useState({})
+    const [values, setValues] = useState({
+        investment_id: undefined,
+        category_id: undefined,
+        amount: undefined,
+        dat_payment: undefined,
+        dat_purchase: undefined,
+        datLastEdited: undefined,
+        datCreated: "",
+        description: undefined
+    })
 
     useEffect(() => {
         if (props.investment && props.modalState) {
@@ -44,29 +50,15 @@ const App = (props) => {
                 datLastEdited: null
             });
             setSelectedInvestment(null);
-            setSelectedCard(null);
         }
-    }, [props.modalState, props.bill])
+    }, [props.modalState, props.investment])
 
 
     useEffect(() => {
-        if (props.bill) {
-            setSelectedCard(card.filter(i => i.value === props.bill.credit_card_id)[0]);
+        if (props.investment) {
+            setSelectedInvestment(investment.filter(i => i.value === props.investment.investment_id)[0]);
         }
-    }, [card, props.bill])
-
-    const getCreditCard = (query, callback) => {
-        if (query) {
-            callback(filterSelect(card, query));
-        } else {
-            getData(URL_CREDIT_CARD).then(response => {
-                let options = response === null ? {} : response.credit_cards.map(i => ({value: i.id, label: i.name}));
-                callback(options);
-                setSelectedCard(options.filter(card => card.value === values.credit_card_id)[0]);
-                setCard(options);
-            });
-        }
-    }
+    }, [investment, props.investment])
 
     const getInvestments = (query, callback) => {
         if (query) {
@@ -130,9 +122,10 @@ const App = (props) => {
                     <div className='row'>
                         <div className="col-6">
                             <label htmlFor="">Investimento</label>
-                            <AsyncSelect id={'combo_cards'} formTarget={true}
+                            <AsyncSelect id={'combo_cards'}
                                          loadOptions={(query, callback) => getInvestments(query, callback)}
-                                         onChange={(e) => setCombo(e, 'investment_id', setSelectedInvestment)} defaultOptions
+                                         onChange={(e) => setCombo(e, 'investment_id', setSelectedInvestment)}
+                                         defaultOptions
                                          value={selectedInvestment}/>
                         </div>
                         <div className="col-4">
@@ -145,7 +138,7 @@ const App = (props) => {
                     <div className="row">
                         <div className="col-12">
                             <label htmlFor="">Descrição</label>
-                            <textarea className='form-control' value={values.description} id="" cols="30" rows="10"
+                            <textarea className='form-control' value={values.description} id="" cols={30} rows={10}
                                       onChange={set('description')}></textarea>
                         </div>
                     </div>
@@ -173,7 +166,7 @@ const App = (props) => {
                 body={body()}
                 fullscreen={false}
                 actionModal={(e) => handleSubmit(e, URL_INVESTMENT, values, false, "Item de investimento salvo")}
-                size={'lg'}
+                size={"lg"}
             />
         </div>
     );

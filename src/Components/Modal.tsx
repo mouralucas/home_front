@@ -2,17 +2,33 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react'
 import {Modal} from 'react-bootstrap';
 import '../Assets/Core/Components/Modal.css'
-import PropTypes from 'prop-types';
 
-const App = (props) => {
 
-    // Criar um props que recebe o footer, caso não exista o props usar o default (que está feito nessa tel)
+interface ModalProps {
+    // Add defaults no parâmetro e tirar validações do tipo ??
+    // Ref: https://bobbyhadz.com/blog/react-optional-props-typescript
+    showModal: any;
+    hideModal?: any; // 👈️ marked optional
+    actionModal?: any;
+    footer?: JSX.Element;
+    body: JSX.Element;
+    headerComponents?: JSX.Element;
+    fullscreen?: any;
+    title?: string;
+    size?: any;
+}
+
+
+const App = (props: ModalProps): JSX.Element => {
+
+    // Criar um props que recebe o footer, caso não exista o props usar o default (que está feito nessa tela)
     const footer = props.footer ??
         <>
             <div className="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 mt-1">
                 <div className="d-flex flex-nowrap">
                     <button className='btn btn-outline-secondary text-center w-100'
-                       onClick={props.hideModal}>Fechar</button>
+                            onClick={props.hideModal}>Fechar
+                    </button>
                 </div>
             </div>
             <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 mt-1">
@@ -20,7 +36,8 @@ const App = (props) => {
             <div className="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 mt-1">
                 <div className="d-flex flex-nowrap">
                     <button className='btn btn-default text-white text-center w-100 mr-1'
-                       onClick={props.actionModal ?? props.hideModal}>Salvar</button>
+                            onClick={props.actionModal ?? props.hideModal}>Salvar
+                    </button>
                 </div>
             </div>
         </>
@@ -55,10 +72,11 @@ const App = (props) => {
     );
 }
 
-App.propTypes = {
-    showModal: PropTypes.bool.isRequired,
-    body: PropTypes.object.isRequired,
-    footer: PropTypes.object
-};
+// App.propTypes = {
+//     showModal: PropTypes.bool.isRequired,
+//     hideModal: PropTypes.bool.isRequired,
+//     body: PropTypes.object.isRequired,
+//     footer: PropTypes.object
+// };
 
 export default App;
