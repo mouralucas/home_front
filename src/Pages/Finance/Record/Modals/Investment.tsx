@@ -27,7 +27,7 @@ const App = (props): JSX.Element => {
     *       outro depósito será registrado com o id da referência e essa referência tem o valor somado. O primeiro
     *       registro sempre vai ter duas linhas, o "parente" e o depósito realizado (pensar melhor nisso)
     * Em investimentos com liquidez antes do vencimento podem haver retiradas parciais, serão novos registros com o parent
-    *       respectivo, subitraindo do total do parent
+    *       respectivo, subtraindo do total do parent
     *
     * */
 

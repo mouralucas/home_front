@@ -59,7 +59,8 @@ const App = () => {
         {
             dataField: "name",
             caption: "Nome",
-            dataType: "string"
+            dataType: "string",
+            width: 400,
         },
         {
             dataField: "date",
