@@ -31,8 +31,8 @@ const App = (props): JSX.Element => {
     *
     * */
 
-    const [investment, setInvestment] = useState([])
-    const [selectedInvestment, setSelectedInvestment] = useState([])
+    const [parent, setParent] = useState([])
+    const [selectedParent, setSelectedParent] = useState([])
 
     const [investmentType, setInvestmentType] = useState([])
     const [selectedInvestmentType, setSelectedInvestmentType] = useState([])
@@ -48,20 +48,20 @@ const App = (props): JSX.Element => {
 
     const [values, setValues] = useState({
         investmentId: undefined,
+        parentId: undefined,
         date: null,
-
+        name: undefined,
         price: undefined,
         amount: undefined,
-
-        datMaturity: undefined,
-        dat_purchase: undefined,
+        quantity: undefined,
+        maturityDate: undefined,
         datLastEdited: undefined,
-
         investmentTypeId: undefined,
+        interestRate: undefined,
+        interestIndex: undefined,
         custodianId: undefined,
 
         datCreated: "",
-        description: undefined
     })
 
     useEffect(() => {
@@ -73,44 +73,44 @@ const App = (props): JSX.Element => {
             // TODO: ajustar campos
             setValues({
                 investmentId: null,
+                parentId: null,
                 date: new Date(),
-
+                name: null,
                 price: 0,
                 amount: 0,
-
-                datMaturity: new Date(),
-                dat_purchase: new Date(),
-
-                description: '',
-
+                quantity: 0,
+                maturityDate: new Date(),
                 investmentTypeId: null,
+                interestRate: null,
+                interestIndex: null,
                 custodianId: null,
-
                 datCreated: null,
                 datLastEdited: null
             });
-            setSelectedInvestment(null);
+            setSelectedParent(null);
+            setSelectedInterestRate(null);
         }
     }, [props.modalState, props.investment])
 
 
-    useEffect(() => {
-        if (props.investment) {
-            setSelectedInvestment(investment.filter(i => i.value === props.investment.investmentId)[0]);
-        }
-    }, [investment, props.investment])
-
-    const getInvestments = (query, callback) => {
+    const getParentInvestments = (query, callback) => {
         if (query) {
-            callback(filterSelect(investment, query));
+            callback(filterSelect(parent, query));
         } else {
             getData(URL_INVESTMENT).then(response => {
                 let options = response === null ? {} : response?.investment.map(i => ({value: i.id, label: i.name}));
                 callback(options);
-                setInvestment(options)
+                setSelectedParent(options?.filter(i => i.value === values.parentId)[0])
+                setParent(options)
             })
         }
     }
+    // useEffect to set the combo when it has default value
+    useEffect(() => {
+        if (props.investment) {
+            setSelectedParent(parent.filter(i => i.value === props.investment.parentId)[0]);
+        }
+    }, [parent, props.investment])
 
     const getInvestmentType = (query, callback) => {
         if (query) {
@@ -122,12 +122,20 @@ const App = (props): JSX.Element => {
                     label: i.name
                 }));
                 callback(options);
+                setSelectedInvestmentType(options?.filter(i => i.value === values.investmentTypeId)[0])
                 setInvestmentType(options)
             }).catch(err => {
                 toast.error('Houve um erro ao buscar os tipos de investimentos')
             })
         }
     }
+
+    // useEffect to set the combo when it has default value
+    useEffect(() => {
+        if (props.investment) {
+            setSelectedInvestmentType(investmentType.filter(i => i.value === props.investment.investmentTypeId)[0]);
+        }
+    }, [investmentType, props.investment])
 
     const getCustodian = (query, callback) => {
         if (query) {
@@ -136,12 +144,20 @@ const App = (props): JSX.Element => {
             getData(URL_FINANCE_BANK).then(response => {
                 let options = response === null ? {} : response?.bank.map(i => ({value: i.id, label: i.name}));
                 callback(options);
+                setSelectedCustodian(options?.filter(i => i.value === values.custodianId))
                 setCustodian(options)
             }).catch(err => {
                 toast.error('Houve um erro ao buscar os agentes de custódia')
             })
         }
     }
+
+    // useEffect to set the combo when it has default value
+    useEffect(() => {
+        if (props.investment) {
+            setSelectedCustodian(custodian.filter(i => i.value === props.investment.custodianId)[0]);
+        }
+    }, [investmentType, props.investment])
 
     const getCashFlow = (query, callback) => {
         if (query) {
@@ -167,11 +183,16 @@ const App = (props): JSX.Element => {
                 {value: 'FIXED', label: 'Fixo'}
             ]
             callback(options)
-            // @ts-ignore
-            setSelectedInterestRate(options?.filter(interestRate => interestRate.value === values.interestrateId)[0])
+            setSelectedInterestRate(options?.filter(interestRata => interestRata.value === values.interestRate))
             setInterestRate(options)
         }
     }
+    // useEffect to set the combo when it has default value
+    useEffect(() => {
+        if (props.investment) {
+            setSelectedInterestRate(interestRate.filter(i => i.value === props.investment.interestRate)[0]);
+        }
+    }, [interestRate, props.investment])
 
     const setInvestmentCombo = (e, name, setFunction) => {
         if (e != null) {
@@ -183,6 +204,125 @@ const App = (props): JSX.Element => {
             })
             return
         }
+    }
+
+    const body = () => {
+        let body_html =
+            <form>
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-12">
+                            <label htmlFor="">Investimento</label>
+                            <AsyncSelect id={'combo_parent'}
+                                         loadOptions={(query, callback) => getParentInvestments(query, callback)}
+                                         onChange={(e) => setCombo(e, 'parentId', setSelectedParent)}
+                                         defaultOptions
+                                         value={selectedParent}/>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-8">
+                            <label htmlFor="">Título/descrição</label>
+                            <input className='form-control input-default'
+                                   onChange={set('name')}
+                                   value={values.name}/>
+                        </div>
+                        <div className="col-4">
+                            <label htmlFor="">Data compra</label>
+                            <DateBox value={values.date} type="date" className='form-control input-default'
+                                     useMaskBehavior={true}
+                                     onValueChanged={(date) => setDate(date, 'date')}/>
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className="col-4">
+                            <label htmlFor="">Quantidade</label>
+                            <input type={'number'} className={'form-control input-default'}
+                                   onChange={set('description')}
+                                   value={values.quantity}
+                            />
+                        </div>
+                        <div className="col-4">
+                            <label htmlFor="">Preço {values.price}</label>
+                            <Currency className='form-control input-default'
+                                      value={values.price * 100}
+                                      onFocus={event => event.target.select()}
+                                      onValueChange={(values, sourceInfo) => {
+                                          setCurrency(values, 'price')
+                                      }}/>
+                        </div>
+                        <div className="col-4">
+                            <label htmlFor="">Valor: {values.amount}</label>
+                            <Currency className='form-control input-default'
+                                      value={values.amount * 100}
+                                      onFocus={event => event.target.select()}
+                                      onValueChange={(values, sourceInfo) => {
+                                          setCurrency(values, 'amount')
+                                      }}/>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-3">
+                            <label htmlFor="">Operação</label>
+                            <AsyncSelect id={'combo_cash_flow'}
+                                         loadOptions={(query, callback) => getCashFlow(query, callback)}
+                                         onChange={(e) => setCombo(e, 'cashFlowId', setSelectedCashFlow)}
+                                         defaultOptions
+                                         value={selectedCashFlow}/>
+                        </div>
+                        <div className="col-3">
+                            <label htmlFor="">Indexação {values.interestRate}</label>
+                            <AsyncSelect id={'combo_interest_rate'}
+                                         loadOptions={(query, callback) => getInterestRate(query, callback)}
+                                         onChange={(e) => setCombo(e, 'interestRate', setSelectedInterestRate)}
+                                         defaultOptions
+                                         value={selectedInterestRate}/>
+                        </div>
+                        <div className="col-3">
+                            <label htmlFor="">Índice</label>
+                            <input type="text" className='form-control input-default'
+                                   onChange={set('interestIndex')}
+                                   value={values.interestIndex}
+                            />
+                        </div>
+                        <div className="col-3">
+                            <label htmlFor="">Tipo</label>
+                            <AsyncSelect id={'combo_investment_type'}
+                                         loadOptions={(query, callback) => getInvestmentType(query, callback)}
+                                         onChange={(e) => setCombo(e, 'investmentTypeId', setSelectedInvestmentType)}
+                                         defaultOptions
+                                         value={selectedInvestmentType}/>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-6">
+                            <label htmlFor="">Data vencimento</label>
+                            <DateBox value={values.maturityDate} type="date" className='form-control input-default'
+                                     useMaskBehavior={true}
+                                     onValueChanged={(date) => setDate(date, 'maturityDate')}/>
+                        </div>
+                        <div className="col-6">
+                            <label htmlFor="">Agente de custódia</label>
+                            <AsyncSelect id={'combo_custodian'}
+                                         loadOptions={(query, callback) => getCustodian(query, callback)}
+                                         onChange={(e) => setCombo(e, 'custodianId', setSelectedCustodian)}
+                                         defaultOptions
+                                         value={selectedCustodian}/>
+                        </div>
+                    </div>
+                    <div className="row mt-2">
+                        <span className='text-small text-muted'>
+                            Criado em: {formatDate(values.datCreated)}
+                        </span>
+                        <span className="text-small text-muted">
+                            Editado em: {formatDate(values.datLastEdited)}
+                        </span>
+                    </div>
+                </div>
+            </form>;
+
+        return body_html
+
     }
 
     const set = name => {
@@ -210,117 +350,6 @@ const App = (props): JSX.Element => {
 
     const setCurrency = (values, name) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
-    }
-
-    const body = () => {
-        let body_html =
-            <form>
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-12">
-                            <label htmlFor="">Investimento</label>
-                            <AsyncSelect id={'combo_investments'}
-                                         loadOptions={(query, callback) => getInvestments(query, callback)}
-                                         onChange={(e) => setCombo(e, 'investmentId', setSelectedInvestment)}
-                                         defaultOptions
-                                         value={selectedInvestment}/>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-8">
-                            <label htmlFor="">Título/descrição</label>
-                            <input className='form-control input-default'/>
-                        </div>
-                        <div className="col-4">
-                            <label htmlFor="">Data compra</label>
-                            <DateBox value={values.dat_purchase} type="date" className='form-control input-default'
-                                     useMaskBehavior={true}
-                                     onValueChanged={(date) => setDate(date, 'date')}/>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className="col-4">
-                            <label htmlFor="">Quantidade</label>
-                            <input type={'number'} className={'form-control input-default'}/>
-                        </div>
-                        <div className="col-4">
-                            <label htmlFor="">Preço {values.price}</label>
-                            <Currency className='form-control input-default'
-                                      value={values.amount * 100}
-                                      onFocus={event => event.target.select()}
-                                      onValueChange={(values, sourceInfo) => {
-                                          setCurrency(values, 'price')
-                                      }}/>
-                        </div>
-                        <div className="col-4">
-                            <label htmlFor="">Valor: {values.amount}</label>
-                            <Currency className='form-control input-default'
-                                      value={values.amount * 100}
-                                      onFocus={event => event.target.select()}
-                                      onValueChange={(values, sourceInfo) => {
-                                          setCurrency(values, 'amount')
-                                      }}/>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-3">
-                            <label htmlFor="">Operação</label>
-                            <AsyncSelect id={'combo_cash_flow'}
-                                         loadOptions={(query, callback) => getCashFlow(query, callback)}
-                                         onChange={(e) => setCombo(e, 'cashFlowId', setSelectedCashFlow)}
-                                         defaultOptions
-                                         value={selectedCashFlow}/>
-                        </div>
-                        <div className="col-3">
-                            <label htmlFor="">Indexação</label>
-                            <AsyncSelect id={'combo_interest_rate'}
-                                         loadOptions={(query, callback) => getInterestRate(query, callback)}
-                                         onChange={(e) => setCombo(e, 'interestRateId', setSelectedInterestRate)}
-                                         defaultOptions
-                                         value={selectedInterestRate}/>
-                        </div>
-                        <div className="col-3">
-                            <label htmlFor="">Índice</label>
-                            <input type="text" className='form-control input-default'/>
-                        </div>
-                        <div className="col-3">
-                            <label htmlFor="">Tipo</label>
-                            <AsyncSelect id={'combo_investment_type'}
-                                         loadOptions={(query, callback) => getInvestmentType(query, callback)}
-                                         onChange={(e) => setCombo(e, 'investmentTypeId', setSelectedInvestmentType)}
-                                         defaultOptions
-                                         value={selectedInvestmentType}/>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-6">
-                            <label htmlFor="">Data vencimento</label>
-                            <DateBox value={values.datMaturity} type="date" className='form-control input-default'
-                                     useMaskBehavior={true}
-                                     onValueChanged={(date) => setDate(date, 'datMaturity')}/>
-                        </div>
-                        <div className="col-6">
-                            <label htmlFor="">Agente de custódia</label>
-                            <AsyncSelect id={'combo_custodian'}
-                                         loadOptions={(query, callback) => getCustodian(query, callback)}
-                                         onChange={(e) => setCombo(e, 'custodianId', setSelectedCustodian)}
-                                         defaultOptions
-                                         value={selectedCustodian}/>
-                        </div>
-                    </div>
-                    <div className="row mt-2">
-                        <span className='text-small text-muted'>
-                            Criado em: {formatDate(values.datCreated)}
-                        </span>
-                        <span className="text-small text-muted">
-                            Editado em: {formatDate(values.datLastEdited)}
-                        </span>
-                    </div>
-                </div>
-            </form>;
-
-        return body_html
-
     }
 
     return (

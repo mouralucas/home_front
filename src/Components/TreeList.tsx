@@ -1,6 +1,6 @@
 import React from "react";
 import TreeList, {Column, ColumnChooser, HeaderFilter, Item, SearchPanel,} from 'devextreme-react/tree-list';
-import {Format, Toolbar} from "devextreme-react/data-grid";
+import {Format, Pager, Paging, Toolbar} from "devextreme-react/data-grid";
 
 
 interface TreeListProps {
@@ -12,12 +12,20 @@ interface TreeListProps {
     toolBarItems?: any[],
     toolBarRefresh?: boolean,
     loadPanel?: boolean
+    pager?: any,
+    allowedPageSizes?: any,
+    displayMode?: any,
+    infoText?: any
 }
+
+const pageSizes = [10, 15, 20, 50, 100];
+const exportFormats = ['pdf', 'xlsx'];
+const expandedKeys: number[] = [];
+const selectedKeys: number[] = [95];
 
 const App = (props: TreeListProps): JSX.Element => {
 
-    const expandedKeys: number[] = [];
-    const selectedKeys: number[] = [95];
+
 
     const setColumns = () => {
         if (!props.tableColumns) {
@@ -51,6 +59,25 @@ const App = (props: TreeListProps): JSX.Element => {
         }
     }
 
+    const setPager = (): JSX.Element => {
+        let pager;
+        // TODO: set the props pager
+        if (props.pager) {
+            pager = null;
+        } else {
+            pager = <Pager
+                visible={true}
+                allowedPageSizes={props.allowedPageSizes ?? pageSizes}
+                displayMode={props.displayMode ?? 'full'}
+                showPageSizeSelector={true}
+                showInfo={true}
+                infoText={props.infoText ?? null}
+                showNavigationButtons={true}
+            />;
+        }
+        return pager
+    }
+
     const setToolbar = () => {
         let listToolBar = [];
 
@@ -77,6 +104,7 @@ const App = (props: TreeListProps): JSX.Element => {
                 keyExpr={props.keyExpr}
                 parentIdExpr={props.parentIdExpr}
                 id="tasks"
+                rowAlternationEnabled={true}
             >
                 <SearchPanel visible={true} width={250}/>
                 <HeaderFilter visible={true}/>
@@ -88,6 +116,10 @@ const App = (props: TreeListProps): JSX.Element => {
                 <Toolbar visible={props.toolBar}>
                     {setToolbar()}
                 </Toolbar>
+
+                {/* Page elements */}
+                {setPager()}
+                <Paging defaultPageSize={10}/>;
 
             </TreeList>
         </>

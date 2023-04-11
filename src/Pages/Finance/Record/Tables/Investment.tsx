@@ -69,7 +69,7 @@ const App = () => {
             width: 130
         },
         {
-            dataField: "dat_maturity",
+            dataField: "maturityDate",
             caption: "Vencimento",
             dataType: "date",
             width: 130
@@ -81,23 +81,23 @@ const App = () => {
             width: 200
         }, 
         {
-            dataField: "interest_index",
+            dataField: "interestIndex",
             caption: "Taxa",
             dataType: "string"
         },
         {
-            dataField: 'nm_type',
+            dataField: 'investmentTypeName',
             caption: 'Tipo',
             dataType: 'string'
         },
         {
-            dataField: 'nm_custodian',
+            dataField: 'custodianName',
             caption: 'Agente de custódia',
             dataType: "string"
         },
         {
-            dataField: 'id_custodian',
-            caption: 'Id dgente de custódia',
+            dataField: 'custodianId',
+            caption: 'Id agente de custódia',
             dataType: "string",
             visible: false
         },
@@ -154,7 +154,7 @@ const App = () => {
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            <ModalInvestmento modalState={modalState} hideModal={hideModal}></ModalInvestmento>
+            <ModalInvestmento modalState={modalState} hideModal={hideModal} investment={selectedInvestment}></ModalInvestmento>
         </>
     )
 }
