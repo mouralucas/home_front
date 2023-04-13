@@ -5,7 +5,8 @@ import { getData } from "../../../../Services/Axios/Get";
 import Button from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
 import TreeList from "../../../../Components/TreeList";
-import ModalInvestmento from '../Modals/Investment'
+import ModalInvestment from '../Modals/Investment_beta';
+import {format as formatDate} from "../../../../Utils/DateTime";
 
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
 
     const hideModal = () => {
         setModalState(false);
+        getInvestment()
     }
 
     useEffect(() => {
@@ -40,6 +42,14 @@ const App = () => {
         }).catch(err => {
             toast.error(err)
         })
+    }
+
+    function dateCustomCell(cellInfo) {
+        return cellInfo.maturityDate === null ? '--' : formatDate(cellInfo.maturityDate);
+    }
+
+    function amountCustomCell(cellInfo) {
+        return ' ' + cellInfo.amount;
     }
 
     const columns = [
@@ -60,6 +70,7 @@ const App = () => {
             dataField: "name",
             caption: "Nome",
             dataType: "string",
+            alignment: 'left',
             width: 400,
         },
         {
@@ -72,12 +83,14 @@ const App = () => {
             dataField: "maturityDate",
             caption: "Vencimento",
             dataType: "date",
+            // calculateCellValue: dateCustomCell,
             width: 130
         },
         {
             dataField: "amount",
             caption: "Valor",
             dataType: "currency",
+            // calculateCellValue: amountCustomCell,
             width: 200
         }, 
         {
@@ -154,7 +167,7 @@ const App = () => {
                 toolBarItems={toolBarItems}
                 loadPanel={false}
             />
-            <ModalInvestmento modalState={modalState} hideModal={hideModal} investment={selectedInvestment}></ModalInvestmento>
+            <ModalInvestment modalState={modalState} hideModal={hideModal} investment={selectedInvestment}></ModalInvestment>
         </>
     )
 }

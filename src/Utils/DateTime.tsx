@@ -16,7 +16,7 @@ const getListPeriods = (startYear: number, startMont: number, endYear: number, e
     return list_periods
 }
 
-const format = (rawDate: String) => {
+const format = (rawDate: String): string => {
     let currentDate = new Date();
     let timeOffset = currentDate.getTimezoneOffset() / 60;
 
