@@ -32,6 +32,7 @@ const App = (props): JSX.Element => {
     *
     * */
 
+    const [parentObj, setParentObj] = useState([])
     const [parent, setParent] = useState([])
     const [selectedParent, setSelectedParent] = useState([])
 
@@ -58,7 +59,7 @@ const App = (props): JSX.Element => {
         price: undefined,
         amount: undefined,
         quantity: undefined,
-        maturityDate: undefined,
+        maturityDate: null,
         investmentTypeId: undefined,
         interestRate: undefined,
         interestIndex: undefined,
@@ -79,11 +80,11 @@ const App = (props): JSX.Element => {
                 investmentId: null,
                 parentId: null,
                 name: null,
-                date: new Date(),
+                date: new Date().getDate(),
                 price: 0,
                 amount: 0,
                 quantity: 0,
-                maturityDate: new Date(),
+                maturityDate: null,
                 investmentTypeId: null,
                 interestRate: null,
                 interestIndex: null,
@@ -102,10 +103,11 @@ const App = (props): JSX.Element => {
         if (query) {
             callback(filterSelect(parent, query));
         } else {
-            getData(URL_INVESTMENT).then(response => {
+            getData(URL_INVESTMENT, {'show_mode': 'father'}).then(response => {
                 let options = response === null ? {} : response?.investment.map(i => ({value: i.id, label: i.name}));
                 callback(options);
                 setSelectedParent(options?.filter(i => i.value === values.parentId)[0])
+                setParentObj(response?.investment)
                 setParent(options)
             })
         }
@@ -162,7 +164,7 @@ const App = (props): JSX.Element => {
         if (props.investment) {
             setSelectedCustodian(custodian.filter(i => i.value === props.investment.custodianId)[0]);
         }
-    }, [investmentType, props.investment])
+    }, [custodian, props.investment])
 
     const getCashFlow = (query, callback) => {
         if (query) {
@@ -199,139 +201,150 @@ const App = (props): JSX.Element => {
         }
     }, [interestRate, props.investment])
 
-    const setInvestmentCombo = (e, name, setFunction) => {
-        if (e != null) {
-            setFunction(e)
-            getData(URL_INVESTMENT).then(response => {
-                setValues(response.investment)
-            }).catch(err => {
-                toast.error('Houve um erro ao buscar detalhes do investimento')
-            })
-            return
-        }
+    const setParentInvestment = (e, name, setFunction) => {
+        // if (e !== null)
+        let parent_investment = e !== null ? parentObj.filter(i => i.id === e.value)[0] : null
+        setCombo(e, name, setFunction);
+        setSelectedInterestRate(interestRate.filter(i => i.value === parent_investment?.interestRate)[0]);
+        setValues(oldValues => ({...oldValues, 'interestRate': parent_investment?.interestRate}))
+        setSelectedInvestmentType(investmentType.filter(i => i.value === parent_investment?.investmentTypeId)[0]);
+        setValues(oldValues => ({...oldValues, 'investmentTypeId': parent_investment?.investmentTypeId}))
+        setSelectedCustodian(custodian.filter(i => i.value === parent_investment?.custodianId)[0]);
+        setValues(oldValues => ({...oldValues, 'custodianId': parent_investment?.custodianId}))
+        setValues(oldValues => ({...oldValues, 'name': e!== null ? parent_investment.name : ''}))
+        setValues(oldValues => ({...oldValues, 'maturityDate': parent_investment?.maturityDate}))
     }
 
-    const body = () => {
+    const body = (): JSX.Element => {
         let body_html =
             <>
-                <Card>
+                <Card marginTop={'mt-0'}>
                     <Card.Body>
                         <div className="conteiner-fluid">
                             <div className="row">
-                                <div className="col-12">
+                                <div className="col-6">
                                     <label htmlFor="">Investimento</label>
                                     <AsyncSelect id={'combo_parent'}
                                                  loadOptions={(query, callback) => getParentInvestments(query, callback)}
-                                                 onChange={(e) => setCombo(e, 'parentId', setSelectedParent)}
+                                                 onChange={(e) => setParentInvestment(e, 'parentId', setSelectedParent)}
                                                  defaultOptions
+                                                 isClearable={true}
+                                                 escapeClearsValue={true}
                                                  value={selectedParent}/>
                                 </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-8">
+                                <div className="col-6">
                                     <label htmlFor="">Título/descrição</label>
                                     <input className='form-control input-default'
                                            onChange={set('name')}
                                            value={values.name}/>
                                 </div>
                             </div>
+                            <div className="row mt-2">
+                                <div className="col-3">
+                                    <label htmlFor="">Tipo {values.investmentTypeId}</label>
+                                    <AsyncSelect id={'combo_investment_type'}
+                                                 loadOptions={(query, callback) => getInvestmentType(query, callback)}
+                                                 onChange={(e) => setCombo(e, 'investmentTypeId', setSelectedInvestmentType)}
+                                                 defaultOptions
+                                                 value={selectedInvestmentType}/>
+                                </div>
+                                <div className="col-3">
+                                    <label htmlFor="">Indexação {values.interestRate}</label>
+                                    <AsyncSelect id={'combo_interest_rate'}
+                                                 loadOptions={(query, callback) => getInterestRate(query, callback)}
+                                                 onChange={(e) => setCombo(e, 'interestRate', setSelectedInterestRate)}
+                                                 defaultOptions
+                                                 value={selectedInterestRate}/>
+                                </div>
+                                <div className="col-3">
+                                    <label htmlFor="">Data vencimento</label>
+                                    <DateBox value={values.maturityDate} type="date"
+                                             className='form-control input-default'
+                                             useMaskBehavior={true}
+                                             showClearButton={true}
+                                             onValueChanged={(date) => setDate(date, 'maturityDate')}/>
+                                </div>
+                                <div className="col-3">
+                                    <label htmlFor="">Agente de custódia</label>
+                                    <AsyncSelect id={'combo_custodian'}
+                                                 loadOptions={(query, callback) => getCustodian(query, callback)}
+                                                 onChange={(e) => setCombo(e, 'custodianId', setSelectedCustodian)}
+                                                 defaultOptions
+                                                 value={selectedCustodian}/>
+                                </div>
+                            </div>
+                        </div>
+                    </Card.Body>
+                </Card>
+                <Card>
+                    <Card.Body>
+                        <div className="container-fluid">
+                            <div className='row'>
+                                <div className="col-3">
+                                    <label htmlFor="">Operação {values.cashFlow}</label>
+                                    <AsyncSelect id={'combo_cash_flow'}
+                                                 loadOptions={(query, callback) => getCashFlow(query, callback)}
+                                                 onChange={(e) => setCombo(e, 'cashFlow', setSelectedCashFlow)}
+                                                 defaultOptions
+                                                 value={selectedCashFlow}/>
+                                </div>
+                                <div className="col-3">
+                                    <label htmlFor="">Data compra</label>
+                                    <DateBox value={values.date} type="date" className='form-control input-default'
+                                             useMaskBehavior={true}
+                                             onValueChanged={(date) => setDate(date, 'date')}/>
+                                </div>
+                                <div className="col-3">
+                                    <label htmlFor="">Quantidade</label>
+                                    <input type={'number'} className={'form-control input-default'}
+                                           onChange={set('quantity')}
+                                           value={values.quantity}
+                                    />
+                                </div>
+                                <div className="col-3">
+                                    <label htmlFor="">Preço {values.price}</label>
+                                    <Currency className='form-control input-default'
+                                              value={values.price * 100}
+                                              onFocus={event => event.target.select()}
+                                              onValueChange={(values, sourceInfo) => {
+                                                  setCurrency(values, 'price')
+                                              }}/>
+                                </div>
+
+                            </div>
+
+                            <div className="row">
+                                <div className="col-4">
+                                    <label htmlFor="">Valor: {values.amount}</label>
+                                    <Currency className='form-control input-default'
+                                              value={values.amount * 100}
+                                              onFocus={event => event.target.select()}
+                                              onValueChange={(values, sourceInfo) => {
+                                                  setCurrency(values, 'amount')
+                                              }}/>
+                                </div>
+                                <div className="col-4">
+                                    <label htmlFor="">Índice</label>
+                                    <input type="text" className='form-control input-default'
+                                           onChange={set('interestIndex')}
+                                           value={values.interestIndex}
+                                    />
+                                </div>
+                            </div>
+                            <div className="row mt-2">
+                                <span className='text-small text-muted'>
+                                    Criado em: {formatDate(values.createDate)}
+                                </span>
+                                <span className="text-small text-muted">
+                                    Editado em: {formatDate(values.lastEditDate)}
+                                </span>
+                            </div>
                         </div>
                     </Card.Body>
                 </Card>
 
                 <form>
-                    <div className="container-fluid">
-                        <div className='row'>
-                            <div className="col-4">
-                                <label htmlFor="">Data compra</label>
-                                <DateBox value={values.date} type="date" className='form-control input-default'
-                                         useMaskBehavior={true}
-                                         onValueChanged={(date) => setDate(date, 'date')}/>
-                            </div>
-                            <div className="col-4">
-                                <label htmlFor="">Quantidade</label>
-                                <input type={'number'} className={'form-control input-default'}
-                                       onChange={set('quantity')}
-                                       value={values.quantity}
-                                />
-                            </div>
-                            <div className="col-4">
-                                <label htmlFor="">Preço {values.price}</label>
-                                <Currency className='form-control input-default'
-                                          value={values.price * 100}
-                                          onFocus={event => event.target.select()}
-                                          onValueChange={(values, sourceInfo) => {
-                                              setCurrency(values, 'price')
-                                          }}/>
-                            </div>
-                            <div className="col-4">
-                                <label htmlFor="">Valor: {values.amount}</label>
-                                <Currency className='form-control input-default'
-                                          value={values.amount * 100}
-                                          onFocus={event => event.target.select()}
-                                          onValueChange={(values, sourceInfo) => {
-                                              setCurrency(values, 'amount')
-                                          }}/>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-3">
-                                <label htmlFor="">Operação {values.cashFlow}</label>
-                                <AsyncSelect id={'combo_cash_flow'}
-                                             loadOptions={(query, callback) => getCashFlow(query, callback)}
-                                             onChange={(e) => setCombo(e, 'cashFlow', setSelectedCashFlow)}
-                                             defaultOptions
-                                             value={selectedCashFlow}/>
-                            </div>
-                            <div className="col-3">
-                                <label htmlFor="">Indexação {values.interestRate}</label>
-                                <AsyncSelect id={'combo_interest_rate'}
-                                             loadOptions={(query, callback) => getInterestRate(query, callback)}
-                                             onChange={(e) => setCombo(e, 'interestRate', setSelectedInterestRate)}
-                                             defaultOptions
-                                             value={selectedInterestRate}/>
-                            </div>
-                            <div className="col-3">
-                                <label htmlFor="">Índice</label>
-                                <input type="text" className='form-control input-default'
-                                       onChange={set('interestIndex')}
-                                       value={values.interestIndex}
-                                />
-                            </div>
-                            <div className="col-3">
-                                <label htmlFor="">Tipo</label>
-                                <AsyncSelect id={'combo_investment_type'}
-                                             loadOptions={(query, callback) => getInvestmentType(query, callback)}
-                                             onChange={(e) => setCombo(e, 'investmentTypeId', setSelectedInvestmentType)}
-                                             defaultOptions
-                                             value={selectedInvestmentType}/>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-6">
-                                <label htmlFor="">Data vencimento</label>
-                                <DateBox value={values.maturityDate} type="date" className='form-control input-default'
-                                         useMaskBehavior={true}
-                                         onValueChanged={(date) => setDate(date, 'maturityDate')}/>
-                            </div>
-                            <div className="col-6">
-                                <label htmlFor="">Agente de custódia</label>
-                                <AsyncSelect id={'combo_custodian'}
-                                             loadOptions={(query, callback) => getCustodian(query, callback)}
-                                             onChange={(e) => setCombo(e, 'custodianId', setSelectedCustodian)}
-                                             defaultOptions
-                                             value={selectedCustodian}/>
-                            </div>
-                        </div>
-                        <div className="row mt-2">
-                        <span className='text-small text-muted'>
-                            Criado em: {formatDate(values.createDate)}
-                        </span>
-                            <span className="text-small text-muted">
-                            Editado em: {formatDate(values.lastEditDate)}
-                        </span>
-                        </div>
-                    </div>
+
                 </form>
             </>;
 

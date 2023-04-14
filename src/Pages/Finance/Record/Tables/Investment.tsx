@@ -37,7 +37,7 @@ const App = () => {
     }, [])
 
     const getInvestment = () => {
-        getData(URL_INVESTMENT).then(response => {
+        getData(URL_INVESTMENT, {show_mode: 'all'}).then(response => {
             setInvestment(response.investment);
         }).catch(err => {
             toast.error(err)

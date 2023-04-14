@@ -1,7 +1,13 @@
 import React from 'react';
 import '../Assets/Core/Components/Cards.css'
+import {any} from "prop-types";
 
-const Card = ({children}) => {
+interface CardProps {
+    children: any,
+    marginTop?: string,
+}
+
+const Card = ({children, marginTop = 'mt-4'}: CardProps) => {
     let subComponentList = Object.keys(Card);
 
     let subComponents = subComponentList.map((key) => {
@@ -11,7 +17,7 @@ const Card = ({children}) => {
     });
 
     return (
-        <div className="container-fluid mt-4">
+        <div className={"container-fluid " + marginTop}>
             <div className='card-default'>
                 {subComponents.map((component) => component)}
             </div>

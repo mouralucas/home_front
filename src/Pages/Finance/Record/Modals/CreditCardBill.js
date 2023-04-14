@@ -36,8 +36,8 @@ const App = (props) => {
                 credit_card_id: null,
                 category_id: null,
                 amount: 0,
-                dat_payment: new Date(),
-                dat_purchase: new Date(),
+                dat_payment: new Date().getDate(),
+                dat_purchase: new Date().getDate(),
                 description: '',
                 datCreated: null,
                 datLastEdited: null
@@ -64,7 +64,7 @@ const App = (props) => {
             callback(filterSelect(card, query));
         } else {
             getData(URL_CREDIT_CARD).then(response => {
-                let options = response === null ? {} : response.credit_cards.map(i => ({value: i.id, label: i.name}));
+                let options = response === null ? {} : response?.credit_cards.map(i => ({value: i.id, label: i.name}));
                 callback(options);
                 setSelectedCard(options.filter(card => card.value === values.credit_card_id)[0]);
                 setCard(options);
