@@ -64,7 +64,7 @@ const App = (props): JSX.Element => {
         interestRate: undefined,
         interestIndex: undefined,
         custodianId: undefined,
-        cashFlow: undefined,
+        cashFlowId: undefined,
         createDate: undefined,
         lastEditDate: undefined,
     })
@@ -89,7 +89,7 @@ const App = (props): JSX.Element => {
                 interestRate: null,
                 interestIndex: null,
                 custodianId: null,
-                cashFlow: null,
+                cashFlowId: 'INCOMING',
                 createDate: null,
                 lastEditDate: null
             });
@@ -181,6 +181,13 @@ const App = (props): JSX.Element => {
         }
     }
 
+    // useEffect to set the combo when it has default value
+    useEffect(() => {
+        if (props.investment) {
+            setSelectedCashFlow(cashFlow.filter(i => i.value === props.investment.cashFlowId)[0]);
+        }
+    }, [cashFlow, props.investment])
+
     const getInterestRate = (query, callback) => {
         if (query) {
             callback(filterSelect(interestRate, query));
@@ -213,6 +220,7 @@ const App = (props): JSX.Element => {
         setValues(oldValues => ({...oldValues, 'custodianId': parent_investment?.custodianId}))
         setValues(oldValues => ({...oldValues, 'name': e!== null ? parent_investment.name : ''}))
         setValues(oldValues => ({...oldValues, 'maturityDate': parent_investment?.maturityDate}))
+        setValues(oldValues => ({...oldValues, 'interestIndex': parent_investment?.interestIndex}))
     }
 
     const body = (): JSX.Element => {
@@ -241,7 +249,7 @@ const App = (props): JSX.Element => {
                             </div>
                             <div className="row mt-2">
                                 <div className="col-3">
-                                    <label htmlFor="">Tipo {values.investmentTypeId}</label>
+                                    <label htmlFor="">Tipo</label>
                                     <AsyncSelect id={'combo_investment_type'}
                                                  loadOptions={(query, callback) => getInvestmentType(query, callback)}
                                                  onChange={(e) => setCombo(e, 'investmentTypeId', setSelectedInvestmentType)}
@@ -281,7 +289,7 @@ const App = (props): JSX.Element => {
                         <div className="container-fluid">
                             <div className='row'>
                                 <div className="col-3">
-                                    <label htmlFor="">Operação {values.cashFlow}</label>
+                                    <label htmlFor="">Operação {values.cashFlowId}</label>
                                     <AsyncSelect id={'combo_cash_flow'}
                                                  loadOptions={(query, callback) => getCashFlow(query, callback)}
                                                  onChange={(e) => setCombo(e, 'cashFlow', setSelectedCashFlow)}
