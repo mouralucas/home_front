@@ -12,7 +12,6 @@ const Home = () => {
 
     return (
         <div className='page-with-menu'>
-            <Sidebar/>
             <div className="App">
                 <Card>
                     <Card.Header>Livros</Card.Header>

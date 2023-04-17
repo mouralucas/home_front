@@ -16,7 +16,7 @@ const App = () => {
 
     return (
         <div className="page-with-menu">
-            <Sidebar/>
+            {/*<Sidebar/>*/}
             <div className="App">
                 <div className="row">
                     <div className="col-12">

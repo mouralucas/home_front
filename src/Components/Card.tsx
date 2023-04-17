@@ -17,7 +17,7 @@ const Card = ({children, marginTop = 'mt-4'}: CardProps) => {
     });
 
     return (
-        <div className={"container-fluid " + marginTop}>
+        <div className={marginTop}>
             <div className='card-default'>
                 {subComponents.map((component) => component)}
             </div>
