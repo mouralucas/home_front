@@ -1,4 +1,7 @@
-export const menuItems = [
+// Estas informações estarão disponíveis via banco de dados
+// Buscar os dados e salvar no localStorage e atualizar de tempo em tempo
+
+export const items = [
     {
         title: 'Home',
         url: '/',

@@ -97,6 +97,8 @@ const App = (props: TreeListProps): JSX.Element => {
             <TreeList
                 dataSource={props.dataSource}
                 showBorders={true}
+                showRowLines={true}
+                showColumnLines={true}
                 columnAutoWidth={true}
                 wordWrapEnabled={true}
                 defaultExpandedRowKeys={expandedKeys}
