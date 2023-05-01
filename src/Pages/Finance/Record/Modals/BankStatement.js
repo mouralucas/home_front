@@ -37,7 +37,7 @@ const App = (props) => {
                 account_id: null,
                 category_id: null,
                 currencyId: "BRL",
-                dat_purchase: new Date().getDate(),
+                dat_purchase: new Date(),
                 description: '',
                 datCreated: null,
                 datLastEdited: null,

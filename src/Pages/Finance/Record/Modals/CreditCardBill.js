@@ -36,8 +36,8 @@ const App = (props) => {
                 credit_card_id: null,
                 category_id: null,
                 amount: 0,
-                dat_payment: new Date().getDate(),
-                dat_purchase: new Date().getDate(),
+                dat_payment: new Date(),
+                dat_purchase: new Date(),
                 description: '',
                 datCreated: null,
                 datLastEdited: null
