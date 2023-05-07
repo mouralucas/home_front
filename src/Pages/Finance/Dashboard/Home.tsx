@@ -3,14 +3,12 @@ import PieChartCategoryExpenses from './Charts/ExpensesCategory'
 import CreditCardBillHistoryChart from './Charts/CreditCardBillHistory'
 import LineChart from '../../../Components/Charts/LineChart'
 import RealDollarChart from "../../../Components/Charts/Doughnut";
-import IncomingOutgoingChart from "./Charts/CurrencyProportion";
-import InvestmentProportionChart from "./Charts/InvestmentProportion";
+import InvestmentProportion from "./Charts/InvestmentProportion";
 import Sidebar from '../../../Components/Sidebar/Base'
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
 import getCurrentPeriod from "../../../Utils/DateTime";
-import InvestmentProportion from "./Charts/InvestmentProportion";
 
 
 const Home = () => {
