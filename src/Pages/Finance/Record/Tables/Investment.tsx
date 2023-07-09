@@ -20,7 +20,7 @@ const App = () => {
     // Para investimentos recorrentes (rendimento de conta-corrente, etc.) é criado um pai com com o valor total investido
     //  e cada filho indica um depósito específico
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedInvestment(e.row.data);
         }
@@ -44,11 +44,11 @@ const App = () => {
         })
     }
 
-    function dateCustomCell(cellInfo) {
+    function dateCustomCell(cellInfo: any) {
         return cellInfo.maturityDate === null ? '--' : formatDate(cellInfo.maturityDate);
     }
 
-    function amountCustomCell(cellInfo) {
+    function amountCustomCell(cellInfo: any) {
         return ' ' + cellInfo.amount;
     }
 

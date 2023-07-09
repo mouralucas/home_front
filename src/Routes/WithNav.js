@@ -3,6 +3,7 @@ import React, {Suspense} from 'react';
 import Header from '../Components/Header';
 import {Outlet} from 'react-router-dom';
 import {ProSidebarProvider} from "react-pro-sidebar";
+import Footer from "../Components/Footer";
 
 const App = () => {
     return (
@@ -12,6 +13,7 @@ const App = () => {
                 <Suspense fallback={<h2>Loading...</h2>}>
                     <Outlet/>
                 </Suspense>
+                <Footer/>
             </ProSidebarProvider>
         </>
     );

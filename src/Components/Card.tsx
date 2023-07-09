@@ -25,13 +25,13 @@ const Card = ({children, marginTop = 'mt-4'}: CardProps) => {
     );
 };
 
-const Header = (props) => <div className='card-header justify-content-between d-flex flex-wrap'>{props.children}</div>;
+const Header = (props: any) => <div className='card-header justify-content-between d-flex flex-wrap'>{props.children}</div>;
 Card.Header = Header;
 
-const Body = (props) => <div className='card-body'>{props.children}</div>;
+const Body = (props: any) => <div className='card-body'>{props.children}</div>;
 Card.Body = Body;
 
-const Footer = (props) => <div className='card-footer'>{props.children}</div>;
+const Footer = (props: any) => <div className='card-footer'>{props.children}</div>;
 Card.Footer = Footer;
 
 export default Card;

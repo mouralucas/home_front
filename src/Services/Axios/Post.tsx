@@ -2,7 +2,7 @@ import axios from "./Axios";
 import {toast} from "react-toastify";
 
 
-const HandleSubmit = async (e, url, values, hideModal, toastMessage) => {
+const HandleSubmit = async (e: any, url: string, values: any, hideModal: any, toastMessage: string) => {
     e.preventDefault();
 
     const formData = new FormData();

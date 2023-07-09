@@ -1,20 +1,21 @@
 import React from "react";
 import PieChart, {Connector, Format, Label, Legend, Series, Tooltip,} from 'devextreme-react/pie-chart';
+import { DataSourceLike } from "devextreme/data/data_source";
 
 
-const App = (props) => {
-    const formatLabel = (arg): { text: string } => {
+const App = (props: { chart_id: any; title: any; dataSource: DataSourceLike<any, any> | null | undefined; argumentField: any; valueField: any; }) => {
+    const formatLabel = (arg: any): { text: string } => {
         return arg.currency
     }
 
-    const customizeTooltip = (arg): { text: string } => {
+    const customizeTooltip = (arg: any): { text: string } => {
         console.log(arg)
         return {
             text: `${arg.value} - ${(arg.percent * 100).toFixed(2)}%`,
         };
     }
 
-    const customizeSeriesLabel = (pointInfo) => {
+    const customizeSeriesLabel = (pointInfo: any) => {
         let value =  (Math.round(pointInfo.value * 100) / 100).toFixed(2)
         return `${pointInfo.argument}: ${value} (${pointInfo.percentText})`;
     }

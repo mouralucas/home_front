@@ -1,7 +1,6 @@
 import Modal from '../../../../Components/Modal'
 import {useEffect, useState} from "react";
-import {URL_CREDIT_CARD_BILL, URL_CATEGORIES, URL_CREDIT_CARD, URL_ACCOUNT_STATEMENT} from "../../../../Services/Axios/ApiUrls";
-import axios from "../../../../Services/Axios/Axios";
+import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CREDIT_CARD_BILL} from "../../../../Services/Axios/ApiUrls";
 import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
 import Currency from '../../../../Components/Currency'
@@ -33,7 +32,7 @@ const App = (props) => {
 
         if (!props.modalState) {
             setValues({
-                credit_card_id: null,
+                creditCardId: null,
                 category_id: null,
                 amount: 0,
                 dat_payment: new Date(),
@@ -66,7 +65,7 @@ const App = (props) => {
             getData(URL_CREDIT_CARD).then(response => {
                 let options = response === null ? {} : response?.credit_cards.map(i => ({value: i.id, label: i.name}));
                 callback(options);
-                setSelectedCard(options.filter(card => card.value === values.credit_card_id)[0]);
+                setSelectedCard(options.filter(card => card.value === values.creditCardId)[0]);
                 setCard(options);
             });
         }

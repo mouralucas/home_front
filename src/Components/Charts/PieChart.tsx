@@ -1,15 +1,17 @@
 import PieChart, {Series, Label, Margin, Export, Legend, Animation} from 'devextreme-react/pie-chart';
+import { DataSourceLike } from 'devextreme/data/data_source';
+import { BaseWidgetTitle } from 'devextreme/viz/core/base_widget';
 import React from 'react';
 
-const App = (props) => {
-    const formatText = (arg) => {
+const App = (props: { data: DataSourceLike<any, any> | null | undefined; pallete: any; title: string | BaseWidgetTitle | undefined; axis: { argumentField: any; valueField: any; }; showLegend: any; }) => {
+    const formatText = (arg: { value: any; argumentText: any; percentText: any; }) => {
         // let value =  (Math.round(arg.value * 100) / 100).toFixed(2)
         let value =  Number(arg.value).toFixed(2)
 
         return `${arg.argumentText}: ${value} (${arg.percentText})`;
     }
 
-    const pointClickHandler = (arg) => {
+    const pointClickHandler = (arg: { target: { select: () => void; }; }) => {
         console.log(arg)
         arg.target.select();
     }
