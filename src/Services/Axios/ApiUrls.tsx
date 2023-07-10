@@ -45,6 +45,7 @@ const URL_CATEGORIES = 'core/category'
 const URL_STATUS = 'core/status'
 const URL_COUNTRY = 'core/country'
 const URL_PERIOD = 'core/period'
+const URL_VERSION = 'core/version'
 
 
 export {
@@ -77,5 +78,6 @@ export {
     URL_FINANCE_CURRENCY_FLOW,
     URL_FINANCE_INVESTMENT_PROPORTION,
     URL_FINANCE_INVESTMENT_TYPE,
-    URL_FINANCE_BANK
+    URL_FINANCE_BANK,
+    URL_VERSION,
 }
