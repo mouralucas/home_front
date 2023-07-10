@@ -103,8 +103,8 @@ const Home = () => {
                         <Card>
                             {/*<Card.Header>Outra evolução</Card.Header>*/}
                             <Card.Body>
-                                <RealDollarChart
-                                title={'Proporção Investment'}/>
+                                {/*<RealDollarChart*/}
+                                {/*title={'Proporção Investment'}/>*/}
                             </Card.Body>
                         </Card>
                     </div>

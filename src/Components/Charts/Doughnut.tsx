@@ -3,7 +3,15 @@ import PieChart, {Connector, Format, Label, Legend, Series, Tooltip,} from 'deve
 import { DataSourceLike } from "devextreme/data/data_source";
 
 
-const App = (props: { chart_id: any; title: any; dataSource: DataSourceLike<any, any> | null | undefined; argumentField: any; valueField: any; }) => {
+interface DoughnutChartProps {
+    chartId: string
+    title?: string
+    data: any[]
+    argumentField: any
+    valueField: any
+}
+
+const App = (props: DoughnutChartProps) => {
     const formatLabel = (arg: any): { text: string } => {
         return arg.currency
     }
@@ -22,10 +30,10 @@ const App = (props: { chart_id: any; title: any; dataSource: DataSourceLike<any,
 
     return (
         <PieChart
-            id={props.chart_id ?? 'pie'}
+            id={props.chartId ?? 'pie'}
             type={'doughnut'}
             title={props.title ?? 'Gráfico Doughnut'}
-            dataSource={props.dataSource}
+            dataSource={props.data}
             palette={'Pastel'}
         >
             <Series argumentField={props.argumentField} valueField={props.valueField}>

@@ -11,15 +11,34 @@ import {format as formatDate} from "../../../../Utils/DateTime";
 import handleSubmit from "../../../../Services/Axios/Post";
 import {toast} from "react-toastify";
 import Card from '../../../../Components/Card'
+import {any} from "prop-types";
 
+interface InvestmentValues {
+    investmentId: any,
+    parentId: any,
+    name: any,
 
+    date: any,
+
+    price: any,
+    amount: any,
+    quantity: any,
+    maturityDate: any,
+    investmentTypeId: any,
+    interestRate: any,
+    interestIndex: any,
+    custodianId: any,
+    cashFlowId: any,
+    createDate: any,
+    lastEditDate: any,
+}
 /**
  * Modal to create new entry for the credit card bill
  * @param props
  * @returns {JSX.Element}
  * @constructor
  */
-const App = (props): JSX.Element => {
+const App = (props: any): JSX.Element => {
     /*
     * A ideia do investimento é registrar qualquer novo investimento feito
     *  Deve apenas conter o valor investido, a evolução vai ser salva na tabela investment_statement
@@ -32,34 +51,34 @@ const App = (props): JSX.Element => {
     *
     * */
 
-    const [parentObj, setParentObj] = useState([])
-    const [parent, setParent] = useState([])
-    const [selectedParent, setSelectedParent] = useState([])
+    const [parentObj, setParentObj] = useState<any|null>([])
+    const [parent, setParent] = useState<any|null>([])
+    const [selectedParent, setSelectedParent] = useState<any|null>([])
 
-    const [investmentType, setInvestmentType] = useState([])
-    const [selectedInvestmentType, setSelectedInvestmentType] = useState([])
+    const [investmentType, setInvestmentType] = useState<any|null>([])
+    const [selectedInvestmentType, setSelectedInvestmentType] = useState<any|null>([])
 
-    const [custodian, setCustodian] = useState([])
-    const [selectedCustodian, setSelectedCustodian] = useState([])
+    const [custodian, setCustodian] = useState<any|null>([])
+    const [selectedCustodian, setSelectedCustodian] = useState<any|null>([])
 
-    const [cashFlow, setCashFlow] = useState([])
-    const [selectedCashFlow, setSelectedCashFlow] = useState([])
+    const [cashFlow, setCashFlow] = useState<any|null>([])
+    const [selectedCashFlow, setSelectedCashFlow] = useState<any|null>([])
 
-    const [interestRate, setInterestRate] = useState([])
-    const [selectedInterestRate, setSelectedInterestRate] = useState([])
+    const [interestRate, setInterestRate] = useState<any|null>([])
+    const [selectedInterestRate, setSelectedInterestRate] = useState<any|null>([])
 
-    const [values, setValues] = useState({
+    const [values, setValues] = useState<InvestmentValues>({
         investmentId: undefined,
         parentId: undefined,
         name: undefined,
 
 
-        date: null,
+        date: undefined,
 
         price: undefined,
         amount: undefined,
         quantity: undefined,
-        maturityDate: null,
+        maturityDate: any,
         investmentTypeId: undefined,
         interestRate: undefined,
         interestIndex: undefined,
@@ -99,14 +118,14 @@ const App = (props): JSX.Element => {
     }, [props.modalState, props.investment])
 
 
-    const getParentInvestments = (query, callback) => {
+    const getParentInvestments = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(parent, query));
         } else {
             getData(URL_INVESTMENT, {'show_mode': 'father'}).then(response => {
-                let options = response === null ? {} : response?.investment.map(i => ({value: i.id, label: i.name}));
+                let options = response === null ? {} : response?.investment.map((i: { id: any; name: any; }) => ({value: i.id, label: i.name}));
                 callback(options);
-                setSelectedParent(options?.filter(i => i.value === values.parentId)[0])
+                setSelectedParent(options?.filter((i: { value: any; }) => i.value === values.parentId)[0])
                 setParentObj(response?.investment)
                 setParent(options)
             })
@@ -115,21 +134,21 @@ const App = (props): JSX.Element => {
     // useEffect to set the combo when it has default value
     useEffect(() => {
         if (props.investment) {
-            setSelectedParent(parent.filter(i => i.value === props.investment.parentId)[0]);
+            setSelectedParent(parent.filter((i: { value: any; }) => i.value === props.investment.parentId)[0]);
         }
     }, [parent, props.investment])
 
-    const getInvestmentType = (query, callback) => {
+    const getInvestmentType = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(investmentType, query));
         } else {
             getData(URL_FINANCE_INVESTMENT_TYPE, {show_mode: 'child'}).then(response => {
-                let options = response === null ? {} : response?.investment_type.map(i => ({
+                let options = response === null ? {} : response?.investment_type.map((i: { id: any; name: string; }) => ({
                     value: i.id,
                     label: i.name
                 }));
                 callback(options);
-                setSelectedInvestmentType(options?.filter(i => i.value === values.investmentTypeId)[0])
+                setSelectedInvestmentType(options?.filter((i: { value: any; }) => i.value === values.investmentTypeId)[0])
                 setInvestmentType(options)
             }).catch(err => {
                 toast.error('Houve um erro ao buscar os tipos de investimentos')
@@ -140,18 +159,18 @@ const App = (props): JSX.Element => {
     // useEffect to set the combo when it has default value
     useEffect(() => {
         if (props.investment) {
-            setSelectedInvestmentType(investmentType.filter(i => i.value === props.investment.investmentTypeId)[0]);
+            setSelectedInvestmentType(investmentType.filter((i: { value: any; }) => i.value === props.investment.investmentTypeId)[0]);
         }
     }, [investmentType, props.investment])
 
-    const getCustodian = (query, callback) => {
+    const getCustodian = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(custodian, query));
         } else {
             getData(URL_FINANCE_BANK).then(response => {
-                let options = response === null ? {} : response?.bank.map(i => ({value: i.id, label: i.name}));
+                let options = response === null ? {} : response?.bank.map((i: { id: any; name: string; }) => ({value: i.id, label: i.name}));
                 callback(options);
-                setSelectedCustodian(options?.filter(i => i.value === values.custodianId))
+                setSelectedCustodian(options?.filter((i: { value: any; }) => i.value === values.custodianId))
                 setCustodian(options)
             }).catch(err => {
                 toast.error('Houve um erro ao buscar os agentes de custódia')
@@ -162,11 +181,11 @@ const App = (props): JSX.Element => {
     // useEffect to set the combo when it has default value
     useEffect(() => {
         if (props.investment) {
-            setSelectedCustodian(custodian.filter(i => i.value === props.investment.custodianId)[0]);
+            setSelectedCustodian(custodian.filter((i: { value: any; }) => i.value === props.investment.custodianId)[0]);
         }
     }, [custodian, props.investment])
 
-    const getCashFlow = (query, callback) => {
+    const getCashFlow = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(cashFlow, query));
         } else {
@@ -184,11 +203,11 @@ const App = (props): JSX.Element => {
     // useEffect to set the combo when it has default value
     useEffect(() => {
         if (props.investment) {
-            setSelectedCashFlow(cashFlow.filter(i => i.value === props.investment.cashFlowId)[0]);
+            setSelectedCashFlow(cashFlow.filter((i: { value: any; }) => i.value === props.investment.cashFlowId)[0]);
         }
     }, [cashFlow, props.investment])
 
-    const getInterestRate = (query, callback) => {
+    const getInterestRate = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(interestRate, query));
         } else {
@@ -204,19 +223,19 @@ const App = (props): JSX.Element => {
     // useEffect to set the combo when it has default value
     useEffect(() => {
         if (props.investment) {
-            setSelectedInterestRate(interestRate.filter(i => i.value === props.investment.interestRate)[0]);
+            setSelectedInterestRate(interestRate.filter((i: { value: any; }) => i.value === props.investment.interestRate)[0]);
         }
     }, [interestRate, props.investment])
 
-    const setParentInvestment = (e, name, setFunction) => {
+    const setParentInvestment = (e: any, name: any, setFunction: any) => {
         // if (e !== null)
-        let parent_investment = e !== null ? parentObj.filter(i => i.id === e.value)[0] : null
+        let parent_investment = e !== null ? parentObj.filter((i: { id: any; }) => i.id === e.value)[0] : null
         setCombo(e, name, setFunction);
-        setSelectedInterestRate(interestRate.filter(i => i.value === parent_investment?.interestRate)[0]);
+        setSelectedInterestRate(interestRate.filter((i: { value: any; }) => i.value === parent_investment?.interestRate)[0]);
         setValues(oldValues => ({...oldValues, 'interestRate': parent_investment?.interestRate}))
-        setSelectedInvestmentType(investmentType.filter(i => i.value === parent_investment?.investmentTypeId)[0]);
+        setSelectedInvestmentType(investmentType.filter((i: { value: any; }) => i.value === parent_investment?.investmentTypeId)[0]);
         setValues(oldValues => ({...oldValues, 'investmentTypeId': parent_investment?.investmentTypeId}))
-        setSelectedCustodian(custodian.filter(i => i.value === parent_investment?.custodianId)[0]);
+        setSelectedCustodian(custodian.filter((i: { value: any; }) => i.value === parent_investment?.custodianId)[0]);
         setValues(oldValues => ({...oldValues, 'custodianId': parent_investment?.custodianId}))
         setValues(oldValues => ({...oldValues, 'name': e!== null ? parent_investment.name : ''}))
         setValues(oldValues => ({...oldValues, 'maturityDate': parent_investment?.maturityDate}))
@@ -313,8 +332,8 @@ const App = (props): JSX.Element => {
                                     <label htmlFor="">Preço {values.price}</label>
                                     <Currency className='form-control input-default'
                                               value={values.price * 100}
-                                              onFocus={event => event.target.select()}
-                                              onValueChange={(values, sourceInfo) => {
+                                              onFocus={(event: { target: { select: () => any; }; }) => event.target.select()}
+                                              onValueChange={(values: any, sourceInfo: any) => {
                                                   setCurrency(values, 'price')
                                               }}/>
                                 </div>
@@ -326,8 +345,8 @@ const App = (props): JSX.Element => {
                                     <label htmlFor="">Valor: {values.amount}</label>
                                     <Currency className='form-control input-default'
                                               value={values.amount * 100}
-                                              onFocus={event => event.target.select()}
-                                              onValueChange={(values, sourceInfo) => {
+                                              onFocus={(event: { target: { select: () => any; }; }) => event.target.select()}
+                                              onValueChange={(values: any, sourceInfo: any) => {
                                                   setCurrency(values, 'amount')
                                               }}/>
                                 </div>
@@ -360,13 +379,13 @@ const App = (props): JSX.Element => {
 
     }
 
-    const set = name => {
-        return ({target: {value}}) => {
+    const set = (name: any) => {
+        return ({target: {value}}: any) => {
             setValues(oldValues => ({...oldValues, [name]: value}));
         }
     }
 
-    const setCombo = (e, name, setFunction) => {
+    const setCombo = (e: any, name: any, setFunction: any) => {
         if (e !== null) {
             setFunction(e);
             return setValues(oldValues => ({...oldValues, [name]: e.value}));
@@ -375,7 +394,7 @@ const App = (props): JSX.Element => {
         return setValues(oldValues => ({...oldValues, [name]: e.value}));
     }
 
-    const setDate = (e, name) => {
+    const setDate = (e: any, name: any) => {
         if (e.value !== null) {
             return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
         } else {
@@ -383,7 +402,7 @@ const App = (props): JSX.Element => {
         }
     }
 
-    const setCurrency = (values, name) => {
+    const setCurrency = (values: any, name: any) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
 
@@ -395,7 +414,7 @@ const App = (props): JSX.Element => {
                 title={'Investimento beta'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e) => handleSubmit(e, URL_INVESTMENT, values, false, "Item de investimento salvo")}
+                actionModal={(e: any) => handleSubmit(e, URL_INVESTMENT, values, false, "Item de investimento salvo")}
                 size={"lg"}
             />
         </div>

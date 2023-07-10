@@ -3,7 +3,15 @@ import { DataSourceLike } from 'devextreme/data/data_source';
 import { BaseWidgetTitle } from 'devextreme/viz/core/base_widget';
 import React from 'react';
 
-const App = (props: { data: DataSourceLike<any, any> | null | undefined; pallete: any; title: string | BaseWidgetTitle | undefined; axis: { argumentField: any; valueField: any; }; showLegend: any; }) => {
+interface PieCharProps {
+    data: any[],
+    pallete?: string[]
+    title: string
+    axis: any
+    showLegend?: boolean
+}
+
+const App = (props: PieCharProps) => {
     const formatText = (arg: { value: any; argumentText: any; percentText: any; }) => {
         // let value =  (Math.round(arg.value * 100) / 100).toFixed(2)
         let value =  Number(arg.value).toFixed(2)

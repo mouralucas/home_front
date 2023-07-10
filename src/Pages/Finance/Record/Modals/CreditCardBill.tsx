@@ -10,20 +10,41 @@ import filterSelect from "../../../../Utils/DataHandling";
 import {format as formatDate} from "../../../../Utils/DateTime";
 import handleSubmit from "../../../../Services/Axios/Post";
 
+
+interface CreditCardValues {
+    creditCardId: null,
+    category_id?: null,
+    amount: 0,
+    dat_payment: Date,
+    dat_purchase: Date,
+    description: '',
+    datCreated: null,
+    datLastEdited: null
+}
+
 /**
  * Modal to create new entry for the credit card bill
  * @param props
  * @returns {JSX.Element}
  * @constructor
  */
-const App = (props) => {
+const App = (props: any) => {
     // Combo boxes
-    const [card, setCard] = useState([]);
-    const [selectedCard, setSelectedCard] = useState();
-    const [category, setCategory] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState();
+    const [card, setCard] = useState<any | null>([]);
+    const [selectedCard, setSelectedCard] = useState<any | null>();
+    const [category, setCategory] = useState<any | null>([]);
+    const [selectedCategory, setSelectedCategory] = useState<any | null>();
 
-    const [values, setValues] = useState({})
+    const [values, setValues] = useState<CreditCardValues>({
+        creditCardId: null,
+        category_id: null,
+        amount: 0,
+        dat_payment: new Date(),
+        dat_purchase: new Date(),
+        description: '',
+        datCreated: null,
+        datLastEdited: null
+    })
 
     useEffect(() => {
         if (props.bill && props.modalState) {
@@ -48,49 +69,49 @@ const App = (props) => {
 
     useEffect(() => {
         if (props.bill) {
-            setSelectedCategory(category.filter(i => i.value === props.bill.category_id)[0]);
+            setSelectedCategory(category.filter((i: { value: any; }) => i.value === props.bill.category_id)[0]);
         }
     }, [category, props.bill])
 
     useEffect(() => {
         if (props.bill) {
-            setSelectedCard(card.filter(i => i.value === props.bill.credit_card_id)[0]);
+            setSelectedCard(card.filter((i: { value: any; }) => i.value === props.bill.credit_card_id)[0]);
         }
     }, [card, props.bill])
 
-    const getCreditCard = (query, callback) => {
+    const getCreditCard = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(card, query));
         } else {
             getData(URL_CREDIT_CARD).then(response => {
-                let options = response === null ? {} : response?.credit_cards.map(i => ({value: i.id, label: i.name}));
+                let options = response === null ? {} : response?.credit_cards.map((i: { id: any; name: any; }) => ({value: i.id, label: i.name}));
                 callback(options);
-                setSelectedCard(options.filter(card => card.value === values.creditCardId)[0]);
+                setSelectedCard(options.filter((card: { value: any; }) => card.value === values?.creditCardId)[0]);
                 setCard(options);
             });
         }
     }
 
-    const getCategory = (query, callback) => {
+    const getCategory = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(category, query))
         } else {
             getData(URL_CATEGORIES, {show_mode: 'all', module: 'finance'}).then(response => {
-                let options = response == null ? {} : response.categories.map(i => ({value: i.id, label: i.name}))
+                let options = response == null ? {} : response.categories.map((i: { id: any; name: any; }) => ({value: i.id, label: i.name}))
                 callback(options);
-                setSelectedCategory(options.filter(category => category.value === values.category_id)[0]);
+                setSelectedCategory(options.filter((category: { value: any; }) => category.value === values?.category_id)[0]);
                 setCategory(options);
             });
         }
     }
 
-    const set = name => {
-        return ({target: {value}}) => {
+    const set = (name: any) => {
+        return ({target: {value}}: any) => {
             setValues(oldValues => ({...oldValues, [name]: value}));
         }
     }
 
-    const setCombo = (e, name, setFunction) => {
+    const setCombo = (e: any, name: any, setFunction: any) => {
         if (e !== null) {
             setFunction(e);
             return setValues(oldValues => ({...oldValues, [name]: e.value}));
@@ -99,7 +120,7 @@ const App = (props) => {
         return setValues(oldValues => ({...oldValues, [name]: e.value}));
     }
 
-    const setDate = (e, name) => {
+    const setDate = (e: any, name: any) => {
         if (e.value !== null) {
             return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
         } else {
@@ -107,11 +128,11 @@ const App = (props) => {
         }
     }
 
-    const setCurrency = (values, name) => {
+    const setCurrency = (values: any, name: any) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
 
-    const getPaymentDate = (e, purchaseDate) => {
+    const getPaymentDate = (e: any, purchaseDate: any) => {
         e.preventDefault()
     }
 
@@ -124,8 +145,8 @@ const App = (props) => {
                             <label htmlFor="">Valor: {values.amount}</label>
                             <Currency className='form-control input-default'
                                       value={values.amount * 100}
-                                      onFocus={event => event.target.select()}
-                                      onValueChange={(values, sourceInfo) => {
+                                      onFocus={(event: { target: { select: () => any; }; }) => event.target.select()}
+                                      onValueChange={(values: any, sourceInfo: any) => {
                                           setCurrency(values, 'amount')
                                       }}/>
                         </div>
@@ -144,15 +165,15 @@ const App = (props) => {
                     </div>
                     <div className='row'>
                         <div className="col-4">
-                            <label htmlFor="">Cartão: {values.card_id}</label>
-                            <AsyncSelect id={'combo_cards'} formTarget={true}
+                            <label htmlFor="">Cartão: {values.creditCardId}</label>
+                            <AsyncSelect id={'combo_cards'}
                                          loadOptions={(query, callback) => getCreditCard(query, callback)}
                                          onChange={(e) => setCombo(e, 'card_id', setSelectedCard)} defaultOptions
                                          value={selectedCard}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Categoria: {values.category_id}</label>
-                            <AsyncSelect id={'combo_categories'} formTarget={true}
+                            <AsyncSelect id={'combo_categories'}
                                          loadOptions={(query, callback) => getCategory(query, callback)}
                                          onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)}
                                          defaultOptions value={selectedCategory}/>
@@ -161,7 +182,7 @@ const App = (props) => {
                     <div className="row">
                         <div className="col-12">
                             <label htmlFor="">Descrição</label>
-                            <textarea className='form-control' value={values.description} id="" cols="30" rows="10"
+                            <textarea className='form-control' value={values.description} id=""
                                       onChange={set('description')}></textarea>
                         </div>
                     </div>
@@ -188,7 +209,7 @@ const App = (props) => {
                 title={'Fatura'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e) => handleSubmit(e, URL_CREDIT_CARD_BILL, values, false, "Item de fatura salvo")}
+                actionModal={(e: any) => handleSubmit(e, URL_CREDIT_CARD_BILL, values, false, "Item de fatura salvo")}
                 size={'lg'}
             />
         </div>

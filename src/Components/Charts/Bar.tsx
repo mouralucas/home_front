@@ -56,11 +56,13 @@ const App = (props: any) => {
         </Title>
     }
 
+
     return (
         <Chart id="chart"
                title={props.title ?? "Title"}
                dataSource={props.dataSource}
                customizePoint={props.customizePoint ?? null}
+            // @ts-ignore
                customizeLabel={customizeLabel}
         >
             <Series

@@ -12,7 +12,7 @@ const App = () => {
     const [selectedBill, setSelectedBill] = useState()
     const [modalState, setModalState] = useState(false)
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedBill(e.row.data);
         }
@@ -44,11 +44,11 @@ const App = () => {
      * @param cellInfo
      * @returns the installments in xx/xx format
      */
-    function installmentCustomCell(cellInfo) {
+    function installmentCustomCell(cellInfo: any) {
         return cellInfo.installment + '/' + cellInfo.tot_installment;
     }
 
-    function myOtherCommand(e) {
+    function myOtherCommand(e: any) {
         alert('Café');
     }
 

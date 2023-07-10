@@ -17,13 +17,16 @@ const App = () => {
         })
     }, [])
 
+
     return (
+        // @ts-ignore
         <Doughnut
             title={'Investimentos'}
-            dataSource={investmentType}
+            data={investmentType}
             argumentField={'type__name'}
             valueField={'total'}
-        ></Doughnut>
+            chartId={'1'}>
+        </Doughnut>
     )
 }
 

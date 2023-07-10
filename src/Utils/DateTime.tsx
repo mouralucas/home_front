@@ -9,14 +9,10 @@ const getCurrentPeriod = () => {
 }
 
 const getListPeriods = (startYear: number, startMont: number, endYear: number, endMonth: number) => {
-    let list_periods = []
-
-
-
-    return list_periods
+    return []
 }
 
-const format = (rawDate: String): string => {
+const format = (rawDate: any): string | undefined => {
     let currentDate = new Date();
     let timeOffset = currentDate.getTimezoneOffset() / 60;
 
@@ -42,7 +38,6 @@ const format = (rawDate: String): string => {
 
         return nova_data_dia + '/' + nova_data_mes + '/' + nova_data_ano + ' às ' + nova_data_horas + ":" + nova_data_minutos;
     }
-
 
 }
 

@@ -3,12 +3,12 @@ import {useEffect, useRef, useState} from "react";
 import {Link} from "react-router-dom";
 import React from 'react';
 
-const MenuItems = ({items, depthLevel}) => {
+const MenuItems = ({items, depthLevel}: {items: any, depthLevel: any}) => {
     const [dropdown, setDropdown] = useState(false);
     let ref = useRef();
 
     useEffect(() => {
-        const handler = (event) => {
+        const handler = (event: { target: any; }) => {
             // @ts-ignore
             if (dropdown && ref.current && !ref.current.contains(event.target)) {
                 setDropdown(false);
@@ -31,7 +31,9 @@ const MenuItems = ({items, depthLevel}) => {
         window.innerWidth > 960 && setDropdown(false);
     };
 
+
     return (
+        // @ts-ignore
         <li className="menu-items" ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             {items.submenu ? (
                 <>

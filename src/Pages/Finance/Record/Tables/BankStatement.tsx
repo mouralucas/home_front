@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import axios from "../../../../Services/Axios/Axios";
 import {URL_ACCOUNT_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import Button from "devextreme-react/button";
@@ -10,11 +9,11 @@ import {getData} from "../../../../Services/Axios/Get";
 
 
 const App = () => {
-    const [statement, setStatement] = useState();
-    const [selectedStatement, setSelectedStatement] = useState()
-    const [modalState, setModalState] = useState(false)
+    const [statement, setStatement] = useState<any | null>();
+    const [selectedStatement, setSelectedStatement] = useState<any | null>()
+    const [modalState, setModalState] = useState<boolean>(false)
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedStatement(e.row.data);
         } else {
@@ -37,7 +36,7 @@ const App = () => {
         })
     }
 
-    function amountCustomCell(cellInfo) {
+    function amountCustomCell(cellInfo: any) {
         return cellInfo.currencySymbol + ' ' + cellInfo.amount;
     }
 
@@ -45,7 +44,7 @@ const App = () => {
         getStatements();
     }, []);
 
-    const coffeeCommand = (e) => {
+    const coffeeCommand = (e: any) => {
         toast('🦄 Cafezinho delícia!');
     }
 

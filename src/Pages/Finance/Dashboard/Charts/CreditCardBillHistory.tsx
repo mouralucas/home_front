@@ -2,20 +2,8 @@ import React, {useEffect, useState} from "react";
 import {toast, ToastOptions} from "react-toastify";
 import {URL_CREDIT_CARD_BILL_HISTORY} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";
-import {
-    ArgumentAxis,
-    Chart,
-    ConstantLine,
-    Export,
-    Font,
-    Label,
-    Legend,
-    Series,
-    Title,
-    ValueAxis,
-    VisualRange
-} from "devextreme-react/chart";
-import { Slider, Tooltip } from 'devextreme-react/slider';
+import {ArgumentAxis, Chart, ConstantLine, Export, Font, Label, Legend, Series, Title, ValueAxis, VisualRange} from "devextreme-react/chart";
+import {Slider, Tooltip} from 'devextreme-react/slider';
 
 
 const App = () => {
@@ -65,20 +53,20 @@ const App = () => {
         return null;
     }
 
-    const valueAxisLabel = (arg) => {
+    const valueAxisLabel = (arg: any) => {
         return `R$ ${arg.valueText}`;
     }
 
-    const customizeArgumentLabel = (e) => {
+    const customizeArgumentLabel = (e: any) => {
         return `${e.value}`;
     }
 
-    const customizeLabel = (arg) => {
+    const customizeLabel = (arg: any) => {
         if (arg.value > 70000) {
             return {
                 visible: true,
                 backgroundColor: '#ff7c7c',
-                customizeText(e) {
+                customizeText(e: any) {
                     return `${e.valueText}&#176F`;
                 },
             };
@@ -86,64 +74,68 @@ const App = () => {
         return null;
     }
 
-    function formatText(arg) {
+    function formatText(arg: any) {
         return `${arg.value}`;
     }
 
+
     return (
         <>
-        <Chart id="bill_history"
-               title={"Histórico de faturas"}
-               dataSource={billHistory}
-               customizePoint={customizePoint}
-               customizeLabel={customizeLabel}
-               palette={'Pastel'}
-        >
-            <Series
-                axis={'amount'}
-                argumentField={"period"}
-                valueField={"amount"}
-                type="bar"
-                color="#e7d19a"
-                // hoverMode="onlyPoints" //<!-- or "onlyPoint" | "allArgumentPoints" | "none" -->
 
+            <Chart id="bill_history"
+                   title={"Histórico de faturas"}
+                   dataSource={billHistory}
+                // @ts-ignore
+                   customizePoint={customizePoint}
+                // @ts-ignore
+                   customizeLabel={customizeLabel}
+                   palette={'Pastel'}
             >
-                <Label visible={false} customizeText={formatText}></Label>
-            </Series>
-            <ArgumentAxis argumentType={"string"}>
-                <Label customizeText={customizeArgumentLabel}/>
-            </ArgumentAxis>
-            <ValueAxis maxValueMargin={0.01} name={'amount'}>
-                <VisualRange startValue={sliderValue}/>
-                <Label customizeText={valueAxisLabel}/>
-                <Title text={"Gasto em reais"}>
-                    <Font color={"#e91e63"}/>
-                </Title>
-                <ConstantLine width={2} value={expenseGoal} color={"#8c8cff"} dashStyle={"dash"}>
-                    <Label text={"Meta"}/>
-                </ConstantLine>
-                <ConstantLine width={2} value={expenseAvg} color={"#8c8cff"} dashStyle={"dash"}>
-                    <Label text={"Média"}/>
-                </ConstantLine>
-            </ValueAxis>
-            <Legend visible={false}/>
-            <Export enabled={true}/>
-        </Chart>
+                <Series
+                    axis={'amount'}
+                    argumentField={"period"}
+                    valueField={"amount"}
+                    type="bar"
+                    color="#e7d19a"
+                    // hoverMode="onlyPoints" //<!-- or "onlyPoint" | "allArgumentPoints" | "none" -->
 
-        <Slider min={0}
-                max={1000}
-                value={sliderValue}
-                onValueChange={setSliderValue}
-                step={500}
                 >
-            <Tooltip enabled={true} showMode="always" position="bottom" format={format} />
-        </Slider>
-    </>
+                    <Label visible={false} customizeText={formatText}></Label>
+                </Series>
+                <ArgumentAxis argumentType={"string"}>
+                    <Label customizeText={customizeArgumentLabel}/>
+                </ArgumentAxis>
+                <ValueAxis maxValueMargin={0.01} name={'amount'}>
+                    <VisualRange startValue={sliderValue}/>
+                    <Label customizeText={valueAxisLabel}/>
+                    <Title text={"Gasto em reais"}>
+                        <Font color={"#e91e63"}/>
+                    </Title>
+                    <ConstantLine width={2} value={expenseGoal} color={"#8c8cff"} dashStyle={"dash"}>
+                        <Label text={"Meta"}/>
+                    </ConstantLine>
+                    <ConstantLine width={2} value={expenseAvg} color={"#8c8cff"} dashStyle={"dash"}>
+                        <Label text={"Média"}/>
+                    </ConstantLine>
+                </ValueAxis>
+                <Legend visible={false}/>
+                <Export enabled={true}/>
+            </Chart>
+
+            <Slider min={0}
+                    max={1000}
+                    value={sliderValue}
+                    onValueChange={setSliderValue}
+                    step={500}
+            >
+                <Tooltip enabled={true} showMode="always" position="bottom" format={format}/>
+            </Slider>
+        </>
     );
 
     function format(value: any) {
         return `Starts with ${value}`;
-      }
+    }
 }
 
 export default App;

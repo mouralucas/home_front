@@ -11,7 +11,7 @@ const App = () => {
     const [selectedPublisher, setSelectedPublisher] = useState()
     const [modalState, setModalState] = useState(false)
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         const row_state = typeof e.row === 'undefined' ? null : e.row.data
         setSelectedPublisher(row_state);
         setModalState(true);
@@ -31,7 +31,7 @@ const App = () => {
         getAuthor();
     }, []);
 
-    function myOtherCommand(e) {
+    function myOtherCommand(e: any) {
         alert('Café');
     }
 

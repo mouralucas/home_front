@@ -6,14 +6,14 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 
-const App = (props) => {
+const App = () => {
     return (
         <>
             <Sidebar defaultCollapsed={true}
                      transitionDuration={2000}>
                 <Menu>
                     <SubMenu
-                        label={"Fianceiro"}
+                        label={"Financeiro"}
                         icon={<BarChart/>}
                         component={<Link to="/finance/dashboard"/>}
                         active={true}
