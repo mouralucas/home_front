@@ -11,20 +11,48 @@ import {getData} from "../../../../Services/Axios/Get";
 import {format as formatDate} from "../../../../Utils/DateTime";
 
 
-const App = (props) => {
-    const [account, setAccount] = useState([]);
-    const [selectedAccount, setSelectedAccount] = useState();
+interface BankStatementProps {
+    statement: any,
+    modalState: boolean,
+    hideModal: any
+}
+
+interface BankStatementValues {
+    amount: number,
+    accountId: string | null,
+    categoryId: string | null,
+    currencyId: "BRL",
+    purchasedAt: Date,
+    description: string,
+    createdAt: null,
+    lastEditedAt: null,
+    cashFlowId: string
+}
+
+const App = (props: BankStatementProps) => {
+    const [account, setAccount] = useState<any[] | null>([]);
+    const [selectedAccount, setSelectedAccount] = useState<any | null>();
 
     const [category, setCategory] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState();
+    const [selectedCategory, setSelectedCategory] = useState<any[] | null>([]);
 
-    const [currency, setCurrency] = useState([])
-    const [selectedCurrency, setSelectedCurrency] = useState([])
+    const [currency, setCurrency] = useState<any[] | null>([])
+    const [selectedCurrency, setSelectedCurrency] = useState<any[] | null>([])
 
-    const [cashFlow, setCashFlow] = useState([])
-    const [selectedCashFlow, setSelectedCashFlow] = useState([]);
+    const [cashFlow, setCashFlow] = useState<any[] | null>([])
+    const [selectedCashFlow, setSelectedCashFlow] = useState<any[] | null>([]);
 
-    const [values, setValues] = useState({});
+    const [values, setValues] = useState<BankStatementValues>({
+        amount: 0,
+        accountId: null,
+        categoryId: null,
+        currencyId: "BRL",
+        purchasedAt: new Date(),
+        description: "",
+        createdAt: null,
+        lastEditedAt: null,
+        cashFlowId: "OUTGOING"
+    });
 
     useEffect(() => {
         if (props.statement && props.modalState) {
@@ -34,13 +62,13 @@ const App = (props) => {
         if (!props.modalState) {
             setValues({
                 amount: 0,
-                account_id: null,
-                category_id: null,
+                accountId: null,
+                categoryId: null,
                 currencyId: "BRL",
-                dat_purchase: new Date(),
+                purchasedAt: new Date(),
                 description: '',
-                datCreated: null,
-                datLastEdited: null,
+                createdAt: null,
+                lastEditedAt: null,
                 cashFlowId: 'OUTGOING'
             });
             setSelectedCategory(null);
@@ -50,69 +78,70 @@ const App = (props) => {
 
     useEffect(() => {
         if (props.statement) {
-            setSelectedCategory(category.filter(i => i.value === props.statement.category_id)[0]);
+            // @ts-ignore
+            setSelectedCategory(category.filter(i => i.value === props.statement.categoryId)[0]);
         }
     }, [category, props.statement])
 
     useEffect(() => {
         if (props.statement) {
-            setSelectedAccount(account.filter(i => i.value === props.statement.account_id)[0]);
+            setSelectedAccount(account?.filter(i => i.value === props.statement.account_id)[0]);
         }
     }, [account, props.statement])
 
     useEffect(() => {
         if (props.statement) {
-            setSelectedCurrency(currency.filter(i => i.value === props.statement.currencyId)[0])
+            setSelectedCurrency(currency?.filter(i => i.value === props.statement.currencyId)[0])
         }
     }, [currency, props.statement])
 
     useEffect(() => {
         if (props.statement) {
-            setSelectedCashFlow(cashFlow.filter(i => i.value === props.statement.cashFlowId)[0])
+            setSelectedCashFlow(cashFlow?.filter(i => i.value === props.statement.cashFlowId)[0])
         }
     }, [cashFlow, props.statement])
 
-    const getCurrency = (query, callback) => {
+    const getCurrency = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(currency, query));
         } else {
             getData(URL_CURRENCY).then(response => {
-                let options = response == null ? {} : response.currency.map(i => ({value: i.id, label: i.symbol}))
+                let options = response == null ? {} : response.currency.map((i: { id: any; symbol: any; }) => ({value: i.id, label: i.symbol}))
                 callback(options);
-                setSelectedCurrency(options.filter(currency => currency.value === values.currencyId))
+                setSelectedCurrency(options.filter((currency: { value: string; }) => currency.value === values.currencyId))
                 setCurrency(options)
             })
         }
     }
 
-    const getCategory = (query, callback) => {
+    const getCategory = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(category, query));
         } else {
             getData(URL_CATEGORIES, {show_mode: 'all', module: 'finance'}).then(response => {
-                let options = response == null ? {} : response.categories.map(i => ({value: i.id, label: i.name}))
+                let options = response == null ? {} : response.categories.map((i: { id: any; name: string; }) => ({value: i.id, label: i.name}))
 
                 callback(options);
-                setSelectedCategory(options.filter(category => category.value === values.category_id)[0]);
+                setSelectedCategory(options.filter((category: { value: any; }) => category.value === values.categoryId)[0]);
                 setCategory(options);
             });
         }
     }
 
-    const getAccounts = (query, callback) => {
+    const getAccounts = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(account, query));
         } else {
             getData(URL_ACCOUNTS).then(response => {
-                let options = response.accounts.map(i => ({value: i.id, label: i.nickname}))
+                let options = response.accounts.map((i: { id: any; nickname: string; }) => ({value: i.id, label: i.nickname}))
                 callback(options);
-                setSelectedAccount(options?.filter(account => account.value === values.account_id)[0])
+                setSelectedAccount(options?.filter((account: { value: any; }) => account.value === values.accountId)[0])
                 setAccount(options)
             });
         }
     }
 
-    const getCashFlow = (query, callback) => {
+    const getCashFlow = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(cashFlow, query));
         } else {
@@ -121,18 +150,19 @@ const App = (props) => {
                 {value: 'OUTGOING', label: 'Saída'}
             ]
             callback(options)
+            // @ts-ignore
             setSelectedCashFlow(options?.filter(cashFlow => cashFlow.value === values.cashFlowId)[0])
             setCashFlow(options)
         }
     }
 
-    const set = name => {
-        return ({target: {value}}) => {
+    const set = (name: any) => {
+        return ({target: {value}}: any) => {
             setValues(oldValues => ({...oldValues, [name]: value}));
         }
     }
 
-    const setComboValues = (e, name, setFunction) => {
+    const setComboValues = (e: any, name: any, setFunction: any) => {
         if (e !== null) {
             setFunction(e);
             return setValues(oldValues => ({...oldValues, [name]: e.value}));
@@ -140,7 +170,7 @@ const App = (props) => {
         return setValues(oldValues => ({...oldValues, [name]: e.value}));
     }
 
-    const setDateValues = (e, name) => {
+    const setDateValues = (e: any, name: any) => {
         if (e.value !== null) {
             return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
         } else {
@@ -148,7 +178,7 @@ const App = (props) => {
         }
     }
 
-    const setCurrencyValues = (values, name) => {
+    const setCurrencyValues = (values: any, name: any) => {
         return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
 
@@ -160,49 +190,48 @@ const App = (props) => {
                     <div className="row">
                         <div className="col-2">
                             <label htmlFor=""></label>
-                            <AsyncSelect formTarget={true}
-                                         loadOptions={(query, callback) => getCurrency(query, callback)}
-                                         onChange={(e) => setComboValues(e, 'currencyId', setSelectedCurrency)}
-                                         defaultOptions
-                                         value={selectedCurrency}/>
+                            <AsyncSelect
+                                loadOptions={(query, callback) => getCurrency(query, callback)}
+                                onChange={(e) => setComboValues(e, 'currencyId', setSelectedCurrency)}
+                                defaultOptions
+                                value={selectedCurrency}/>
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Valor</label>
                             <Currency className='form-control input-default'
                                       value={values.amount * 100}
-                                      onFocus={event => event.target.select()}
+                                      onFocus={(event: { target: { select: () => any; }; }) => event.target.select()}
                                       currency={values.currencyId}
-                                      onValueChange={(values, sourceInfo) => {
+                                      onValueChange={(values: any, sourceInfo: any) => {
                                           setCurrencyValues(values, 'amount')
                                       }}/>
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Data compra</label>
-                            <DateBox value={values.dat_purchase} type="date" className='form-control input-default'
+                            <DateBox value={values.purchasedAt} type="date" className='form-control input-default'
                                      useMaskBehavior={true}
                                      onValueChanged={(date) => setDateValues(date, 'dat_purchase')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Conta</label>
-                            <AsyncSelect formTarget={true}
-                                         loadOptions={(query, callback) => getAccounts(query, callback)}
-                                         onChange={(e) => setComboValues(e, 'account_id', setSelectedAccount)} defaultOptions
-                                         value={selectedAccount}/>
+                            <AsyncSelect
+                                loadOptions={(query, callback) => getAccounts(query, callback)}
+                                onChange={(e) => setComboValues(e, 'account_id', setSelectedAccount)} defaultOptions
+                                value={selectedAccount}/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-6">
                             <label htmlFor="">Operação {values.cashFlowId}</label>
-                            <AsyncSelect formTarget={true}
-                                         loadOptions={(query, callback) => getCashFlow(query, callback)}
-                                         onChange={(e) => setComboValues(e, 'cashFlowId', setSelectedCashFlow)}
-                                         defaultOptions
-                                         value={selectedCashFlow}/>
+                            <AsyncSelect
+                                loadOptions={(query, callback) => getCashFlow(query, callback)}
+                                onChange={(e) => setComboValues(e, 'cashFlowId', setSelectedCashFlow)}
+                                defaultOptions
+                                value={selectedCashFlow}/>
                         </div>
                         <div className="col-6">
                             <label htmlFor="">Categoria</label>
-                            <AsyncSelect formTarget={true}
-                                         loadOptions={(query, callback) => getCategory(query, callback)}
+                            <AsyncSelect loadOptions={(query, callback) => getCategory(query, callback)}
                                          onChange={(e) => setComboValues(e, 'category_id', setSelectedCategory)}
                                          defaultOptions value={selectedCategory}/>
                         </div>
@@ -210,16 +239,16 @@ const App = (props) => {
                     <div className="row">
                         <div className="col-12">
                             <label htmlFor="">Descrição</label>
-                            <textarea className='form-control' value={values.description} id="" cols="30" rows="10"
+                            <textarea className='form-control' value={values.description} id="" rows={10}
                                       onChange={set('description')}></textarea>
                         </div>
                     </div>
                     <div className="row mt-2">
                         <span className='text-small text-muted'>
-                            Criado em: {formatDate(values.datCreated)}
+                            Criado em: {formatDate(values.createdAt)}
                         </span>
                         <span className="text-small text-muted">
-                            Editado em: {formatDate(values.datLastEdited)}
+                            Editado em: {formatDate(values.lastEditedAt)}
                         </span>
                     </div>
                 </div>
@@ -236,7 +265,7 @@ const App = (props) => {
                 title={'Extrato'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e) => handleSubmit(e, URL_ACCOUNT_STATEMENT, values, false, "Item de extrato salvo")}
+                actionModal={(e: any) => handleSubmit(e, URL_ACCOUNT_STATEMENT, values, false, "Item de extrato salvo")}
                 size={'lg'}
             />
         </div>
