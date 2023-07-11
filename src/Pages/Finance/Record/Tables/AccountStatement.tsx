@@ -6,7 +6,7 @@ import ModalStatement from '../Modals/BankStatement'
 import {Button as Btn} from "devextreme-react/data-grid";
 import {toast} from "react-toastify";
 import {getData} from "../../../../Services/Axios/Get";
-import Statement from "../../Interfaces"
+import {Statement} from "../../Interfaces"
 
 // TODO: fazer essa interface disponível para todas as páginas de finance e usar também no modal pra validar
 

@@ -15,4 +15,25 @@ interface Statement {
     lastEditedAt: Date | null
 }
 
-export default Statement
+interface Investment {
+    investmentId: string | null
+    name: string | null
+    description: string | null
+    amount: number
+    price: number
+    quantity: number
+    date: Date
+    maturityDate: Date | null
+    interestRate: string | null
+    interestIndex: string | null
+    custodianName: string | null
+    custodianId: string | null
+    investmentTypeId: string | null
+    investmentTypeName: string | null
+    parentId: string | null
+    cashFlowId: string,
+    createAt: Date | null,
+    lastEditedAt: Date | null,
+}
+
+export type {Statement, Investment}

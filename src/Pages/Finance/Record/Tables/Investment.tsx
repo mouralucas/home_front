@@ -7,17 +7,18 @@ import {Button as Btn} from "devextreme-react/data-grid";
 import TreeList from "../../../../Components/TreeList";
 import ModalInvestment from '../Modals/Investment_beta';
 import {format as formatDate} from "../../../../Utils/DateTime";
+import {Investment} from "../../Interfaces";
 
 
 const App = () => {
-    const [investment, setInvestment] = useState([])
-    const [selectedInvestment, setSelectedInvestment] = useState([])
+    const [investment, setInvestment] = useState<Investment[]>([])
+    const [selectedInvestment, setSelectedInvestment] = useState<Investment>()
     const [modalState, setModalState] = useState(false)
 
 
     // tocar tabela para tree list
     // Cada linha principal contém o total aplicado naquele investimento
-    // Para investimentos recorrentes (rendimento de conta-corrente, etc.) é criado um pai com com o valor total investido
+    // Para investimentos recorrentes (rendimento de conta-corrente, etc.) é criado um pai com o valor total investido
     //  e cada filho indica um depósito específico
 
     const showModal = (e: any) => {
@@ -37,7 +38,7 @@ const App = () => {
     }, [])
 
     const getInvestment = () => {
-        getData(URL_INVESTMENT, {show_mode: 'all'}).then(response => {
+        getData(URL_INVESTMENT, {showMode: 'all'}).then(response => {
             setInvestment(response.investment);
         }).catch(err => {
             toast.error(err)
@@ -54,7 +55,7 @@ const App = () => {
 
     const columns = [
         {
-            dataField: "id",
+            dataField: "investmentId",
             caption: "Id",
             dataType: "string",
             width: 70,
@@ -160,8 +161,8 @@ const App = () => {
         <>
             <TreeList
                 tableColumns={columns}
-                keyExpr={'id'}
-                parentIdExpr={'parent_id'}
+                keyExpr={'investmentId'}
+                parentIdExpr={'parentId'}
                 dataSource={investment}
                 toolBarRefresh={false}
                 toolBarItems={toolBarItems}
