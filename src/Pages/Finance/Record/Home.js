@@ -1,6 +1,6 @@
 import Card from '../../../Components/Card'
 import CreditCardBillTable from './Tables/CreditCardBill'
-import BankStatementTable from './Tables/BankStatement'
+import BankStatementTable from './Tables/AccountStatement'
 import InvestmentStatementTable from './Tables/InvestmentStatement'
 import InvestmentTable from './Tables/Investment'
 // import InvestmentTable from '../../../Components/TreeList'
