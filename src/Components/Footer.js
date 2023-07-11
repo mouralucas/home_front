@@ -38,7 +38,7 @@ const Footer = () => {
                     {/*<a href="#" className="small text-muted" data-toggle="modal" data-target="#modalVersaoAtual">*/}
                     {/*    Versão 1.0.0*/}
                     {/*</a>*/}
-                    <Link to="#" className='small text-mutted'>Versão {version.version}. {version.environment}</Link>
+                    <Link to="#" className='small text-mutted'>Versão {version?.version}. {version?.environment}</Link>
                 </div>
             </div>
         </footer>

@@ -210,13 +210,13 @@ const App = (props: BankStatementProps) => {
                             <label htmlFor="">Data compra</label>
                             <DateBox value={values.purchasedAt} type="date" className='form-control input-default'
                                      useMaskBehavior={true}
-                                     onValueChanged={(date) => setDateValues(date, 'dat_purchase')}/>
+                                     onValueChanged={(date) => setDateValues(date, 'purchasedAt')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Conta</label>
                             <AsyncSelect
                                 loadOptions={(query, callback) => getAccounts(query, callback)}
-                                onChange={(e) => setComboValues(e, 'account_id', setSelectedAccount)} defaultOptions
+                                onChange={(e) => setComboValues(e, 'accountId', setSelectedAccount)} defaultOptions
                                 value={selectedAccount}/>
                         </div>
                     </div>
@@ -232,7 +232,7 @@ const App = (props: BankStatementProps) => {
                         <div className="col-6">
                             <label htmlFor="">Categoria</label>
                             <AsyncSelect loadOptions={(query, callback) => getCategory(query, callback)}
-                                         onChange={(e) => setComboValues(e, 'category_id', setSelectedCategory)}
+                                         onChange={(e) => setComboValues(e, 'categoryId', setSelectedCategory)}
                                          defaultOptions value={selectedCategory}/>
                         </div>
                     </div>
