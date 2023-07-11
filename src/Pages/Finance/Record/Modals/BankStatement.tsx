@@ -85,7 +85,7 @@ const App = (props: BankStatementProps) => {
 
     useEffect(() => {
         if (props.statement) {
-            setSelectedAccount(account?.filter(i => i.value === props.statement.account_id)[0]);
+            setSelectedAccount(account?.filter(i => i.value === props.statement.accountId)[0]);
         }
     }, [account, props.statement])
 
