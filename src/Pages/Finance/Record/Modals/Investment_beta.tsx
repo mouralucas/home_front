@@ -19,6 +19,27 @@ import {Investment} from "../../Interfaces";
  * @returns {JSX.Element}
  * @constructor
  */
+const DefaultInvestment = {
+    investmentId: null,
+    name: null,
+    description: null,
+    amount: 0,
+    price: 0,
+    quantity: 0,
+    date: new Date(),
+    maturityDate: null,
+    interestRate: null,
+    interestIndex: null,
+    custodianName: null,
+    custodianId: null,
+    investmentTypeId: null,
+    investmentTypeName: null,
+    parentId: null,
+    cashFlowId: 'INCOMING',
+    createAt: null,
+    lastEditedAt: null
+}
+
 const App = (props: any): JSX.Element => {
     /*
     * A ideia do investimento é registrar qualquer novo investimento feito
@@ -48,7 +69,7 @@ const App = (props: any): JSX.Element => {
     const [interestRate, setInterestRate] = useState<any | null>([])
     const [selectedInterestRate, setSelectedInterestRate] = useState<any | null>([])
 
-    const [values, setValues] = useState<Investment | null>()
+    const [values, setValues] = useState<Investment>(DefaultInvestment)
 
     useEffect(() => {
         if (props.investment && props.modalState) {
@@ -56,27 +77,7 @@ const App = (props: any): JSX.Element => {
         }
 
         if (!props.modalState) {
-            // TODO: ajustar campos
-            setValues({
-                investmentId: null,
-                name: null,
-                description: null,
-                amount: 0,
-                price: 0,
-                quantity: 0,
-                date: new Date(),
-                maturityDate: null,
-                interestRate: null,
-                interestIndex: null,
-                custodianName: null,
-                custodianId: null,
-                investmentTypeId: null,
-                investmentTypeName: null,
-                parentId: null,
-                cashFlowId: 'INCOMING',
-                createAt: null,
-                lastEditedAt: null
-            });
+            setValues(DefaultInvestment);
             setSelectedParent(null);
             setSelectedInterestRate(null);
         }
@@ -87,7 +88,7 @@ const App = (props: any): JSX.Element => {
         if (query) {
             callback(filterSelect(parent, query));
         } else {
-            getData(URL_INVESTMENT, {'show_mode': 'father'}).then(response => {
+            getData(URL_INVESTMENT, {'showMode': 'father'}).then(response => {
                 let options = response === null ? {} : response?.investment.map((i: { id: any; name: any; }) => ({value: i.id, label: i.name}));
                 callback(options);
                 setSelectedParent(options?.filter((i: { value: any; }) => i.value === values?.parentId)[0])
@@ -214,6 +215,7 @@ const App = (props: any): JSX.Element => {
     }
 
     const body = (): JSX.Element => {
+        // @ts-ignore
         let body_html =
             <>
                 <Card marginTop={'mt-0'}>
@@ -233,8 +235,10 @@ const App = (props: any): JSX.Element => {
                                 <div className="col-6">
                                     <label htmlFor="">Título/descrição</label>
                                     <input className='form-control input-default'
+                                           type='text'
                                            onChange={set('name')}
-                                           value={values?.name}/>
+                                        // @ts-ignore
+                                           value={values.name}/>
                                 </div>
                             </div>
                             <div className="row mt-2">
@@ -256,7 +260,9 @@ const App = (props: any): JSX.Element => {
                                 </div>
                                 <div className="col-3">
                                     <label htmlFor="">Data vencimento</label>
-                                    <DateBox value={values?.maturityDate} type="date"
+                                    <DateBox
+                                        // @ts-ignore
+                                        value={values?.maturityDate} type="date"
                                              className='form-control input-default'
                                              useMaskBehavior={true}
                                              showClearButton={true}
@@ -325,6 +331,7 @@ const App = (props: any): JSX.Element => {
                                     <label htmlFor="">Índice</label>
                                     <input type="text" className='form-control input-default'
                                            onChange={set('interestIndex')}
+                                        // @ts-ignore
                                            value={values?.interestIndex}
                                     />
                                 </div>
@@ -350,7 +357,7 @@ const App = (props: any): JSX.Element => {
 
     }
 
-    const set = (name: any) => {
+    const set = (name: string) => {
         return ({target: {value}}: any) => {
             setValues(oldValues => ({...oldValues, [name]: value}));
         }
