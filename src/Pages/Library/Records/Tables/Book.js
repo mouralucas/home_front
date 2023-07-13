@@ -40,15 +40,6 @@ const Book = () => {
         })
     }
 
-    /**
-     * Custom function to show the installments in the table it shows the current installment and the total in the format xx/xx
-     * @param cellInfo
-     * @returns the installments in xx/xx format
-     */
-    function priceCustomCell(cellInfo) {
-        return cellInfo.payed_price+ '/' + cellInfo.cover_price;
-    }
-
     let colunasTabelaLivro = [
         {
             dataField: "id",

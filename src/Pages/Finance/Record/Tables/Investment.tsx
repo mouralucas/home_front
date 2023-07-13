@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { URL_INVESTMENT } from "../../../../Services/Axios/ApiUrls";
-import { getData } from "../../../../Services/Axios/Get";
+import React, {useEffect, useState} from "react";
+import {toast} from "react-toastify";
+import {URL_INVESTMENT} from "../../../../Services/Axios/ApiUrls";
+import {getData} from "../../../../Services/Axios/Get";
 import Button from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
 import TreeList from "../../../../Components/TreeList";
 import ModalInvestment from '../Modals/Investment_beta';
-import {format as formatDate} from "../../../../Utils/DateTime";
 import {Investment} from "../../Interfaces";
 
 
@@ -43,14 +42,6 @@ const App = () => {
         }).catch(err => {
             toast.error(err)
         })
-    }
-
-    function dateCustomCell(cellInfo: any) {
-        return cellInfo.maturityDate === null ? '--' : formatDate(cellInfo.maturityDate);
-    }
-
-    function amountCustomCell(cellInfo: any) {
-        return ' ' + cellInfo.amount;
     }
 
     const columns = [

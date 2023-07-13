@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {URL_ITEM_COLLECTION, URL_ITEM_SERIE, URL_PUBLISHER} from "../../../../Services/Axios/ApiUrls";
+import {URL_ITEM_COLLECTION} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";

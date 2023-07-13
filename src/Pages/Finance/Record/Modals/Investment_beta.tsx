@@ -14,7 +14,7 @@ import Card from '../../../../Components/Card'
 import {Investment} from "../../Interfaces";
 
 /**
- * Modal to create new entry for the credit card bill
+ * Modal to create new entry for investments
  * @param props
  * @returns {JSX.Element}
  * @constructor

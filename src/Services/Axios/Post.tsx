@@ -6,7 +6,7 @@ const HandleSubmit = async (e: any, url: string, values: any, hideModal: any, to
     e.preventDefault();
 
     const formData = new FormData();
-    Object.keys(values).forEach(key => formData.append(key, values[key]));
+    Object.keys(values).forEach(key => values[key] !== null ? formData.append(key, values[key]) : null);
 
     await axios({
         method: 'post',

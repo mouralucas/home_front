@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import axios from "../../Services/Axios/Axios";
 
 const getData = async (url: string, params: any=null) => {
