@@ -11,7 +11,7 @@ import {Investment} from "../../Interfaces";
 
 const App = () => {
     const [investment, setInvestment] = useState<Investment[]>([])
-    const [selectedInvestment, setSelectedInvestment] = useState<Investment>()
+    const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>()
     const [modalState, setModalState] = useState(false)
 
 
@@ -29,7 +29,8 @@ const App = () => {
 
     const hideModal = () => {
         setModalState(false);
-        getInvestment()
+        setSelectedInvestment(null);
+        getInvestment();
     }
 
     useEffect(() => {

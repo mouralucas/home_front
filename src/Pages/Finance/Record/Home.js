@@ -1,11 +1,8 @@
 import Card from '../../../Components/Card'
 import CreditCardBillTable from './Tables/CreditCardBill'
 import BankStatementTable from './Tables/AccountStatement'
-import InvestmentStatementTable from './Tables/InvestmentStatement'
 import InvestmentTable from './Tables/Investment'
-// import InvestmentTable from '../../../Components/TreeList'
 import {useEffect} from "react";
-import Sidebar from '../../../Components/Sidebar/Base'
 import getCurrentPeriod, {getListPeriods} from "../../../Utils/DateTime";
 import Select from "react-select";
 
@@ -22,15 +19,9 @@ const App = () => {
                     <div className="col-12">
                         <Card>
                             <Card.Header>
-                                <div
-                                    className="row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100">
-                                    <div className="col-10">
-                                        Investimentos
-                                    </div>
-                                    <div className="col-2">
-                                        <Select formTarget={true}
-                                                options={getListPeriods(201801, +getCurrentPeriod())}/>
-                                    </div>
+                                <div className="row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100">
+                                    <div className="col-10">Investimentos</div>
+                                    <div className="col-2"></div>
                                 </div>
                             </Card.Header>
                             <Card.Body>
@@ -43,9 +34,9 @@ const App = () => {
                     <div className="col-12">
                         <Card>
                             <Card.Header>
-                                <div className="col-6">Fatura</div>
-                                <div className="col-4"></div>
-                                <div className="col-2">
+                                <div className="row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100">
+                                    <div className="col-10">Fatura</div>
+                                    <div className="col-2"></div>
                                 </div>
                             </Card.Header>
                             <Card.Body>
