@@ -3,8 +3,6 @@ import CreditCardBillTable from './Tables/CreditCardBill'
 import BankStatementTable from './Tables/AccountStatement'
 import InvestmentTable from './Tables/Investment'
 import {useEffect} from "react";
-import getCurrentPeriod, {getListPeriods} from "../../../Utils/DateTime";
-import Select from "react-select";
 
 const App = () => {
     useEffect(() => {
