@@ -31,7 +31,7 @@ const Book = () => {
 
     const getBooks = () => {
         axios.get(URL_ITEM, {
-            params: {'item_type': 'book'}
+            params: {'itemType': 'book'}
         }).then(response => {
                 setBooks(response.data.items);
             }

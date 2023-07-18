@@ -31,7 +31,7 @@ const Manga = () => {
 
     const getMangas = () => {
         axios.get(URL_ITEM, {
-            params: {'item_type': 'manga'}
+            params: {'itemType': 'manga'}
         }).then(response => {
                 setMangas(response.data.items);
             }
