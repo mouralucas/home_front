@@ -115,11 +115,11 @@ const App = () => {
         <>
             <DataGrid
                 keyExpr={'id'}
-                tableColumns={columns}
+                columns={columns}
                 data={author}
-                toolBarRefresh={false}
+                // toolBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
             />
             <ModalAuthor modalState={modalState} hideModal={hideModal} author={selectedAuthor}/>
         </>

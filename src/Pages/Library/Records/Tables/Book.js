@@ -54,7 +54,7 @@ const Book = () => {
             visible: true,
         },
         {
-            dataField: "nm_main_author",
+            dataField: "mainAuthorName",
             caption: "Autor",
             dataType: "string",
             visible: true,
@@ -77,18 +77,18 @@ const Book = () => {
           dataType: "string"
         },
         {
-            dataField: "nm_serie",
+            dataField: "serieName",
             caption: "Serie",
             dataType: "string",
             visible: false,
         },
         {
-            dataField: "nm_publisher",
+            dataField: "publisherName",
             caption: "Editora",
             dataType: "string",
         },
         {
-            dataField: "nm_last_status",
+            dataField: "lastStatusName",
             caption: "Status",
             dataType: "string",
         },
@@ -133,8 +133,8 @@ const Book = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'id'}
-                tableColumns={colunasTabelaLivro}
+                keyExpr={'itemId'}
+                columns={colunasTabelaLivro}
                 data={books}
                 tooBarRefresh={false}
                 toolBarItems={toolBarItems}

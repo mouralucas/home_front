@@ -42,13 +42,13 @@ const Manga = () => {
 
     let colunasTabelaLivro = [
         {
-            dataField: "item_id",
+            dataField: "itemId",
             caption: "Id",
             dataType: "number",
             width: 50,
         },
         {
-            dataField: "nm_main_author",
+            dataField: "mainAuthorName",
             caption: "Autor",
             dataType: "string",
         },
@@ -58,13 +58,13 @@ const Manga = () => {
             dataType: "string",
         },
         {
-            dataField: "nm_serie",
+            dataField: "serieName",
             caption: "Serie",
             dataType: "string",
             groupIndex: 0,
         },
         {
-            dataField: "nm_collection",
+            dataField: "collectionName",
             caption: "Coleção",
             dataType: "string"
         },
@@ -75,12 +75,12 @@ const Manga = () => {
             width: 150,
         },
         {
-            dataField: "nm_publisher",
+            dataField: "publisherName",
             caption: "Editora",
             dataType: "string",
         },
         {
-            dataField: "nm_last_status",
+            dataField: "lastStatusName",
             caption: "Status",
             dataType: "string",
         },
@@ -92,7 +92,7 @@ const Manga = () => {
             visible: false
         },
         {
-            dataField: "cover_price",
+            dataField: "coverPrice",
             caption: "Pago/Capa",
             dataType: "number",
             width: 150,
@@ -151,8 +151,8 @@ const Manga = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'id'}
-                tableColumns={colunasTabelaLivro}
+                keyExpr={'itemId'}
+                columns={colunasTabelaLivro}
                 data={mangas}
                 tooBarRefresh={false}
                 toolBarItems={toolBarItems}

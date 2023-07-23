@@ -137,11 +137,11 @@ const App = () => {
         <>
             <DataGrid
                 keyExpr={'statementId'}
-                tableColumns={columns}
+                columns={columns}
                 data={statement}
-                toolBarRefresh={false}
+                // toolBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
             />
             <ModalStatement modalState={modalState} hideModal={hideModal} statement={selectedStatement}/>
         </>
