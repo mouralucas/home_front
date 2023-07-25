@@ -5,17 +5,18 @@ import {URL_ITEM} from '../../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
 import {Button} from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
+import {Item} from "../../interfaces";
 
 const Book = () => {
-    const [books, setBooks] = useState();
-    const [selectedBook, setSelectedBook] = useState();
-    const [modalState, setModalState] = useState(false);
+    const [books, setBooks] = useState<Item[] | null>();
+    const [selectedBook, setSelectedBook] = useState<Item | null>();
+    const [modalState, setModalState] = useState<boolean>(false);
 
     useEffect(() => {
         getBooks();
     }, []);
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedBook(e.row.data);
         } else {
@@ -136,9 +137,9 @@ const Book = () => {
                 keyExpr={'itemId'}
                 columns={colunasTabelaLivro}
                 data={books}
-                tooBarRefresh={false}
+                // tooBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
             />
             <ModalItem modalState={modalState} hideModalItem={hideModalItem} item={selectedBook}/>
         </>
