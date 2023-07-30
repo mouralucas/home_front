@@ -1,11 +1,11 @@
 import DataGrid from "../../../../Components/DataGrid";
 import React, {useEffect, useState} from "react";
-import axios from "../../../../Services/Axios/Axios";
 import {URL_ITEM} from '../../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
 import {Button} from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
 import {Item} from "../../interfaces";
+import {getData} from "../../../../Services/Axios/Get";
 
 const Book = () => {
     const [books, setBooks] = useState<Item[] | null>();
@@ -31,10 +31,8 @@ const Book = () => {
     }
 
     const getBooks = () => {
-        axios.get(URL_ITEM, {
-            params: {'itemType': 'book'}
-        }).then(response => {
-                setBooks(response.data.items);
+        getData(URL_ITEM, {itemType: 'book'}).then(response => {
+                setBooks(response.items);
             }
         ).catch(response => {
             return {'error': response}
@@ -43,7 +41,7 @@ const Book = () => {
 
     let colunasTabelaLivro = [
         {
-            dataField: "id",
+            dataField: "itemId",
             caption: "Id",
             dataType: "number",
             visible: false,
@@ -73,9 +71,9 @@ const Book = () => {
             width: 150,
         },
         {
-          dataField: "itemFormatId",
-          caption: "Formato",
-          dataType: "string"
+            dataField: "itemFormatId",
+            caption: "Formato",
+            dataType: "string"
         },
         {
             dataField: "serieName",

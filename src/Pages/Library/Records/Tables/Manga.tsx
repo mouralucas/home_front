@@ -1,21 +1,22 @@
 import DataGrid from "../../../../Components/DataGrid";
 import React, {useEffect, useState} from "react";
-import axios from "../../../../Services/Axios/Axios";
 import {URL_ITEM} from '../../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
 import {Button} from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
+import {getData} from "../../../../Services/Axios/Get";
+import {Item} from "../../interfaces";
 
 const Manga = () => {
-    const [mangas, setMangas] = useState();
-    const [selectedManga, setSelectedManga] = useState();
-    const [modalState, setModalState] = useState(false)
+    const [mangas, setManga] = useState<Item[] | null>();
+    const [selectedManga, setSelectedManga] = useState<Item | null>();
+    const [modalState, setModalState] = useState<boolean>(false)
 
     useEffect(() => {
         getMangas();
     }, []);
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedManga(e.row.data);
         } else {
@@ -30,14 +31,12 @@ const Manga = () => {
     }
 
     const getMangas = () => {
-        axios.get(URL_ITEM, {
-            params: {'itemType': 'manga'}
-        }).then(response => {
-                setMangas(response.data.items);
+        getData(URL_ITEM, {itemType: 'manga'}).then(response => {
+                setManga(response.items);
             }
         ).catch(response => {
             return {'error': response}
-        })
+        });
     }
 
     let colunasTabelaLivro = [
@@ -154,9 +153,9 @@ const Manga = () => {
                 keyExpr={'itemId'}
                 columns={colunasTabelaLivro}
                 data={mangas}
-                tooBarRefresh={false}
+                // tooBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
                 paging={20}
 
             />
