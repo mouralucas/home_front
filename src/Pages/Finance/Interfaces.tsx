@@ -1,4 +1,4 @@
-interface Statement {
+export interface Statement {
     statementId: number | null
     amount: number
     accountName: string
@@ -15,7 +15,7 @@ interface Statement {
     lastEditedAt: Date | null
 }
 
-interface Investment {
+export interface Investment {
     investmentId: string | null
     name: string | null
     description: string | null
@@ -35,5 +35,3 @@ interface Investment {
     createAt: Date | null,
     lastEditedAt: Date | null,
 }
-
-export type {Statement, Investment}

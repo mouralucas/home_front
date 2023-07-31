@@ -2,28 +2,28 @@ import DateTime from "../../Utils/DateTime";
 
 
 export interface Item {
-    itemId?: string
-    lastStatusId: string
-    lastStatusDate: Date
+    itemId?: string | null
+    lastStatusId: string | null
+    lastStatusDate: Date | null
     mainAuthorId: number
     authorsId?: number[]
     translatorId?: number
     title: string
-    subtitle?: string
+    subtitle?: string | null
     titleOriginal?: string
-    subtitleOriginal?: string
+    subtitleOriginal?: string | null
     isbnFormatted?: string
     isbn10Formatted?: string
     itemType: number
     pages?: number
     volume?: number
     edition?: number
-    publishedAt: Date
-    publishedOriginalAt: Date
+    publishedAt: Date | null
+    publishedOriginalAt: Date | null
     serieId: number
     collectionId: number
     publisherId: number
-    itemFormatId: string
+    itemFormatId: number
     languageId: 'PT'
     coverPrice: number
     paidPrice: number
@@ -32,10 +32,10 @@ export interface Item {
     width: 0
     thickness: 0
     summary?: string
-    createdBy?: string
-    createdAt?: Date
-    lastEditedBy?: string
-    lastEditedAt?: Date
+    createdBy?: string | null
+    createdAt?: Date | null
+    lastEditedBy?: string | null
+    lastEditedAt?: Date | null
 }
 
 export interface Author {
@@ -52,4 +52,27 @@ export interface Collection {
 
 export interface Publisher {
     publisherId?: string
+}
+
+export interface ItemType {
+    itemTypeId?: string
+}
+
+export interface ItemFormat {
+    itemFormatId?: string
+}
+
+export interface Language {
+    languageId?: string
+}
+
+export interface LastStatus {
+    lastStatusId?: string
+}
+
+// Modal Props
+export interface ItemModalProps {
+    item: Item
+    modalState: boolean
+    hideModalItem: any
 }
