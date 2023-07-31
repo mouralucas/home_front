@@ -1,6 +1,5 @@
 import React from 'react';
 import '../Assets/Core/Components/Cards.css'
-import {any} from "prop-types";
 
 interface CardProps {
     children: any,

@@ -9,11 +9,7 @@ const getCurrentPeriod = () => {
 }
 
 const getListPeriods = (startYear: number, startMont: number, endYear: number, endMonth: number) => {
-    let list_periods = []
-
-
-
-    return list_periods
+    return []
 }
 
 const format = (rawDate: String): string => {
