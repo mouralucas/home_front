@@ -50,7 +50,6 @@ const Book = () => {
             dataField: "title",
             caption: "Título",
             dataType: "string",
-            visible: true,
         },
         {
             dataField: "mainAuthorName",
