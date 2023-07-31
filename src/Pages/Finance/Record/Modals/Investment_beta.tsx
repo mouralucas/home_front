@@ -108,7 +108,7 @@ const App = (props: any): JSX.Element => {
         if (query) {
             callback(filterSelect(investmentType, query));
         } else {
-            getData(URL_FINANCE_INVESTMENT_TYPE, {show_mode: 'child'}).then(response => {
+            getData(URL_FINANCE_INVESTMENT_TYPE, {showMode: 'child'}).then(response => {
                 let options = response === null ? {} : response?.investment_type.map((i: { id: any; name: string; }) => ({
                     value: i.id,
                     label: i.name
