@@ -40,8 +40,13 @@ const DefaultInvestment: Investment = {
     lastEditedAt: undefined,
 };
 
-// TODO: create props interface!!!
-const App = (props: any): React.ReactElement => {
+interface InvestmentProps {
+    investment?: Investment
+    modalState: boolean
+    hideModal: any
+}
+
+const App = (props: InvestmentProps): React.ReactElement => {
     /*
     * A ideia do investimento é registrar qualquer novo investimento feito
     *  Deve apenas conter o valor investido, a evolução vai ser salva na tabela investment_statement
@@ -53,6 +58,7 @@ const App = (props: any): React.ReactElement => {
     *       respectivo, subtraindo do total do parent
     *
     * */
+    const [parentObj, setParentObj] = useState<any | null>([])
 
     const [parent, setParent] = useState<Investment[] | null>([])
     const [selectedParent, setSelectedParent] = useState<Investment | null>()
@@ -69,40 +75,37 @@ const App = (props: any): React.ReactElement => {
     const [interestRate, setInterestRate] = useState<any | null>([])
     const [selectedInterestRate, setSelectedInterestRate] = useState<any | null>([])
 
-    const [values, setValues] = useState<Investment>(DefaultInvestment)
+    const [investment, setInvestment] = useState<Investment>(DefaultInvestment)
 
     useEffect(() => {
         if (props.investment && props.modalState) {
-            setValues(props.investment);
+            setInvestment(props.investment);
         }
 
         if (!props.modalState) {
-            setValues(DefaultInvestment);
+            setInvestment(DefaultInvestment);
             setSelectedParent(null);
             setSelectedInterestRate(null);
         }
     }, [props.modalState, props.investment])
-
-    useEffect(() => {
-        console.log(selectedParent);
-    }, [selectedParent]);
 
     const getParentInvestments = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(parent, query));
         } else {
             getData(URL_INVESTMENT, {'showMode': 'father'}).then(response => {
-                let options = response === null ? {} : response?.investment.map((i: {investmentId: any;name: any;}) => ({value: i.investmentId, label: i.name}));
+                let options = response === null ? {} : response?.investment.map((i: { investmentId: string; name: string; }) => ({value: i.investmentId, label: i.name}));
                 callback(options);
-                setSelectedParent(options?.filter((i: { value: any; }) => i.value === values?.parentId)[0])
-                setParent(options)
+                setSelectedParent(options?.filter((i: { value: string; }) => i.value === investment?.parentId)[0]);
+                setParent(options);
+                setParentObj(response.investment);
             })
         }
     }
     // useEffect to set the combo when it has default value
     useEffect(() => {
         if (props.investment) {
-            setSelectedParent(parent?.filter((i: Investment) => i.parentId === props.investment.parentId)[0]);
+            setSelectedParent(parent?.filter((i: Investment) => i.investmentId === props.investment?.investmentId)[0]);
         }
     }, [parent, props.investment])
 
@@ -118,7 +121,7 @@ const App = (props: any): React.ReactElement => {
                 callback(options);
                 setSelectedInvestmentType(options?.filter((i: {
                     value: any;
-                }) => i.value === values?.investmentTypeId)[0])
+                }) => i.value === investment?.investmentTypeId)[0])
                 setInvestmentType(options)
             }).catch(err => {
                 toast.error('Houve um erro ao buscar os tipos de investimentos')
@@ -131,7 +134,7 @@ const App = (props: any): React.ReactElement => {
         if (props.investment) {
             setSelectedInvestmentType(investmentType.filter((i: {
                 value: any;
-            }) => i.value === props.investment.investmentTypeId)[0]);
+            }) => i.value === props.investment?.investmentTypeId)[0]);
         }
     }, [investmentType, props.investment])
 
@@ -145,7 +148,7 @@ const App = (props: any): React.ReactElement => {
                     name: string;
                 }) => ({value: i.id, label: i.name}));
                 callback(options);
-                setSelectedCustodian(options?.filter((i: { value: any; }) => i.value === values?.custodianId))
+                setSelectedCustodian(options?.filter((i: { value: any; }) => i.value === investment?.custodianId))
                 setCustodian(options)
             }).catch(err => {
                 toast.error('Houve um erro ao buscar os agentes de custódia')
@@ -156,7 +159,7 @@ const App = (props: any): React.ReactElement => {
     // useEffect to set the combo when it has default value
     useEffect(() => {
         if (props.investment) {
-            setSelectedCustodian(custodian.filter((i: { value: any; }) => i.value === props.investment.custodianId)[0]);
+            setSelectedCustodian(custodian.filter((i: { value: any; }) => i.value === props.investment?.custodianId)[0]);
         }
     }, [custodian, props.investment])
 
@@ -170,7 +173,7 @@ const App = (props: any): React.ReactElement => {
             ]
             callback(options)
             // @ts-ignore
-            setSelectedCashFlow(options?.filter(cashFlow => cashFlow.value === values.cashFlowId)[0])
+            setSelectedCashFlow(options?.filter(cashFlow => cashFlow.value === investment.cashFlowId)[0])
             setCashFlow(options)
         }
     }
@@ -178,7 +181,7 @@ const App = (props: any): React.ReactElement => {
     // useEffect to set the combo when it has default value
     useEffect(() => {
         if (props.investment) {
-            setSelectedCashFlow(cashFlow.filter((i: { value: any; }) => i.value === props.investment.cashFlowId)[0]);
+            setSelectedCashFlow(cashFlow.filter((i: { value: any; }) => i.value === props.investment?.cashFlowId)[0]);
         }
     }, [cashFlow, props.investment])
 
@@ -191,7 +194,7 @@ const App = (props: any): React.ReactElement => {
                 {value: 'FIXED', label: 'Fixo'}
             ]
             callback(options)
-            setSelectedInterestRate(options?.filter(interestRata => interestRata.value === values?.interestRate))
+            setSelectedInterestRate(options?.filter(interestRata => interestRata.value === investment?.interestRate))
             setInterestRate(options)
         }
     }
@@ -200,22 +203,27 @@ const App = (props: any): React.ReactElement => {
         if (props.investment) {
             setSelectedInterestRate(interestRate.filter((i: {
                 value: any;
-            }) => i.value === props.investment.interestRate)[0]);
+            }) => i.value === props.investment?.interestRate)[0]);
         }
     }, [interestRate, props.investment])
 
     const setParentInvestment = (e: any, name: any, setFunction: any) => {
+        // Set selected parent investment
         setCombo(e, name, setFunction);
 
-        // setSelectedInterestRate(interestRate.filter((i: { value: any; }) => i.value === parentInvestment?.interestRate)[0]);
-        // setValues(oldValues => ({...oldValues, 'interestRate': parentInvestment?.interestRate}))
-        // setSelectedInvestmentType(investmentType.filter((i: { value: any; }) => i.value === parentInvestment?.investmentTypeId)[0]);
-        // setValues(oldValues => ({...oldValues, 'investmentTypeId': parentInvestment?.investmentTypeId}))
-        // setSelectedCustodian(custodian.filter((i: { value: any; }) => i.value === parentInvestment?.custodianId)[0]);
-        // setValues(oldValues => ({...oldValues, 'custodianId': parentInvestment?.custodianId}))
-        // setValues(oldValues => ({...oldValues, 'name': e !== null ? parentInvestment.name : ''}))
-        // setValues(oldValues => ({...oldValues, 'maturityDate': parentInvestment?.maturityDate}))
-        // setValues(oldValues => ({...oldValues, 'interestIndex': parentInvestment?.interestIndex}))
+        // Set the object of selected parent investment
+        let parentInvestment = e !== null ? parentObj.filter((i: { investmentId: any; }) => i.investmentId === e.value)[0] : null
+        console.log(parentInvestment);
+
+        setSelectedInterestRate(interestRate.filter((i: { value: any; }) => i.value === parentInvestment?.interestRate)[0]);
+        setInvestment(oldValues => ({...oldValues, 'interestRate': parentInvestment?.interestRate}))
+        setSelectedInvestmentType(investmentType.filter((i: { value: any; }) => i.value === parentInvestment?.investmentTypeId)[0]);
+        setInvestment(oldValues => ({...oldValues, 'investmentTypeId': parentInvestment?.investmentTypeId}))
+        setSelectedCustodian(custodian.filter((i: { value: any; }) => i.value === parentInvestment?.custodianId)[0]);
+        setInvestment(oldValues => ({...oldValues, 'custodianId': parentInvestment?.custodianId}))
+        setInvestment(oldValues => ({...oldValues, 'name': e !== null ? parentInvestment?.name : ''}))
+        setInvestment(oldValues => ({...oldValues, 'maturityDate': parentInvestment?.maturityDate}))
+        setInvestment(oldValues => ({...oldValues, 'interestIndex': parentInvestment?.interestIndex}))
     }
 
     const body = (): React.ReactElement => {
@@ -229,12 +237,12 @@ const App = (props: any): React.ReactElement => {
                                 <div className="col-6">
                                     <label htmlFor="">Investimento</label>
                                     <AsyncSelect
-                                                 loadOptions={(query: string, callback: any) => getParentInvestments(query, callback)}
-                                                 onChange={(e) => setParentInvestment(e, 'parentId', setSelectedParent)}
-                                                 defaultOptions
-                                                 isClearable={true}
-                                                 escapeClearsValue={true}
-                                                 value={selectedParent}/>
+                                        loadOptions={(query: string, callback: any) => getParentInvestments(query, callback)}
+                                        onChange={(e) => setParentInvestment(e, 'parentId', setSelectedParent)}
+                                        defaultOptions
+                                        isClearable={true}
+                                        escapeClearsValue={true}
+                                        value={selectedParent}/>
                                 </div>
                                 <div className="col-6">
                                     <label htmlFor="">Título/descrição</label>
@@ -242,7 +250,7 @@ const App = (props: any): React.ReactElement => {
                                            type='text'
                                            onChange={set('name')}
                                         // @ts-ignore
-                                           value={values.name}/>
+                                           value={investment.name}/>
                                 </div>
                             </div>
                             <div className="row mt-2">
@@ -255,7 +263,7 @@ const App = (props: any): React.ReactElement => {
                                                  value={selectedInvestmentType}/>
                                 </div>
                                 <div className="col-3">
-                                    <label htmlFor="">Indexação {values?.interestRate}</label>
+                                    <label htmlFor="">Indexação {investment?.interestRate}</label>
                                     <AsyncSelect id={'combo_interest_rate'}
                                                  loadOptions={(query, callback) => getInterestRate(query, callback)}
                                                  onChange={(e) => setCombo(e, 'interestRate', setSelectedInterestRate)}
@@ -265,7 +273,7 @@ const App = (props: any): React.ReactElement => {
                                 <div className="col-3">
                                     <label htmlFor="">Data vencimento</label>
                                     <DateBox
-                                        value={values.maturityDate} type="date"
+                                        value={investment.maturityDate} type="date"
                                         className='form-control input-default'
                                         useMaskBehavior={true}
                                         showClearButton={true}
@@ -297,7 +305,7 @@ const App = (props: any): React.ReactElement => {
                                 </div>
                                 <div className="col-3">
                                     <label htmlFor="">Data compra</label>
-                                    <DateBox value={values?.date} type="date" className='form-control input-default'
+                                    <DateBox value={investment?.date} type="date" className='form-control input-default'
                                              useMaskBehavior={true}
                                              onValueChanged={(date: any) => setDate(date, 'date')}/>
                                 </div>
@@ -305,13 +313,13 @@ const App = (props: any): React.ReactElement => {
                                     <label htmlFor="">Quantidade</label>
                                     <input type={'number'} className={'form-control input-default'}
                                            onChange={set('quantity')}
-                                           value={values?.quantity}
+                                           value={investment?.quantity}
                                     />
                                 </div>
                                 <div className="col-3">
                                     <label htmlFor="">Preço</label>
                                     <Currency className='form-control input-default'
-                                              value={values?.price * 100}
+                                              value={investment?.price * 100}
                                               onFocus={(event: {
                                                   target: { select: () => any; };
                                               }) => event.target.select()}
@@ -326,7 +334,7 @@ const App = (props: any): React.ReactElement => {
                                 <div className="col-4">
                                     <label htmlFor="">Valor</label>
                                     <Currency className='form-control input-default'
-                                              value={values?.amount * 100}
+                                              value={investment?.amount * 100}
                                               onFocus={(event: {
                                                   target: { select: () => any; };
                                               }) => event.target.select()}
@@ -339,16 +347,16 @@ const App = (props: any): React.ReactElement => {
                                     <input type="text" className='form-control input-default'
                                            onChange={set('interestIndex')}
                                         // @ts-ignore
-                                           value={values?.interestIndex}
+                                           value={investment?.interestIndex}
                                     />
                                 </div>
                             </div>
                             <div className="row mt-2">
                                 <span className='text-small text-muted'>
-                                    Criado em: {formatDate(values?.createAt)}
+                                    Criado em: {formatDate(investment?.createAt)}
                                 </span>
                                 <span className="text-small text-muted">
-                                    Editado em: {formatDate(values?.lastEditedAt)}
+                                    Editado em: {formatDate(investment?.lastEditedAt)}
                                 </span>
                             </div>
                         </div>
@@ -366,30 +374,30 @@ const App = (props: any): React.ReactElement => {
 
     const set = (name: string) => {
         return ({target: {value}}: any) => {
-            setValues(oldValues => ({...oldValues, [name]: value}));
+            setInvestment(oldValues => ({...oldValues, [name]: value}));
         }
     }
 
     const setCombo = (e: any, name: any, setFunction: any) => {
         if (e !== null) {
             setFunction(e);
-            return setValues(oldValues => ({...oldValues, [name]: e.value}));
+            return setInvestment(oldValues => ({...oldValues, [name]: e.value}));
 
         }
         setFunction(null);
-        return setValues(oldValues => ({...oldValues, [name]: null}));
+        return setInvestment(oldValues => ({...oldValues, [name]: null}));
     }
 
     const setDate = (e: any, name: any) => {
         if (e.value !== null) {
-            return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
+            return setInvestment(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
         } else {
-            return setValues(oldValues => ({...oldValues, [name]: e.value}))
+            return setInvestment(oldValues => ({...oldValues, [name]: e.value}))
         }
     }
 
     const setCurrency = (values: any, name: any) => {
-        return setValues(oldValues => ({...oldValues, [name]: values.value / 100}));
+        return setInvestment(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
 
     return (
@@ -400,7 +408,7 @@ const App = (props: any): React.ReactElement => {
                 title={'Investimento beta'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e: any) => handleSubmit(e, URL_INVESTMENT, values, false, "Item de investimento salvo")}
+                actionModal={(e: any) => handleSubmit(e, URL_INVESTMENT, investment, false, "Item de investimento salvo")}
                 size={"lg"}
             />
         </div>
