@@ -17,7 +17,7 @@ export interface Statement {
 
 export interface Investment {
     investmentId: string | null
-    name: string | null
+    name: string
     description: string | null
     amount: number
     price: number

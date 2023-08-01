@@ -21,7 +21,7 @@ import {Investment} from "../../Interfaces";
  */
 const DefaultInvestment: Investment = {
     investmentId: null,
-    name: null,
+    name: '',
     description: null,
     amount: 0,
     price: 0,
@@ -40,6 +40,7 @@ const DefaultInvestment: Investment = {
     lastEditedAt: undefined,
 };
 
+// TODO: create props interface!!!
 const App = (props: any): React.ReactElement => {
     /*
     * A ideia do investimento é registrar qualquer novo investimento feito
@@ -53,8 +54,8 @@ const App = (props: any): React.ReactElement => {
     *
     * */
 
-    const [parent, setParent] = useState<any | null>([])
-    const [selectedParent, setSelectedParent] = useState<any | null>([])
+    const [parent, setParent] = useState<Investment[] | null>([])
+    const [selectedParent, setSelectedParent] = useState<Investment | null>()
 
     const [investmentType, setInvestmentType] = useState<any | null>([])
     const [selectedInvestmentType, setSelectedInvestmentType] = useState<any | null>([])
@@ -82,16 +83,16 @@ const App = (props: any): React.ReactElement => {
         }
     }, [props.modalState, props.investment])
 
+    useEffect(() => {
+        console.log(selectedParent);
+    }, [selectedParent]);
 
     const getParentInvestments = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(parent, query));
         } else {
             getData(URL_INVESTMENT, {'showMode': 'father'}).then(response => {
-                let options = response === null ? {} : response?.investment.map((i: {
-                    id: any;
-                    name: any;
-                }) => ({value: i.id, label: i.name}));
+                let options = response === null ? {} : response?.investment.map((i: {investmentId: any;name: any;}) => ({value: i.investmentId, label: i.name}));
                 callback(options);
                 setSelectedParent(options?.filter((i: { value: any; }) => i.value === values?.parentId)[0])
                 setParent(options)
@@ -101,7 +102,7 @@ const App = (props: any): React.ReactElement => {
     // useEffect to set the combo when it has default value
     useEffect(() => {
         if (props.investment) {
-            setSelectedParent(parent.filter((i: { value: any; }) => i.value === props.investment.parentId)[0]);
+            setSelectedParent(parent?.filter((i: Investment) => i.parentId === props.investment.parentId)[0]);
         }
     }, [parent, props.investment])
 
@@ -110,10 +111,7 @@ const App = (props: any): React.ReactElement => {
             callback(filterSelect(investmentType, query));
         } else {
             getData(URL_FINANCE_INVESTMENT_TYPE, {showMode: 'child'}).then(response => {
-                let options = response === null ? {} : response?.investment_type.map((i: {
-                    id: any;
-                    name: string;
-                }) => ({
+                let options = response === null ? {} : response.investmentType.map((i: { id: string; name: string; }) => ({
                     value: i.id,
                     label: i.name
                 }));
@@ -207,9 +205,7 @@ const App = (props: any): React.ReactElement => {
     }, [interestRate, props.investment])
 
     const setParentInvestment = (e: any, name: any, setFunction: any) => {
-        if (e !== null) {
-            setCombo(e, name, setFunction);
-        }
+        setCombo(e, name, setFunction);
 
         // setSelectedInterestRate(interestRate.filter((i: { value: any; }) => i.value === parentInvestment?.interestRate)[0]);
         // setValues(oldValues => ({...oldValues, 'interestRate': parentInvestment?.interestRate}))
@@ -222,7 +218,7 @@ const App = (props: any): React.ReactElement => {
         // setValues(oldValues => ({...oldValues, 'interestIndex': parentInvestment?.interestIndex}))
     }
 
-    const body = (): JSX.Element => {
+    const body = (): React.ReactElement => {
         // @ts-ignore
         let body_html =
             <>
@@ -232,9 +228,9 @@ const App = (props: any): React.ReactElement => {
                             <div className="row">
                                 <div className="col-6">
                                     <label htmlFor="">Investimento</label>
-                                    <AsyncSelect id={'combo_parent'}
+                                    <AsyncSelect
                                                  loadOptions={(query: string, callback: any) => getParentInvestments(query, callback)}
-                                                 onChange={(e: any) => setParentInvestment(e, 'parentId', setSelectedParent)}
+                                                 onChange={(e) => setParentInvestment(e, 'parentId', setSelectedParent)}
                                                  defaultOptions
                                                  isClearable={true}
                                                  escapeClearsValue={true}
@@ -253,7 +249,7 @@ const App = (props: any): React.ReactElement => {
                                 <div className="col-3">
                                     <label htmlFor="">Tipo</label>
                                     <AsyncSelect id={'combo_investment_type'}
-                                                 loadOptions={(query, callback) => getInvestmentType(query, callback)}
+                                                 loadOptions={(query: string, callback: any) => getInvestmentType(query, callback)}
                                                  onChange={(e) => setCombo(e, 'investmentTypeId', setSelectedInvestmentType)}
                                                  defaultOptions
                                                  value={selectedInvestmentType}/>
@@ -380,7 +376,8 @@ const App = (props: any): React.ReactElement => {
             return setValues(oldValues => ({...oldValues, [name]: e.value}));
 
         }
-        return setValues(oldValues => ({...oldValues, [name]: e.value}));
+        setFunction(null);
+        return setValues(oldValues => ({...oldValues, [name]: null}));
     }
 
     const setDate = (e: any, name: any) => {
