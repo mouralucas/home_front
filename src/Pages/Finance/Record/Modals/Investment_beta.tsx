@@ -27,7 +27,7 @@ const DefaultInvestment = {
     price: 0,
     quantity: 0,
     date: new Date(),
-    maturityDate: null,
+    maturityDate: undefined,
     interestRate: null,
     interestIndex: null,
     custodianName: null,
@@ -261,12 +261,11 @@ const App = (props: any): JSX.Element => {
                                 <div className="col-3">
                                     <label htmlFor="">Data vencimento</label>
                                     <DateBox
-                                        // @ts-ignore
-                                        value={values?.maturityDate} type="date"
+                                        value={values.maturityDate} type="date"
                                              className='form-control input-default'
                                              useMaskBehavior={true}
                                              showClearButton={true}
-                                             onValueChanged={(date) => setDate(date, 'maturityDate')}/>
+                                             onValueChanged={(date: any) => setDate(date, 'maturityDate')}/>
                                 </div>
                                 <div className="col-3">
                                     <label htmlFor="">Agente de custódia</label>
@@ -296,7 +295,7 @@ const App = (props: any): JSX.Element => {
                                     <label htmlFor="">Data compra</label>
                                     <DateBox value={values?.date} type="date" className='form-control input-default'
                                              useMaskBehavior={true}
-                                             onValueChanged={(date) => setDate(date, 'date')}/>
+                                             onValueChanged={(date: any) => setDate(date, 'date')}/>
                                 </div>
                                 <div className="col-3">
                                     <label htmlFor="">Quantidade</label>

@@ -23,7 +23,7 @@ export interface Investment {
     price: number
     quantity: number
     date: Date
-    maturityDate: Date | null
+    maturityDate: Date  | undefined
     interestRate: string | null
     interestIndex: string | null
     custodianName: string | null

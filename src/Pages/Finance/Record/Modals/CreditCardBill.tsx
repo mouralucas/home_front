@@ -154,13 +154,13 @@ const App = (props: any) => {
                             <label htmlFor="">Data compra</label>
                             <DateBox value={values.dat_purchase} type="date" className='form-control input-default'
                                      useMaskBehavior={true}
-                                     onValueChanged={(date) => setDate(date, 'dat_purchase')}/>
+                                     onValueChanged={(date: any) => setDate(date, 'dat_purchase')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data pagamento</label>
                             <DateBox value={values.dat_payment} className='form-control input-default'
                                      useMaskBehavior={true}
-                                     onValueChanged={(date) => setDate(date, 'dat_payment')}/>
+                                     onValueChanged={(date: any) => setDate(date, 'dat_payment')}/>
                         </div>
                     </div>
                     <div className='row'>

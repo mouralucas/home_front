@@ -210,7 +210,7 @@ const App = (props: BankStatementProps) => {
                             <label htmlFor="">Data compra</label>
                             <DateBox value={values.purchasedAt} type="date" className='form-control input-default'
                                      useMaskBehavior={true}
-                                     onValueChanged={(date) => setDateValues(date, 'purchasedAt')}/>
+                                     onValueChanged={(date: any) => setDateValues(date, 'purchasedAt')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Conta</label>

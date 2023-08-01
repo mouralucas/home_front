@@ -1,6 +1,5 @@
 import React from "react";
 import PieChart, {Connector, Format, Label, Legend, Series, Tooltip,} from 'devextreme-react/pie-chart';
-import { DataSourceLike } from "devextreme/data/data_source";
 
 
 interface DoughnutChartProps {

@@ -1,6 +1,4 @@
-import PieChart, {Series, Label, Margin, Export, Legend, Animation} from 'devextreme-react/pie-chart';
-import { DataSourceLike } from 'devextreme/data/data_source';
-import { BaseWidgetTitle } from 'devextreme/viz/core/base_widget';
+import PieChart, {Animation, Export, Label, Legend, Margin, Series} from 'devextreme-react/pie-chart';
 import React from 'react';
 
 interface PieCharProps {
