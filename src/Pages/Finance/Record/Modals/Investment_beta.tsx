@@ -40,7 +40,7 @@ const DefaultInvestment: Investment = {
     lastEditedAt: undefined,
 };
 
-const App = (props: any): JSX.Element => {
+const App = (props: any): React.ReactElement => {
     /*
     * A ideia do investimento é registrar qualquer novo investimento feito
     *  Deve apenas conter o valor investido, a evolução vai ser salva na tabela investment_statement
@@ -53,7 +53,6 @@ const App = (props: any): JSX.Element => {
     *
     * */
 
-    const [parentObj, setParentObj] = useState<any | null>([])
     const [parent, setParent] = useState<any | null>([])
     const [selectedParent, setSelectedParent] = useState<any | null>([])
 
@@ -89,10 +88,12 @@ const App = (props: any): JSX.Element => {
             callback(filterSelect(parent, query));
         } else {
             getData(URL_INVESTMENT, {'showMode': 'father'}).then(response => {
-                let options = response === null ? {} : response?.investment.map((i: { id: any; name: any; }) => ({value: i.id, label: i.name}));
+                let options = response === null ? {} : response?.investment.map((i: {
+                    id: any;
+                    name: any;
+                }) => ({value: i.id, label: i.name}));
                 callback(options);
                 setSelectedParent(options?.filter((i: { value: any; }) => i.value === values?.parentId)[0])
-                setParentObj(response?.investment)
                 setParent(options)
             })
         }
@@ -109,12 +110,17 @@ const App = (props: any): JSX.Element => {
             callback(filterSelect(investmentType, query));
         } else {
             getData(URL_FINANCE_INVESTMENT_TYPE, {showMode: 'child'}).then(response => {
-                let options = response === null ? {} : response?.investment_type.map((i: { id: any; name: string; }) => ({
+                let options = response === null ? {} : response?.investment_type.map((i: {
+                    id: any;
+                    name: string;
+                }) => ({
                     value: i.id,
                     label: i.name
                 }));
                 callback(options);
-                setSelectedInvestmentType(options?.filter((i: { value: any; }) => i.value === values?.investmentTypeId)[0])
+                setSelectedInvestmentType(options?.filter((i: {
+                    value: any;
+                }) => i.value === values?.investmentTypeId)[0])
                 setInvestmentType(options)
             }).catch(err => {
                 toast.error('Houve um erro ao buscar os tipos de investimentos')
@@ -125,7 +131,9 @@ const App = (props: any): JSX.Element => {
     // useEffect to set the combo when it has default value
     useEffect(() => {
         if (props.investment) {
-            setSelectedInvestmentType(investmentType.filter((i: { value: any; }) => i.value === props.investment.investmentTypeId)[0]);
+            setSelectedInvestmentType(investmentType.filter((i: {
+                value: any;
+            }) => i.value === props.investment.investmentTypeId)[0]);
         }
     }, [investmentType, props.investment])
 
@@ -134,7 +142,10 @@ const App = (props: any): JSX.Element => {
             callback(filterSelect(custodian, query));
         } else {
             getData(URL_FINANCE_BANK).then(response => {
-                let options = response === null ? {} : response?.bank.map((i: { id: any; name: string; }) => ({value: i.id, label: i.name}));
+                let options = response === null ? {} : response?.bank.map((i: {
+                    id: any;
+                    name: string;
+                }) => ({value: i.id, label: i.name}));
                 callback(options);
                 setSelectedCustodian(options?.filter((i: { value: any; }) => i.value === values?.custodianId))
                 setCustodian(options)
@@ -189,14 +200,13 @@ const App = (props: any): JSX.Element => {
     // useEffect to set the combo when it has default value
     useEffect(() => {
         if (props.investment) {
-            setSelectedInterestRate(interestRate.filter((i: { value: any; }) => i.value === props.investment.interestRate)[0]);
+            setSelectedInterestRate(interestRate.filter((i: {
+                value: any;
+            }) => i.value === props.investment.interestRate)[0]);
         }
     }, [interestRate, props.investment])
 
     const setParentInvestment = (e: any, name: any, setFunction: any) => {
-        let parentInvestment = e !== null ? parentObj.filter((i: { id: any; }) => i.id === e.value)[0] : null
-        console.log(parentInvestment);
-
         if (e !== null) {
             setCombo(e, name, setFunction);
         }
@@ -223,7 +233,7 @@ const App = (props: any): JSX.Element => {
                                 <div className="col-6">
                                     <label htmlFor="">Investimento</label>
                                     <AsyncSelect id={'combo_parent'}
-                                                 loadOptions={(query:string, callback: any) => getParentInvestments(query, callback)}
+                                                 loadOptions={(query: string, callback: any) => getParentInvestments(query, callback)}
                                                  onChange={(e: any) => setParentInvestment(e, 'parentId', setSelectedParent)}
                                                  defaultOptions
                                                  isClearable={true}
@@ -260,10 +270,10 @@ const App = (props: any): JSX.Element => {
                                     <label htmlFor="">Data vencimento</label>
                                     <DateBox
                                         value={values.maturityDate} type="date"
-                                             className='form-control input-default'
-                                             useMaskBehavior={true}
-                                             showClearButton={true}
-                                             onValueChanged={(date: any) => setDate(date, 'maturityDate')}/>
+                                        className='form-control input-default'
+                                        useMaskBehavior={true}
+                                        showClearButton={true}
+                                        onValueChanged={(date: any) => setDate(date, 'maturityDate')}/>
                                 </div>
                                 <div className="col-3">
                                     <label htmlFor="">Agente de custódia</label>
@@ -306,7 +316,9 @@ const App = (props: any): JSX.Element => {
                                     <label htmlFor="">Preço</label>
                                     <Currency className='form-control input-default'
                                               value={values?.price * 100}
-                                              onFocus={(event: { target: { select: () => any; }; }) => event.target.select()}
+                                              onFocus={(event: {
+                                                  target: { select: () => any; };
+                                              }) => event.target.select()}
                                               onValueChange={(values: any) => {
                                                   setCurrency(values, 'price')
                                               }}/>
@@ -319,7 +331,9 @@ const App = (props: any): JSX.Element => {
                                     <label htmlFor="">Valor</label>
                                     <Currency className='form-control input-default'
                                               value={values?.amount * 100}
-                                              onFocus={(event: { target: { select: () => any; }; }) => event.target.select()}
+                                              onFocus={(event: {
+                                                  target: { select: () => any; };
+                                              }) => event.target.select()}
                                               onValueChange={(values: any, sourceInfo: any) => {
                                                   setCurrency(values, 'amount')
                                               }}/>
