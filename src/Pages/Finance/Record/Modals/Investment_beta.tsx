@@ -19,7 +19,7 @@ import {Investment} from "../../Interfaces";
  * @returns {JSX.Element}
  * @constructor
  */
-const DefaultInvestment = {
+const DefaultInvestment: Investment = {
     investmentId: null,
     name: null,
     description: null,
@@ -28,17 +28,17 @@ const DefaultInvestment = {
     quantity: 0,
     date: new Date(),
     maturityDate: undefined,
-    interestRate: null,
-    interestIndex: null,
+    interestRate: '',
+    interestIndex: '',
     custodianName: null,
     custodianId: null,
     investmentTypeId: null,
     investmentTypeName: null,
     parentId: null,
-    cashFlowId: 'INCOMING',
-    createAt: null,
-    lastEditedAt: null
-}
+    cashFlowId: '',
+    createAt: undefined,
+    lastEditedAt: undefined,
+};
 
 const App = (props: any): JSX.Element => {
     /*
@@ -194,24 +194,22 @@ const App = (props: any): JSX.Element => {
     }, [interestRate, props.investment])
 
     const setParentInvestment = (e: any, name: any, setFunction: any) => {
-        // if (e !== null)
-        let parent_investment = e !== null ? parentObj.filter((i: { id: any; }) => i.id === e.value)[0] : null
-        setCombo(e, name, setFunction);
-        setSelectedInterestRate(interestRate.filter((i: { value: any; }) => i.value === parent_investment?.interestRate)[0]);
-        // @ts-ignore
-        setValues(oldValues => ({...oldValues, 'interestRate': parent_investment?.interestRate}))
-        setSelectedInvestmentType(investmentType.filter((i: { value: any; }) => i.value === parent_investment?.investmentTypeId)[0]);
-        // @ts-ignore
-        setValues(oldValues => ({...oldValues, 'investmentTypeId': parent_investment?.investmentTypeId}))
-        setSelectedCustodian(custodian.filter((i: { value: any; }) => i.value === parent_investment?.custodianId)[0]);
-        // @ts-ignore
-        setValues(oldValues => ({...oldValues, 'custodianId': parent_investment?.custodianId}))
-        // @ts-ignore
-        setValues(oldValues => ({...oldValues, 'name': e !== null ? parent_investment.name : ''}))
-        // @ts-ignore
-        setValues(oldValues => ({...oldValues, 'maturityDate': parent_investment?.maturityDate}))
-        // @ts-ignore
-        setValues(oldValues => ({...oldValues, 'interestIndex': parent_investment?.interestIndex}))
+        let parentInvestment = e !== null ? parentObj.filter((i: { id: any; }) => i.id === e.value)[0] : null
+        console.log(parentInvestment);
+
+        if (e !== null) {
+            setCombo(e, name, setFunction);
+        }
+
+        // setSelectedInterestRate(interestRate.filter((i: { value: any; }) => i.value === parentInvestment?.interestRate)[0]);
+        // setValues(oldValues => ({...oldValues, 'interestRate': parentInvestment?.interestRate}))
+        // setSelectedInvestmentType(investmentType.filter((i: { value: any; }) => i.value === parentInvestment?.investmentTypeId)[0]);
+        // setValues(oldValues => ({...oldValues, 'investmentTypeId': parentInvestment?.investmentTypeId}))
+        // setSelectedCustodian(custodian.filter((i: { value: any; }) => i.value === parentInvestment?.custodianId)[0]);
+        // setValues(oldValues => ({...oldValues, 'custodianId': parentInvestment?.custodianId}))
+        // setValues(oldValues => ({...oldValues, 'name': e !== null ? parentInvestment.name : ''}))
+        // setValues(oldValues => ({...oldValues, 'maturityDate': parentInvestment?.maturityDate}))
+        // setValues(oldValues => ({...oldValues, 'interestIndex': parentInvestment?.interestIndex}))
     }
 
     const body = (): JSX.Element => {
@@ -225,8 +223,8 @@ const App = (props: any): JSX.Element => {
                                 <div className="col-6">
                                     <label htmlFor="">Investimento</label>
                                     <AsyncSelect id={'combo_parent'}
-                                                 loadOptions={(query, callback) => getParentInvestments(query, callback)}
-                                                 onChange={(e) => setParentInvestment(e, 'parentId', setSelectedParent)}
+                                                 loadOptions={(query:string, callback: any) => getParentInvestments(query, callback)}
+                                                 onChange={(e: any) => setParentInvestment(e, 'parentId', setSelectedParent)}
                                                  defaultOptions
                                                  isClearable={true}
                                                  escapeClearsValue={true}
@@ -309,7 +307,7 @@ const App = (props: any): JSX.Element => {
                                     <Currency className='form-control input-default'
                                               value={values?.price * 100}
                                               onFocus={(event: { target: { select: () => any; }; }) => event.target.select()}
-                                              onValueChange={(values: any, sourceInfo: any) => {
+                                              onValueChange={(values: any) => {
                                                   setCurrency(values, 'price')
                                               }}/>
                                 </div>
