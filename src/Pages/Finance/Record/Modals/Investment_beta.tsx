@@ -7,7 +7,7 @@ import Currency from '../../../../Components/Currency'
 import AsyncSelect from "react-select/async";
 import {getData} from "../../../../Services/Axios/Get";
 import filterSelect from "../../../../Utils/DataHandling";
-import {format as formatDate} from "../../../../Utils/DateTime";
+import {format as formatDate, getDefaultDate} from "../../../../Utils/DateTime";
 import handleSubmit from "../../../../Services/Axios/Post";
 import {toast} from "react-toastify";
 import Card from '../../../../Components/Card'
@@ -15,8 +15,8 @@ import {Investment} from "../../Interfaces";
 
 /**
  * Modal to create new entry for investments
- * @param props
- * @returns {JSX.Element}
+ * @param props: InvestmentProps
+ * @returns {React.ReactElement}
  * @constructor
  */
 const DefaultInvestment: Investment = {
@@ -26,7 +26,7 @@ const DefaultInvestment: Investment = {
     amount: 0,
     price: 0,
     quantity: 0,
-    date: new Date(),
+    date: getDefaultDate(),
     maturityDate: undefined,
     interestRate: '',
     interestIndex: '',
@@ -35,7 +35,7 @@ const DefaultInvestment: Investment = {
     investmentTypeId: null,
     investmentTypeName: null,
     parentId: null,
-    cashFlowId: '',
+    cashFlowId: 'INCOMING',
     createAt: undefined,
     lastEditedAt: undefined,
 };
@@ -172,7 +172,6 @@ const App = (props: InvestmentProps): React.ReactElement => {
                 {value: 'OUTGOING', label: 'Saída'}
             ]
             callback(options)
-            // @ts-ignore
             setSelectedCashFlow(options?.filter(cashFlow => cashFlow.value === investment.cashFlowId)[0])
             setCashFlow(options)
         }
@@ -297,7 +296,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
                             <div className='row'>
                                 <div className="col-3">
                                     <label htmlFor="">Operação</label>
-                                    <AsyncSelect id={'combo_cash_flow'}
+                                    <AsyncSelect id={'comboCashFlow'}
                                                  loadOptions={(query, callback) => getCashFlow(query, callback)}
                                                  onChange={(e) => setCombo(e, 'cashFlowId', setSelectedCashFlow)}
                                                  defaultOptions
@@ -323,9 +322,8 @@ const App = (props: InvestmentProps): React.ReactElement => {
                                               onFocus={(event: {
                                                   target: { select: () => any; };
                                               }) => event.target.select()}
-                                              onValueChange={(values: any) => {
-                                                  setCurrency(values, 'price')
-                                              }}/>
+                                              onValueChange={(values: any) => {setCurrency(values, 'price')}}
+                                    />
                                 </div>
 
                             </div>
