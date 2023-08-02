@@ -31,7 +31,7 @@ const App = (props: TreeListProps): JSX.Element => {
         if (!props.tableColumns) {
             return null
         } else {
-            let columns_list = [];
+            let columns_list: JSX.Element[] = [];
             props.tableColumns.forEach(function (column, index) {
                 columns_list.push(
                     <Column
@@ -59,7 +59,7 @@ const App = (props: TreeListProps): JSX.Element => {
         }
     }
 
-    const setPager = (): JSX.Element => {
+    const setPager = (): JSX.Element | null => {
         let pager;
         // TODO: set the props pager
         if (props.pager) {
@@ -79,7 +79,7 @@ const App = (props: TreeListProps): JSX.Element => {
     }
 
     const setToolbar = () => {
-        let listToolBar = [];
+        let listToolBar: JSX.Element[] = [];
 
         if (props.toolBarItems) {
             props.toolBarItems.forEach(function (item, index) {

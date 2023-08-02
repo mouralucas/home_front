@@ -5,8 +5,8 @@ import {getData} from "../../../../Services/Axios/Get";
 import {toast, ToastOptions} from "react-toastify";
 
 
-const App = (props) => {
-    const [expenses, setExpenses] = useState()
+const App = () => {
+    const [expenses, setExpenses] = useState<any[]>([])
 
     const getExpenses = () => {
         getData(URL_FINANCE_EXPENSE_CATEGORY, {
@@ -14,7 +14,7 @@ const App = (props) => {
                 'period': 202302,
             }
         ).then(response => {
-                let options = response == null ? {} : response.expenses.map(i => ({
+                let options = response == null ? {} : response.expenses.map((i: { category: string; total: number; }) => ({
                     category: i.category,
                     total: i.total
                 }))

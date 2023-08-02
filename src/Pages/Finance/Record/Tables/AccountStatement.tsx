@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import axios from "../../../../Services/Axios/Axios";
 import {URL_ACCOUNT_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import Button from "devextreme-react/button";
@@ -7,14 +6,16 @@ import ModalStatement from '../Modals/BankStatement'
 import {Button as Btn} from "devextreme-react/data-grid";
 import {toast} from "react-toastify";
 import {getData} from "../../../../Services/Axios/Get";
+import {Statement} from "../../Interfaces"
 
+// TODO: fazer essa interface disponível para todas as páginas de finance e usar também no modal pra validar
 
 const App = () => {
-    const [statement, setStatement] = useState();
-    const [selectedStatement, setSelectedStatement] = useState()
-    const [modalState, setModalState] = useState(false)
+    const [statement, setStatement] = useState<Statement[] | null>();
+    const [selectedStatement, setSelectedStatement] = useState<Statement | null>()
+    const [modalState, setModalState] = useState<boolean>(false)
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedStatement(e.row.data);
         } else {
@@ -37,7 +38,7 @@ const App = () => {
         })
     }
 
-    function amountCustomCell(cellInfo) {
+    function amountCustomCell(cellInfo: any) {
         return cellInfo.currencySymbol + ' ' + cellInfo.amount;
     }
 
@@ -45,23 +46,23 @@ const App = () => {
         getStatements();
     }, []);
 
-    const coffeeCommand = (e) => {
+    const coffeeCommand = (e: any) => {
         toast('🦄 Cafezinho delícia!');
     }
 
     const columns = [
         {
-            dataField: "id",
+            dataField: "statementId",
             caption: "Id",
             dataType: "number",
         },
         {
-            dataField: "nm_account",
+            dataField: "accountName",
             caption: "Conta",
             dataType: "string",
         },
         {
-            dataField: "dat_purchase",
+            dataField: "purchasedAt",
             caption: "Compra",
             dataType: "date",
             width: 150,
@@ -80,7 +81,7 @@ const App = () => {
             dataType: "string",
         },
         {
-            dataField: "nm_category",
+            dataField: "categoryName",
             caption: "Categoria",
             dataType: "string",
         },
@@ -135,12 +136,12 @@ const App = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'id'}
-                tableColumns={columns}
+                keyExpr={'statementId'}
+                columns={columns}
                 data={statement}
-                toolBarRefresh={false}
+                // toolBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
             />
             <ModalStatement modalState={modalState} hideModal={hideModal} statement={selectedStatement}/>
         </>

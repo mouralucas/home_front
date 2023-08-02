@@ -1,21 +1,22 @@
 import DataGrid from "../../../../Components/DataGrid";
 import React, {useEffect, useState} from "react";
-import axios from "../../../../Services/Axios/Axios";
 import {URL_ITEM} from '../../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
 import {Button} from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
+import {Item} from "../../interfaces";
+import {getData} from "../../../../Services/Axios/Get";
 
 const Book = () => {
-    const [books, setBooks] = useState();
-    const [selectedBook, setSelectedBook] = useState();
-    const [modalState, setModalState] = useState(false);
+    const [books, setBooks] = useState<Item[] | null>();
+    const [selectedBook, setSelectedBook] = useState<Item | null>();
+    const [modalState, setModalState] = useState<boolean>(false);
 
     useEffect(() => {
         getBooks();
     }, []);
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedBook(e.row.data);
         } else {
@@ -30,28 +31,17 @@ const Book = () => {
     }
 
     const getBooks = () => {
-        axios.get(URL_ITEM, {
-            params: {'item_type': 'book'}
-        }).then(response => {
-                setBooks(response.data.items);
+        getData(URL_ITEM, {itemType: 'book'}).then(response => {
+                setBooks(response.items);
             }
         ).catch(response => {
             return {'error': response}
         })
     }
 
-    /**
-     * Custom function to show the installments in the table it shows the current installment and the total in the format xx/xx
-     * @param cellInfo
-     * @returns the installments in xx/xx format
-     */
-    function priceCustomCell(cellInfo) {
-        return cellInfo.payed_price+ '/' + cellInfo.cover_price;
-    }
-
     let colunasTabelaLivro = [
         {
-            dataField: "id",
+            dataField: "itemId",
             caption: "Id",
             dataType: "number",
             visible: false,
@@ -60,10 +50,9 @@ const Book = () => {
             dataField: "title",
             caption: "Título",
             dataType: "string",
-            visible: true,
         },
         {
-            dataField: "nm_main_author",
+            dataField: "mainAuthorName",
             caption: "Autor",
             dataType: "string",
             visible: true,
@@ -81,23 +70,23 @@ const Book = () => {
             width: 150,
         },
         {
-          dataField: "itemFormatId",
-          caption: "Formato",
-          dataType: "string"
+            dataField: "itemFormatId",
+            caption: "Formato",
+            dataType: "string"
         },
         {
-            dataField: "nm_serie",
+            dataField: "serieName",
             caption: "Serie",
             dataType: "string",
             visible: false,
         },
         {
-            dataField: "nm_publisher",
+            dataField: "publisherName",
             caption: "Editora",
             dataType: "string",
         },
         {
-            dataField: "nm_last_status",
+            dataField: "lastStatusName",
             caption: "Status",
             dataType: "string",
         },
@@ -142,12 +131,12 @@ const Book = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'id'}
-                tableColumns={colunasTabelaLivro}
+                keyExpr={'itemId'}
+                columns={colunasTabelaLivro}
                 data={books}
-                tooBarRefresh={false}
+                // tooBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
             />
             <ModalItem modalState={modalState} hideModalItem={hideModalItem} item={selectedBook}/>
         </>

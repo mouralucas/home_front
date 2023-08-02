@@ -7,7 +7,7 @@ import React from "react";
 
 
 const App = () => {
-    const [expenses, setExpenses] = useState()
+    const [expenses, setExpenses] = useState<any[]>([])
 
     const getExpenses = () => {
         getData(URL_EXPENSE, {
@@ -16,7 +16,7 @@ const App = () => {
                 'expense_type': 'fixed'
             }
         ).then(response => {
-            let options = response == null ? {} : response.expenses.map(i => ({
+            let options = response == null ? {} : response.expenses.map((i: { category: string; total_amount: number; }) => ({
                 category: i.category,
                 total_amount: i.total_amount
             }))

@@ -14,19 +14,19 @@ import {
 } from 'devextreme-react/chart';
 
 
-const App = (props) => {
+const App = (props: any) => {
     // TODO: essa função deve vir como props e ter uma validação de existência
-    const customizeArgumentText = (e) => {
+    const customizeArgumentText = (e: any) => {
         return `${e.value}`;
     }
 
     // TODO: essa função deve vir como props e ter uma validação de existência
-    const customizeLabel = (arg) => {
+    const customizeLabel = (arg: any) => {
         if (arg.value > 70000) {
             return {
                 visible: true,
                 backgroundColor: '#ff7c7c',
-                customizeText(e) {
+                customizeText(e: any) {
                     return `${e.valueText}&#176F`;
                 },
             };
@@ -35,7 +35,7 @@ const App = (props) => {
     }
 
     const setConstantLine = () => {
-        return props.constantLine.map((item) =>
+        return props.constantLine.map((item: any) =>
             <ConstantLine
                 width={item.width}
                 value={item.value}
@@ -56,11 +56,13 @@ const App = (props) => {
         </Title>
     }
 
+
     return (
         <Chart id="chart"
                title={props.title ?? "Title"}
                dataSource={props.dataSource}
                customizePoint={props.customizePoint ?? null}
+            // @ts-ignore
                customizeLabel={customizeLabel}
         >
             <Series

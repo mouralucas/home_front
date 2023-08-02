@@ -8,7 +8,7 @@ import Sidebar from '../../../Components/Sidebar/Base'
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
-import getCurrentPeriod from "../../../Utils/DateTime";
+import {getCurrentPeriod} from "../../../Utils/DateTime";
 
 
 const Home = () => {
@@ -103,8 +103,8 @@ const Home = () => {
                         <Card>
                             {/*<Card.Header>Outra evolução</Card.Header>*/}
                             <Card.Body>
-                                <RealDollarChart
-                                title={'Proporção Investment'}/>
+                                {/*<RealDollarChart*/}
+                                {/*title={'Proporção Investment'}/>*/}
                             </Card.Body>
                         </Card>
                     </div>

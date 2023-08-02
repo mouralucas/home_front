@@ -4,15 +4,14 @@ import {URL_CREDIT_CARD_BILL} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
-import ModalInvestment from '../Modals/InvestmentStatement'
-import ModalInvestmentStatement from "../Modals/InvestmentStatement";
+import ModalInvestmentStatement from '../Modals/InvestmentStatement'
 
 const App = () => {
     const [bills, setBills] = useState();
     const [selectedBill, setSelectedBill] = useState()
     const [modalState, setModalState] = useState(false)
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedBill(e.row.data);
         }
@@ -39,7 +38,7 @@ const App = () => {
     }, []);
 
 
-    function myOtherCommand(e) {
+    function myOtherCommand(e: any) {
         alert('Café');
     }
 
@@ -114,11 +113,11 @@ const App = () => {
         <>
             <DataGrid
                 keyExpr={'id'}
-                tableColumns={columns}
+                columns={columns}
                 data={bills}
-                toolBarRefresh={false}
+                // toolBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
             />
             <ModalInvestmentStatement modalState={modalState} hideModal={hideModal} bill={selectedBill}/>
         </>

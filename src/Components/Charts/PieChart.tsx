@@ -1,15 +1,23 @@
-import PieChart, {Series, Label, Margin, Export, Legend, Animation} from 'devextreme-react/pie-chart';
+import PieChart, {Animation, Export, Label, Legend, Margin, Series} from 'devextreme-react/pie-chart';
 import React from 'react';
 
-const App = (props) => {
-    const formatText = (arg) => {
+interface PieCharProps {
+    data: any[],
+    pallete?: string[]
+    title: string
+    axis: any
+    showLegend?: boolean
+}
+
+const App = (props: PieCharProps) => {
+    const formatText = (arg: { value: any; argumentText: any; percentText: any; }) => {
         // let value =  (Math.round(arg.value * 100) / 100).toFixed(2)
         let value =  Number(arg.value).toFixed(2)
 
         return `${arg.argumentText}: ${value} (${arg.percentText})`;
     }
 
-    const pointClickHandler = (arg) => {
+    const pointClickHandler = (arg: { target: { select: () => void; }; }) => {
         console.log(arg)
         arg.target.select();
     }

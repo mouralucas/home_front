@@ -7,8 +7,6 @@ import React from "react";
 
 
 const App = () => {
-    const [currencyProportion, setCurrencyPriportion] = useState([])
-
     // useEffect(() => {
     //     getData(URL_FINANCE_CURRENCY_FLOW).then(response => {
     //     }).catch(err => {
@@ -18,9 +16,7 @@ const App = () => {
 
 
     return (
-        <Doughnut
-            title={"Dólar Real"}
-        ></Doughnut>
+        <></>
     )
 }
 

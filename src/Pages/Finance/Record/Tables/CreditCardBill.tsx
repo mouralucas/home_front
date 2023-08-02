@@ -5,14 +5,14 @@ import DataGrid from "../../../../Components/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalBill from '../Modals/CreditCardBill'
-import getCurrentPeriod from '../../../../Utils/DateTime'
+import {getCurrentPeriod} from '../../../../Utils/DateTime'
 
 const App = () => {
     const [bills, setBills] = useState();
     const [selectedBill, setSelectedBill] = useState()
     const [modalState, setModalState] = useState(false)
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedBill(e.row.data);
         }
@@ -44,11 +44,11 @@ const App = () => {
      * @param cellInfo
      * @returns the installments in xx/xx format
      */
-    function installmentCustomCell(cellInfo) {
+    function installmentCustomCell(cellInfo: any) {
         return cellInfo.installment + '/' + cellInfo.tot_installment;
     }
 
-    function myOtherCommand(e) {
+    function myOtherCommand(e: any) {
         alert('Café');
     }
 
@@ -162,11 +162,11 @@ const App = () => {
         <>
             <DataGrid
                 keyExpr={'id'}
-                tableColumns={columns}
+                columns={columns}
                 data={bills}
-                toolBarRefresh={false}
+                // toolBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
             />
             <ModalBill modalState={modalState} hideModal={hideModal} bill={selectedBill}/>
         </>

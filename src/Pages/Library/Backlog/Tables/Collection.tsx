@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {URL_ITEM_COLLECTION, URL_ITEM_SERIE, URL_PUBLISHER} from "../../../../Services/Axios/ApiUrls";
+import {URL_ITEM_COLLECTION} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
@@ -11,7 +11,7 @@ const App = () => {
     const [selectedAuthor, setSelectedAuthor] = useState()
     const [modalState, setModalState] = useState(false)
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedAuthor(e.row.data);
         }
@@ -32,7 +32,7 @@ const App = () => {
         getAuthor();
     }, []);
 
-    function myOtherCommand(e) {
+    function myOtherCommand(e: any) {
         alert('Café');
     }
 
@@ -104,11 +104,11 @@ const App = () => {
         <>
             <DataGrid
                 keyExpr={'id'}
-                tableColumns={columns}
+                columns={columns}
                 data={collection}
-                toolBarRefresh={false}
+                // toolBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
             />
             <ModalPublisher modalState={modalState} hideModal={hideModal} collection={selectedAuthor}/>
         </>

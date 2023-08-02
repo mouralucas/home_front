@@ -2,29 +2,37 @@ import React from "react";
 import PieChart, {Connector, Format, Label, Legend, Series, Tooltip,} from 'devextreme-react/pie-chart';
 
 
-const App = (props) => {
-    const formatLabel = (arg): { text: string } => {
+interface DoughnutChartProps {
+    chartId: string
+    title?: string
+    data: any[]
+    argumentField: any
+    valueField: any
+}
+
+const App = (props: DoughnutChartProps) => {
+    const formatLabel = (arg: any): { text: string } => {
         return arg.currency
     }
 
-    const customizeTooltip = (arg): { text: string } => {
+    const customizeTooltip = (arg: any): { text: string } => {
         console.log(arg)
         return {
             text: `${arg.value} - ${(arg.percent * 100).toFixed(2)}%`,
         };
     }
 
-    const customizeSeriesLabel = (pointInfo) => {
+    const customizeSeriesLabel = (pointInfo: any) => {
         let value =  (Math.round(pointInfo.value * 100) / 100).toFixed(2)
         return `${pointInfo.argument}: ${value} (${pointInfo.percentText})`;
     }
 
     return (
         <PieChart
-            id={props.chart_id ?? 'pie'}
+            id={props.chartId ?? 'pie'}
             type={'doughnut'}
             title={props.title ?? 'Gráfico Doughnut'}
-            dataSource={props.dataSource}
+            dataSource={props.data}
             palette={'Pastel'}
         >
             <Series argumentField={props.argumentField} valueField={props.valueField}>

@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { URL_INVESTMENT } from "../../../../Services/Axios/ApiUrls";
-import { getData } from "../../../../Services/Axios/Get";
+import React, {useEffect, useState} from "react";
+import {toast} from "react-toastify";
+import {URL_INVESTMENT} from "../../../../Services/Axios/ApiUrls";
+import {getData} from "../../../../Services/Axios/Get";
 import Button from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
 import TreeList from "../../../../Components/TreeList";
 import ModalInvestment from '../Modals/Investment_beta';
-import {format as formatDate} from "../../../../Utils/DateTime";
+import {Investment} from "../../Interfaces";
 
 
 const App = () => {
-    const [investment, setInvestment] = useState([])
-    const [selectedInvestment, setSelectedInvestment] = useState([])
+    const [investment, setInvestment] = useState<Investment[]>([])
+    const [selectedInvestment, setSelectedInvestment] = useState<Investment | undefined>()
     const [modalState, setModalState] = useState(false)
 
 
     // tocar tabela para tree list
     // Cada linha principal contém o total aplicado naquele investimento
-    // Para investimentos recorrentes (rendimento de conta-corrente, etc.) é criado um pai com com o valor total investido
+    // Para investimentos recorrentes (rendimento de conta-corrente, etc.) é criado um pai com o valor total investido
     //  e cada filho indica um depósito específico
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedInvestment(e.row.data);
         }
@@ -29,7 +29,8 @@ const App = () => {
 
     const hideModal = () => {
         setModalState(false);
-        getInvestment()
+        setSelectedInvestment(undefined);
+        getInvestment();
     }
 
     useEffect(() => {
@@ -37,24 +38,16 @@ const App = () => {
     }, [])
 
     const getInvestment = () => {
-        getData(URL_INVESTMENT, {show_mode: 'all'}).then(response => {
+        getData(URL_INVESTMENT, {showMode: 'all'}).then(response => {
             setInvestment(response.investment);
         }).catch(err => {
             toast.error(err)
         })
     }
 
-    function dateCustomCell(cellInfo) {
-        return cellInfo.maturityDate === null ? '--' : formatDate(cellInfo.maturityDate);
-    }
-
-    function amountCustomCell(cellInfo) {
-        return ' ' + cellInfo.amount;
-    }
-
     const columns = [
         {
-            dataField: "id",
+            dataField: "investmentId",
             caption: "Id",
             dataType: "string",
             width: 70,
@@ -160,8 +153,8 @@ const App = () => {
         <>
             <TreeList
                 tableColumns={columns}
-                keyExpr={'id'}
-                parentIdExpr={'parent_id'}
+                keyExpr={'investmentId'}
+                parentIdExpr={'parentId'}
                 dataSource={investment}
                 toolBarRefresh={false}
                 toolBarItems={toolBarItems}

@@ -9,7 +9,7 @@ export const STORAGE_TYPE = localStorage;
 export const isAuthenticated = () => STORAGE_TYPE.getItem(TOKEN_KEY) !== null;
 export const getToken = () => STORAGE_TYPE.getItem(TOKEN_KEY);
 
-export const setToken = token => {
+export const setToken = (token: string) => {
     STORAGE_TYPE.setItem(TOKEN_KEY, token);
 };
 
@@ -17,7 +17,7 @@ export const logout = () => {
     STORAGE_TYPE.removeItem(TOKEN_KEY);
 };
 
-const RequireAuth = ({children}) => {
+const RequireAuth = ({children}: {children: any}) => {
     let location = useLocation();
 
     if (!isAuthenticated()) {

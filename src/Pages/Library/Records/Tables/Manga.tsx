@@ -1,21 +1,22 @@
 import DataGrid from "../../../../Components/DataGrid";
 import React, {useEffect, useState} from "react";
-import axios from "../../../../Services/Axios/Axios";
 import {URL_ITEM} from '../../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
 import {Button} from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
+import {getData} from "../../../../Services/Axios/Get";
+import {Item} from "../../interfaces";
 
 const Manga = () => {
-    const [mangas, setMangas] = useState();
-    const [selectedManga, setSelectedManga] = useState();
-    const [modalState, setModalState] = useState(false)
+    const [mangas, setManga] = useState<Item[] | null>();
+    const [selectedManga, setSelectedManga] = useState<Item | null>();
+    const [modalState, setModalState] = useState<boolean>(false)
 
     useEffect(() => {
         getMangas();
     }, []);
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedManga(e.row.data);
         } else {
@@ -30,25 +31,23 @@ const Manga = () => {
     }
 
     const getMangas = () => {
-        axios.get(URL_ITEM, {
-            params: {'item_type': 'manga'}
-        }).then(response => {
-                setMangas(response.data.items);
+        getData(URL_ITEM, {itemType: 'manga'}).then(response => {
+                setManga(response.items);
             }
         ).catch(response => {
             return {'error': response}
-        })
+        });
     }
 
     let colunasTabelaLivro = [
         {
-            dataField: "item_id",
+            dataField: "itemId",
             caption: "Id",
             dataType: "number",
             width: 50,
         },
         {
-            dataField: "nm_main_author",
+            dataField: "mainAuthorName",
             caption: "Autor",
             dataType: "string",
         },
@@ -58,13 +57,13 @@ const Manga = () => {
             dataType: "string",
         },
         {
-            dataField: "nm_serie",
+            dataField: "serieName",
             caption: "Serie",
             dataType: "string",
             groupIndex: 0,
         },
         {
-            dataField: "nm_collection",
+            dataField: "collectionName",
             caption: "Coleção",
             dataType: "string"
         },
@@ -75,12 +74,12 @@ const Manga = () => {
             width: 150,
         },
         {
-            dataField: "nm_publisher",
+            dataField: "publisherName",
             caption: "Editora",
             dataType: "string",
         },
         {
-            dataField: "nm_last_status",
+            dataField: "lastStatusName",
             caption: "Status",
             dataType: "string",
         },
@@ -92,7 +91,7 @@ const Manga = () => {
             visible: false
         },
         {
-            dataField: "cover_price",
+            dataField: "coverPrice",
             caption: "Pago/Capa",
             dataType: "number",
             width: 150,
@@ -151,12 +150,12 @@ const Manga = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'id'}
-                tableColumns={colunasTabelaLivro}
+                keyExpr={'itemId'}
+                columns={colunasTabelaLivro}
                 data={mangas}
-                tooBarRefresh={false}
+                // tooBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
                 paging={20}
 
             />

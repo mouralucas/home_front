@@ -1,5 +1,3 @@
-
-
 const getCurrentPeriod = () => {
     const now: Date = new Date();
     const year: number = now.getFullYear()
@@ -8,15 +6,23 @@ const getCurrentPeriod = () => {
     return year * 100 + month
 }
 
-const getListPeriods = (startYear: number, startMont: number, endYear: number, endMonth: number) => {
-    return []
+function getDefaultDate(): string {
+    /**
+     * Returns current date in format 'yyyy-dd-mm' as Date
+     */
+    const today = new Date();
+    const year = today.getFullYear().toString();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
 }
 
-const format = (rawDate: String): string => {
+const format = (rawDate: any): string | undefined => {
     let currentDate = new Date();
     let timeOffset = currentDate.getTimezoneOffset() / 60;
 
-    if (rawDate && rawDate.substring){
+    if (rawDate && rawDate.substring) {
         let year = rawDate.substring(0, 4);
         let month = rawDate.substring(5, 7);
         let day = rawDate.substring(8, 10);
@@ -39,8 +45,6 @@ const format = (rawDate: String): string => {
         return nova_data_dia + '/' + nova_data_mes + '/' + nova_data_ano + ' às ' + nova_data_horas + ":" + nova_data_minutos;
     }
 
-
 }
 
-export default getCurrentPeriod;
-export {format, getListPeriods}
+export {format, getCurrentPeriod, getDefaultDate}

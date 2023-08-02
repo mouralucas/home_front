@@ -11,7 +11,7 @@ const App = () => {
     const [selectedSerie, setSelectedSerie] = useState({})
     const [modalState, setModalState] = useState(false)
 
-    const showModal = (e) => {
+    const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedSerie(e.row.data);
         }
@@ -34,7 +34,7 @@ const App = () => {
         getSerie();
     }, []);
 
-    function myOtherCommand(e) {
+    function myOtherCommand(e: any) {
         alert('Café');
     }
 
@@ -117,11 +117,11 @@ const App = () => {
         <>
             <DataGrid
                 keyExpr={'id'}
-                tableColumns={columns}
+                columns={columns}
                 data={serie}
-                toolBarRefresh={false}
+                // toolBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
             />
             <ModalSerie modalState={modalState} hideModal={hideModal} serie={selectedSerie}/>
         </>
