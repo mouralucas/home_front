@@ -5,7 +5,7 @@ import {getData} from "../../../../Services/Axios/Get";
 import Button from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
 import TreeList from "../../../../Components/TreeList";
-import ModalInvestment from '../Modals/Investment_beta';
+import ModalInvestment from '../Modals/Investment';
 import {Investment} from "../../Interfaces";
 
 
