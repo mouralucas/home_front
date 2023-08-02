@@ -35,3 +35,14 @@ export interface Investment {
     createAt: Date | undefined,
     lastEditedAt: Date | undefined,
 }
+
+export interface CreditCardBill {
+    creditCardId: string | null
+    categoryId: string | null
+    amount: number
+    paymentAt: string
+    purchasedAt: string
+    description: string
+    createdAt: string | undefined
+    lastEditedAt: string | undefined
+}
