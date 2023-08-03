@@ -24,7 +24,7 @@ const DefaultCreditCardBill: CreditCardBill = {
 }
 
 interface CreditCardBillProps {
-    bill: CreditCardBill
+    creditCardBill: CreditCardBill | null
     modalState: boolean
     hideModal: any
 }
@@ -45,8 +45,8 @@ const App = (props: CreditCardBillProps): ReactElement => {
     const [creditCardBill, setCreditCardBill] = useState<CreditCardBill>(DefaultCreditCardBill)
 
     useEffect(() => {
-        if (props.bill && props.modalState) {
-            setCreditCardBill(props.bill);
+        if (props.creditCardBill && props.modalState) {
+            setCreditCardBill(props.creditCardBill);
         }
 
         if (!props.modalState) {
@@ -54,19 +54,19 @@ const App = (props: CreditCardBillProps): ReactElement => {
             setSelectedCategory(null);
             setSelectedCreditCard(null);
         }
-    }, [props.modalState, props.bill])
+    }, [props.modalState, props.creditCardBill])
 
     useEffect(() => {
-        if (props.bill) {
-            setSelectedCategory(category.filter((i: { value: any; }) => i.value === props.bill.categoryId)[0]);
+        if (props.creditCardBill) {
+            setSelectedCategory(category.filter((i: { value: any; }) => i.value === props.creditCardBill?.categoryId)[0]);
         }
-    }, [category, props.bill])
+    }, [category, props.creditCardBill])
 
     useEffect(() => {
-        if (props.bill) {
-            setSelectedCreditCard(creditCard.filter((i: { value: any; }) => i.value === props.bill.creditCardId)[0]);
+        if (props.creditCardBill) {
+            setSelectedCreditCard(creditCard.filter((i: { value: any; }) => i.value === props.creditCardBill?.creditCardId)[0]);
         }
-    }, [creditCard, props.bill])
+    }, [creditCard, props.creditCardBill])
 
     const getCreditCard = (query: any, callback: any) => {
         if (query) {

@@ -6,15 +6,16 @@ import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalBill from '../Modals/CreditCardBill'
 import {getCurrentPeriod} from '../../../../Utils/DateTime'
+import {CreditCardBill} from "../../Interfaces";
 
 const App = () => {
-    const [bills, setBills] = useState();
-    const [selectedBill, setSelectedBill] = useState()
+    const [creditCardBill, setCreditCardBill] = useState<CreditCardBill[]>();
+    const [selectedCreditCardBill, setSelectedCreditCardBill] = useState<CreditCardBill | null>(null)
     const [modalState, setModalState] = useState(false)
 
     const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
-            setSelectedBill(e.row.data);
+            setSelectedCreditCardBill(e.row.data);
         }
         setModalState(true);
     }
@@ -28,7 +29,7 @@ const App = () => {
         axios.get(URL_CREDIT_CARD_BILL, {
             params: {'period': getCurrentPeriod()}
         }).then(response => {
-                setBills(response.data.bill);
+                setCreditCardBill(response.data.bill);
             }
         ).catch(response => {
             return {'error': response}
@@ -163,12 +164,12 @@ const App = () => {
             <DataGrid
                 keyExpr={'id'}
                 columns={columns}
-                data={bills}
+                data={creditCardBill}
                 // toolBarRefresh={false}
                 toolBarItems={toolBarItems}
                 showLoadPanel={false}
             />
-            <ModalBill modalState={modalState} hideModal={hideModal} bill={selectedBill}/>
+            <ModalBill modalState={modalState} hideModal={hideModal} creditCardBill={selectedCreditCardBill}/>
         </>
     );
 }

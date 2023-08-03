@@ -8,12 +8,12 @@ const getCurrentPeriod = () => {
 
 function getDefaultDate(): string {
     /**
-     * Returns current date in format 'yyyy-dd-mm' as Date
+     * Returns current date in format 'yyyy-dd-mm' as string
      */
-    const today = new Date();
-    const year = today.getFullYear().toString();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0');
-    const day = today.getDate().toString().padStart(2, '0');
+    const today: Date = new Date();
+    const year: string = today.getFullYear().toString();
+    const month: string = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day: string = today.getDate().toString().padStart(2, '0');
 
     return `${year}-${month}-${day}`;
 }
