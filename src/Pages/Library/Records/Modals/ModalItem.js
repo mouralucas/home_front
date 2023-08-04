@@ -50,15 +50,15 @@ const ModalItem = (props) => {
     const [selectedLastStatus, setSelectedLastStatus] = useState()
 
     // Form variables
-    const [values, setValues] = useState({})
+    const [items, setItems] = useState({})
 
     useEffect(() => {
         if (props.item) {
-            setValues(props.item);
+            setItems(props.item);
         }
 
         if (!props.modalState) {
-            setValues({
+            setItems({
                 item_id: null,
                 last_status_id: null,
                 dat_last_status: new Date().getDate(),
@@ -110,13 +110,13 @@ const ModalItem = (props) => {
     // Set combo boxes default
     useEffect(() => {
         if (props.item) {
-            setSelectedMainAuthor(mainAuthor.filter(i => i.value === props.item.main_author_id)[0]);
+            setSelectedMainAuthor(mainAuthor.filter(i => i.value === props.item.mainAuthorId)[0]);
         }
     }, [mainAuthor, props.item])
 
     useEffect(() => {
         if (props.item) {
-            setSelectedLastStatus(lastStatus.filter(i => i.value === props.item.last_status_id)[0])
+            setSelectedLastStatus(lastStatus.filter(i => i.value === props.item.lastStatusId)[0])
         }
     }, [lastStatus, props.item])
 
@@ -128,19 +128,19 @@ const ModalItem = (props) => {
 
     useEffect(() => {
         if (props.item) {
-            setSelectedSerie(serie.filter(i => i.value === props.item.serie_id)[0])
+            setSelectedSerie(serie.filter(i => i.value === props.item.serieId)[0])
         }
     }, [serie, props.item])
 
     useEffect(() => {
         if (props.item) {
-            setSelectedCollection(collection.filter(i => i.value === props.item.collection_id)[0])
+            setSelectedCollection(collection.filter(i => i.value === props.item.collectionId)[0])
         }
     }, [collection, props.item])
 
     useEffect(() => {
         if (props.item) {
-            setSelectedPublisher(publisher.filter(i => i.value === props.item.publisher_id)[0])
+            setSelectedPublisher(publisher.filter(i => i.value === props.item.publisherId)[0])
         }
     }, [publisher, props.item])
 
@@ -152,7 +152,7 @@ const ModalItem = (props) => {
 
     useEffect(() => {
         if (props.item) {
-            setSelectedLanguage(language.filter(i => i.value === props.item.language_id)[0])
+            setSelectedLanguage(language.filter(i => i.value === props.item.languageId)[0])
         }
     }, [language, props.item])
 
@@ -165,7 +165,7 @@ const ModalItem = (props) => {
                 let options = response?.authors.map(author => ({value: author.id, label: author.nm_full}))
                 callback(options);
                 setMainAuthor(options);
-                setSelectedMainAuthor(options.filter(i => i.value === values.main_author_id)[0])
+                setSelectedMainAuthor(options.filter(i => i.value === items.mainAuthorId)[0])
             })
 
         }
@@ -179,7 +179,7 @@ const ModalItem = (props) => {
             let options = response.types.map(type => ({value: type.value, label: type.text}));
             callback(options);
             setItemType(options);
-            setSelectedItemType(options.filter(i => i.value === values.itemType)[0]);
+            setSelectedItemType(options.filter(i => i.value === items.itemType)[0]);
         });
     }
 
@@ -192,7 +192,7 @@ const ModalItem = (props) => {
                 callback(options);
 
                 setSerie(options);
-                setSelectedSerie(options.filter(i => i.value === values.serie_id)[0])
+                setSelectedSerie(options.filter(i => i.value === items.serieId)[0])
             });
         }
     }
@@ -206,7 +206,7 @@ const ModalItem = (props) => {
                 callback(options);
 
                 setCollection(options);
-                setSelectedCollection(options.filter(i => i.value === values.collection_id)[0]);
+                setSelectedCollection(options.filter(i => i.value === items.collectionId)[0]);
             });
         }
     }
@@ -220,7 +220,7 @@ const ModalItem = (props) => {
                 callback(options);
 
                 setPublisher(options);
-                setSelectedPublisher(options.filter(i => i.value === values.publisher_id)[0]);
+                setSelectedPublisher(options.filter(i => i.value === items.publisherId)[0]);
             });
         }
     }
@@ -234,7 +234,7 @@ const ModalItem = (props) => {
                 callback(options);
 
                 setItemFormat(options);
-                setSelectedItemFormat(options.filter(i => i.value === values.itemFormatId)[0]);
+                setSelectedItemFormat(options.filter(i => i.value === items.itemFormatId)[0]);
             });
         }
     }
@@ -248,7 +248,7 @@ const ModalItem = (props) => {
                 callback(options);
 
                 setLanguage(options);
-                setSelectedLanguage(options.filter(i => i.value === values.language_id)[0]);
+                setSelectedLanguage(options.filter(i => i.value === items.languageId)[0]);
             });
         }
     }
@@ -263,7 +263,7 @@ const ModalItem = (props) => {
                 callback(options);
 
                 setLastStatus(options);
-                setSelectedLastStatus(options.filter(i => i.value === values.last_status_id)[0])
+                setSelectedLastStatus(options.filter(i => i.value === items.last_status_id)[0])
             })
         }
     }
@@ -271,7 +271,7 @@ const ModalItem = (props) => {
     // Set functions for specific componentes
     const set = (name) => {
         return ({target: {value}}) => {
-            setValues(oldValues => ({...oldValues, [name]: value}));
+            setItems(oldValues => ({...oldValues, [name]: value}));
         }
     }
 
@@ -281,25 +281,25 @@ const ModalItem = (props) => {
                 var list_values = [];
                 e.forEach(key => list_values.push(key.value));
                 setFunction(e);
-                return setValues(oldValues => ({...oldValues, [name]: list_values}));
+                return setItems(oldValues => ({...oldValues, [name]: list_values}));
             } else {
                 setFunction(e);
-                return setValues(oldValues => ({...oldValues, [name]: e.value}));
+                return setItems(oldValues => ({...oldValues, [name]: e.value}));
             }
         }
-        return setValues(oldValues => ({...oldValues, [name]: e.value}));
+        return setItems(oldValues => ({...oldValues, [name]: e.value}));
     }
 
     const setDate = (e, name) => {
         if (e.value !== null) {
-            return setValues(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
+            return setItems(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
         } else {
-            return setValues(oldValues => ({...oldValues, [name]: e.value}))
+            return setItems(oldValues => ({...oldValues, [name]: e.value}))
         }
     }
 
     const setCurrency = (e, name) => {
-        return setValues(oldValues => ({...oldValues, [name]: e.value / 100}));
+        return setItems(oldValues => ({...oldValues, [name]: e.value / 100}));
     }
 
     const body = () => {
@@ -308,74 +308,74 @@ const ModalItem = (props) => {
                 <div className="">
                     <div className="row">
                         <div className="col-4">
-                            <label htmlFor="{'combo_author'}">Autor principal: {values.main_author_id}</label>
+                            <label htmlFor="{'combo_author'}">Autor principal: {items.mainAuthorId}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getAuthors(query, callback)}
-                                         onChange={(e) => setCombo(e, 'main_author_id', setSelectedMainAuthor)}
+                                         onChange={(e) => setCombo(e, 'mainAuthorId', setSelectedMainAuthor)}
                                          defaultOptions
                                          value={selectedMainAuthor}/>
                         </div>
                         <div className="col-4">
-                            <label htmlFor="{'combo_author'}">Outros autores: {values.authors_id}</label>
+                            <label htmlFor="{'combo_author'}">Outros autores: {items.authorsId}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getAuthors(query, callback)}
-                                         onChange={(e) => setCombo(e, 'authors_id', setSelectedOtherAuthors)}
+                                         onChange={(e) => setCombo(e, 'authorsId', setSelectedOtherAuthors)}
                                          defaultOptions
                                          value={selectedOtherAuthors}
                                          isMulti={true}/>
                         </div>
                         <div className="col-2">
-                            <label htmlFor="{'combo_status'}">Status: {values.last_status_id}</label>
+                            <label htmlFor="{'combo_status'}">Status: {items.lastStatusId}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getStatus(query, callback)}
-                                         onChange={(e) => setCombo(e, 'last_status_id', setSelectedLastStatus)}
+                                         onChange={(e) => setCombo(e, 'lastStatusId', setSelectedLastStatus)}
                                          defaultOptions
                                          value={selectedLastStatus}/>
                         </div>
                         <div className="col-2">
                             <label htmlFor="">Data status:</label>
-                            <DateBox value={values.dat_last_status} type="date" className='form-control input-default'
+                            <DateBox value={items.lastStatusAt} type="date" className='form-control input-default'
                                      useMaskValue={true} useMaskBehavior={true}
-                                     onValueChanged={(date) => setDate(date, 'dat_last_status')}/>
+                                     onValueChanged={(date) => setDate(date, 'lastStatusAt')}/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-6">
                             <label htmlFor="{'nm_title'}">Título</label>
-                            <input value={values.title} onChange={set('title')} type="text"
+                            <input value={items.title} onChange={set('title')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-6">
                             <label htmlFor="{'subtitle'}">Sub-título</label>
-                            <input value={values.subtitle} onChange={set('subtitle')} type="text"
+                            <input value={items.subtitle} onChange={set('subtitle')} type="text"
                                    className='form-control input-default'/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-6">
-                            <label htmlFor="{'nm_author'}">Título original</label>
-                            <input value={values.title_original} onChange={set('title_original')} type="text"
+                            <label htmlFor="{'titleOriginal'}">Título original</label>
+                            <input value={items.titleOriginal} onChange={set('titleOriginal')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-6">
                             <label htmlFor="{'subtitle'}">Sub-título original</label>
-                            <input value={values.subtitle_original} onChange={set('subtitle_original')} type="text"
+                            <input value={items.subtitleOriginal} onChange={set('subtitleOriginal')} type="text"
                                    className='form-control input-default'/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-3">
                             <label htmlFor="{'nm_author'}">ISBN</label>
-                            <input value={values.isbn_formatted} onChange={set('isbn_formatted')} type="text"
+                            <input value={items.isbnFormatted} onChange={set('isbnFormatted')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-3">
                             <label htmlFor="{'subtitle'}">ISBN-10</label>
-                            <input value={values.isbn10_formatted} onChange={set('isbn10_formatted')} type="text"
+                            <input value={items.isbn10Formatted} onChange={set('isbn10Formatted')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-3">
-                            <label htmlFor="">Tipo: {values.itemType}</label>
+                            <label htmlFor="">Tipo: {items.itemType}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getItemTypes(query, callback)}
                                          onChange={(e) => setCombo(e, 'itemType', setSelectedItemType)}
@@ -384,62 +384,62 @@ const ModalItem = (props) => {
                         </div>
                         <div className="col-1">
                             <label htmlFor="{'pages'}">Páginas</label>
-                            <input value={values.pages} onChange={set('pages')} type="text"
+                            <input value={items.pages} onChange={set('pages')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-1">
                             <label htmlFor="{volume'}">Volume</label>
-                            <input value={values.volume} onChange={set('volume')} type="text"
+                            <input value={items.volume} onChange={set('volume')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-1">
                             <label htmlFor="{'edition'}">Edição</label>
-                            <input value={values.edition} onChange={set('edition')} type="text"
+                            <input value={items.edition} onChange={set('edition')} type="text"
                                    className='form-control input-default'/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-2">
-                            <label htmlFor="">Lançamento: {values.dat_published}</label>
-                            <DateBox value={values.dat_published} type="date" className='form-control input-default'
+                            <label htmlFor="">Lançamento: {items.publishedAt}</label>
+                            <DateBox value={items.publishedAt} type="date" className='form-control input-default'
                                      useMaskBehavior={true}
-                                     onValueChanged={(date) => setDate(date, 'dat_published')}/>
+                                     onValueChanged={(date) => setDate(date, 'publishedAt')}/>
                         </div>
                         <div className="col-2">
-                            <label htmlFor="">Lançamento original: {values.dat_published_original}</label>
-                            <DateBox value={values.dat_published_original} type="date"
+                            <label htmlFor="">Lançamento original: {items.publishedOriginalAt}</label>
+                            <DateBox value={items.publishedOriginalAt} type="date"
                                      className='form-control input-default'
                                      useMaskBehavior={true}
-                                     onValueChanged={(date) => setDate(date, 'dat_published_original')}/>
+                                     onValueChanged={(date) => setDate(date, 'publishedOriginalAt')}/>
                         </div>
                         <div className="col-4">
-                            <label htmlFor="">Serie: {values.serie_id}</label>
+                            <label htmlFor="">Serie: {items.serieId}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getSerie(query, callback)}
-                                         onChange={(e) => setCombo(e, 'serie_id', setSelectedSerie)}
+                                         onChange={(e) => setCombo(e, 'serieId', setSelectedSerie)}
                                          defaultOptions
                                          value={selectedSerie}/>
                         </div>
                         <div className="col-4">
-                            <label htmlFor="">Coleção: {values.collection_id}</label>
+                            <label htmlFor="">Coleção: {items.collectionId}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getCollection(query, callback)}
-                                         onChange={(e) => setCombo(e, 'collection_id', setSelectedCollection)}
+                                         onChange={(e) => setCombo(e, 'collectionId', setSelectedCollection)}
                                          defaultOptions
                                          value={selectedCollection}/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-4">
-                            <label htmlFor="">Editora: {values.publisher_id}</label>
+                            <label htmlFor="">Editora: {items.publisherId}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getPublishers(query, callback)}
-                                         onChange={(e) => setCombo(e, 'publisher_id', setSelectedPublisher)}
+                                         onChange={(e) => setCombo(e, 'publisherId', setSelectedPublisher)}
                                          defaultOptions
                                          value={selectedPublisher}/>
                         </div>
                         <div className="col-4">
-                            <label htmlFor="">Formato: {values.itemFormatId}</label>
+                            <label htmlFor="">Formato: {items.itemFormatId}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getItemFormat(query, callback)}
                                          onChange={(e) => setCombo(e, 'itemFormatId', setSelectedItemFormat)}
@@ -447,70 +447,70 @@ const ModalItem = (props) => {
                                          value={selectedItemFormat}/>
                         </div>
                         <div className="col-4">
-                            <label htmlFor="">Idioma: {values.language_id}</label>
+                            <label htmlFor="">Idioma: {items.languageId}</label>
                             <AsyncSelect formTarget={true}
                                          loadOptions={(query, callback) => getLanguage(query, callback)}
-                                         onChange={(e) => setCombo(e, 'language_id', setSelectedLanguage)}
+                                         onChange={(e) => setCombo(e, 'languageId', setSelectedLanguage)}
                                          defaultOptions
                                          value={selectedLanguage}/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-3">
-                            <label htmlFor="">Valor capa: {values.cover_price}</label>
+                            <label htmlFor="">Valor capa: {items.coverPrice}</label>
                             <Currency className='form-control input-default'
-                                      value={values.cover_price * 100}
+                                      value={items.coverPrice * 100}
                                       onFocus={event => event.target.select()}
                                       onValueChange={(values) => {
-                                          setCurrency(values, 'cover_price')
+                                          setCurrency(values, 'coverPrice')
                                       }}/>
                         </div>
                         <div className="col-3">
-                            <label htmlFor="">Valor pago: {values.payed_price}</label>
+                            <label htmlFor="">Valor pago: {items.paidPrice}</label>
                             <Currency className='form-control input-default'
-                                      value={values.payed_price * 100}
+                                      value={items.paidPrice * 100}
                                       onFocus={event => event.target.select()}
                                       onValueChange={(values) => {
-                                          setCurrency(values, 'payed_price')
+                                          setCurrency(values, 'paidPrice')
                                       }}/>
                         </div>
                     </div>
                     <div className="row">
 
                         <div className="col-3">
-                            <label htmlFor="{'nm_author'}">Dimensões: {values.dimensions}</label>
-                            <input value={values.dimensions} onChange={set('dimensions')} type="text"
+                            <label htmlFor="{'nm_author'}">Dimensões: {items.dimensions}</label>
+                            <input value={items.dimensions} onChange={set('dimensions')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-3">
-                            <label htmlFor="{'nm_author'}">Altura: {values.height}</label>
-                            <input value={values.height} onChange={set('height')} type="text"
+                            <label htmlFor="{'nm_author'}">Altura: {items.height}</label>
+                            <input value={items.height} onChange={set('height')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-3">
-                            <label htmlFor="{'nm_author'}">Largura: {values.width}</label>
-                            <input value={values.width} onChange={set('width')} type="text"
+                            <label htmlFor="{'nm_author'}">Largura: {items.width}</label>
+                            <input value={items.width} onChange={set('width')} type="text"
                                    className='form-control input-default'/>
                         </div>
                         <div className="col-3">
-                            <label htmlFor="{'nm_author'}">Profundidade: {values.thickness}</label>
-                            <input value={values.thickness} onChange={set('thickness')} type="text"
+                            <label htmlFor="{'nm_author'}">Profundidade: {items.thickness}</label>
+                            <input value={items.thickness} onChange={set('thickness')} type="text"
                                    className='form-control input-default'/>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-12">
                             <label htmlFor="">Resumo</label>
-                            <textarea className='form-control' value={values.summary} id="" cols="30" rows="10"
+                            <textarea className='form-control' value={items.summary} id="" cols="30" rows="10"
                                       onChange={set('summary')}></textarea>
                         </div>
                     </div>
                     <div className="row">
                         <span className='text-small text-muted'>
-                            Criado em: {formatDate(values.datCreated)}
+                            Criado em: {formatDate(items.createdAt)}
                         </span>
                         <span className="text-small text-muted">
-                            Editado em: {formatDate(values.datLastEdited)}
+                            Editado em: {formatDate(items.lastEditedAt)}
                         </span>
                     </div>
                 </div>
@@ -527,7 +527,7 @@ const ModalItem = (props) => {
                 title={'Item'}
                 body={body()}
                 fullscreen={true}
-                actionModal={(e) => handleSubmit(e, URL_ITEM, values, false, 'Item cadastrado com sucesso')}
+                actionModal={(e) => handleSubmit(e, URL_ITEM, items, false, 'Item cadastrado com sucesso')}
             />
         </div>
     );
