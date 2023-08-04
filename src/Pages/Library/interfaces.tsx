@@ -1,7 +1,7 @@
 export interface Item {
     itemId?: string | null
     lastStatusId: string | null
-    lastStatusDate: Date | null
+    lastStatusDate: string | null
     mainAuthorId: number
     authorsId?: number[]
     translatorId?: number
@@ -37,6 +37,12 @@ export interface Item {
 
 export interface Author {
     authorId?: string
+    authorName: string
+    birthDate?: string
+    languageId?: string
+    languageName?: string
+    countryId?: string
+    countryName?: string
 }
 
 export interface Serie {
