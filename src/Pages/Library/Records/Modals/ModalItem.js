@@ -55,13 +55,14 @@ const ModalItem = (props) => {
     useEffect(() => {
         if (props.item) {
             setItems(props.item);
+            console.log(props.item);
         }
 
         if (!props.modalState) {
             setItems({
                 item_id: null,
-                last_status_id: null,
-                dat_last_status: new Date().getDate(),
+                lastStatusId: null,
+                lastStatusAt: new Date().getDate(),
                 main_author_id: 0,
                 authors_id: [],
                 translator_id: 0,
@@ -106,6 +107,8 @@ const ModalItem = (props) => {
             setSelectedLanguage(null);
         }
     }, [props.modalState, props.item])
+
+    console.log(items);
 
     // Set combo boxes default
     useEffect(() => {
@@ -162,7 +165,7 @@ const ModalItem = (props) => {
             callback(filterSelect(mainAuthor, query));
         } else {
             getData(URL_AUTHOR).then(response => {
-                let options = response?.authors.map(author => ({value: author.id, label: author.nm_full}))
+                let options = response?.authors.map(author => ({value: author.authorId, label: author.authorName}))
                 callback(options);
                 setMainAuthor(options);
                 setSelectedMainAuthor(options.filter(i => i.value === items.mainAuthorId)[0])
