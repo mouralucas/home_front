@@ -1,9 +1,10 @@
 import React, {useState} from "react";
-import {Item, Author, ItemModalProps} from "../../interfaces";
+import {Author, Item, ItemModalProps} from "../../interfaces";
 import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";
 import {URL_AUTHOR} from "../../../../Services/Axios/ApiUrls";
 import {getDefaultDate} from "../../../../Utils/DateTime";
+import AsyncSelect from "react-select/async";
 
 const ItemDefault: Item = {
     itemId: null,
@@ -67,9 +68,37 @@ const App = (props: ItemModalProps) => {
         }
     }
 
-    return (
-        <></>
+    let html = (
+        <>
+            <div className="">
+                <div className="row">
+                    <div className="col-4">
+                        <AsyncSelect loadOptions={(query, callback) => getAuthors(query, callback)}
+                                     onChange={(e) => setCombo(e, 'mainAuthorId', setSelectedMainAuthor)}
+                                     defaultOptions
+                                     value={selectedMainAuthor}/>
+                    </div>
+                </div>
+            </div>
+        </>
     )
+
+    const setCombo = (e: any, name: string, setFunction: any) => {
+        if (e !== null) {
+            if (Array.isArray(e)) {
+                let list_values: any[] = [];
+                e.forEach(key => list_values.push(key.value));
+                setFunction(e);
+                return setItems(oldValues => ({...oldValues, [name]: list_values}));
+            } else {
+                setFunction(e);
+                return setItems(oldValues => ({...oldValues, [name]: e.value}));
+            }
+        }
+        return setItems(oldValues => ({...oldValues, [name]: e.value}));
+    }
+
+    return html
 }
 
 export default App;
