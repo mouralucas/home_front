@@ -1,3 +1,10 @@
+/**
+ * This file contains all sharable interface in finance.
+ * Any interface used in more than one file MUST be in here to maintain data integrity throughout the project
+ * If the interface is specific to some case, it must be written within the correspondent file
+ */
+
+
 export interface Statement {
     statementId: number | null
     amount: number
