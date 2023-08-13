@@ -11,13 +11,13 @@ import {getData} from "../../../../Services/Axios/Get";
 import {format as formatDate} from "../../../../Utils/DateTime";
 
 
-interface BankStatementProps {
+interface AccountStatementProps {
     statement: any,
     modalState: boolean,
     hideModal: any
 }
 
-interface BankStatementValues {
+interface AccountStatementValues {
     amount: number,
     accountId: string | null,
     categoryId: string | null,
@@ -29,7 +29,7 @@ interface BankStatementValues {
     cashFlowId: string
 }
 
-const App = (props: BankStatementProps) => {
+const App = (props: AccountStatementProps) => {
     const [account, setAccount] = useState<any[] | null>([]);
     const [selectedAccount, setSelectedAccount] = useState<any | null>();
 
@@ -42,7 +42,7 @@ const App = (props: BankStatementProps) => {
     const [cashFlow, setCashFlow] = useState<any[] | null>([])
     const [selectedCashFlow, setSelectedCashFlow] = useState<any[] | null>([]);
 
-    const [values, setValues] = useState<BankStatementValues>({
+    const [values, setValues] = useState<AccountStatementValues>({
         amount: 0,
         accountId: null,
         categoryId: null,
@@ -208,7 +208,8 @@ const App = (props: BankStatementProps) => {
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Data compra</label>
-                            <DateBox value={values.purchasedAt} type="date" className='form-control input-default'
+                            <DateBox value={values.purchasedAt}
+                                     className='form-control input-default'
                                      useMaskBehavior={true}
                                      onValueChanged={(date: any) => setDateValues(date, 'purchasedAt')}/>
                         </div>

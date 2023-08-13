@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {URL_ACCOUNT_STATEMENT} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/DataGrid";
 import Button from "devextreme-react/button";
-import ModalStatement from '../Modals/BankStatement'
+import ModalStatement from '../Modals/AccountStatement'
 import {Button as Btn} from "devextreme-react/data-grid";
 import {toast} from "react-toastify";
 import {getData} from "../../../../Services/Axios/Get";
