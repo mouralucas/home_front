@@ -3,22 +3,24 @@ import {ArgumentAxis, Chart, CommonSeriesSettings, Export, Grid, Legend, Margin,
 
 
 interface LineChartProps {
-    data: any[]
-    series: any[]
-    type: string
+    data: any[] | undefined
+    series: any[] | undefined
+    argumentField: string
+    type?: string
 }
 
 const App = (props: LineChartProps) => {
+    console.log(props.data)
     return (
         <Chart palette={"Violet"}
                dataSource={props.data}>
 
             <CommonSeriesSettings
-                argumentField="country"
+                argumentField={props.argumentField}
                 type={props.type || 'line'}
             />
             {
-                props.series.map((item) => <Series
+                props.series?.map((item) => <Series
                     key={item.value}
                     valueField={item.value}
                     name={item.name}/>)
