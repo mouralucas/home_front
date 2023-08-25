@@ -4,8 +4,9 @@ import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";
 import {URL_AUTHOR} from "../../../../Services/Axios/ApiUrls";
 import {getDefaultDate} from "../../../../Utils/DateTime";
-import AsyncSelect from "react-select/async";
 import Modal from "../../../../Components/Modal";
+import AsyncSelect from "react-select/async";
+import { useForm, Controller } from 'react-hook-form';
 
 const ItemDefault: Item = {
     itemId: null,
@@ -56,6 +57,9 @@ const App = (props: ItemModalProps) => {
 
     const [items, setItems] = useState<Item>(ItemDefault)
 
+    const { handleSubmit, control, register } = useForm();
+    const [formData, setFormData] = useState({ nome: '', opcao: {'label': '', 'value': ''} });
+
     const getAuthors = (query: string, callback: any) => {
         if (query) {
             callback(filterSelect(mainAuthor, query));
@@ -70,20 +74,45 @@ const App = (props: ItemModalProps) => {
         }
     }
 
+    const onSubmit = (data: any) => {
+        setFormData(data);
+        console.log(data);
+    };
+
     const body = () => {
         let html = (
-            <>
-                <div className="">
-                    <div className="row">
-                        <div className="col-4">
-                            <AsyncSelect loadOptions={(query, callback) => getAuthors(query, callback)}
-                                         onChange={(e) => setCombo(e, 'mainAuthorId', setSelectedMainAuthor)}
-                                         defaultOptions
-                                         value={selectedMainAuthor}/>
-                        </div>
+            <div>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div>
+                        <label>Nome:</label>
+                        <input {...register('nome')} />
                     </div>
+                    <div>
+                        <label>Opção:</label>
+                        <Controller
+                            name="opcao"
+                            control={control}
+                            render={({field}) => (
+                                <AsyncSelect
+                                    {...field}
+                                    loadOptions={(query, callback) => getAuthors(query, callback)}
+                                    defaultOptions
+                                    value={field.value || null}
+                                    onChange={(selectedOption) => field.onChange(selectedOption)}
+                                    placeholder="Selecione uma opção"
+                                />
+                            )}
+                        />
+                    </div>
+                    {/*<button type="submit">Enviar</button>*/}
+                </form>
+
+                <div>
+                    <h2>Valores do Formulário</h2>
+                    <p>Nome: {formData.nome}</p>
+                    <p>Opção: {formData.opcao ? formData.opcao.value : 'Nenhuma opção selecionada'}</p>
                 </div>
-            </>
+            </div>
         )
 
         return html
