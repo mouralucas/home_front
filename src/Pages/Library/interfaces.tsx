@@ -75,7 +75,7 @@ export interface LastStatus {
 
 // Modal Props
 export interface ItemModalProps {
-    item: Item
+    item: Item | null
     modalState: boolean
     hideModalItem: any
 }

@@ -1,7 +1,7 @@
 import DataGrid from "../../../../Components/DataGrid";
 import React, {useEffect, useState} from "react";
 import {URL_ITEM} from '../../../../Services/Axios/ApiUrls'
-import ModalItem from "../Modals/ModalItem";
+import ModalItem from "../Modals/Item";
 import {Button} from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
 import {Item} from "../../interfaces";
@@ -9,7 +9,7 @@ import {getData} from "../../../../Services/Axios/Get";
 
 const Book = () => {
     const [books, setBooks] = useState<Item[] | null>();
-    const [selectedBook, setSelectedBook] = useState<Item | null>();
+    const [selectedBook, setSelectedBook] = useState<Item | null>(null);
     const [modalState, setModalState] = useState<boolean>(false);
 
     useEffect(() => {
@@ -134,7 +134,6 @@ const Book = () => {
                 keyExpr={'itemId'}
                 columns={colunasTabelaLivro}
                 data={books}
-                // tooBarRefresh={false}
                 toolBarItems={toolBarItems}
                 showLoadPanel={false}
             />

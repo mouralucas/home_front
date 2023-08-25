@@ -5,6 +5,7 @@ import {getData} from "../../../../Services/Axios/Get";
 import {URL_AUTHOR} from "../../../../Services/Axios/ApiUrls";
 import {getDefaultDate} from "../../../../Utils/DateTime";
 import AsyncSelect from "react-select/async";
+import Modal from "../../../../Components/Modal";
 
 const ItemDefault: Item = {
     itemId: null,
@@ -54,6 +55,7 @@ const App = (props: ItemModalProps) => {
     const [selectedItemType, setSelectedItemType] = useState();
 
     const [items, setItems] = useState<Item>(ItemDefault)
+
     const getAuthors = (query: string, callback: any) => {
         if (query) {
             callback(filterSelect(mainAuthor, query));
@@ -61,27 +63,31 @@ const App = (props: ItemModalProps) => {
             getData(URL_AUTHOR).then(response => {
                 let options = response?.authors.map((author: Author) => ({value: author.authorId, label: author.authorName}))
                 callback(options);
-                setMainAuthor(options);
-                setSelectedMainAuthor(options.filter((i: { value: number; }) => i.value === items.mainAuthorId)[0])
+                // setMainAuthor(options);
+                // setSelectedMainAuthor(options.filter((i: { value: number; }) => i.value === items.mainAuthorId)[0])
             })
 
         }
     }
 
-    let html = (
-        <>
-            <div className="">
-                <div className="row">
-                    <div className="col-4">
-                        <AsyncSelect loadOptions={(query, callback) => getAuthors(query, callback)}
-                                     onChange={(e) => setCombo(e, 'mainAuthorId', setSelectedMainAuthor)}
-                                     defaultOptions
-                                     value={selectedMainAuthor}/>
+    const body = () => {
+        let html = (
+            <>
+                <div className="">
+                    <div className="row">
+                        <div className="col-4">
+                            <AsyncSelect loadOptions={(query, callback) => getAuthors(query, callback)}
+                                         onChange={(e) => setCombo(e, 'mainAuthorId', setSelectedMainAuthor)}
+                                         defaultOptions
+                                         value={selectedMainAuthor}/>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </>
-    )
+            </>
+        )
+
+        return html
+    }
 
     const setCombo = (e: any, name: string, setFunction: any) => {
         if (e !== null) {
@@ -98,7 +104,17 @@ const App = (props: ItemModalProps) => {
         return setItems(oldValues => ({...oldValues, [name]: e.value}));
     }
 
-    return html
+    return (
+        <div>
+            <Modal
+                showModal={props.modalState}
+                hideModal={props.hideModalItem}
+                title={'Item Beta'}
+                fullscreen={true}
+                body={body()}
+            />
+        </div>
+    )
 }
 
 export default App;
