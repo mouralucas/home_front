@@ -35,7 +35,7 @@ const App = () => {
 
     return (
         // @ts-ignore
-        <Line data={interest?.data} series={interest?.series} argumentField={'date'}>
+        <Line data={interest?.data} series={interest?.series} argumentField={'date'} type={'spline'}>
         </Line>
     )
 }

@@ -14,10 +14,12 @@ import {CreditCardBill} from "../../Interfaces";
 
 const DefaultCreditCardBill: CreditCardBill = {
     creditCardId: null,
+    creditCardName: null,
     categoryId: null,
+    categoryName: null,
     amount: 0,
     paymentAt: getDefaultDate(),
-    purchasedAt: getDefaultDate(),
+    purchaseAt: getDefaultDate(),
     description: '',
     createdAt: undefined,
     lastEditedAt: undefined
@@ -141,15 +143,15 @@ const App = (props: CreditCardBillProps): ReactElement => {
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data compra</label>
-                            <DateBox value={creditCardBill.purchasedAt} type="date" className='form-control input-default'
+                            <DateBox value={creditCardBill.purchaseAt} type="date" className='form-control input-default'
                                      useMaskBehavior={true}
-                                     onValueChanged={(date: any) => setDate(date, 'dat_purchase')}/>
+                                     onValueChanged={(date: any) => setDate(date, 'purchaseAt')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data pagamento</label>
                             <DateBox value={creditCardBill.paymentAt} className='form-control input-default'
                                      useMaskBehavior={true}
-                                     onValueChanged={(date: any) => setDate(date, 'dat_payment')}/>
+                                     onValueChanged={(date: any) => setDate(date, 'paymentAt')}/>
                         </div>
                     </div>
                     <div className='row'>

@@ -46,7 +46,7 @@ const App = () => {
      * @returns the installments in xx/xx format
      */
     function installmentCustomCell(cellInfo: any) {
-        return cellInfo.installment + '/' + cellInfo.tot_installment;
+        return cellInfo.installment + '/' + cellInfo.totalInstallment;
     }
 
     function myOtherCommand(e: any) {
@@ -67,24 +67,24 @@ const App = () => {
             visible: false,
         },
         {
-            dataField: "credit_card_id",
+            dataField: "creditCardId",
             visible: false
         },
         {
-            dataField: "nm_credit_card",
+            dataField: "creditCardName",
             caption: "Cartão",
             dataType: "string",
             width: 150,
         },
         {
-            dataField: "dat_purchase",
+            dataField: "purchaseAt",
             caption: "Compra",
             dataType: "date",
             format: 'shortDate',
             width: 150,
         },
         {
-            dataField: "dat_payment",
+            dataField: "paymentAt",
             caption: "Pagamento",
             dataType: "date",
             width: 150,
@@ -108,7 +108,7 @@ const App = () => {
             dataType: "string",
         },
         {
-            dataField: "nm_category",
+            dataField: "categoryName",
             caption: "Categoria",
             dataType: "string",
         },
