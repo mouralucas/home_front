@@ -45,10 +45,12 @@ export interface Investment {
 
 export interface CreditCardBill {
     creditCardId: string | null
+    creditCardName: string | null
     categoryId: string | null
+    categoryName: string | null
     amount: number
     paymentAt: string
-    purchasedAt: string
+    purchaseAt: string
     description: string
     createdAt: string | undefined
     lastEditedAt: string | undefined

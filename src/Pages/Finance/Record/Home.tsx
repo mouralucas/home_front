@@ -18,21 +18,6 @@ const App = () => {
                         <Card>
                             <Card.Header>
                                 <div className="row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100">
-                                    <div className="col-10">Investimentos</div>
-                                    <div className="col-2"></div>
-                                </div>
-                            </Card.Header>
-                            <Card.Body>
-                                <InvestmentTable/>
-                            </Card.Body>
-                        </Card>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12">
-                        <Card>
-                            <Card.Header>
-                                <div className="row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100">
                                     <div className="col-10">Fatura</div>
                                     <div className="col-2"></div>
                                 </div>
@@ -54,30 +39,21 @@ const App = () => {
                         </Card>
                     </div>
                 </div>
-
-
-
-                {/* <div className="row">
+                <div className="row">
                     <div className="col-12">
                         <Card>
                             <Card.Header>
-                                <div
-                                    className="row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100">
-                                    <div className="col-10">
-                                        Extrato Investimento
-                                    </div>
-                                    <div className="col-2">
-                                        <Select formTarget={true}
-                                                options={getListPeriods(201801, +getCurrentPeriod())}/>
-                                    </div>
+                                <div className="row pr-2 pl-2 d-flex justify-content-between align-items-center flex-wrap w-100">
+                                    <div className="col-10">Investimentos</div>
+                                    <div className="col-2"></div>
                                 </div>
                             </Card.Header>
                             <Card.Body>
-                                <InvestmentStatementTable/>
+                                <InvestmentTable/>
                             </Card.Body>
                         </Card>
                     </div>
-                </div> */}
+                </div>
             </div>
         </div>
     );
