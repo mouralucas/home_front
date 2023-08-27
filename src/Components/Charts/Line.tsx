@@ -10,7 +10,6 @@ interface LineChartProps {
 }
 
 const App = (props: LineChartProps) => {
-    console.log(props.data)
     return (
         <Chart palette={"Violet"}
                dataSource={props.data}>

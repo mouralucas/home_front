@@ -212,7 +212,6 @@ const App = (props: InvestmentProps): React.ReactElement => {
 
         // Set the object of selected parent investment
         let parentInvestment = e !== null ? parentObj.filter((i: { investmentId: any; }) => i.investmentId === e.value)[0] : null
-        console.log(parentInvestment);
 
         setSelectedInterestRate(interestRate.filter((i: { value: any; }) => i.value === parentInvestment?.interestRate)[0]);
         setInvestment(oldValues => ({...oldValues, 'interestRate': parentInvestment?.interestRate}))

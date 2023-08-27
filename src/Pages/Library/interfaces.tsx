@@ -2,7 +2,7 @@ export interface Item {
     itemId?: string | null
     lastStatusId: string | null
     lastStatusDate: string | null
-    mainAuthorId: number
+    mainAuthorId: any
     authorsId?: number[]
     translatorId?: number
     title: string
@@ -70,7 +70,12 @@ export interface Language {
 }
 
 export interface LastStatus {
-    lastStatusId?: string
+    statusId?: string
+    statusName?: string
+    description?: string
+    order?: number
+    image?: string
+    type?: string
 }
 
 // Modal Props

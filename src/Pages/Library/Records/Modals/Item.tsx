@@ -1,18 +1,20 @@
-import React, {useState} from "react";
-import {Author, Item, ItemModalProps} from "../../interfaces";
-import filterSelect from "../../../../Utils/DataHandling";
+import React, {useEffect, useState} from "react";
+import {Author, Item, ItemModalProps, LastStatus} from "../../interfaces";
 import {getData} from "../../../../Services/Axios/Get";
-import {URL_AUTHOR} from "../../../../Services/Axios/ApiUrls";
+import {URL_AUTHOR, URL_STATUS} from "../../../../Services/Axios/ApiUrls";
 import {getDefaultDate} from "../../../../Utils/DateTime";
 import Modal from "../../../../Components/Modal";
-import AsyncSelect from "react-select/async";
-import { useForm, Controller } from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
+import MainAuthorSelect from '../../../../Components/Select'
+import OtherAuthorsSelect from '../../../../Components/MultiSelect'
+import StatusSelect from '../../../../Components/Select'
+
 
 const ItemDefault: Item = {
     itemId: null,
     lastStatusId: null,
     lastStatusDate: getDefaultDate(),
-    mainAuthorId: 0,
+    mainAuthorId: null,
     authorsId: [],
     translatorId: 0,
     title: '',
@@ -46,91 +48,130 @@ const ItemDefault: Item = {
 }
 
 const App = (props: ItemModalProps) => {
-    const [mainAuthor, setMainAuthor] = useState<Author[]>();
-    const [selectedMainAuthor, setSelectedMainAuthor] = useState<Author | null>();
+    const [authors, setAuthors] = useState<Author[]>();
+    const [status, setStatus] = useState<LastStatus[]>()
 
-    const [otherAuthors, setOtherAuthors] = useState<Author[]>();
-    const [selectedOtherAuthors, setSelectedOtherAuthors] = useState<Author | null>();
-
-    const [itemType, setItemType] = useState([]);
-    const [selectedItemType, setSelectedItemType] = useState();
-
+    // Verificar como usar o formData pra controlar o form e os dados de entrada
     const [items, setItems] = useState<Item>(ItemDefault)
 
-    const { handleSubmit, control, register } = useForm();
-    const [formData, setFormData] = useState({ nome: '', opcao: {'label': '', 'value': ''} });
+    const {handleSubmit, control, register, setValue} = useForm();
+    const [formData, setFormData] = useState<Item>(ItemDefault);
 
-    const getAuthors = (query: string, callback: any) => {
-        if (query) {
-            callback(filterSelect(mainAuthor, query));
-        } else {
-            getData(URL_AUTHOR).then(response => {
-                let options = response?.authors.map((author: Author) => ({value: author.authorId, label: author.authorName}))
-                callback(options);
-                // setMainAuthor(options);
-                // setSelectedMainAuthor(options.filter((i: { value: number; }) => i.value === items.mainAuthorId)[0])
-            })
-
-        }
+    const getAuthors = () => {
+        getData(URL_AUTHOR).then(response => {
+            // Tratar retorno, caso necessário, add toastr
+            setAuthors(response.authors);
+        })
     }
+
+    const getStatus = () => {
+        getData(URL_STATUS, {status_type: 'LIBRARY_ITEM'}).then(response => {
+            setStatus(response.status)
+        })
+    }
+
+    useEffect(() => {
+        getAuthors();
+        getStatus();
+    }, []);
 
     const onSubmit = (data: any) => {
         setFormData(data);
-        console.log(data);
     };
 
     const body = () => {
         let html = (
             <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <label>Nome:</label>
-                        <input {...register('nome')} />
+                    <div className='row'>
+                        <div className="col-4">
+                            <label>Autor:</label>
+                            <Controller
+                                name="mainAuthorId"
+                                control={control}
+                                defaultValue={items.mainAuthorId}
+                                render={({field}) => (
+                                    <MainAuthorSelect
+                                        dataSource={authors}
+                                        displayExpr="authorName"
+                                        valueExpr="authorId"
+                                        searchMode={'contains'}
+                                        searchExpr={'AuthorName'}
+                                        onValueChanged={(e: {
+                                            value: any;
+                                        }) => setValue('mainAuthorId', e.value)}
+                                        placeholder={'Selecione um autor'}
+                                        {...field}
+                                    />
+                                )}
+                            />
+                        </div>
+                        <div className="col-4">
+                            <label>Outros autores:</label>
+                            <Controller
+                                name="authorsId"
+                                control={control}
+                                defaultValue={items.mainAuthorId}
+                                render={({field}) => (
+                                    <OtherAuthorsSelect
+                                        dataSource={authors}
+                                        displayExpr="authorName"
+                                        valueExpr="authorId"
+                                        searchMode={'contains'}
+                                        searchExpr={'AuthorName'}
+                                        onValueChanged={(e: {
+                                            value: any;
+                                        }) => setValue('authorsId', e.value)}
+                                        placeholder={'Selecione um autor'}
+                                        {...field}
+                                    />
+                                )}
+                            />
+                        </div>
+                        <div className="col-2">
+                            <label>Status atual</label>
+                            <Controller
+                                name="lastStatusId"
+                                control={control}
+                                defaultValue={items.lastStatusId}
+                                render={({field}) => (
+                                    <StatusSelect
+                                        dataSource={status}
+                                        displayExpr="statusName"
+                                        valueExpr="statusId"
+                                        searchMode={'contains'}
+                                        searchExpr={'statusName'}
+                                        onValueChanged={(e: {
+                                            value: any;
+                                        }) => setValue('lastStatusId', e.value)}
+                                        placeholder={'Selecione um status'}
+                                        {...field}
+                                    />
+                                )}
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <label>Opção:</label>
-                        <Controller
-                            name="opcao"
-                            control={control}
-                            render={({field}) => (
-                                <AsyncSelect
-                                    {...field}
-                                    loadOptions={(query, callback) => getAuthors(query, callback)}
-                                    defaultOptions
-                                    value={field.value || null}
-                                    onChange={(selectedOption) => field.onChange(selectedOption)}
-                                    placeholder="Selecione uma opção"
-                                />
-                            )}
-                        />
-                    </div>
-                    {/*<button type="submit">Enviar</button>*/}
+                    <button type="submit">Enviar</button>
                 </form>
 
+                {/*Div para validação do formulário*/}
                 <div>
                     <h2>Valores do Formulário</h2>
-                    <p>Nome: {formData.nome}</p>
-                    <p>Opção: {formData.opcao ? formData.opcao.value : 'Nenhuma opção selecionada'}</p>
+                    <p>Main author: {formData.mainAuthorId ? formData.mainAuthorId : 'Nenhuma opção selecionada'}</p>
+                    <p>Other Authors: {formData.authorsId ?
+                        <ul>
+                            {formData.authorsId.map(selectedItem => (
+                                <li key={selectedItem}>{selectedItem}</li>
+                            ))}
+                        </ul> : 'Nenhuma opção selecionada'}
+                    </p>
+                    <p>Last status: {formData.lastStatusId ? formData.lastStatusId : 'Status não selecionado'}</p>
+
                 </div>
             </div>
         )
 
         return html
-    }
-
-    const setCombo = (e: any, name: string, setFunction: any) => {
-        if (e !== null) {
-            if (Array.isArray(e)) {
-                let list_values: any[] = [];
-                e.forEach(key => list_values.push(key.value));
-                setFunction(e);
-                return setItems(oldValues => ({...oldValues, [name]: list_values}));
-            } else {
-                setFunction(e);
-                return setItems(oldValues => ({...oldValues, [name]: e.value}));
-            }
-        }
-        return setItems(oldValues => ({...oldValues, [name]: e.value}));
     }
 
     return (

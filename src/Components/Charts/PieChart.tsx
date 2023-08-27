@@ -18,7 +18,6 @@ const App = (props: PieCharProps) => {
     }
 
     const pointClickHandler = (arg: { target: { select: () => void; }; }) => {
-        console.log(arg)
         arg.target.select();
     }
 

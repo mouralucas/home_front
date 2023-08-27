@@ -16,7 +16,6 @@ const App = (props: DoughnutChartProps) => {
     }
 
     const customizeTooltip = (arg: any): { text: string } => {
-        console.log(arg)
         return {
             text: `${arg.value} - ${(arg.percent * 100).toFixed(2)}%`,
         };
