@@ -37,6 +37,7 @@ export const URL_CURRENCY = '/finance/currency'
 export const URL_FINANCE_SUMMARY = '/finance/summary'
 export const URL_FINANCE_BANK = '/finance/bank'
 export const URL_FINANCE_INTEREST = 'finance/interest'
+export const URL_FINANCE_INVESTMENT_PROFIT = 'finance/investment/profit'
 
 // Files URLs
 export const URL_UPLOADS = 'file/upload'

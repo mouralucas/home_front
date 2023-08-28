@@ -123,10 +123,6 @@ const App = (props: CreditCardBillProps): ReactElement => {
         return setCreditCardBill(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
 
-    const getPaymentDate = (e: any, purchaseDate: any) => {
-        e.preventDefault()
-    }
-
     const body = () => {
         let body_html =
             <form>

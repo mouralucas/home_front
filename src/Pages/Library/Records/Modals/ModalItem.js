@@ -25,7 +25,6 @@ const ModalItem = (props) => {
     const [mainAuthor, setMainAuthor] = useState([]);
     const [selectedMainAuthor, setSelectedMainAuthor] = useState();
 
-    const [otherAuthors, setOtherAuthors] = useState([]);
     const [selectedOtherAuthors, setSelectedOtherAuthors] = useState();
 
     const [itemType, setItemType] = useState([]);

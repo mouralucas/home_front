@@ -54,7 +54,7 @@ const App = (props: ItemModalProps) => {
     // Verificar como usar o formData pra controlar o form e os dados de entrada
     const [items, setItems] = useState<Item>(ItemDefault)
 
-    const {handleSubmit, control, register, setValue} = useForm();
+    const {handleSubmit, control, setValue} = useForm();
     const [formData, setFormData] = useState<Item>(ItemDefault);
 
     const getAuthors = () => {
