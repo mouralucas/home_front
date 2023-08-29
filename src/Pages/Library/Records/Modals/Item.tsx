@@ -90,6 +90,7 @@ const App = (props: ItemModalProps) => {
                                 name="mainAuthorId"
                                 control={control}
                                 defaultValue={items.mainAuthorId}
+                                rules={{ required: true }}
                                 render={({field}) => (
                                     <MainAuthorSelect
                                         dataSource={authors}
@@ -102,6 +103,7 @@ const App = (props: ItemModalProps) => {
                                         }) => setValue('mainAuthorId', e.value)}
                                         placeholder={'Selecione um autor'}
                                         {...field}
+                                        ref={null}
                                     />
                                 )}
                             />
@@ -124,6 +126,7 @@ const App = (props: ItemModalProps) => {
                                         }) => setValue('authorsId', e.value)}
                                         placeholder={'Selecione um autor'}
                                         {...field}
+                                        ref={null}
                                     />
                                 )}
                             />
@@ -146,6 +149,7 @@ const App = (props: ItemModalProps) => {
                                         }) => setValue('lastStatusId', e.value)}
                                         placeholder={'Selecione um status'}
                                         {...field}
+                                        ref={null}
                                     />
                                 )}
                             />

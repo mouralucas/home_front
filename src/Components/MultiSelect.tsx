@@ -1,6 +1,4 @@
 import React from "react";
-import SelectBox from "devextreme-react/select-box";
-import DevExpress from "devextreme";
 import {TagBox} from "devextreme-react";
 
 interface SelectProps {
@@ -11,6 +9,7 @@ interface SelectProps {
     searchExpr: string
     onValueChanged: any
     placeholder?: string
+    ref?: any
 }
 
 const App = (props: SelectProps) => {
@@ -23,6 +22,7 @@ const App = (props: SelectProps) => {
             searchExpr={props.searchExpr}
             onValueChanged={props.onValueChanged}
             placeholder={props.placeholder ?? 'Selecione um autor'}
+            ref={props.ref ?? null}
         />
     )
 }

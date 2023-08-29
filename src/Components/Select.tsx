@@ -10,6 +10,7 @@ interface SelectProps {
     searchExpr: string
     onValueChanged: any
     placeholder?: string
+    ref?: any
 }
 
 const App = (props: SelectProps) => {
@@ -22,6 +23,8 @@ const App = (props: SelectProps) => {
             searchExpr={props.searchExpr}
             onValueChanged={props.onValueChanged}
             placeholder={props.placeholder ?? 'Selecione um autor'}
+            ref={props.ref || null}
+            showClearButton={true}
         />
     )
 }
