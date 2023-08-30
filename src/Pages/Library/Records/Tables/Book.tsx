@@ -1,4 +1,4 @@
-import DataGrid from "../../../../Components/DataGrid";
+import DataGrid from "../../../../Components/Table/DataGrid";
 import React, {useEffect, useState} from "react";
 import {URL_ITEM} from '../../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/Item";

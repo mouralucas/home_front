@@ -13,7 +13,7 @@ import {
 } from "../../../../Services/Axios/ApiUrls";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
-import Currency from "../../../../Components/Currency";
+import Currency from "../../../../Components/Form/Currency";
 import AsyncSelect from "react-select/async";
 import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";

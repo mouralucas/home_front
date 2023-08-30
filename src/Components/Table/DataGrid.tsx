@@ -16,7 +16,7 @@ import DataGrid, {
 } from 'devextreme-react/data-grid';
 import {Item} from "devextreme-react/box";
 import {FilterRow} from "devextreme-react/gantt";
-import '../Assets/Core/Components/Table.css'
+import '../../Assets/Core/Components/Table.css'
 
 
 const pageSizes: number[] = [10, 15, 20, 50, 100];

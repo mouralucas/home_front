@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "../../../../Services/Axios/Axios";
 import {URL_CREDIT_CARD_BILL} from "../../../../Services/Axios/ApiUrls";
-import DataGrid from "../../../../Components/DataGrid";
+import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalBill from '../Modals/CreditCardBill'

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {URL_AUTHOR} from "../../../../Services/Axios/ApiUrls";
-import DataGrid from "../../../../Components/DataGrid";
+import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalAuthor from '../Modals/Author'

@@ -1,7 +1,7 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
 import {URL_ACCOUNT_STATEMENT, URL_ACCOUNTS, URL_CATEGORIES, URL_CURRENCY} from "../../../../Services/Axios/ApiUrls";
-import Currency from "../../../../Components/Currency";
+import Currency from "../../../../Components/Form/Currency";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import handleSubmit from '../../../../Services/Axios/Post'
