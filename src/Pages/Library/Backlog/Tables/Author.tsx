@@ -5,6 +5,7 @@ import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalAuthor from '../Modals/Author'
 import {getData} from "../../../../Services/Axios/Get";
+import {toast} from "react-toastify";
 
 const App = () => {
     const [author, setAuthor] = useState();
@@ -25,6 +26,8 @@ const App = () => {
     const getAuthor = () => {
         getData(URL_AUTHOR).then(response => {
             setAuthor(response?.authors)
+        }).catch(err => {
+            toast.error('Não foi possível buscar a lista de autores')
         });
     }
 

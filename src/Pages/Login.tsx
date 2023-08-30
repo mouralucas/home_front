@@ -6,7 +6,7 @@ import axios from "../Services/Axios/Axios";
 import {isAuthenticated, setToken} from '../Services/Auth/Auth'
 import {URL_LOGIN} from "../Services/Axios/ApiUrls";
 
-async function loginAPI(credentials) {
+async function loginAPI(credentials: { username: string; password: string; }) {
     return axios({
         method: 'post',
         url: URL_LOGIN,
@@ -22,13 +22,13 @@ async function loginAPI(credentials) {
 }
 
 const Login = () => {
-    const [username, setUserName] = useState();
-    const [password, setPassword] = useState();
+    const [username, setUserName] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
     let navigate = useNavigate();
     let location = useLocation();
 
-    const handleSubmit = async e => {
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         const token = await loginAPI({
             username,
