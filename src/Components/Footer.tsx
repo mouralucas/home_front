@@ -1,13 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import logo from '../Assets/Core/Images/Logo/logo_lucas.svg';
-import {Link} from "react-router-dom";
+import React, {useEffect, useState} from "react";
 import {getData} from "../Services/Axios/Get";
 import {URL_VERSION} from "../Services/Axios/ApiUrls";
 import {toast} from "react-toastify";
+import logo from '../Assets/Core/Images/Logo/logo_lucas.svg';
+import {Link} from "react-router-dom";
 
-
-const Footer = () => {
-    const [version, setVersion] = useState([])
+const App = () => {
+    const [version, setVersion] = useState<any>([])
 
     useEffect(() => {
         getVersion();
@@ -42,7 +41,7 @@ const Footer = () => {
                 </div>
             </div>
         </footer>
-    );
-};
+    )
+}
 
-export default Footer;
+export default App;

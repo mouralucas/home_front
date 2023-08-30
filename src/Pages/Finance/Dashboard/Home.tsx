@@ -3,7 +3,6 @@ import PieChartCategoryExpenses from './Charts/ExpensesCategory'
 import CreditCardBillHistoryChart from './Charts/CreditCardBillHistory'
 import LineChart from './Charts/Profit'
 import InvestmentProportion from "./Charts/InvestmentProportion";
-import Sidebar from '../../../Components/Sidebar/Base'
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
@@ -32,7 +31,6 @@ const Home = () => {
 
     return (
         <div className="page-with-menu">
-            <Sidebar/>
             <div className='app'>
                 <div className="row">
                     <div className="col-xl-3 col-lg-6 col-sm-12">

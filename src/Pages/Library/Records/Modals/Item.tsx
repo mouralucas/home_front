@@ -8,6 +8,7 @@ import {Controller, useForm} from 'react-hook-form';
 import MainAuthorSelect from '../../../../Components/Form/Select'
 import OtherAuthorsSelect from '../../../../Components/Form/MultiSelect'
 import StatusSelect from '../../../../Components/Form/Select'
+import {toast} from "react-toastify";
 
 
 const ItemDefault: Item = {
@@ -61,12 +62,16 @@ const App = (props: ItemModalProps) => {
         getData(URL_AUTHOR).then(response => {
             // Tratar retorno, caso necessário, add toastr
             setAuthors(response.authors);
+        }).catch(err => {
+            toast.error('Erro ao conectar a API para buscar os autores')
         })
     }
 
     const getStatus = () => {
         getData(URL_STATUS, {status_type: 'LIBRARY_ITEM'}).then(response => {
             setStatus(response.status)
+        }).catch(err => {
+            toast.error('Erro ao conectar a API para buscar os status')
         })
     }
 

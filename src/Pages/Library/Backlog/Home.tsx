@@ -1,4 +1,3 @@
-import Sidebar from '../../../Components/Sidebar/Base';
 import AuthorTable from "./Tables/Author";
 import React from "react";
 import Card from '../../../Components/Card'
@@ -13,7 +12,6 @@ const App = () => {
     return (
         <>
             <div className='page-with-menu'>
-                <Sidebar/>
                 <div className='App'>
                     <div className="row">
                         <div className="col-12">
