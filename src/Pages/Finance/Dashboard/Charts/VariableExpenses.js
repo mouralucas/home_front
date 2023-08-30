@@ -1,4 +1,4 @@
-import PieChart from "../../../../Components/Charts/PieChart";
+import PieChart from "../../../../Components/Chart/PieChart";
 import {useEffect, useState} from "react";
 import {URL_EXPENSE} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";

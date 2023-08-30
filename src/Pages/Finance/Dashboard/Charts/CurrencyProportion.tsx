@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {getData} from "../../../../Services/Axios/Get";
 import {URL_FINANCE_CURRENCY_FLOW} from "../../../../Services/Axios/ApiUrls";
 import {toast} from "react-toastify";
-import Doughnut from "../../../../Components/Charts/Doughnut";
+import Doughnut from "../../../../Components/Chart/Doughnut";
 import React from "react";
 
 

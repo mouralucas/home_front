@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Doughnut from "../../../../Components/Charts/Doughnut";
+import Doughnut from "../../../../Components/Chart/Doughnut";
 import {getData} from "../../../../Services/Axios/Get";
 import {URL_FINANCE_INVESTMENT_PROPORTION} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
