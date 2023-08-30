@@ -6,6 +6,8 @@ interface LineChartProps {
     data: any[] | undefined
     series: any[] | undefined
     argumentField: string
+    title: string
+    subtitle?: string
     type?: string
 }
 
@@ -37,8 +39,8 @@ const App = (props: LineChartProps) => {
                 itemTextPosition="bottom"
             />
             <Export enabled={true}/>
-            <Title text="Energy Consumption in 2004">
-                <Subtitle text="(Millions of Tons, Oil Equivalent)"/>
+            <Title text={props.title}>
+                {props.subtitle ? <Subtitle text={props.subtitle}/> : <></>}
             </Title>
             <Tooltip enabled={true}/>
         </Chart>

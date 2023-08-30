@@ -21,9 +21,11 @@ const App = () => {
 
     return (
         <Line
-            data={interest.data}
-            series={interest.series}
+            data={interest?.data}
+            series={interest?.series}
             argumentField={'reference'}
+            title={"Evolução do investimento"}
+            subtitle={"Eh os guri"}
             type={'spline'}
         />
     )
