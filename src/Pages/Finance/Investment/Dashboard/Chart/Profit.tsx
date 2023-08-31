@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import Line from "../../../../Components/Chart/Line";
-import {getData} from "../../../../Services/Axios/Get";
-import {URL_FINANCE_INVESTMENT_PROFIT} from "../../../../Services/Axios/ApiUrls";
+import Line from "../../../../../Components/Chart/Line"
+import {getData} from "../../../../../Services/Axios/Get";
+import {URL_FINANCE_INVESTMENT_PROFIT} from "../../../../../Services/Axios/ApiUrls";
 import {toast} from "react-toastify";
 
 const App = () => {
@@ -21,7 +21,7 @@ const App = () => {
 
     return (
         <Line
-            id={''}
+            id={'investment_profit_chart'}
             data={interest?.data}
             series={interest?.series}
             argumentField={'reference'}

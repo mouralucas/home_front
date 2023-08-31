@@ -1,11 +1,13 @@
 import PieChart, {Animation, Export, Label, Legend, Margin, Series} from 'devextreme-react/pie-chart';
 import React from 'react';
+import DevExpress from "devextreme";
 
 interface PieCharProps {
     data: any[],
-    pallete?: string[]
     title: string
     axis: any
+    palette?: string[]
+    type?: any
     showLegend?: boolean
 }
 
@@ -25,8 +27,9 @@ const App = (props: PieCharProps) => {
         <PieChart
             id="pie"
             dataSource={props.data}
-            palette={props.pallete ?? "Pastel"}
+            palette={props.palette ?? 'Violet'}
             title={props.title}
+            type={props.type ?? 'pie'}
             resolveLabelOverlapping={'shift'}
             onPointClick={pointClickHandler}
         >

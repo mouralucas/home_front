@@ -14,6 +14,7 @@ const Library = lazy(() => import('../Pages/Library/Records/Home'))
 const LibraryRecord = lazy(() => import('../Pages/Library/Backlog/Home'))
 const FinanceDashboard = lazy(() => import('../Pages/Finance/Dashboard/Home'))
 const FinanceRecord = lazy(() => import('../Pages/Finance/Record/Home'))
+const Investment = lazy(() => import('../Pages/Finance/Investment/Home'))
 
 
 function HomeRoutes() {
@@ -21,10 +22,14 @@ function HomeRoutes() {
         <BrowserRouter>
             <Routes>
                 <Route element={<WithNav/>}>
+                    {/*Library routes */}
                     <Route element={<RequireAuth><Library/></RequireAuth>} path="/library/home"/>
                     <Route element={<RequireAuth><LibraryRecord/></RequireAuth>} path="/library/backlog"/>
+                    {/*Finance routes*/}
                     <Route element={<RequireAuth><FinanceDashboard/></RequireAuth>} path="/finance/dashboard"/>
                     <Route element={<RequireAuth><FinanceRecord/></RequireAuth>} path="/finance/records"/>
+                    <Route element={<RequireAuth><Investment/></RequireAuth>} path="/finance/investment"/>
+                    {/*Other routes*/}
                     <Route element={<RequireAuth><Files/></RequireAuth>} path="/files"/>
                     <Route element={<RequireAuth><Uploader/></RequireAuth>} path="/files/upload"/>
                 </Route>

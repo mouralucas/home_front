@@ -32,7 +32,7 @@ const App = (props: DoughnutChartProps) => {
             type={'doughnut'}
             title={props.title ?? 'Gráfico Doughnut'}
             dataSource={props.data}
-            palette={'Pastel'}
+            palette={'Violet'}
         >
             <Series argumentField={props.argumentField} valueField={props.valueField}>
                 <Label visible={true} customizeText={customizeSeriesLabel}>

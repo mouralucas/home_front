@@ -4,6 +4,7 @@ import {URL_CREDIT_CARD_BILL_HISTORY} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";
 import {ArgumentAxis, Chart, ConstantLine, Export, Font, Label, Legend, Series, Title, ValueAxis, VisualRange} from "devextreme-react/chart";
 import {Slider, Tooltip} from 'devextreme-react/slider';
+import {RangeSlider} from "devextreme-react";
 
 
 const App = () => {
@@ -14,13 +15,13 @@ const App = () => {
     const [sliderValue, setSliderValue] = useState(500)
 
     useEffect(() => {
-        getBillHistory();
+        getBillHistory(null);
     }, []);
 
-    const getBillHistory = () => {
+    const getBillHistory = (e: any) => {
         getData(URL_CREDIT_CARD_BILL_HISTORY, {
-                'periodStart': 202201,
-                'periodEnd': 202306,
+                'startAt': 202301,
+                'endAt': 202312,
             }
         ).then(response => {
             let options = response == null ? {} : response.history.map((i: { period: string; total_amount_absolute: number; }) => ({
@@ -122,14 +123,15 @@ const App = () => {
                 <Export enabled={true}/>
             </Chart>
 
-            <Slider min={0}
-                    max={1000}
-                    value={sliderValue}
-                    onValueChange={setSliderValue}
-                    step={500}
+            <RangeSlider
+                min={201801}
+                max={202406}
+                start={202301}
+                end={202312}
+                onValueChanged={(e) => getBillHistory(e)}
             >
                 <Tooltip enabled={true} showMode="always" position="bottom" format={format}/>
-            </Slider>
+            </RangeSlider>
         </>
     );
 

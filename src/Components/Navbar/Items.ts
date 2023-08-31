@@ -25,6 +25,15 @@ export const items = [
         // url: 'finance/home'
         submenu: [
             {
+               title: 'Investimentos',
+               submenu: [
+                   {
+                       title: 'Dashboard',
+                       url: '/finance/investment'
+                   }
+               ]
+            },
+            {
                 title: 'Dashboard',
                 url: 'finance/dashboard'
             },

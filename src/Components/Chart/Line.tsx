@@ -3,6 +3,7 @@ import {ArgumentAxis, Chart, CommonSeriesSettings, Export, Grid, Legend, Margin,
 
 
 interface LineChartProps {
+    id: string
     data: any[] | undefined
     series: any[] | undefined
     argumentField: string
@@ -13,8 +14,10 @@ interface LineChartProps {
 
 const App = (props: LineChartProps) => {
     return (
-        <Chart palette={"Violet"}
-               dataSource={props.data}>
+        <Chart
+            id={props.id}
+            palette={"Violet"}
+            dataSource={props.data}>
 
             <CommonSeriesSettings
                 argumentField={props.argumentField}
