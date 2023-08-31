@@ -2,7 +2,6 @@ import Card from "../../../Components/Card";
 import PieChartCategoryExpenses from './Charts/ExpensesCategory'
 import CreditCardBillHistoryChart from './Charts/CreditCardBillHistory'
 import LineChart from './Charts/Profit'
-import InvestmentProportion from "./Charts/InvestmentProportion";
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
@@ -99,7 +98,6 @@ const Home = () => {
                         <Card>
                             {/*<Card.Header>Outra evolução</Card.Header>*/}
                             <Card.Body>
-                                <InvestmentProportion/>
                             </Card.Body>
                         </Card>
                     </div>

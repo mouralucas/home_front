@@ -1,6 +1,5 @@
 import PieChart, {Animation, Export, Label, Legend, Margin, Series} from 'devextreme-react/pie-chart';
 import React from 'react';
-import DevExpress from "devextreme";
 
 interface PieCharProps {
     data: any[],
@@ -9,12 +8,17 @@ interface PieCharProps {
     palette?: string[]
     type?: any
     showLegend?: boolean
+    legendOrientation?: string
+    legendVerticalAlignment?: string
+    legendHorizontalAlignment?: string
+    legendItemTextPosition?: string
+    exportEnabled?: boolean
 }
 
 const App = (props: PieCharProps) => {
     const formatText = (arg: { value: any; argumentText: any; percentText: any; }) => {
         // let value =  (Math.round(arg.value * 100) / 100).toFixed(2)
-        let value =  Number(arg.value).toFixed(2)
+        let value = Number(arg.value).toFixed(2)
 
         return `${arg.argumentText}: ${value} (${arg.percentText})`;
     }
@@ -40,9 +44,14 @@ const App = (props: PieCharProps) => {
                 <Label visible={true} customizeText={formatText}/>
             </Series>
             <Margin bottom={20}/>
-            <Export enabled={true}/>
-            <Legend visible={props.showLegend ?? true} orientation={'horizontal'}
-                    verticalAlignment="bottom" itemTextPosition="right" horizontalAlignment="center"/>
+            <Export enabled={props.exportEnabled ?? false}/>
+            <Legend
+                visible={props.showLegend ?? true}
+                orientation={props.legendOrientation ?? 'horizontal'}
+                verticalAlignment={props.legendVerticalAlignment ?? "bottom"}
+                horizontalAlignment={props.legendHorizontalAlignment ?? "center"}
+                itemTextPosition={props.legendItemTextPosition ?? "right"}
+            />
             <Animation enabled={true}/>
         </PieChart>
     );
