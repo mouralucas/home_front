@@ -127,14 +127,6 @@ const App = () => {
 
     let toolBarItems = [
         {
-            name: 'columnChooserButton',
-            location: 'after',
-        },
-        {
-            name: 'exportButton',
-            location: 'after',
-        },
-        {
             child: <Button icon={'refresh'} onClick={getInvestment}/>,
             location: "after"
         },

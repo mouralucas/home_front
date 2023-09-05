@@ -12,7 +12,10 @@ const App = () => {
     }, []);
 
     const getInterestData = () => {
-        getData(URL_FINANCE_INVESTMENT_PROFIT, {startAt: 202201}).then(response => {
+        getData(URL_FINANCE_INVESTMENT_PROFIT, {
+            startAt: 202201,
+            // indexId: 'ef07cbb0-9b29-43c6-a060-bef73f1cc000'
+        }).then(response => {
             setInterest(response);
         }).catch(err => {
             toast.error(err);

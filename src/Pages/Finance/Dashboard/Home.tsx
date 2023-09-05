@@ -1,7 +1,6 @@
 import Card from "../../../Components/Card";
 import PieChartCategoryExpenses from './Charts/ExpensesCategory'
 import CreditCardBillHistoryChart from './Charts/CreditCardBillHistory'
-import LineChart from './Charts/Profit'
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
@@ -74,49 +73,12 @@ const Home = () => {
                             </Card.Body>
                         </Card>
                     </div>
-                    <div className="col-6">
-                        <Card>
-                            {/*<Card.Header>Outra evolução</Card.Header>*/}
-                            <Card.Body>
-                                <CreditCardBillHistoryChart/>
-                            </Card.Body>
-                        </Card>
-                    </div>
                 </div>
                 <div className="row">
                     <div className="col-12">
                         <Card>
-                            {/*<Card.Header>Outra evolução</Card.Header>*/}
                             <Card.Body>
                                 <CreditCardBillHistoryChart/>
-                            </Card.Body>
-                        </Card>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-6">
-                        <Card>
-                            {/*<Card.Header>Outra evolução</Card.Header>*/}
-                            <Card.Body>
-                            </Card.Body>
-                        </Card>
-                    </div>
-                    <div className="col-6">
-                        <Card>
-                            {/*<Card.Header>Outra evolução</Card.Header>*/}
-                            <Card.Body>
-                                {/*<RealDollarChart*/}
-                                {/*title={'Proporção Investment'}/>*/}
-                            </Card.Body>
-                        </Card>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12">
-                        <Card>
-                            <Card.Header>Evolução</Card.Header>
-                            <Card.Body>
-                                <LineChart/>
                             </Card.Body>
                         </Card>
                     </div>
