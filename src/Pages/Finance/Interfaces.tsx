@@ -3,6 +3,7 @@
  * Any interface used in more than one file MUST be in here to maintain data integrity throughout the project
  * If the interface is specific to some case, it must be written within the correspondent file
  */
+import {UUID} from "crypto";
 
 
 export interface Statement {
@@ -30,7 +31,7 @@ export interface Investment {
     price: number
     quantity: number
     date: string
-    maturityDate: Date | undefined
+    maturityAt: Date | undefined
     interestRate: string
     interestIndex: string
     custodianName: string | null
@@ -54,4 +55,8 @@ export interface CreditCardBill {
     description: string
     createdAt: string | undefined
     lastEditedAt: string | undefined
+}
+
+export interface InvestmentType {
+    typeId: UUID
 }

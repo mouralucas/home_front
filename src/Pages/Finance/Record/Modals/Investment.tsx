@@ -27,7 +27,7 @@ const DefaultInvestment: Investment = {
     price: 0,
     quantity: 0,
     date: getDefaultDate(),
-    maturityDate: undefined,
+    maturityAt: undefined,
     interestRate: '',
     interestIndex: '',
     custodianName: null,
@@ -220,7 +220,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
         setSelectedCustodian(custodian.filter((i: { value: any; }) => i.value === parentInvestment?.custodianId)[0]);
         setInvestment(oldValues => ({...oldValues, 'custodianId': parentInvestment?.custodianId}))
         setInvestment(oldValues => ({...oldValues, 'name': e !== null ? parentInvestment?.name : ''}))
-        setInvestment(oldValues => ({...oldValues, 'maturityDate': parentInvestment?.maturityDate}))
+        setInvestment(oldValues => ({...oldValues, 'maturityAt': parentInvestment?.maturityDate}))
         setInvestment(oldValues => ({...oldValues, 'interestIndex': parentInvestment?.interestIndex}))
     }
 
@@ -271,7 +271,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
                                 <div className="col-3">
                                     <label htmlFor="">Data vencimento</label>
                                     <DateBox
-                                        value={investment.maturityDate} type="date"
+                                        value={investment.maturityAt} type="date"
                                         className='form-control input-default'
                                         useMaskBehavior={true}
                                         showClearButton={true}

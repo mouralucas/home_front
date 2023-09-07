@@ -13,7 +13,8 @@ const App = () => {
 
     const getInterestData = () => {
         getData(URL_FINANCE_INVESTMENT_PROFIT, {
-            startAt: 202201,
+            startAt: 202104,
+            investmentId: 'fa69c608-ab77-4e35-967d-a0277d96638b',
             // indexId: 'ef07cbb0-9b29-43c6-a060-bef73f1cc000'
         }).then(response => {
             setInterest(response);

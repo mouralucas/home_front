@@ -73,7 +73,7 @@ const App = () => {
             width: 130
         },
         {
-            dataField: "maturityDate",
+            dataField: "maturityAt",
             caption: "Vencimento",
             dataType: "date",
             // calculateCellValue: dateCustomCell,
