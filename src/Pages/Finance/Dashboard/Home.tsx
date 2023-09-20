@@ -4,6 +4,7 @@ import CreditCardBillHistoryChart from './Charts/CreditCardBillHistory'
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
+import {toast} from "react-toastify";
 
 
 const Home = () => {
@@ -24,6 +25,8 @@ const Home = () => {
             setPeriodOutgoing(response.outgoing)
             setPeriodCreditCardBill(response.credit)
             setPeriodCreditCardBillQtd(response.credit_qtd)
+        }).catch(err => {
+            toast.error('Erro')
         })
     }, [])
 

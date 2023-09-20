@@ -2,10 +2,23 @@ import React, {useEffect, useState} from "react";
 import {toast, ToastOptions} from "react-toastify";
 import {URL_CREDIT_CARD_BILL_HISTORY} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";
-import {ArgumentAxis, Chart, ConstantLine, Export, Font, Label, Legend, Series, Title, ValueAxis, VisualRange} from "devextreme-react/chart";
+import {
+    ArgumentAxis,
+    Chart,
+    ConstantLine,
+    Export,
+    Font,
+    Label,
+    Legend,
+    Series,
+    Title,
+    ValueAxis,
+    VisualRange
+} from "devextreme-react/chart";
 import {Slider, Tooltip} from 'devextreme-react/slider';
 import {RangeSlider} from "devextreme-react";
 
+const acceptedYearRangeValues = [201801, 201802, 201803, 201804]
 
 const App = () => {
     const [billHistory, setBillHistory] = useState([])
@@ -13,6 +26,9 @@ const App = () => {
     const [expenseGoal, setExpenseGoal] = useState(0)
 
     const [sliderValue, setSliderValue] = useState(500)
+
+    const [start, setStart] = useState(2);
+    const [end, setEnd] = useState(4);
 
     useEffect(() => {
         getBillHistory(null);
@@ -24,8 +40,11 @@ const App = () => {
                 'endAt': 202312,
             }
         ).then(response => {
-            let options = response == null ? {} : response.history.map((i: { period: string; total_amount_absolute: number; }) => ({
-                period: i.period,
+            let options = response == null ? {} : response.history.map((i: {
+                reference: string;
+                total_amount_absolute: number;
+            }) => ({
+                reference: i.reference,
                 amount: Number(i.total_amount_absolute)
             }))
             setBillHistory(options);
@@ -79,10 +98,13 @@ const App = () => {
         return `${arg.value}`;
     }
 
+    const handleValueChanged = (e: any) => {
+        console.log(e)
+    };
+
 
     return (
         <>
-
             <Chart id="bill_history"
                    title={"Histórico de faturas"}
                    dataSource={billHistory}
@@ -94,7 +116,7 @@ const App = () => {
             >
                 <Series
                     axis={'amount'}
-                    argumentField={"period"}
+                    argumentField={"reference"}
                     valueField={"amount"}
                     type="bar"
                     color="#e7d19a"
@@ -125,12 +147,15 @@ const App = () => {
 
             <RangeSlider
                 min={201801}
-                max={202406}
-                start={202301}
-                end={202312}
-                onValueChanged={(e) => getBillHistory(e)}
+                max={201805}
+                start={acceptedYearRangeValues[0]}
+                end={acceptedYearRangeValues[acceptedYearRangeValues.length - 1]}
+                onValueChanged={e => handleValueChanged(e)}
+                // tooltip={{
+                //     enabled: true,
+                //     format: (value: string | number) => acceptedYearRangeValues[value],
+                // }}
             >
-                <Tooltip enabled={true} showMode="always" position="bottom" format={format}/>
             </RangeSlider>
         </>
     );

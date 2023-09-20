@@ -60,3 +60,7 @@ export interface CreditCardBill {
 export interface InvestmentType {
     typeId: UUID
 }
+
+export interface InvestmentAllocation {
+
+}
