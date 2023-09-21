@@ -2,7 +2,19 @@ import React, {useEffect, useState} from "react";
 import {toast, ToastOptions} from "react-toastify";
 import {URL_CREDIT_CARD_BILL_HISTORY, URL_PERIOD} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";
-import {ArgumentAxis, Chart, ConstantLine, Export, Font, Label, Legend, Series, Title, ValueAxis, VisualRange} from "devextreme-react/chart";
+import {
+    ArgumentAxis,
+    Chart,
+    ConstantLine,
+    Export,
+    Font,
+    Label,
+    Legend,
+    Series,
+    Title,
+    ValueAxis,
+    VisualRange
+} from "devextreme-react/chart";
 import {RangeSlider} from "devextreme-react";
 
 
@@ -18,11 +30,17 @@ const App = () => {
 
     useEffect(() => {
         getBillHistory(null);
+        getPeriodList();
     }, []);
 
-    const getReferenceList = () => {
-        getData(URL_PERIOD).then(response => {
-
+    const getPeriodList = () => {
+        getData(URL_PERIOD, {
+            'sMonth': 1,
+            'sYear': 2018,
+            'eMonth': 5,
+            'eYear': 2024
+        }).then(response => {
+            setAcceptedYearRangeValues(response.periods);
         }).catch(err => {
             toast.error("Erro ao buscas os períodos")
         })
@@ -141,7 +159,7 @@ const App = () => {
 
             <RangeSlider
                 min={201801}
-                max={201805}
+                max={202405}
                 start={acceptedYearRangeValues[0]}
                 end={acceptedYearRangeValues[acceptedYearRangeValues.length - 1]}
                 onValueChanged={e => handleValueChanged(e)}
