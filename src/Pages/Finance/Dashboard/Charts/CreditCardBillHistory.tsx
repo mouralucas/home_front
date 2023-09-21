@@ -1,24 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {toast, ToastOptions} from "react-toastify";
-import {URL_CREDIT_CARD_BILL_HISTORY} from "../../../../Services/Axios/ApiUrls";
+import {URL_CREDIT_CARD_BILL_HISTORY, URL_PERIOD} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";
-import {
-    ArgumentAxis,
-    Chart,
-    ConstantLine,
-    Export,
-    Font,
-    Label,
-    Legend,
-    Series,
-    Title,
-    ValueAxis,
-    VisualRange
-} from "devextreme-react/chart";
-import {Slider, Tooltip} from 'devextreme-react/slider';
+import {ArgumentAxis, Chart, ConstantLine, Export, Font, Label, Legend, Series, Title, ValueAxis, VisualRange} from "devextreme-react/chart";
 import {RangeSlider} from "devextreme-react";
 
-const acceptedYearRangeValues = [201801, 201802, 201803, 201804]
 
 const App = () => {
     const [billHistory, setBillHistory] = useState([])
@@ -27,12 +13,20 @@ const App = () => {
 
     const [sliderValue, setSliderValue] = useState(500)
 
-    const [start, setStart] = useState(2);
-    const [end, setEnd] = useState(4);
+    const [acceptedYearRangeValues, setAcceptedYearRangeValues] = useState([]);
+
 
     useEffect(() => {
         getBillHistory(null);
     }, []);
+
+    const getReferenceList = () => {
+        getData(URL_PERIOD).then(response => {
+
+        }).catch(err => {
+            toast.error("Erro ao buscas os períodos")
+        })
+    }
 
     const getBillHistory = (e: any) => {
         getData(URL_CREDIT_CARD_BILL_HISTORY, {
@@ -43,7 +37,7 @@ const App = () => {
             let options = response == null ? {} : response.history.map((i: {
                 reference: string;
                 total_amount_absolute: number;
-            }) => ({
+            }): { amount: number, reference: string } => ({
                 reference: i.reference,
                 amount: Number(i.total_amount_absolute)
             }))
