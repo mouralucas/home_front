@@ -29,7 +29,7 @@ const App = () => {
 
 
     useEffect(() => {
-        getBillHistory(null);
+        getBillHistory(202301, 202405);
         getPeriodList();
     }, []);
 
@@ -40,16 +40,17 @@ const App = () => {
             'eMonth': 5,
             'eYear': 2024
         }).then(response => {
-            setAcceptedYearRangeValues(response.periods);
+            const arr = response.periods.map((item: { value: any; }) => item.value)
+            setAcceptedYearRangeValues(arr);
         }).catch(err => {
             toast.error("Erro ao buscas os períodos")
         })
     }
 
-    const getBillHistory = (e: any) => {
+    const getBillHistory = (startAt: number, endAt: number) => {
         getData(URL_CREDIT_CARD_BILL_HISTORY, {
-                'startAt': 202301,
-                'endAt': 202312,
+                'startAt': startAt,
+                'endAt': endAt,
             }
         ).then(response => {
             let options = response == null ? {} : response.history.map((i: {
@@ -111,7 +112,7 @@ const App = () => {
     }
 
     const handleValueChanged = (e: any) => {
-        console.log(e)
+        getBillHistory(e.start, e.end)
     };
 
 
@@ -158,15 +159,15 @@ const App = () => {
             </Chart>
 
             <RangeSlider
-                min={201801}
-                max={202405}
-                start={acceptedYearRangeValues[0]}
-                end={acceptedYearRangeValues[acceptedYearRangeValues.length - 1]}
+                min={acceptedYearRangeValues[0]}
+                max={acceptedYearRangeValues[acceptedYearRangeValues.length - 1]}
+                start={202301}
+                end={202405}
                 onValueChanged={e => handleValueChanged(e)}
-                // tooltip={{
-                //     enabled: true,
-                //     format: (value: string | number) => acceptedYearRangeValues[value],
-                // }}
+                tooltip={{
+                    enabled: true,
+                    format: format,
+                }}
             >
             </RangeSlider>
         </>
