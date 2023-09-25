@@ -15,7 +15,8 @@ import {
     ValueAxis,
     VisualRange
 } from "devextreme-react/chart";
-import {RangeSlider} from "devextreme-react";
+import {RangeSelector} from "devextreme-react";
+import {Behavior, Format, Scale} from "devextreme-react/range-selector";
 
 
 const App = () => {
@@ -29,7 +30,7 @@ const App = () => {
 
 
     useEffect(() => {
-        getBillHistory(202301, 202405);
+        getBillHistory(202301, 202310);
         getPeriodList();
     }, []);
 
@@ -40,8 +41,8 @@ const App = () => {
             'eMonth': 5,
             'eYear': 2024
         }).then(response => {
-            const arr = response.periods.map((item: { value: any; }) => item.value)
-            setAcceptedYearRangeValues(arr);
+            console.log(response.periods)
+            setAcceptedYearRangeValues(response.periods);
         }).catch(err => {
             toast.error("Erro ao buscas os períodos")
         })
@@ -54,10 +55,10 @@ const App = () => {
             }
         ).then(response => {
             let options = response == null ? {} : response.history.map((i: {
-                reference: string;
+                period: string;
                 total_amount_absolute: number;
-            }): { amount: number, reference: string } => ({
-                reference: i.reference,
+            }): { amount: number, period: string } => ({
+                period: i.period,
                 amount: Number(i.total_amount_absolute)
             }))
             setBillHistory(options);
@@ -111,11 +112,26 @@ const App = () => {
         return `${arg.value}`;
     }
 
-    const handleValueChanged = (e: any) => {
-        getBillHistory(e.start, e.end)
-    };
+    const dataSource = acceptedYearRangeValues.map((item: any) => ({
+        date: new Date(Math.floor(item.value / 100), (item.value % 100) - 1, 1),
+        value: item.value,
+    }));
+    const onHandleMove = (e: any) => {
+        const startDate = e.value[0];
+        let startMonth = startDate.getUTCMonth() + 1;
+        let startYear = startDate.getUTCFullYear();
 
+        let startPeriod = startYear * 100 + startMonth;
 
+        const endDate = e.value[1];
+        let endMonth = endDate.getUTCMonth() + 1;
+        let endYear = endDate.getUTCFullYear();
+
+        let endPeriod = endYear * 100 + endMonth;
+
+        // TODO: add adjust to selected range, it goes back to default (all periods) just after filtering the chosen range
+        getBillHistory(startPeriod, endPeriod);
+    }
     return (
         <>
             <Chart id="bill_history"
@@ -129,7 +145,7 @@ const App = () => {
             >
                 <Series
                     axis={'amount'}
-                    argumentField={"reference"}
+                    argumentField={"period"}
                     valueField={"amount"}
                     type="bar"
                     color="#e7d19a"
@@ -142,7 +158,7 @@ const App = () => {
                     <Label customizeText={customizeArgumentLabel}/>
                 </ArgumentAxis>
                 <ValueAxis maxValueMargin={0.01} name={'amount'}>
-                    <VisualRange startValue={sliderValue}/>
+                    <VisualRange startValue={0}/>
                     <Label customizeText={valueAxisLabel}/>
                     <Title text={"Gasto em reais"}>
                         <Font color={"#e91e63"}/>
@@ -158,20 +174,23 @@ const App = () => {
                 <Export enabled={true}/>
             </Chart>
 
-            <RangeSlider
-                min={acceptedYearRangeValues[0]}
-                max={acceptedYearRangeValues[acceptedYearRangeValues.length - 1]}
-                start={202301}
-                end={202405}
-                onValueChanged={e => handleValueChanged(e)}
-                tooltip={{
-                    enabled: true,
-                    format: format,
-                }}
+            <RangeSelector
+                dataSource={dataSource}
+                dataSourceField={'date'}
+                onValueChanged={onHandleMove}
+                // scale={{ valueType: 'datetime', tickInterval: { months: 1 } }}
+                // behavior={{ snapToTicks: true }}
             >
-            </RangeSlider>
+                <Scale tickInterval={'year'} minorTickInterval={'month'} valueType={'period'}>
+                    {/*<Label>*/}
+                    {/*    <Format type={"decimal"}/>*/}
+                    {/*</Label>*/}
+                </Scale>
+                <Behavior callValueChanged="onHandleMove"/>
+            </RangeSelector>
         </>
     );
+
 
     function format(value: any) {
         return `Starts with ${value}`;

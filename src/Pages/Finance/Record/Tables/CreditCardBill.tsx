@@ -7,6 +7,7 @@ import Button from "devextreme-react/button";
 import ModalBill from '../Modals/CreditCardBill'
 import {getCurrentPeriod} from '../../../../Utils/DateTime'
 import {CreditCardBill} from "../../Interfaces";
+import {toast} from "react-toastify";
 
 const App = () => {
     const [creditCardBill, setCreditCardBill] = useState<CreditCardBill[]>();
@@ -26,12 +27,14 @@ const App = () => {
     }
 
     const getBills = () => {
+        //TODO: trocar para getData
         axios.get(URL_CREDIT_CARD_BILL, {
             params: {'period': getCurrentPeriod()}
         }).then(response => {
                 setCreditCardBill(response.data.bill);
             }
         ).catch(response => {
+            toast.error("Erro ao buscar faturas")
             return {'error': response}
         })
     }
@@ -61,8 +64,8 @@ const App = () => {
             width: 70
         },
         {
-            dataField: "reference",
-            caption: "Referência",
+            dataField: "period",
+            caption: "Período",
             dataType: "string",
             visible: false,
         },

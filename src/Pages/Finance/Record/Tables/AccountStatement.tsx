@@ -30,7 +30,7 @@ const App = () => {
     }
 
     const getStatements = () => {
-        getData(URL_ACCOUNT_STATEMENT, {reference: 202303}).then(response => {
+        getData(URL_ACCOUNT_STATEMENT, {period: 202303}).then(response => {
                 setStatement(response.statement);
             }
         ).catch(err => {
