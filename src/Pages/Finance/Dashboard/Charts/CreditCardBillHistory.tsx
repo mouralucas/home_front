@@ -24,9 +24,9 @@ const App = () => {
     const [expenseAvg, setExpenseAvg] = useState(0)
     const [expenseGoal, setExpenseGoal] = useState(0)
 
-    const [sliderValue, setSliderValue] = useState(500)
+    const [selectedBillHistoryRange, setSelectedBillHistoryRange] = useState<[Date, Date]>()
 
-    const [acceptedYearRangeValues, setAcceptedYearRangeValues] = useState([]);
+    const [acceptedYearRangeValues, setAcceptedYearRangeValues] = useState();
 
 
     useEffect(() => {
@@ -41,8 +41,11 @@ const App = () => {
             'eMonth': 5,
             'eYear': 2024
         }).then(response => {
-            console.log(response.periods)
-            setAcceptedYearRangeValues(response.periods);
+            const dataSource = response.periods.map((item: any) => ({
+                date: new Date(Math.floor(item.value / 100), (item.value % 100) - 1, 1),
+                value: item.value,
+            }));
+            setAcceptedYearRangeValues(dataSource);
         }).catch(err => {
             toast.error("Erro ao buscas os períodos")
         })
@@ -56,10 +59,10 @@ const App = () => {
         ).then(response => {
             let options = response == null ? {} : response.history.map((i: {
                 period: string;
-                total_amount_absolute: number;
-            }): { amount: number, period: string } => ({
+                total_amount: number;
+            }): { period: string, amount: number } => ({
                 period: i.period,
-                amount: Number(i.total_amount_absolute)
+                amount: i.total_amount * -1
             }))
             setBillHistory(options);
             setExpenseGoal(response.goal);
@@ -69,6 +72,10 @@ const App = () => {
             }
         );
     }
+
+    useEffect(() => {
+        console.log(billHistory);
+    }, [billHistory]);
 
     /**
      *
@@ -112,10 +119,6 @@ const App = () => {
         return `${arg.value}`;
     }
 
-    const dataSource = acceptedYearRangeValues.map((item: any) => ({
-        date: new Date(Math.floor(item.value / 100), (item.value % 100) - 1, 1),
-        value: item.value,
-    }));
     const onHandleMove = (e: any) => {
         const startDate = e.value[0];
         let startMonth = startDate.getUTCMonth() + 1;
@@ -130,6 +133,7 @@ const App = () => {
         let endPeriod = endYear * 100 + endMonth;
 
         // TODO: add adjust to selected range, it goes back to default (all periods) just after filtering the chosen range
+        setSelectedBillHistoryRange([startDate, endDate])
         getBillHistory(startPeriod, endPeriod);
     }
     return (
@@ -175,9 +179,10 @@ const App = () => {
             </Chart>
 
             <RangeSelector
-                dataSource={dataSource}
+                dataSource={acceptedYearRangeValues}
                 dataSourceField={'date'}
                 onValueChanged={onHandleMove}
+                defaultValue={selectedBillHistoryRange}
                 // scale={{ valueType: 'datetime', tickInterval: { months: 1 } }}
                 // behavior={{ snapToTicks: true }}
             >
