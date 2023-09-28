@@ -57,6 +57,12 @@ export interface CreditCardBill {
     lastEditedAt: string | undefined
 }
 
+export interface CreditCardBillHistory {
+    period: number
+    total_amount: number,
+    total_amount_absolute: number
+}
+
 export interface InvestmentType {
     typeId: UUID
 }

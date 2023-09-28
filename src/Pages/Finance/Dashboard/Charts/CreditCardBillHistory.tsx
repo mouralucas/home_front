@@ -2,27 +2,24 @@ import React, {useEffect, useState} from "react";
 import {toast, ToastOptions} from "react-toastify";
 import {URL_CREDIT_CARD_BILL_HISTORY, URL_PERIOD} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";
-import {
-    ArgumentAxis,
-    Chart,
-    ConstantLine,
-    Export,
-    Font,
-    Label,
-    Legend,
-    Series,
-    Title,
-    ValueAxis,
-    VisualRange
-} from "devextreme-react/chart";
+import {ArgumentAxis, Chart, ConstantLine, Export, Font, Label, Legend, Series, Title, ValueAxis, VisualRange} from "devextreme-react/chart";
 import {RangeSelector} from "devextreme-react";
 import {Behavior, Format, Scale} from "devextreme-react/range-selector";
+import {CreditCardBillHistory} from "../../Interfaces";
+
+
+interface CreditCardBillHistoryResponse {
+    success: boolean
+    average: number
+    goal: number
+    history: CreditCardBillHistory[]
+}
 
 
 const App = () => {
     const [billHistory, setBillHistory] = useState([])
-    const [expenseAvg, setExpenseAvg] = useState(0)
-    const [expenseGoal, setExpenseGoal] = useState(0)
+    const [expenseAvg, setExpenseAvg] = useState<number>(0)
+    const [expenseGoal, setExpenseGoal] = useState<number>(0)
 
     const [selectedBillHistoryRange, setSelectedBillHistoryRange] = useState<[Date, Date]>()
 
@@ -41,6 +38,8 @@ const App = () => {
             'eMonth': 5,
             'eYear': 2024
         }).then(response => {
+            // TODO: return the default range 13 months back and 5 or 6 in front current period
+            // TODO: add response and other interfaces
             const dataSource = response.periods.map((item: any) => ({
                 date: new Date(Math.floor(item.value / 100), (item.value % 100) - 1, 1),
                 value: item.value,
@@ -62,7 +61,7 @@ const App = () => {
                 total_amount: number;
             }): { period: string, amount: number } => ({
                 period: i.period,
-                amount: i.total_amount * -1
+                amount: i.total_amount
             }))
             setBillHistory(options);
             setExpenseGoal(response.goal);
@@ -72,10 +71,6 @@ const App = () => {
             }
         );
     }
-
-    useEffect(() => {
-        console.log(billHistory);
-    }, [billHistory]);
 
     /**
      *
@@ -94,6 +89,7 @@ const App = () => {
         return null;
     }
 
+    // TODO: Pass all chart config to a bar chart component, and namings must be more relatable with its use
     const valueAxisLabel = (arg: any) => {
         return `R$ ${arg.valueText}`;
     }
@@ -132,7 +128,6 @@ const App = () => {
 
         let endPeriod = endYear * 100 + endMonth;
 
-        // TODO: add adjust to selected range, it goes back to default (all periods) just after filtering the chosen range
         setSelectedBillHistoryRange([startDate, endDate])
         getBillHistory(startPeriod, endPeriod);
     }
@@ -162,7 +157,6 @@ const App = () => {
                     <Label customizeText={customizeArgumentLabel}/>
                 </ArgumentAxis>
                 <ValueAxis maxValueMargin={0.01} name={'amount'}>
-                    <VisualRange startValue={0}/>
                     <Label customizeText={valueAxisLabel}/>
                     <Title text={"Gasto em reais"}>
                         <Font color={"#e91e63"}/>
@@ -175,7 +169,7 @@ const App = () => {
                     </ConstantLine>
                 </ValueAxis>
                 <Legend visible={false}/>
-                <Export enabled={true}/>
+                <Export enabled={false}/>
             </Chart>
 
             <RangeSelector
