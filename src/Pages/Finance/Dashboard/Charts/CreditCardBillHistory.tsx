@@ -58,10 +58,10 @@ const App = () => {
         ).then(response => {
             let options = response == null ? {} : response.history.map((i: {
                 period: string;
-                total_amount: number;
-            }): { period: string, amount: number } => ({
+                balance: number;
+            }): { period: string, balance: number } => ({
                 period: i.period,
-                amount: i.total_amount
+                balance: i.balance
             }))
             setBillHistory(options);
             setExpenseGoal(response.goal);
@@ -145,7 +145,7 @@ const App = () => {
                 <Series
                     axis={'amount'}
                     argumentField={"period"}
-                    valueField={"amount"}
+                    valueField={"balance"}
                     type="bar"
                     color="#e7d19a"
                     // hoverMode="onlyPoints" //<!-- or "onlyPoint" | "allArgumentPoints" | "none" -->
