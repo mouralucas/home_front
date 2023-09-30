@@ -15,6 +15,25 @@ interface BarProps {
         visible: boolean
         customizeText?: any
     }
+    argumentAxis?: {
+        argumentType?: string
+        label?: {
+            customizeText?: any
+        }
+    }
+    valueAxis?: {
+        maxValueMargin?: number
+        name?: string
+        label: {
+            customizeText: any
+        }
+        title: {
+            text: string
+            font: {
+                color: string
+            }
+        }
+    }
 }
 
 const App = (props: BarProps) => {
@@ -38,6 +57,13 @@ const App = (props: BarProps) => {
                     <Label visible={props.seriesLabel.visible}></Label>
                 }
             </Series>
+            {props.argumentAxis &&
+                <ArgumentAxis argumentType={props.argumentAxis?.argumentType || undefined}>
+                    {props.argumentAxis.label &&
+                        <Label customizeText={props.argumentAxis.label?.customizeText}/>
+                    }
+                </ArgumentAxis>
+            }
         </Chart>
     )
 }

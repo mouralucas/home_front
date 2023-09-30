@@ -55,6 +55,9 @@ const App = () => {
             valueField={'balance'}
             name={'Faturas'}
             customizePoint={customizePoint}
+            argumentAxis={{
+                argumentType: "string"
+            }}
         ></BarChart>
     )
 }
