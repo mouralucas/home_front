@@ -5,6 +5,7 @@ import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
 import {toast} from "react-toastify";
+import BillHistory from "./Charts/BillHistory";
 
 
 const Home = () => {
@@ -81,7 +82,7 @@ const Home = () => {
                     <div className="col-12">
                         <Card>
                             <Card.Body>
-                                <CreditCardBillHistoryChart/>
+                                <BillHistory />
                             </Card.Body>
                         </Card>
                     </div>
