@@ -1,5 +1,6 @@
 import HomeRoutes from './Routes/Routes'
 import 'devextreme/dist/css/dx.light.css';
+import "react-widgets/styles.css";
 import 'react-toastify/dist/ReactToastify.min.css';
 import {ToastContainer} from "react-toastify";
 
