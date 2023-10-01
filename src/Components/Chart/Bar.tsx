@@ -1,5 +1,5 @@
 import React from 'react';
-import {ArgumentAxis, Chart, ConstantLine, Export, Font, Label, Legend, Series, Title, ValueAxis, VisualRange} from 'devextreme-react/chart';
+import {ArgumentAxis, Chart, ConstantLine, Export, Font, Label, Legend, Series, Title, ValueAxis} from 'devextreme-react/chart';
 
 interface BarProps {
     data: any[]
@@ -11,6 +11,8 @@ interface BarProps {
     palette?: string[]
     customizePoint?: any
     customizeLabel?: any
+    legend?: boolean
+    export?: boolean
     seriesLabel?: {
         visible: boolean
         customizeText?: any
@@ -24,19 +26,40 @@ interface BarProps {
     valueAxis?: {
         maxValueMargin?: number
         name?: string
-        label: {
-            customizeText: any
+        label?: {
+            customizeText?: any
         }
-        title: {
-            text: string
-            font: {
+        title?: {
+            text?: string
+            font?: {
                 color: string
             }
         }
+        constantLine?: Array<{
+            value: any,
+            width?: number,
+            color?: string
+            dashStyle?: string
+            label?: {
+                text: string
+            }
+        }>
     }
 }
 
 const App = (props: BarProps) => {
+    const setConstantLine = () => {
+        return props.valueAxis?.constantLine?.map((item: any) =>
+            <ConstantLine
+                width={item.width ?? undefined}
+                value={item.value}
+                color={item.color ?? undefined}
+                dashStyle={item.dashStyle ?? undefined}
+            >
+                {item.label && <Label text={item.label.text}/>}
+            </ConstantLine>)
+    }
+
     return (
         <Chart id="chart"
                title={props.title}
@@ -64,6 +87,23 @@ const App = (props: BarProps) => {
                     }
                 </ArgumentAxis>
             }
+            {props.valueAxis &&
+                <ValueAxis maxValueMargin={props.valueAxis?.maxValueMargin ?? undefined} name={props.name ?? undefined}>
+                    {props.valueAxis.label &&
+                        <Label customizeText={props.valueAxis?.label?.customizeText || undefined}></Label>
+                    }
+                    {props.valueAxis.title &&
+                        <Title text={props.valueAxis.title.text ?? undefined}>
+                            <Font color={props.valueAxis?.title?.font?.color ?? undefined}/>
+                        </Title>
+                    }
+                    {props.valueAxis.constantLine &&
+                        setConstantLine()
+                    }
+                </ValueAxis>
+            }
+            <Legend visible={props.legend ?? false}></Legend>
+            <Export enabled={props.export ?? false}/>
         </Chart>
     )
 }

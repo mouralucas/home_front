@@ -1,19 +1,22 @@
 import Card from "../../../Components/Card";
 import PieChartCategoryExpenses from './Charts/ExpensesCategory'
-import CreditCardBillHistoryChart from './Charts/CreditCardBillHistory'
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
 import {toast} from "react-toastify";
-import BillHistory from "./Charts/BillHistory";
+import BillHistory from "./Charts/CreditCardBillHistory";
+import {Summary} from "../Interfaces";
 
 
 const Home = () => {
-    const [periodBalance, setPeriodBalance] = useState(0)
-    const [periodIncoming, setPeriodIncoming] = useState(0)
-    const [periodOutgoing, setPeriodOutgoing] = useState(0)
-    const [periodCreditCardBill, setPeriodCreditCardBill] = useState(0)
-    const [periodCreditCardBillQtd, setPeriodCreditCardBillQtd] = useState(0)
+    // TODO: create one state/interface with all summary variables
+    const [periodBalance, setPeriodBalance] = useState<number>(0)
+    const [periodIncoming, setPeriodIncoming] = useState<number>(0)
+    const [periodOutgoing, setPeriodOutgoing] = useState<number>(0)
+    const [periodCreditCardBill, setPeriodCreditCardBill] = useState<number>(0)
+    const [periodCreditCardBillQtd, setPeriodCreditCardBillQtd] = useState<number>(0)
+
+    const [summary, setSummary] = useState<Summary>()
 
     useEffect(() => {
         document.title = 'Dashboard';

@@ -59,8 +59,17 @@ export interface CreditCardBill {
 
 export interface CreditCardBillHistory {
     period: number
+    balance: number
     total_amount: number,
     total_amount_absolute: number
+}
+
+export interface Summary {
+    periodIncoming: number
+    periodOutgoing: number
+    periodBalance: number
+    periodCreditCardBill: number
+    periodCreditCardPurchase: number
 }
 
 export interface InvestmentType {
