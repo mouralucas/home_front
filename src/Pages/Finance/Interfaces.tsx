@@ -65,11 +65,12 @@ export interface CreditCardBillHistory {
 }
 
 export interface Summary {
+    period: number
     periodIncoming: number
     periodOutgoing: number
     periodBalance: number
     periodCreditCardBill: number
-    periodCreditCardPurchase: number
+    periodCreditCardPurchaseQuantity: number
 }
 
 export interface InvestmentType {
