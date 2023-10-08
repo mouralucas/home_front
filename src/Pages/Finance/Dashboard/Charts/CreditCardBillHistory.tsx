@@ -94,6 +94,28 @@ const App = () => {
         getBillHistory(startPeriod, endPeriod);
     }
 
+    function customizeTooltip(pointInfo: any) {
+        console.log(pointInfo);
+        return {
+            html:
+                `<div>
+                    <div class="tooltip-header">
+                        ${pointInfo.argumentText}
+                    </div>
+                    <div class="tooltip-body"><div class="series-name">
+                        <span class='top-series-name'>
+                            ${pointInfo.points[0].seriesName}:
+                        </span> 
+                    </div>
+                    <div class="value-text">
+                        <span class='top-series-value'>
+                            ${pointInfo.points[0].valueText}
+                        </span>
+                    </div>
+                </div>`,
+        };
+    }
+
     return (
         <>
             <BarChart
@@ -139,6 +161,10 @@ const App = () => {
                         },
                         // Add more constant lines as needed
                     ]
+                }}
+                toolTip={{
+                    enabled: true,
+                    customizeTooltip: customizeTooltip
                 }}
             ></BarChart>
             <RangeSelector

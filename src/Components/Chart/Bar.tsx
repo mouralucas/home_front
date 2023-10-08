@@ -1,5 +1,5 @@
 import React from 'react';
-import {ArgumentAxis, Chart, ConstantLine, Export, Font, Label, Legend, Series, Title, ValueAxis} from 'devextreme-react/chart';
+import {ArgumentAxis, Chart, ConstantLine, Export, Font, Label, Legend, Series, Title, Tooltip, ValueAxis} from 'devextreme-react/chart';
 
 interface BarProps {
     data: any[]
@@ -44,6 +44,10 @@ interface BarProps {
                 text: string
             }
         }>
+    }
+    toolTip?: {
+        enabled: boolean
+        customizeTooltip?: any
     }
 }
 
@@ -101,6 +105,13 @@ const App = (props: BarProps) => {
                         setConstantLine()
                     }
                 </ValueAxis>
+            }
+            {props.toolTip &&
+                <Tooltip
+                    enabled={props.toolTip.enabled}
+                    shared={true}
+                    customizeTooltip={props.toolTip.customizeTooltip}
+                />
             }
             <Legend visible={props.legend ?? false}></Legend>
             <Export enabled={props.export ?? false}/>
