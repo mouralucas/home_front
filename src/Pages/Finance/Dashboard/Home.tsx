@@ -60,7 +60,8 @@ const Home = () => {
                         <Card>
                             <Card.Body>
                                 <p>Crédito</p>
-                                R$ {summary?.periodCreditCardBill} em {summary?.periodCreditCardPurchaseQuantity} compras
+                                {/*TODO: adicionar paramentos adiantados e estornos*/}
+                                R$ {summary?.periodCreditCardBill} em {summary?.periodCreditCardPurchaseQuantity} transações
                             </Card.Body>
                         </Card>
                     </div>
