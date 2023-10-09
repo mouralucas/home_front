@@ -109,7 +109,7 @@ const App = () => {
                     </div>
                     <div class="value-text">
                         <span class='top-series-value'>
-                            ${pointInfo.points[0].valueText}
+                            R$ ${pointInfo.points[0].valueText}
                         </span>
                     </div>
                 </div>`,
