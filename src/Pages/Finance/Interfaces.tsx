@@ -64,6 +64,11 @@ export interface CreditCardBillHistory {
     total_amount_absolute: number
 }
 
+export interface ExpensesByCategory {
+    category: string
+    total: number
+}
+
 export interface Summary {
     period: number
     periodIncoming: number

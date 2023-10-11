@@ -13,6 +13,7 @@ interface PieCharProps {
     legendHorizontalAlignment?: string
     legendItemTextPosition?: string
     exportEnabled?: boolean
+    onPointClick?: any
 }
 
 const App = (props: PieCharProps) => {
@@ -23,9 +24,16 @@ const App = (props: PieCharProps) => {
         return `${arg.argumentText}: ${value} (${arg.percentText})`;
     }
 
-    const pointClickHandler = (arg: { target: { select: () => void; }; }) => {
-        arg.target.select();
-    }
+    const handlePointClick = (e: any) => {
+        const sliceData = e.target.originalArgument;
+        // Make a backend call to get details based on sliceData
+        // Assume you have the details in response.data
+        const response = {}; // Your backend response here
+        console.log(e.target);
+
+        // setSliceDetails(response.data);
+        // setModalIsOpen(true);
+    };
 
     return (
         <PieChart
@@ -35,7 +43,7 @@ const App = (props: PieCharProps) => {
             title={props.title}
             type={props.type ?? 'pie'}
             resolveLabelOverlapping={'shift'}
-            onPointClick={pointClickHandler}
+            onPointClick={handlePointClick}
         >
             <Series
                 argumentField={props.axis.argumentField}
