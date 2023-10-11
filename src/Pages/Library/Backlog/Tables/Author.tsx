@@ -47,23 +47,23 @@ const App = () => {
             width: 150,
         },
         {
-            dataField: "nm_full",
+            dataField: "authorName",
             caption: "Nome",
             dataType: "string",
         },
         {
-            dataField: "dat_birth",
+            dataField: "birthDate",
             caption: "Nascimento",
             dataType: "date",
             format: 'shortDate',
         },
         {
-            dataField: "nm_country",
+            dataField: "countryName",
             caption: "Pais",
             dataType: "string",
         },
         {
-            dataField: "nm_language",
+            dataField: "languageName",
             caption: "Idioma",
             dataType: "string",
         },
