@@ -77,6 +77,7 @@ export interface ExpensesByCategory {
 
 export interface Summary {
     period: number
+    referenceDate: Date
     periodIncoming: number
     periodOutgoing: number
     periodBalance: number
