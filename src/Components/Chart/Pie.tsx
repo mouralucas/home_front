@@ -29,7 +29,7 @@ const App = (props: PieCharProps) => {
         // Make a backend call to get details based on sliceData
         // Assume you have the details in response.data
         const response = {}; // Your backend response here
-        console.log(e.target);
+        console.log(e.target.data);
 
         // setSliceDetails(response.data);
         // setModalIsOpen(true);
@@ -43,7 +43,7 @@ const App = (props: PieCharProps) => {
             title={props.title}
             type={props.type ?? 'pie'}
             resolveLabelOverlapping={'shift'}
-            onPointClick={handlePointClick}
+            onPointClick={props.onPointClick ?? undefined}
         >
             <Series
                 argumentField={props.axis.argumentField}

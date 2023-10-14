@@ -64,7 +64,13 @@ export interface CreditCardBillHistory {
     total_amount_absolute: number
 }
 
+
+export interface Expense {
+    // fields from new endpoint
+}
+
 export interface ExpensesByCategory {
+    category_id: string
     category: string
     total: number
 }

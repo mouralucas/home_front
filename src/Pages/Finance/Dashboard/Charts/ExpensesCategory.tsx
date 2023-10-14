@@ -5,10 +5,22 @@ import {getData} from "../../../../Services/Axios/Get";
 import {toast, ToastOptions} from "react-toastify";
 import {getCurrentPeriod} from "../../../../Utils/DateTime";
 import {ExpensesByCategory} from "../../Interfaces";
-
+import ModalCategoryExpensesDetails from "../Modals/CategoryExpensesDetails"
 
 const App = () => {
     const [expenses, setExpenses] = useState<ExpensesByCategory[]>([])
+    const [modalState, setModalState] = useState<boolean>(false)
+
+    const showModal = (e: any) => {
+        if (typeof e.row !== 'undefined') {
+        } else {
+        }
+        setModalState(true);
+    }
+
+    const hideModal = () => {
+        setModalState(false);
+    }
 
     useEffect(() => {
         getExpenses();
@@ -20,9 +32,10 @@ const App = () => {
                 // 'period': 202302,
             }
         ).then(response => {
-                let options = response == null ? {} : response.expenses.map((i: { category: string; total: number; }) => ({
+                let options = response == null ? {} : response.expenses.map((i: ExpensesByCategory) => ({
                     category: i.category,
-                    total: i.total
+                    total: i.total,
+                    category_id: i.category_id
                 }))
                 setExpenses(options)
             }
@@ -33,14 +46,8 @@ const App = () => {
     }
 
     const handlePointClick = (e: any) => {
-        const sliceData = e.target.originalArgument;
-        // Make a backend call to get details based on sliceData
-        // Assume you have the details in response.data
-        const response = {}; // Your backend response here
-        console.log(e);
-
-        // setSliceDetails(response.data);
-        // setModalIsOpen(true);
+        console.log(e.target.data);
+        showModal(e);
     };
 
     return (
@@ -48,7 +55,9 @@ const App = () => {
             <PieChart data={expenses}
                       axis={{argumentField: 'category', valueField: 'total'}}
                       title={'Categoria'}
+                      onPointClick={handlePointClick}
             />
+            <ModalCategoryExpensesDetails modalState={modalState} hideModal={hideModal} />
         </>
     );
 }

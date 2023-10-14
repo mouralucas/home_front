@@ -7,9 +7,11 @@ import React from "react";
 
 
 const App = () => {
+    // TODO: What is this page???
     const [expenses, setExpenses] = useState<any[]>([])
 
     const getExpenses = () => {
+        // THIS URL CHANGE IN BACKEND
         getData(URL_EXPENSE, {
                 // 'period': getCurrentPeriod(),
                 'period': 202302,

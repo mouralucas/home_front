@@ -68,10 +68,19 @@ const Home = () => {
                 </div>
 
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col-12">
                         <Card>
                             <Card.Body>
-                                <PieChartCategoryExpenses/>
+                                <div className="row">
+                                    <div className="col-6">
+                                        <PieChartCategoryExpenses/>
+                                    </div>
+                                    <div className="col-6">
+                                        Melhorar apresentação e colocar aqui a tabela de detalhes das categorias do gráfico ao lado
+                                        Centralizar a imagem e colocar mensagem: "Selecione uma categoria para mais detalhes"
+                                        Deletar modal CategoryExpensesModal
+                                    </div>
+                                </div>
                             </Card.Body>
                         </Card>
                     </div>
