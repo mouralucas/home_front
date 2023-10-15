@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import DataGrid, {
     Column,
     Summary,
@@ -65,12 +65,12 @@ interface DataGridProps {
     }
 }
 
-const App = (props: DataGridProps): JSX.Element => {
-    const setColumns = (): JSX.Element[] => {
+const App = (props: DataGridProps): ReactElement => {
+    const setColumns = (): ReactElement[] => {
         if (!props.columns) {
             return []
         } else {
-            let columns_list: JSX.Element[] = [];
+            let columns_list: ReactElement[] = [];
             props.columns.forEach(function (column: DataGridColumn, index: number) {
                 columns_list.push(
                     <Column
@@ -99,7 +99,7 @@ const App = (props: DataGridProps): JSX.Element => {
         }
     }
 
-    const setPager = (): JSX.Element => {
+    const setPager = (): ReactElement => {
         let pager;
         if (props.pager) {
             pager = <></>;
@@ -117,7 +117,7 @@ const App = (props: DataGridProps): JSX.Element => {
         return pager
     }
 
-    const setPaging = (): JSX.Element | null => {
+    const setPaging = (): ReactElement | null => {
         let paging;
         if (props.paging) {
             paging = null;
@@ -128,7 +128,7 @@ const App = (props: DataGridProps): JSX.Element => {
         return paging
     }
 
-    const setColumnChooser = (): JSX.Element | null => {
+    const setColumnChooser = (): ReactElement | null => {
         let columnChooser;
         if (props.columnChooser) {
             columnChooser = null
@@ -139,7 +139,7 @@ const App = (props: DataGridProps): JSX.Element => {
         return columnChooser
     }
 
-    const setToolbar = (): JSX.Element[] | null => {
+    const setToolbar = (): ReactElement[] | null => {
         let lista_toolbar: any[] = [];
         if (props.toolBar?.items) {
             props.toolBar?.items?.forEach(function (item: any, index: number) {
@@ -156,7 +156,7 @@ const App = (props: DataGridProps): JSX.Element => {
         return lista_toolbar
     }
 
-    const setSummary = (): JSX.Element => {
+    const setSummary = (): ReactElement => {
         if (props.summary) {
             return <Summary>
                 <TotalItem
