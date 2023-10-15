@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import DataGrid, {
     Column,
     Summary,
@@ -17,34 +17,22 @@ import DataGrid, {
 import {Item} from "devextreme-react/box";
 import {FilterRow} from "devextreme-react/gantt";
 import '../../Assets/Core/Components/Table.css'
+import {DataGridColumn} from "../../Assets/Core/Components/Interfaces";
 
 
 const pageSizes: number[] = [10, 15, 20, 50, 100];
 const exportFormats: string[] = ['pdf', 'xlsx'];
 
-interface column {
-    key?: string
-    type?: string
-    dataField: any
-    caption?: string
-    dataType?: any
-    format?: any
-    alignment?: string
-    width?: number
-    visible?: boolean
-    cellTemplate?: any
-    customizeText?: any
-    calculateCellValue?: any
-    cellRender?: any
-    groupIndex?: any,
-    child?: any
-}
-
 interface DataGridProps {
     data: any
     keyExpr: string
-    columns: column[]
+    columns: DataGridColumn[]
     allowedPageSizes?: number[]
+    allowColumnReordering?: boolean
+    rowAlternationEnabled?: boolean
+    showBorders?: boolean
+    showRowLines?: boolean
+    showColumnLines?: boolean
     pagerDisplayMode?: string
     pager?: any
     paging?: any
@@ -58,10 +46,15 @@ interface DataGridProps {
     showFilterRow?: boolean
     showHeaderFilter?: boolean
     showLoadPanel?: boolean
-    showRowLines?: boolean
-    showColumnLines?: boolean
     focusedRowEnabled?: boolean
-    summary?: any
+    groupPanel?: {
+        visible: boolean
+    }
+    summary?: {
+        field: any
+        type: string
+        displayFormat: any
+    }
 }
 
 const App = (props: DataGridProps): JSX.Element => {
@@ -70,7 +63,7 @@ const App = (props: DataGridProps): JSX.Element => {
             return []
         } else {
             let columns_list: JSX.Element[] = [];
-            props.columns.forEach(function (column: any, index: number) {
+            props.columns.forEach(function (column: DataGridColumn, index: number) {
                 columns_list.push(
                     <Column
                         key={column.dataField}
@@ -174,9 +167,9 @@ const App = (props: DataGridProps): JSX.Element => {
             <DataGrid
                 keyExpr={props.keyExpr}
                 dataSource={props.data}
-                allowColumnReordering={true}
-                rowAlternationEnabled={true}
-                showBorders={true}
+                allowColumnReordering={props.allowColumnReordering ?? true}
+                rowAlternationEnabled={props.rowAlternationEnabled ?? true}
+                showBorders={props.showBorders ?? true}
                 // onContentReady={onContentReady}
                 showRowLines={props.showRowLines ?? true}
                 showColumnLines={props.showColumnLines ?? true}
@@ -186,7 +179,7 @@ const App = (props: DataGridProps): JSX.Element => {
                 // onRowPrepared={}
             >
 
-                <GroupPanel visible={true}/>
+                <GroupPanel visible={props.groupPanel?.visible ?? true}/>
                 <SearchPanel visible={true} highlightCaseSensitive={true}/>
                 <FilterRow visible={props.showFilterRow ?? false}/>
                 <Grouping autoExpandAll={false}/>
