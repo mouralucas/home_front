@@ -6,6 +6,7 @@ import {Button} from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
 import {getData} from "../../../../Services/Axios/Get";
 import {Item} from "../../interfaces";
+import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
 
 const Manga = () => {
     const [mangas, setManga] = useState<Item[] | null>();
@@ -39,7 +40,7 @@ const Manga = () => {
         });
     }
 
-    let colunasTabelaLivro = [
+    let colunasTabelaLivro: DataGridColumn[] = [
         {
             dataField: "itemId",
             caption: "Id",
@@ -122,7 +123,7 @@ const Manga = () => {
         }
     ]
 
-    let toolBarItems = [
+    let toolBarItems: DataGridToolBarItem[] = [
         {
             name: 'columnChooserButton',
             location: 'after',
@@ -153,11 +154,15 @@ const Manga = () => {
                 keyExpr={'itemId'}
                 columns={colunasTabelaLivro}
                 data={mangas}
-                // tooBarRefresh={false}
-                toolBarItems={toolBarItems}
+                toolBar={{
+                    visible:true,
+                    items: toolBarItems
+                }}
                 showLoadPanel={false}
                 paging={20}
-
+                searchPanel={{
+                    visible: true
+                }}
             />
             <ModalItem modalState={modalState} hideModalItem={hideModalItem} item={selectedManga}/>
         </>

@@ -24,9 +24,6 @@ const App = () => {
             columns={columns}
             data={data}
             keyExpr={'Id'}
-            groupPanel={{
-                visible: false
-            }}
         />
     )
 }

@@ -8,6 +8,7 @@ import ModalBill from '../Modals/CreditCardBill'
 import {getCurrentPeriod} from '../../../../Utils/DateTime'
 import {CreditCardBill} from "../../Interfaces";
 import {toast} from "react-toastify";
+import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
 
 const App = () => {
     const [creditCardBill, setCreditCardBill] = useState<CreditCardBill[]>();
@@ -56,7 +57,7 @@ const App = () => {
         alert('Café');
     }
 
-    const columns = [
+    const columns: DataGridColumn[] = [
         {
             dataField: "id",
             caption: "Id",
@@ -138,7 +139,7 @@ const App = () => {
         }
     ]
 
-    let toolBarItems = [
+    let toolBarItems: DataGridToolBarItem[] = [
         {
             name: 'columnChooserButton',
             location: 'after',
@@ -168,9 +169,14 @@ const App = () => {
                 keyExpr={'id'}
                 columns={columns}
                 data={creditCardBill}
-                // toolBarRefresh={false}
-                toolBarItems={toolBarItems}
+                toolBar={{
+                    visible:true,
+                    items: toolBarItems
+                }}
                 showLoadPanel={false}
+                searchPanel={{
+                    visible: true
+                }}
             />
             <ModalBill modalState={modalState} hideModal={hideModal} creditCardBill={selectedCreditCardBill}/>
         </>

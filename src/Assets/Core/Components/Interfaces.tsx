@@ -16,3 +16,11 @@ export interface DataGridColumn {
     groupIndex?: any | undefined
     child?: any | undefined
 }
+
+export interface DataGridToolBarItem {
+    index?: any
+    name?: string
+    location?: string
+    child?: any
+    locateInMenu?: string
+}

@@ -7,6 +7,7 @@ import {Button as Btn} from "devextreme-react/data-grid";
 import TreeList from "../../../../Components/Table/TreeList";
 import ModalInvestment from '../Modals/Investment';
 import {Investment} from "../../Interfaces";
+import {DataGridColumn} from "../../../../Assets/Core/Components/Interfaces";
 
 
 const App = () => {
@@ -45,7 +46,7 @@ const App = () => {
         })
     }
 
-    const columns = [
+    const columns: DataGridColumn[] = [
         {
             dataField: "investmentId",
             caption: "Id",

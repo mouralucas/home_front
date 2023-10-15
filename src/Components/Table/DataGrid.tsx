@@ -17,7 +17,7 @@ import DataGrid, {
 import {Item} from "devextreme-react/box";
 import {FilterRow} from "devextreme-react/gantt";
 import '../../Assets/Core/Components/Table.css'
-import {DataGridColumn} from "../../Assets/Core/Components/Interfaces";
+import {DataGridColumn, DataGridToolBarItem} from "../../Assets/Core/Components/Interfaces";
 
 
 const pageSizes: number[] = [10, 15, 20, 50, 100];
@@ -49,6 +49,14 @@ interface DataGridProps {
     focusedRowEnabled?: boolean
     groupPanel?: {
         visible: boolean
+    }
+    searchPanel?: {
+        visible?: boolean,
+        highlightCaseSensitive?: boolean
+    }
+    toolBar?: {
+        visible?: boolean
+        items?: DataGridToolBarItem[]
     }
     summary?: {
         field: any
@@ -133,8 +141,8 @@ const App = (props: DataGridProps): JSX.Element => {
 
     const setToolbar = (): JSX.Element[] | null => {
         let lista_toolbar: any[] = [];
-        if (props.toolBarItems) {
-            props.toolBarItems.forEach(function (item: any, index: number) {
+        if (props.toolBar?.items) {
+            props.toolBar?.items?.forEach(function (item: any, index: number) {
                 const propsItem = {
                     key: index,
                     name: item.name,
@@ -179,8 +187,8 @@ const App = (props: DataGridProps): JSX.Element => {
                 // onRowPrepared={}
             >
 
-                <GroupPanel visible={props.groupPanel?.visible ?? true}/>
-                <SearchPanel visible={true} highlightCaseSensitive={true}/>
+                <GroupPanel visible={props.groupPanel?.visible ?? false}/>
+                <SearchPanel visible={props.searchPanel?.visible ?? false} highlightCaseSensitive={props.searchPanel?.highlightCaseSensitive ?? true}/>
                 <FilterRow visible={props.showFilterRow ?? false}/>
                 <Grouping autoExpandAll={false}/>
                 <HeaderFilter visible={props.showHeaderFilter ?? false}/>
@@ -198,9 +206,11 @@ const App = (props: DataGridProps): JSX.Element => {
                 {/* Toolbar elements */}
                 {/*{setExport()}*/}
 
-                <Toolbar visible={props.showToolBar}>
-                    {setToolbar()}
-                </Toolbar>
+                {props.toolBar &&
+                    <Toolbar visible={props.toolBar.visible}>
+                        {setToolbar()}
+                    </Toolbar>
+                }
             </DataGrid>
         </>
     )

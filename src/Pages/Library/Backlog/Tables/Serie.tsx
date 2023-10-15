@@ -5,6 +5,7 @@ import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalSerie from '../Modals/Serie'
 import {getData} from "../../../../Services/Axios/Get";
+import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
 
 const App = () => {
     const [serie, setSerie] = useState();
@@ -38,7 +39,7 @@ const App = () => {
         alert('Café');
     }
 
-    const columns = [
+    const columns: DataGridColumn[] = [
         {
             dataField: "id",
             caption: "Id",
@@ -89,7 +90,7 @@ const App = () => {
         }
     ]
 
-    let toolBarItems = [
+    let toolBarItems: DataGridToolBarItem[] = [
         {
             name: 'columnChooserButton',
             location: 'after',
@@ -119,8 +120,10 @@ const App = () => {
                 keyExpr={'id'}
                 columns={columns}
                 data={serie}
-                // toolBarRefresh={false}
-                toolBarItems={toolBarItems}
+                toolBar={{
+                    visible:true,
+                    items: toolBarItems
+                }}
                 showLoadPanel={false}
             />
             <ModalSerie modalState={modalState} hideModal={hideModal} serie={selectedSerie}/>

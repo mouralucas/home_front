@@ -140,9 +140,14 @@ const App = () => {
                 keyExpr={'statementId'}
                 columns={columns}
                 data={statement}
-                // toolBarRefresh={false}
-                toolBarItems={toolBarItems}
+                toolBar={{
+                    visible:true,
+                    items: toolBarItems
+                }}
                 showLoadPanel={false}
+                searchPanel={{
+                    visible: true
+                }}
             />
             <ModalStatement modalState={modalState} hideModal={hideModal} statement={selectedStatement}/>
         </>

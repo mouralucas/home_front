@@ -6,6 +6,7 @@ import Button from "devextreme-react/button";
 import ModalAuthor from '../Modals/Author'
 import {getData} from "../../../../Services/Axios/Get";
 import {toast} from "react-toastify";
+import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
 
 const App = () => {
     const [author, setAuthor] = useState();
@@ -39,7 +40,7 @@ const App = () => {
         alert('Café');
     }
 
-    const columns = [
+    const columns: DataGridColumn[] = [
         {
             dataField: "id",
             caption: "Id",
@@ -90,7 +91,7 @@ const App = () => {
         }
     ]
 
-    let toolBarItems = [
+    let toolBarItems: DataGridToolBarItem[] = [
         {
             name: 'columnChooserButton',
             location: 'after',
@@ -120,8 +121,10 @@ const App = () => {
                 keyExpr={'id'}
                 columns={columns}
                 data={author}
-                // toolBarRefresh={false}
-                toolBarItems={toolBarItems}
+                toolBar={{
+                    visible:true,
+                    items: toolBarItems
+                }}
                 showLoadPanel={false}
             />
             <ModalAuthor modalState={modalState} hideModal={hideModal} author={selectedAuthor}/>
