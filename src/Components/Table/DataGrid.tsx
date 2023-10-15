@@ -22,10 +22,28 @@ import '../../Assets/Core/Components/Table.css'
 const pageSizes: number[] = [10, 15, 20, 50, 100];
 const exportFormats: string[] = ['pdf', 'xlsx'];
 
+interface column {
+    key?: string
+    type?: string
+    dataField: any
+    caption?: string
+    dataType?: any
+    format?: any
+    alignment?: string
+    width?: number
+    visible?: boolean
+    cellTemplate?: any
+    customizeText?: any
+    calculateCellValue?: any
+    cellRender?: any
+    groupIndex?: any,
+    child?: any
+}
+
 interface DataGridProps {
     data: any
     keyExpr: string
-    columns: any
+    columns: column[]
     allowedPageSizes?: number[]
     pagerDisplayMode?: string
     pager?: any

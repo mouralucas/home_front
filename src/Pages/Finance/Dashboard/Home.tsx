@@ -6,6 +6,7 @@ import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
 import {toast} from "react-toastify";
 import BillHistory from "./Charts/CreditCardBillHistory";
 import {Summary} from "../Interfaces";
+import CategoryExpensesDetails from "./Tables/CategoryExpensesDetails";
 
 interface SummaryResponse {
     success: boolean
@@ -76,9 +77,7 @@ const Home = () => {
                                         <PieChartCategoryExpenses/>
                                     </div>
                                     <div className="col-6">
-                                        Melhorar apresentação e colocar aqui a tabela de detalhes das categorias do gráfico ao lado
-                                        Centralizar a imagem e colocar mensagem: "Selecione uma categoria para mais detalhes"
-                                        Deletar modal CategoryExpensesModal
+                                        <CategoryExpensesDetails />
                                     </div>
                                 </div>
                             </Card.Body>
