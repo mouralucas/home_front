@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import BillHistory from "./Charts/CreditCardBillHistory";
 import {CategoryTransactions, Summary} from "../Interfaces";
 import CategoryExpensesDetails from "./Tables/CategoryExpensesDetails";
+import {getCurrentPeriod} from "../../../Utils/DateTime";
 
 interface SummaryResponse {
     success: boolean
@@ -23,13 +24,14 @@ interface CategoryTransactionsResponse {
 const Home = () => {
     const [summary, setSummary] = useState<Summary>()
     const [expensesByCategory, setExpensesByCategory] = useState<CategoryTransactions[]>([])
+    const [selectedPeriod, setSelectedPeriod] = useState<number>(getCurrentPeriod())
 
     useEffect(() => {
         document.title = 'Dashboard';
     }, [])
 
     useEffect(() => {
-        getData(URL_FINANCE_SUMMARY, {period: 202308}).then((response: SummaryResponse) => {
+        getData(URL_FINANCE_SUMMARY, {period: selectedPeriod}).then((response: SummaryResponse) => {
             setSummary(response.summary);
         }).catch(() => {
             toast.error('Erro ao buscar resumo')
@@ -39,7 +41,7 @@ const Home = () => {
     const getExpensesByCategory = (categoryId: string) => {
         getData(URL_FINANCE_TRANSACTIONS_CATEGORY_LIST, {
             categoryId: categoryId,
-            period: 202310
+            period: selectedPeriod
         }).then((response: CategoryTransactionsResponse) => {
             setExpensesByCategory(response.transactions)
         }).catch(err => {
@@ -63,7 +65,7 @@ const Home = () => {
                     <div className="col-xl-3 col-lg-6 col-sm-12">
                         <Card>
                             <Card.Body>
-                                <p>Saldo em dd/mm/yy</p>
+                                <p>Saldo em {summary?.referenceDate}</p>
                                 R$ {summary?.periodBalance}
                             </Card.Body>
                         </Card>
@@ -101,7 +103,10 @@ const Home = () => {
                             <Card.Body>
                                 <div className="row">
                                     <div className="col-6">
-                                        <PieChartCategoryExpenses pointClick={handleChartPointClick}/>
+                                        <PieChartCategoryExpenses
+                                            period={selectedPeriod}
+                                            pointClick={handleChartPointClick}
+                                        />
                                     </div>
                                     <div className="col-6">
                                         <CategoryExpensesDetails data={expensesByCategory}/>

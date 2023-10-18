@@ -79,7 +79,7 @@ export interface CategoryTransactions {
 
 export interface Summary {
     period: number
-    referenceDate: Date
+    referenceDate: string
     periodIncoming: number
     periodOutgoing: number
     periodBalance: number
