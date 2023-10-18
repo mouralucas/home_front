@@ -31,8 +31,8 @@ export const URL_INVESTMENT_STATEMENT = '/finance/investment/statement'
 export const URL_FINANCE_INVESTMENT_ALLOCATION = '/finance/investment/allocation'
 
 // Other finances
-export const URL_EXPENSE = '/finance/expense'
-export const URL_FINANCE_EXPENSE_CATEGORY = '/finance/expense/category'
+export const URL_FINANCE_TRANSACTIONS_CATEGORY_LIST = '/finance/transaction/category/list'
+export const URL_FINANCE_TRANSACTIONS_CATEGORY_AGGREGATED = '/finance/transaction/category/aggregated'
 export const URL_CURRENCY = '/finance/currency'
 export const URL_FINANCE_SUMMARY = '/finance/summary'
 export const URL_FINANCE_BANK = '/finance/bank'

@@ -69,9 +69,11 @@ export interface Expense {
     // fields from new endpoint
 }
 
-export interface ExpensesByCategory {
-    category_id: string
-    category: string
+export interface CategoryTransactions {
+    transactionID: number
+    categoryId: string
+    category: string // TODO: review this variable name, it is the parent category
+    categoryName: string
     total: number
 }
 

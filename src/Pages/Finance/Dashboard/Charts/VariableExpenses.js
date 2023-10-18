@@ -1,6 +1,6 @@
 import PieChart from "../../../../Components/Chart/Pie";
 import {useEffect, useState} from "react";
-import {URL_EXPENSE} from "../../../../Services/Axios/ApiUrls";
+import {URL_FINANCE_TRANSACTIONS_CATEGORY_LIST} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";
 import {toast} from "react-toastify";
 
@@ -9,7 +9,7 @@ const App = (props) => {
     const [expenses, setExpenses] = useState()
 
     const getExpenses = () => {
-        getData(URL_EXPENSE, {
+        getData(URL_FINANCE_TRANSACTIONS_CATEGORY_LIST, {
                 // 'period': getCurrentPeriod(),
                 'period': 202302,
                 'expense_type': 'variable'

@@ -1,29 +1,46 @@
 import React from "react";
 import DataGrid from "../../../../Components/Table/DataGrid";
+import {DataGridColumn} from "../../../../Assets/Core/Components/Interfaces";
 
-const App = () => {
-    const columns = [
+interface TransactionsCategoryProps {
+    data: any[]
+}
+
+const App = (props: TransactionsCategoryProps) => {
+    const columns: DataGridColumn[] = [
         {
+            'dataField': 'transactionId',
+            'caption': 'Id',
+            'dataType': 'string',
+            'visible': true
+        },
+        {
+            'dataField': 'date',
             'caption': 'Data',
             'dataType': 'date'
         },
         {
+            'dataField': 'amount',
             'caption': 'Valor',
             'dataType': 'currency'
         },
         {
-          'caption': 'Descrição',
-          'dataType': 'string'
+          'dataField': 'categoryName',
+          'caption': 'Categoria',
+          'dataType':'string'
+        },
+        {
+            'dataField': 'description',
+            'caption': 'Descrição',
+            'dataType': 'string'
         }
     ]
-
-    const data: any[] = []
 
     return (
         <DataGrid
             columns={columns}
-            data={data}
-            keyExpr={'Id'}
+            data={props.data}
+            keyExpr={'transactionId'}
         />
     )
 }

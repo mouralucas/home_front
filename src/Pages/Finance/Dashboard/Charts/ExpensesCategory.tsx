@@ -1,14 +1,18 @@
 import PieChart from "../../../../Components/Chart/Pie";
 import React, {useEffect, useState} from "react";
-import {URL_FINANCE_EXPENSE_CATEGORY} from "../../../../Services/Axios/ApiUrls";
+import {URL_FINANCE_TRANSACTIONS_CATEGORY_AGGREGATED} from "../../../../Services/Axios/ApiUrls";
 import {getData} from "../../../../Services/Axios/Get";
 import {toast, ToastOptions} from "react-toastify";
 import {getCurrentPeriod} from "../../../../Utils/DateTime";
-import {ExpensesByCategory} from "../../Interfaces";
+import {CategoryTransactions} from "../../Interfaces";
 import ModalCategoryExpensesDetails from "../Modals/CategoryExpensesDetails"
 
-const App = () => {
-    const [expenses, setExpenses] = useState<ExpensesByCategory[]>([])
+interface ExpenseCategoryProps {
+    pointClick: any
+}
+
+const App = (props: ExpenseCategoryProps) => {
+    const [expenses, setExpenses] = useState<CategoryTransactions[]>([])
     const [modalState, setModalState] = useState<boolean>(false)
 
     const showModal = (e: any) => {
@@ -27,15 +31,16 @@ const App = () => {
     }, []);
 
     const getExpenses = () => {
-        getData(URL_FINANCE_EXPENSE_CATEGORY, {
+        getData(URL_FINANCE_TRANSACTIONS_CATEGORY_AGGREGATED, {
                 'period': getCurrentPeriod(),
                 // 'period': 202302,
             }
         ).then(response => {
-                let options = response == null ? {} : response.expenses.map((i: ExpensesByCategory) => ({
+            // TODO: add this response interface
+                let options = response == null ? {} : response.expenses.map((i: CategoryTransactions) => ({
                     category: i.category,
                     total: i.total,
-                    category_id: i.category_id
+                    categoryId: i.categoryId
                 }))
                 setExpenses(options)
             }
@@ -45,17 +50,16 @@ const App = () => {
         );
     }
 
-    const handlePointClick = (e: any) => {
-        console.log(e.target.data);
-        showModal(e);
-    };
+    // const handlePointClick = (e: any) => {
+    //     console.log(e.target.data);
+    // };
 
     return (
         <>
             <PieChart data={expenses}
                       axis={{argumentField: 'category', valueField: 'total'}}
                       title={'Categoria'}
-                      onPointClick={handlePointClick}
+                      onPointClick={props.pointClick}
             />
             <ModalCategoryExpensesDetails modalState={modalState} hideModal={hideModal} />
         </>

@@ -2,10 +2,10 @@ import Card from "../../../Components/Card";
 import PieChartCategoryExpenses from './Charts/ExpensesCategory'
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
-import {URL_FINANCE_SUMMARY} from "../../../Services/Axios/ApiUrls";
+import {URL_FINANCE_TRANSACTIONS_CATEGORY_AGGREGATED, URL_FINANCE_SUMMARY, URL_FINANCE_TRANSACTIONS_CATEGORY_LIST} from "../../../Services/Axios/ApiUrls";
 import {toast} from "react-toastify";
 import BillHistory from "./Charts/CreditCardBillHistory";
-import {Summary} from "../Interfaces";
+import {CategoryTransactions, Summary} from "../Interfaces";
 import CategoryExpensesDetails from "./Tables/CategoryExpensesDetails";
 
 interface SummaryResponse {
@@ -14,8 +14,15 @@ interface SummaryResponse {
     summary: Summary
 }
 
+interface CategoryTransactionsResponse {
+    success: boolean
+    message?: string
+    transactions: CategoryTransactions[]
+}
+
 const Home = () => {
     const [summary, setSummary] = useState<Summary>()
+    const [expensesByCategory, setExpensesByCategory] = useState<CategoryTransactions[]>([])
 
     useEffect(() => {
         document.title = 'Dashboard';
@@ -28,6 +35,26 @@ const Home = () => {
             toast.error('Erro ao buscar resumo')
         })
     }, [])
+
+    const getExpensesByCategory = (categoryId: string) => {
+        getData(URL_FINANCE_TRANSACTIONS_CATEGORY_LIST, {
+            categoryId: categoryId,
+            period: 202310
+        }).then((response: CategoryTransactionsResponse) => {
+            setExpensesByCategory(response.transactions)
+        }).catch(err => {
+            toast.error('Houve um erro ao buscar as transações por categoria')
+        })
+    }
+
+    useEffect(() => {
+        console.log(expensesByCategory);
+    }, [expensesByCategory]);
+
+    const handleChartPointClick = (e: any) => {
+        let categoryId = e.target.data.categoryId;
+        getExpensesByCategory(categoryId)
+    }
 
     return (
         <div className="page-with-menu">
@@ -74,10 +101,10 @@ const Home = () => {
                             <Card.Body>
                                 <div className="row">
                                     <div className="col-6">
-                                        <PieChartCategoryExpenses/>
+                                        <PieChartCategoryExpenses pointClick={handleChartPointClick}/>
                                     </div>
                                     <div className="col-6">
-                                        <CategoryExpensesDetails />
+                                        <CategoryExpensesDetails data={expensesByCategory}/>
                                     </div>
                                 </div>
                             </Card.Body>
