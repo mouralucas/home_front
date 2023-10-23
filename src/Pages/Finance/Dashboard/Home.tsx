@@ -2,11 +2,12 @@ import Card from "../../../Components/Card";
 import PieChartCategoryExpenses from './Charts/ExpensesCategory'
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../Services/Axios/Get";
-import {URL_FINANCE_TRANSACTIONS_CATEGORY_AGGREGATED, URL_FINANCE_SUMMARY, URL_FINANCE_TRANSACTIONS_CATEGORY_LIST} from "../../../Services/Axios/ApiUrls";
+import {URL_FINANCE_SUMMARY, URL_FINANCE_TRANSACTIONS_CATEGORY_LIST} from "../../../Services/Axios/ApiUrls";
 import {toast} from "react-toastify";
 import BillHistory from "./Charts/CreditCardBillHistory";
 import {CategoryTransactions, Summary} from "../Interfaces";
 import CategoryExpensesDetails from "./Tables/CategoryExpensesDetails";
+import CreditCardBillByCardTable from "./Tables/CreditCardBillByCard";
 import {getCurrentPeriod} from "../../../Utils/DateTime";
 
 interface SummaryResponse {
@@ -97,6 +98,15 @@ const Home = () => {
                     </div>
                 </div>
 
+                <div className="row">
+                    <div className="col-6">
+                        <Card>
+                            <Card.Body>
+                                <CreditCardBillByCardTable />
+                            </Card.Body>
+                        </Card>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col-12">
                         <Card>

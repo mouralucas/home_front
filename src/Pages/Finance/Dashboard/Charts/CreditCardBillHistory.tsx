@@ -1,7 +1,7 @@
 import BarChart from '../../../../Components/Chart/Bar'
 import React, {useEffect, useState} from "react";
 import {getData} from "../../../../Services/Axios/Get";
-import {URL_CREDIT_CARD_BILL_HISTORY_AGGREGATED, URL_PERIOD} from "../../../../Services/Axios/ApiUrls";
+import {URL_CREDIT_CARD_BILL_HISTORY, URL_PERIOD} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
 import {Behavior, Scale} from "devextreme-react/range-selector";
 import {RangeSelector} from "devextreme-react";
@@ -37,9 +37,10 @@ const App = () => {
     }
 
     const getBillHistory = (startAt: number, endAt: number) => {
-        getData(URL_CREDIT_CARD_BILL_HISTORY_AGGREGATED, {
+        getData(URL_CREDIT_CARD_BILL_HISTORY, {
                 'startAt': startAt,
                 'endAt': endAt,
+                'type': 'aggregated'
             }
         ).then(response => {
             let options = response == null ? {} : response.history.map((i: {
