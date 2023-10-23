@@ -11,10 +11,13 @@ interface CreditCardBillByCardProps {
 
 }
 
-interface CreditCardBillHistoryResponse {
-    success: boolean,
-    message: string,
-    history: any
+interface HistoryResponse {
+    success: boolean
+    message: string
+    history: {
+        periods: any
+        columns: any
+    }
 }
 
 const defaultColumns: DataGridColumn[] = [
@@ -45,7 +48,7 @@ const App = (props: CreditCardBillByCardProps) => {
             startAt: 202306,
             endAt: 202312,
             type: 'byCard'
-        }).then((response: CreditCardBillHistoryResponse) => {
+        }).then((response: HistoryResponse) => {
             // setColumns(prevLists => [...prevLists, response.history.columns])
         }).catch((err: string | ToastOptions) => {
             toast.error('Erro ao buscar histórico de faturas')
