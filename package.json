@@ -2,6 +2,7 @@
   "name": "pdv_front",
   "version": "0.1.0",
   "private": true,
+  "build": "react-scripts --max_old_space_size=4096 build",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

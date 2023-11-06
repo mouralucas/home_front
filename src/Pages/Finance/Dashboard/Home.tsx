@@ -50,10 +50,6 @@ const Home = () => {
         })
     }
 
-    useEffect(() => {
-        console.log(expensesByCategory);
-    }, [expensesByCategory]);
-
     const handleChartPointClick = (e: any) => {
         let categoryId = e.target.data.categoryId;
         getExpensesByCategory(categoryId)
