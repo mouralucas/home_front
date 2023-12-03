@@ -12,6 +12,7 @@ import handleSubmit from "../../../../Services/Axios/Post";
 import {toast} from "react-toastify";
 import Card from '../../../../Components/Card'
 import {Investment} from "../../Interfaces";
+import DropdownList from 'react-widgets/DropdownList';
 
 /**
  * Modal to create new entry for investments
@@ -80,6 +81,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
     useEffect(() => {
         if (props.investment && props.modalState) {
             setInvestment(props.investment);
+
         }
 
         if (!props.modalState) {
@@ -88,6 +90,10 @@ const App = (props: InvestmentProps): React.ReactElement => {
             setSelectedInterestRate(null);
         }
     }, [props.modalState, props.investment])
+
+    useEffect(() => {
+        getInvestmentType();
+    }, []);
 
     const getParentInvestments = (query: any, callback: any) => {
         if (query) {
@@ -109,24 +115,19 @@ const App = (props: InvestmentProps): React.ReactElement => {
         }
     }, [parent, props.investment])
 
-    const getInvestmentType = (query: any, callback: any) => {
-        if (query) {
-            callback(filterSelect(investmentType, query));
-        } else {
-            getData(URL_FINANCE_INVESTMENT_TYPE, {showMode: 'child'}).then(response => {
-                let options = response === null ? {} : response.investmentType.map((i: { id: string; name: string; }) => ({
-                    value: i.id,
-                    label: i.name
-                }));
-                callback(options);
-                setSelectedInvestmentType(options?.filter((i: {
-                    value: any;
-                }) => i.value === investment?.investmentTypeId)[0])
-                setInvestmentType(options)
-            }).catch(err => {
-                toast.error('Houve um erro ao buscar os tipos de investimentos')
-            })
-        }
+    const getInvestmentType = () => {
+        getData(URL_FINANCE_INVESTMENT_TYPE, {showMode: 'child'}).then(response => {
+            // let options = response === null ? {} : response.investmentType.map((i: { id: string; name: string; }) => ({
+            //     id: i.id,
+            //     name: i.name
+            // }));
+            // setSelectedInvestmentType(options?.filter((i: {
+            //     value: any;
+            // }) => i.value === investment?.investmentTypeId)[0])
+            setInvestmentType(response.investmentType)
+        }).catch(err => {
+            toast.error('Houve um erro ao buscar os tipos de investimentos')
+        })
     }
 
     // useEffect to set the combo when it has default value
@@ -254,11 +255,14 @@ const App = (props: InvestmentProps): React.ReactElement => {
                             <div className="row mt-2">
                                 <div className="col-3">
                                     <label htmlFor="">Tipo</label>
-                                    <AsyncSelect id={'combo_investment_type'}
-                                                 loadOptions={(query: string, callback: any) => getInvestmentType(query, callback)}
-                                                 onChange={(e) => setCombo(e, 'investmentTypeId', setSelectedInvestmentType)}
-                                                 defaultOptions
-                                                 value={selectedInvestmentType}/>
+                                    <DropdownList id={'combo_investment_type'}
+                                                  data={investmentType}
+                                                  groupBy={'parentName'}
+                                                  dataKey={'id'}
+                                                  textField={'name'}
+                                                  onChange={(e) =>
+                                                      setCombo(e, 'investmentTypeId', setSelectedInvestmentType)}
+                                    />
                                 </div>
                                 <div className="col-3">
                                     <label htmlFor="">Indexação {investment?.interestRate}</label>
@@ -321,7 +325,9 @@ const App = (props: InvestmentProps): React.ReactElement => {
                                               onFocus={(event: {
                                                   target: { select: () => any; };
                                               }) => event.target.select()}
-                                              onValueChange={(values: any) => {setCurrency(values, 'price')}}
+                                              onValueChange={(values: any) => {
+                                                  setCurrency(values, 'price')
+                                              }}
                                     />
                                 </div>
 

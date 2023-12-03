@@ -5,6 +5,13 @@
  */
 import {UUID} from "crypto";
 
+export interface Account {
+    accountId: UUID
+    branch: string
+    number: string
+    openAt: string
+    closeAt: string
+}
 
 export interface Statement {
     statementId: number | null
@@ -64,7 +71,6 @@ export interface CreditCardBillHistory {
     total_amount_absolute: number
 }
 
-
 export interface Expense {
     // fields from new endpoint
 }
@@ -93,4 +99,10 @@ export interface InvestmentType {
 
 export interface InvestmentAllocation {
 
+}
+
+export interface Currency {
+    currencyId: string
+    name: string
+    symbol: string
 }

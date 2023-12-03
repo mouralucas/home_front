@@ -1,6 +1,6 @@
 import Card from '../../../Components/Card'
 import CreditCardBillTable from './Tables/CreditCardBill'
-import BankStatementTable from './Tables/AccountStatement'
+import AccountStatementTable from './Tables/AccountStatement'
 import InvestmentTable from './Tables/Investment'
 import {useEffect} from "react";
 
@@ -34,7 +34,7 @@ const App = () => {
                         <Card>
                             <Card.Header>Extrato</Card.Header>
                             <Card.Body>
-                                <BankStatementTable/>
+                                <AccountStatementTable/>
                             </Card.Body>
                         </Card>
                     </div>

@@ -1,12 +1,4 @@
 import Modal from "../../../../Components/Modal";
-import {useEffect, useState} from "react";
-import {URL_AUTHOR, URL_COUNTRY, URL_LANGUAGE} from "../../../../Services/Axios/ApiUrls";
-import DateBox from "devextreme-react/date-box";
-import Moment from "moment/moment";
-import handleSubmit from '../../../../Services/Axios/Post'
-import AsyncSelect from "react-select/async";
-import filterSelect from "../../../../Utils/DataHandling";
-import {getData} from "../../../../Services/Axios/Get";
 import {CheckBox} from 'devextreme-react/check-box';
 import {Author} from "../../interfaces";
 import DropdownList from 'react-widgets/DropdownList'
@@ -22,10 +14,10 @@ const App = (props: AuthorModalProps) => {
     const {handleSubmit, control, setValue} = useForm();
 
     let colors = [
-        {id: 0, name: 'orange'},
-        {id: 1, name: 'purple'},
-        {id: 2, name: 'red'},
-        {id: 3, name: 'blue'},
+        {id: 0, name: 'orange', parent:'lucas'},
+        {id: 1, name: 'purple', parent: 'lucas'},
+        {id: 2, name: 'red', parent: 'moura'},
+        {id: 3, name: 'blue', parent: 'moura'},
     ];
 
     const body = () => {
@@ -45,9 +37,11 @@ const App = (props: AuthorModalProps) => {
                             <label htmlFor="">Country</label>
                             <Controller
                                 name={'countryId'}
+                                control={control}
                                 render={field => (
                                     <DropdownList
                                         data={colors}
+                                        groupBy={'parent'}
                                         dataKey={'id'}
                                         textField={'name'}
                                         onChange={(e) => setValue('countryId', e.id)}

@@ -20,8 +20,8 @@ export const URL_CREDIT_CARD_BILL = '/finance/credit-card/bill'
 export const URL_CREDIT_CARD_BILL_HISTORY = 'finance/credit-card/bill/history'
 
 //Account
-export const URL_ACCOUNTS = '/finance/account'
-export const URL_ACCOUNT_STATEMENT = '/finance/account/statement'
+export const URL_FINANCE_ACCOUNTS = '/finance/account'
+export const URL_FINANCE_ACCOUNT_STATEMENT = '/finance/account/statement'
 export const URL_FINANCE_CURRENCY_FLOW = "finance/account/currency"
 
 //Investment

@@ -1,6 +1,6 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_ACCOUNT_STATEMENT, URL_ACCOUNTS, URL_CATEGORIES, URL_CURRENCY} from "../../../../Services/Axios/ApiUrls";
+import {URL_FINANCE_ACCOUNT_STATEMENT, URL_FINANCE_ACCOUNTS, URL_CATEGORIES, URL_CURRENCY} from "../../../../Services/Axios/ApiUrls";
 import Currency from "../../../../Components/Form/Currency";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
@@ -106,7 +106,7 @@ const App = (props: AccountStatementProps) => {
             callback(filterSelect(currency, query));
         } else {
             getData(URL_CURRENCY).then(response => {
-                let options = response == null ? {} : response.currency.map((i: { id: any; symbol: any; }) => ({value: i.id, label: i.symbol}))
+                let options = response == null ? {} : response.currencies.map((i: { id: any; symbol: any; }) => ({value: i.id, label: i.symbol}))
                 callback(options);
                 setSelectedCurrency(options.filter((currency: { value: string; }) => currency.value === values.currencyId))
                 setCurrency(options)
@@ -119,7 +119,9 @@ const App = (props: AccountStatementProps) => {
             callback(filterSelect(category, query));
         } else {
             getData(URL_CATEGORIES, {show_mode: 'all', module: 'finance'}).then(response => {
-                let options = response == null ? {} : response.categories.map((i: { id: any; name: string; }) => ({value: i.id, label: i.name}))
+                let options = response == null ? {} : response.categories.map((i: { categoryId: any; name: string; }) =>
+                    ({value: i.categoryId, label: i.name})
+                )
 
                 callback(options);
                 setSelectedCategory(options.filter((category: { value: any; }) => category.value === values.categoryId)[0]);
@@ -132,7 +134,8 @@ const App = (props: AccountStatementProps) => {
         if (query) {
             callback(filterSelect(account, query));
         } else {
-            getData(URL_ACCOUNTS).then(response => {
+            getData(URL_FINANCE_ACCOUNTS, {accountType: "checking"}).then(response => {
+
                 let options = response.accounts.map((i: { id: any; nickname: string; }) => ({value: i.id, label: i.nickname}))
                 callback(options);
                 setSelectedAccount(options?.filter((account: { value: any; }) => account.value === values.accountId)[0])
@@ -266,7 +269,7 @@ const App = (props: AccountStatementProps) => {
                 title={'Extrato'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e: any) => handleSubmit(e, URL_ACCOUNT_STATEMENT, values, false, "Item de extrato salvo")}
+                actionModal={(e: any) => handleSubmit(e, URL_FINANCE_ACCOUNT_STATEMENT, values, false, "Item de extrato salvo")}
                 size={'lg'}
             />
         </div>
