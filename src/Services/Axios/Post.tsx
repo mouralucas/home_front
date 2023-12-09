@@ -5,18 +5,18 @@ import {toast} from "react-toastify";
 const HandleSubmit = async (e: any, url: string, values: any, hideModal: any, toastMessage: string) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    Object.keys(values).forEach(key => values[key] !== null ? formData.append(key, values[key]) : null);
+    // const formData = new FormData();
+    // Object.keys(values).forEach(key => values[key] !== null ? formData.append(key, values[key]) : null);
 
     await axios({
         method: 'post',
         url: url,
-        data: formData,
+        data: values,
         headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'application/json'
         }
     }).then(response => {
-        if(toastMessage) {
+        if (toastMessage) {
             toast(toastMessage)
         }
         return response.data
@@ -24,7 +24,7 @@ const HandleSubmit = async (e: any, url: string, values: any, hideModal: any, to
         return {'error': response.data}
     })
 
-    if (hideModal){
+    if (hideModal) {
         hideModal()
     }
 }

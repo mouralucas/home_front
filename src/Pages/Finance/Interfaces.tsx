@@ -7,6 +7,7 @@ import {UUID} from "crypto";
 
 export interface Account {
     accountId: UUID
+    nickname: string
     branch: string
     number: string
     openAt: string
@@ -105,4 +106,9 @@ export interface Currency {
     currencyId: string
     name: string
     symbol: string
+}
+
+export interface CashFlow {
+    cashFlowId: string
+    cashFlowName: string
 }

@@ -34,6 +34,7 @@ export const URL_FINANCE_INVESTMENT_ALLOCATION = '/finance/investment/allocation
 export const URL_FINANCE_TRANSACTIONS_CATEGORY_LIST = '/finance/transaction/category/list'
 export const URL_FINANCE_TRANSACTIONS_CATEGORY_AGGREGATED = '/finance/transaction/category/aggregated'
 export const URL_CURRENCY = '/finance/currency'
+export const URL_FINANCE_CASH_FLOW = '/finance/cash-flow'
 export const URL_FINANCE_SUMMARY = '/finance/summary'
 export const URL_FINANCE_BANK = '/finance/bank'
 export const URL_FINANCE_INTEREST = 'finance/interest'

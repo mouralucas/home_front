@@ -1,5 +1,10 @@
 import {UUID} from "crypto";
 
+export interface ReactSelectInterface {
+    value: string | null | undefined
+    label: string | null | undefined
+}
+
 export interface Country {
     countryId: UUID
 }
