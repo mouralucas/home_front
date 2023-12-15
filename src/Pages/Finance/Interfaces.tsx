@@ -52,6 +52,14 @@ export interface Investment {
     lastEditedAt: Date | undefined,
 }
 
+export interface CreditCard {
+    creditCardId: string
+    name: string
+    description: string
+    closingAt: string //maybe date
+    dueAt: string //maybe date
+}
+
 export interface CreditCardBill {
     creditCardId: string | null
     creditCardName: string | null
