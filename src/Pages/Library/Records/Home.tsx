@@ -10,7 +10,7 @@ const Home = () => {
     }, [])
 
     return (
-        <div className='page-with-menu'>
+        <div className='container'>
             <div className="App">
                 <div className="row">
                     <Card>

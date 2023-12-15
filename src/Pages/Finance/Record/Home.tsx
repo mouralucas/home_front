@@ -10,7 +10,7 @@ const App = () => {
     }, [])
 
     return (
-        <div className="page-with-menu">
+        <div className="container">
             {/*<Sidebar/>*/}
             <div className="App">
                 <div className="row">

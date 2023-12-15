@@ -16,6 +16,11 @@
 }
 
 /*Project Default*/
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
 .row {
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 0;
