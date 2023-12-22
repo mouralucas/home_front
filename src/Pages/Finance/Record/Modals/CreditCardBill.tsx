@@ -155,15 +155,17 @@ const App = (props: CreditCardBillProps): ReactElement => {
                             <label htmlFor="">Cartão: {creditCardBill.creditCardId}</label>
                             <AsyncSelect id={'combo_cards'}
                                          loadOptions={(query, callback) => getCreditCard(query, callback)}
-                                         onChange={(e) => setCombo(e, 'card_id', setSelectedCreditCard)} defaultOptions
+                                         onChange={(e) => setCombo(e, 'creditCardId', setSelectedCreditCard)}
+                                         defaultOptions
                                          value={selectedCreditCard}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Categoria</label>
                             <AsyncSelect id={'combo_categories'}
                                          loadOptions={(query, callback) => getCategory(query, callback)}
-                                         onChange={(e) => setCombo(e, 'category_id', setSelectedCategory)}
-                                         defaultOptions value={selectedCategory}/>
+                                         onChange={(e) => setCombo(e, 'categoryId', setSelectedCategory)}
+                                         defaultOptions
+                                         value={selectedCategory}/>
                         </div>
                     </div>
                     <div className="row">
