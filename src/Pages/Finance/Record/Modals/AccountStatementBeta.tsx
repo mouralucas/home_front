@@ -125,7 +125,7 @@ const App = (props: AccountStatementProps) => {
     }
 
     const getCategory = () => {
-        getData(URL_CATEGORIES, {show_mode: 'all', module: 'finance'}).then((response: GetCategoryResponse) => {
+        getData(URL_CATEGORIES, {showMode: 'all', module: 'finance'}).then((response: GetCategoryResponse) => {
             let options = response.categories.map((i: Category) =>
                 ({value: i.categoryId, label: i.name})
             );
@@ -264,6 +264,18 @@ const App = (props: AccountStatementProps) => {
                                             <Select options={categories}
                                                     {...field}
                                             />
+                                        )}
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12">
+                            <label htmlFor="">Descrição</label>
+                            <Controller name={'description'}
+                                        control={control}
+                                        rules={{required: false}}
+                                        render={({field}) => (
+                                            <textarea className='form-control' {...field}></textarea>
                                         )}
                             />
                         </div>

@@ -53,6 +53,12 @@ const App = () => {
         return cellInfo.installment + '/' + cellInfo.totalInstallment;
     }
 
+    function amountCustomCell(cellInfo: any) {
+        const formattedAmount = cellInfo.amount.toFixed(2)
+
+        return cellInfo.currencyReferenceSymbol + ' ' + formattedAmount;
+    }
+
     function myOtherCommand(e: any) {
         alert('Café');
     }
@@ -84,19 +90,22 @@ const App = () => {
             dataField: "purchaseAt",
             caption: "Compra",
             dataType: "date",
-            format: 'shortDate',
+            format: 'dd/MM/yyyy',
             width: 150,
         },
         {
             dataField: "paymentAt",
             caption: "Pagamento",
             dataType: "date",
+            format: 'dd/MM/yyyy',
             width: 150,
         },
         {
             dataField: "amount",
             caption: "Valor",
             dataType: "currency",
+            calculateCellValue: amountCustomCell,
+            alignment: 'justify',
             width: 110,
         },
         {

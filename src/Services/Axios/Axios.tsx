@@ -23,6 +23,7 @@ instance.interceptors.response.use(
         return response;
     },
     async function (error) {
+        // TODO: revisar status code pra limpar o localStorage
         if (error.response.status === 401 && getToken()) {
             localStorage.clear();
         } else {

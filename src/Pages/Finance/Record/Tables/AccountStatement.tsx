@@ -39,7 +39,9 @@ const App = () => {
     }
 
     function amountCustomCell(cellInfo: any) {
-        return cellInfo.currencySymbol + ' ' + cellInfo.amount;
+        const formattedAmount = cellInfo.amount.toFixed(2)
+
+        return cellInfo.currencySymbol + ' ' + formattedAmount;
     }
 
     useEffect(() => {
@@ -62,9 +64,10 @@ const App = () => {
             dataType: "string",
         },
         {
-            dataField: "purchasedAt",
+            dataField: "purchaseAt",
             caption: "Compra",
             dataType: "date",
+            format: 'dd/MM/yyyy',
             width: 150,
         },
         {

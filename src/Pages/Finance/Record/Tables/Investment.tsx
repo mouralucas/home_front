@@ -46,6 +46,12 @@ const App = () => {
         })
     }
 
+    function amountCustomCell(cellInfo: any) {
+        const formattedAmount = cellInfo.amount.toFixed(2)
+
+        return cellInfo.currencySymbol + ' ' + formattedAmount;
+    }
+
     const columns: DataGridColumn[] = [
         {
             dataField: "investmentId",
@@ -71,12 +77,14 @@ const App = () => {
             dataField: "date",
             caption: "Data",
             dataType: "date",
+            format: 'dd/MM/yyyy',
             width: 130
         },
         {
             dataField: "maturityAt",
             caption: "Vencimento",
             dataType: "date",
+            format: 'dd/MM/yyyy',
             // calculateCellValue: dateCustomCell,
             width: 130
         },
@@ -84,7 +92,7 @@ const App = () => {
             dataField: "amount",
             caption: "Valor",
             dataType: "currency",
-            // calculateCellValue: amountCustomCell,
+            calculateCellValue: amountCustomCell,
             width: 200
         }, 
         {

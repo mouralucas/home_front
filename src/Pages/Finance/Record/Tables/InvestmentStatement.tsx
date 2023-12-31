@@ -64,7 +64,7 @@ const App = () => {
             dataField: "dat_investment",
             caption: "Compra",
             dataType: "date",
-            format: 'shortDate',
+            format: 'dd/MM/yyyy',
             width: 150,
         },
         {

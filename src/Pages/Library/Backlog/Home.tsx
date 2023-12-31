@@ -11,7 +11,7 @@ import CollectionTable from '../Backlog/Tables/Collection'
 const App = () => {
     return (
         <>
-            <div className='page-with-menu'>
+            <div className='container'>
                 <div className='App'>
                     <div className="row">
                         <div className="col-12">
