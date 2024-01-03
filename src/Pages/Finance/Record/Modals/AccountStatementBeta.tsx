@@ -219,6 +219,7 @@ const App = (props: AccountStatementProps) => {
                                                 className='form-control input-default'
                                                 useMaskBehavior={true}
                                                 value={selectedStatement.purchaseAt}
+                                                displayFormat={'dd/MM/yyyy'}
                                                 onValueChanged={(e) => field.onChange(Moment(e.value).format('YYYY-MM-DD'))}
                                                 ref={null}
                                             />
