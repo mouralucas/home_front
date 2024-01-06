@@ -90,10 +90,6 @@ const App = (props: InvestmentProps): React.ReactElement => {
             setSelectedInterestRate(null);
         }
     }, [props.modalState, props.investment])
-    //
-    // useEffect(() => {
-    //     getInvestmentType();
-    // }, []);
 
     const getParentInvestments = (query: any, callback: any) => {
         if (query) {
@@ -115,21 +111,6 @@ const App = (props: InvestmentProps): React.ReactElement => {
         }
     }, [parent, props.investment])
 
-    // const getInvestmentType = () => {
-    //     getData(URL_FINANCE_INVESTMENT_TYPE, {showMode: 'child'}).then(response => {
-    //         // let options = response === null ? {} : response.investmentType.map((i: { id: string; name: string; }) => ({
-    //         //     id: i.id,
-    //         //     name: i.name
-    //         // }));
-    //         // setSelectedInvestmentType(options?.filter((i: {
-    //         //     value: any;
-    //         // }) => i.value === investment?.investmentTypeId)[0])
-    //         setInvestmentType(response.investmentType)
-    //     }).catch(err => {
-    //         toast.error('Houve um erro ao buscar os tipos de investimentos')
-    //     })
-    // }
-
     const getInvestmentType = (query: any, callback: any) => {
         if (query) {
             callback(filterSelect(investmentType, query));
@@ -145,6 +126,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
                 }) => i.value === investment?.investmentTypeId)[0])
                 setInvestmentType(options)
             }).catch(err => {
+                console.log(err)
                 toast.error('Houve um erro ao buscar os tipos de investimentos')
             })
         }

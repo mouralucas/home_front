@@ -6,13 +6,13 @@ import ModalStatement from '../Modals/AccountStatementBeta'
 import {Button as Btn} from "devextreme-react/data-grid";
 import {toast} from "react-toastify";
 import {getData} from "../../../../Services/Axios/Get";
-import {Statement} from "../../Interfaces"
+import {AccountStatement} from "../../Interfaces"
 import {DataGridColumn} from "../../../../Assets/Core/Components/Interfaces";
 
 
 const App = () => {
-    const [statement, setStatement] = useState<Statement[] | null>();
-    const [selectedStatement, setSelectedStatement] = useState<Statement | null>()
+    const [statement, setStatement] = useState<AccountStatement[] | null>();
+    const [selectedStatement, setSelectedStatement] = useState<AccountStatement | null>()
     const [modalState, setModalState] = useState<boolean>(false)
 
     const showModal = (e: any) => {
@@ -31,7 +31,7 @@ const App = () => {
 
     const getStatements = () => {
         getData(URL_FINANCE_ACCOUNT_STATEMENT, {period: 202303}).then(response => {
-                setStatement(response.statement);
+                setStatement(response.statementEntry);
             }
         ).catch(err => {
             toast.error('Houve um erro ao buscar extratos: ' + err)
@@ -54,7 +54,7 @@ const App = () => {
 
     const columns: DataGridColumn[] = [
         {
-            dataField: "statementId",
+            dataField: "statementEntryId",
             caption: "Id",
             dataType: "number",
         },
@@ -139,7 +139,7 @@ const App = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'statementId'}
+                keyExpr={'statementEntryId'}
                 columns={columns}
                 data={statement}
                 toolBar={{

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Account, CashFlow, Currency, Statement} from "../../Interfaces";
+import {Account, CashFlow, Currency, AccountStatement} from "../../Interfaces";
 import {Category, ReactSelectInterface} from "../../../Interfaces";
 import {getData} from "../../../../Services/Axios/Get";
 import {URL_FINANCE_ACCOUNTS, URL_CATEGORIES, URL_CURRENCY, URL_FINANCE_ACCOUNT_STATEMENT, URL_FINANCE_CASH_FLOW} from "../../../../Services/Axios/ApiUrls";
@@ -20,7 +20,7 @@ import Moment from "moment";
  * Account Statement Modal With React Hook Form
  */
 interface AccountStatementProps {
-    statement: Statement | undefined | null,
+    statement: AccountStatement | undefined | null,
     modalState: boolean,
     hideModal: any
 }
