@@ -127,7 +127,7 @@ const App = (props: AccountStatementProps) => {
     const getCategory = () => {
         getData(URL_CATEGORIES, {showMode: 'all', module: 'finance'}).then((response: GetCategoryResponse) => {
             let options = response.categories.map((i: Category) =>
-                ({value: i.categoryId, label: i.name})
+                ({value: i.categoryId, label: i.categoryName})
             );
             setCategories(options)
         }).catch((err: string | ToastOptions) => {

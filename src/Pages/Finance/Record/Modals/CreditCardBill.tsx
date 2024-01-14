@@ -13,6 +13,7 @@ import {CreditCardBill} from "../../Interfaces";
 
 
 const DefaultCreditCardBill: CreditCardBill = {
+    creditCardBillEntry: null,
     creditCardId: null,
     creditCardName: null,
     categoryId: null,

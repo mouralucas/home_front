@@ -11,7 +11,7 @@ export interface Country {
 
 export interface Category {
     categoryId: UUID
-    name: string
+    categoryName: string
     description: string
     fatherId: UUID
     fatherName: string

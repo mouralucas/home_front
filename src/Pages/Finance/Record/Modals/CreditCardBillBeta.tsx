@@ -73,9 +73,9 @@ const App = (props: CreditCardBillProps) => {
     }
 
     const getCategory = () => {
-        getData(URL_CATEGORIES, {show_mode: 'all', module: 'finance'}).then((response: GetCategoryResponse) => {
+        getData(URL_CATEGORIES, {showMode: 'all', module: 'finance'}).then((response: GetCategoryResponse) => {
             let options: ReactSelectInterface[] = response.categories.map((i: Category) =>
-                ({value: i.categoryId, label: i.name})
+                ({value: i.categoryId, label: i.categoryName})
             );
             setCategories(options)
         }).catch((err: string | ToastOptions) => {
@@ -176,7 +176,7 @@ const App = (props: CreditCardBillProps) => {
                             <Controller name={'description'}
                                         control={control}
                                         render={({field}) => (
-                                            <textarea {...field}></textarea>
+                                            <textarea className='form-control' {...field}></textarea>
                                         )}/>
                         </div>
                     </div>

@@ -9,6 +9,14 @@ import {getCurrentPeriod} from '../../../../Utils/DateTime'
 import {CreditCardBill} from "../../Interfaces";
 import {toast} from "react-toastify";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
+import {getData} from "../../../../Services/Axios/Get";
+
+
+interface BillResponse {
+    success: boolean
+    quantity: number
+    billEntries: CreditCardBill[]
+}
 
 const App = () => {
     const [creditCardBill, setCreditCardBill] = useState<CreditCardBill[]>();
@@ -28,13 +36,9 @@ const App = () => {
     }
 
     const getBills = () => {
-        //TODO: trocar para getData
-        axios.get(URL_CREDIT_CARD_BILL, {
-            params: {'period': getCurrentPeriod()}
-        }).then(response => {
-                setCreditCardBill(response.data.bill);
-            }
-        ).catch(response => {
+        getData(URL_CREDIT_CARD_BILL, {period: getCurrentPeriod()}).then((response: BillResponse) => {
+            setCreditCardBill(response.billEntries);
+        }).catch(response => {
             toast.error("Erro ao buscar faturas")
             return {'error': response}
         })
@@ -65,7 +69,7 @@ const App = () => {
 
     const columns: DataGridColumn[] = [
         {
-            dataField: "id",
+            dataField: "creditCardBillEntryId",
             caption: "Id",
             dataType: "number",
             width: 70
@@ -175,7 +179,7 @@ const App = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'id'}
+                keyExpr={'creditCardBillEntryId'}
                 columns={columns}
                 data={creditCardBill}
                 toolBar={{

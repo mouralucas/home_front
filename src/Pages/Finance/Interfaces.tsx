@@ -78,6 +78,7 @@ export interface CreditCard {
 }
 
 export interface CreditCardBill {
+    creditCardBillEntry: number | null
     creditCardId: string | null
     creditCardName: string | null
     categoryId: string | null
