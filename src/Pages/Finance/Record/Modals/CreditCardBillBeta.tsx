@@ -64,7 +64,7 @@ const App = (props: CreditCardBillProps) => {
     const getCreditCards = () => {
         getData(URL_CREDIT_CARD).then((response: GetCreditCardsResponse) => {
             let options: ReactSelectInterface[] = response.creditCards.map((i: CreditCard) =>
-                ({value: i.creditCardId, label: i.name})
+                ({value: i.creditCardId, label: i.nickname})
             );
             setCreditCards(options)
         }).catch((err: string | ToastOptions) => {

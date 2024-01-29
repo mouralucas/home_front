@@ -71,7 +71,7 @@ export interface InvestmentAllocation {
 // Credit card interfaces
 export interface CreditCard {
     creditCardId: string
-    name: string
+    nickname: string
     description: string
     closingAt: string //maybe date
     dueAt: string //maybe date
@@ -80,7 +80,7 @@ export interface CreditCard {
 export interface CreditCardBill {
     creditCardBillEntry: number | null
     creditCardId: string | null
-    creditCardName: string | null
+    creditCardNickname: string | null
     categoryId: string | null
     categoryName: string | null
     amount: number

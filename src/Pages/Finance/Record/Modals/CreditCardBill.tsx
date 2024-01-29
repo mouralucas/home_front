@@ -15,7 +15,7 @@ import {CreditCardBill} from "../../Interfaces";
 const DefaultCreditCardBill: CreditCardBill = {
     creditCardBillEntry: null,
     creditCardId: null,
-    creditCardName: null,
+    creditCardNickname: null,
     categoryId: null,
     categoryName: null,
     amount: 0,
@@ -76,7 +76,8 @@ const App = (props: CreditCardBillProps): ReactElement => {
             callback(filterSelect(creditCard, query));
         } else {
             getData(URL_CREDIT_CARD).then(response => {
-                let options = response === null ? {} : response?.creditCards.map((i: { id: string; name: string; }) => ({value: i.id, label: i.name}));
+                console.log(response)
+                let options = response === null ? {} : response?.creditCards.map((i: { id: string; nickname: string; }) => ({value: i.id, label: i.nickname}));
                 callback(options);
                 setSelectedCreditCard(options.filter((card: { value: any; }) => card.value === creditCardBill?.creditCardId)[0]);
                 setCreditCard(options);
