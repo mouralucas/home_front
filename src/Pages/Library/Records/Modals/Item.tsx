@@ -48,6 +48,12 @@ const ItemDefault: Item = {
     lastEditedAt: null
 }
 
+interface AuthorResponse {
+    success: boolean
+    message: string
+    authors: Author[]
+}
+
 const App = (props: ItemModalProps) => {
     const [authors, setAuthors] = useState<Author[]>();
     const [status, setStatus] = useState<LastStatus[]>()
@@ -58,8 +64,15 @@ const App = (props: ItemModalProps) => {
     const {handleSubmit, control, setValue} = useForm();
     const [formData, setFormData] = useState<Item>(ItemDefault);
 
+    useEffect(() => {
+        if (props.modalState) {
+            getAuthors();
+            getStatus();
+        }
+    }, [props.modalState]);
+
     const getAuthors = () => {
-        getData(URL_AUTHOR).then(response => {
+        getData(URL_AUTHOR).then((response: AuthorResponse) => {
             // Tratar retorno, caso necessário, add toastr
             setAuthors(response.authors);
         }).catch(err => {
@@ -75,11 +88,6 @@ const App = (props: ItemModalProps) => {
         })
     }
 
-    useEffect(() => {
-        getAuthors();
-        getStatus();
-    }, []);
-
     const onSubmit = (data: any) => {
         setFormData(data);
     };
@@ -88,95 +96,8 @@ const App = (props: ItemModalProps) => {
         let html = (
             <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className='row'>
-                        <div className="col-4">
-                            <label>Autor:</label>
-                            <Controller
-                                name="mainAuthorId"
-                                control={control}
-                                defaultValue={items.mainAuthorId}
-                                rules={{ required: true }}
-                                render={({field}) => (
-                                    <MainAuthorSelect
-                                        dataSource={authors}
-                                        displayExpr="authorName"
-                                        valueExpr="authorId"
-                                        searchMode={'contains'}
-                                        searchExpr={'AuthorName'}
-                                        onValueChanged={(e: {
-                                            value: any;
-                                        }) => setValue('mainAuthorId', e.value)}
-                                        placeholder={'Selecione um autor'}
-                                        {...field}
-                                        ref={null}
-                                    />
-                                )}
-                            />
-                        </div>
-                        <div className="col-4">
-                            <label>Outros autores:</label>
-                            <Controller
-                                name="authorsId"
-                                control={control}
-                                defaultValue={items.mainAuthorId}
-                                render={({field}) => (
-                                    <OtherAuthorsSelect
-                                        dataSource={authors}
-                                        displayExpr="authorName"
-                                        valueExpr="authorId"
-                                        searchMode={'contains'}
-                                        searchExpr={'AuthorName'}
-                                        onValueChanged={(e: {
-                                            value: any;
-                                        }) => setValue('authorsId', e.value)}
-                                        placeholder={'Selecione um autor'}
-                                        {...field}
-                                        ref={null}
-                                    />
-                                )}
-                            />
-                        </div>
-                        <div className="col-2">
-                            <label>Status atual</label>
-                            <Controller
-                                name="lastStatusId"
-                                control={control}
-                                defaultValue={items.lastStatusId}
-                                render={({field}) => (
-                                    <StatusSelect
-                                        dataSource={status}
-                                        displayExpr="statusName"
-                                        valueExpr="statusId"
-                                        searchMode={'contains'}
-                                        searchExpr={'statusName'}
-                                        onValueChanged={(e: {
-                                            value: any;
-                                        }) => setValue('lastStatusId', e.value)}
-                                        placeholder={'Selecione um status'}
-                                        {...field}
-                                        ref={null}
-                                    />
-                                )}
-                            />
-                        </div>
-                    </div>
-                    <button type="submit">Enviar</button>
+
                 </form>
-
-                {/*Div para validação do formulário*/}
-                <div>
-                    <h2>Valores do Formulário</h2>
-                    <p>Main author: {formData.mainAuthorId ? formData.mainAuthorId : 'Nenhuma opção selecionada'}</p>
-                    <p>Other Authors: {formData.authorsId ?
-                        <ul>
-                            {formData.authorsId.map(selectedItem => (
-                                <li key={selectedItem}>{selectedItem}</li>
-                            ))}
-                        </ul> : 'Nenhuma opção selecionada'}
-                    </p>
-                    <p>Last status: {formData.lastStatusId ? formData.lastStatusId : 'Status não selecionado'}</p>
-
-                </div>
             </div>
         )
 
