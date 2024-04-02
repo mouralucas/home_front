@@ -19,13 +19,12 @@ import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";
 import handleSubmit from "../../../../Services/Axios/Post";
 import {format as formatDate} from "../../../../Utils/DateTime";
+import {toast} from "react-toastify";
 
 const ModalItem = (props) => {
     // Combo boxes variables
     const [mainAuthor, setMainAuthor] = useState([]);
     const [selectedMainAuthor, setSelectedMainAuthor] = useState();
-
-    const [selectedOtherAuthors, setSelectedOtherAuthors] = useState();
 
     const [itemType, setItemType] = useState([]);
     const [selectedItemType, setSelectedItemType] = useState();
@@ -168,6 +167,8 @@ const ModalItem = (props) => {
                 callback(options);
                 setMainAuthor(options);
                 setSelectedMainAuthor(options.filter(i => i.value === items.mainAuthorId)[0])
+            }).catch(err => {
+                toast.error('Erro ao buscar autor')
             })
 
         }
@@ -182,6 +183,8 @@ const ModalItem = (props) => {
             callback(options);
             setItemType(options);
             setSelectedItemType(options.filter(i => i.value === items.itemType)[0]);
+        }).catch(err => {
+            toast.error('Erro ao buscar tipo de item')
         });
     }
 
@@ -195,6 +198,8 @@ const ModalItem = (props) => {
 
                 setSerie(options);
                 setSelectedSerie(options.filter(i => i.value === items.serieId)[0])
+            }).catch(err => {
+                toast.error('Erro ao buscar séries')
             });
         }
     }
@@ -209,6 +214,8 @@ const ModalItem = (props) => {
 
                 setCollection(options);
                 setSelectedCollection(options.filter(i => i.value === items.collectionId)[0]);
+            }).catch(err => {
+                toast.error('Erro ao buscar coleções')
             });
         }
     }
@@ -223,6 +230,8 @@ const ModalItem = (props) => {
 
                 setPublisher(options);
                 setSelectedPublisher(options.filter(i => i.value === items.publisherId)[0]);
+            }).catch(err => {
+                toast.error('Erro ao buscar editoras')
             });
         }
     }
@@ -237,6 +246,8 @@ const ModalItem = (props) => {
 
                 setItemFormat(options);
                 setSelectedItemFormat(options.filter(i => i.value === items.itemFormatId)[0]);
+            }).catch(err => {
+                toast.error('Erro ao buscar formatos de item')
             });
         }
     }
@@ -251,6 +262,8 @@ const ModalItem = (props) => {
 
                 setLanguage(options);
                 setSelectedLanguage(options.filter(i => i.value === items.languageId)[0]);
+            }).catch(err => {
+                toast.error('Erro ao buscar idiomas')
             });
         }
     }
@@ -259,14 +272,16 @@ const ModalItem = (props) => {
         if (query) {
             callback(filterSelect(lastStatus, query))
         } else {
-            getData(URL_STATUS, {status_type: 'LIBRARY_ITEM'}).then(response => {
+            getData(URL_STATUS, {statusType: 'LIBRARY_ITEM'}).then(response => {
 
-                let options = response.status.map(i => ({value: i.id, label: i.name}))
+                let options = response.status.map(i => ({value: i.statusId, label: i.statusName}))
                 callback(options);
 
                 setLastStatus(options);
                 setSelectedLastStatus(options.filter(i => i.value === items.last_status_id)[0])
-            })
+            }).catch(err => {
+                toast.error('Erro ao buscar status')
+            });
         }
     }
 
@@ -319,12 +334,12 @@ const ModalItem = (props) => {
                         </div>
                         <div className="col-4">
                             <label htmlFor="{'combo_author'}">Outros autores: {items.authorsId}</label>
-                            <AsyncSelect formTarget={true}
-                                         loadOptions={(query, callback) => getAuthors(query, callback)}
-                                         onChange={(e) => setCombo(e, 'authorsId', setSelectedOtherAuthors)}
-                                         defaultOptions
-                                         value={selectedOtherAuthors}
-                                         isMulti={true}/>
+                            {/*<AsyncSelect formTarget={true}*/}
+                            {/*             loadOptions={(query, callback) => getAuthors(query, callback)}*/}
+                            {/*             onChange={(e) => setCombo(e, 'authorsId', setSelectedOtherAuthors)}*/}
+                            {/*             defaultOptions*/}
+                            {/*             value={selectedOtherAuthors}*/}
+                            {/*             isMulti={true}/>*/}
                         </div>
                         <div className="col-2">
                             <label htmlFor="{'combo_status'}">Status: {items.lastStatusId}</label>
