@@ -2,18 +2,16 @@ import React, {useState} from "react";
 import {Link, Navigate, useLocation, useNavigate} from 'react-router-dom';
 import '../Assets/Login/Login.css';
 import logo from '../Assets/Core/Images/Logo/logo_lucas.svg';
-import axios from "../Services/Axios/Axios";
+import user_service_conn from "../Services/Axios/UserServiceAxios";
 import {isAuthenticated, setToken} from '../Services/Auth/Auth'
 import {URL_LOGIN} from "../Services/Axios/ApiUrls";
 
 async function loginAPI(credentials: { username: string; password: string; }) {
-    return axios({
+    return user_service_conn({
         method: 'post',
         url: URL_LOGIN,
         data: credentials,
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+        headers: {}
     }).then(response => {
         return response.data
     }).catch(response => {
@@ -38,7 +36,7 @@ const Login = () => {
         if (token.hasOwnProperty('error')) {
             alert(token.error.response.data.error);
         } else {
-            setToken(token.access);
+            setToken(token.tokenPair.accessToken);
             // TODO: set to navigate to de user home (create variable to home page)
             let navigate_to = location.state?.from.pathname ?? "/library/home"
             navigate(navigate_to, {replace: true});

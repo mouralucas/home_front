@@ -1,8 +1,9 @@
 export const URL_BASE = 'http://127.0.0.1:8010';
+export const URL_USER_BASE = 'http://67.205.180.83:9002';
 // const URL_BASE = 'http://67.205.180.83:8080/';
 
 // User URLs
-export const URL_LOGIN = '/user/login';
+export const URL_LOGIN = '/login';
 
 // Library URLs
 export const URL_ITEM = '/library/item';
