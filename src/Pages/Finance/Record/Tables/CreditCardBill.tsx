@@ -3,7 +3,7 @@ import {URL_CREDIT_CARD_BILL} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
-import ModalBill from '../Modals/CreditCardBillBeta'
+import ModalBill from '../Modals/CreditCardBillBeta_2'
 import {getCurrentPeriod} from '../../../../Utils/DateTime'
 import {CreditCardBill} from "../../Interfaces";
 import {toast} from "react-toastify";
