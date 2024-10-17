@@ -1,6 +1,6 @@
 export const URL_BASE = 'http://127.0.0.1:8010';
 export const URL_USER_BASE = 'http://67.205.180.83:9002';
-// const URL_BASE = 'http://67.205.180.83:8080/';
+export const URL_FINANCE_BASE = 'http://67.205.180.83:9003';
 
 // User URLs
 export const URL_LOGIN = '/login';
@@ -29,7 +29,7 @@ export const URL_FINANCE_CURRENCY_FLOW = "finance/account/currency"
 export const URL_INVESTMENT = '/finance/investment'
 export const URL_FINANCE_INVESTMENT_TYPE = '/finance/investment/type'
 export const URL_INVESTMENT_STATEMENT = '/finance/investment/statement'
-export const URL_FINANCE_INVESTMENT_ALLOCATION = '/finance/investment/allocation'
+export const URL_FINANCE_INVESTMENT_ALLOCATION = '/investment/allocation'
 
 // Other finances
 export const URL_FINANCE_TRANSACTIONS_CATEGORY_LIST = '/finance/transaction/category/list'
