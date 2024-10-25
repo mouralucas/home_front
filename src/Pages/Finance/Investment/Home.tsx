@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "../../../Components/Card";
-import ProfitChart from "../Investment/Dashboard/Chart/Profit";
+import ProfitChart from "./Dashboard/Chart/Performance";
 import InvestmentTypeAllocation from "../Investment/Dashboard/Chart/Allocation"
 
 const App = () => {

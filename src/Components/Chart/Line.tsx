@@ -33,8 +33,9 @@ const App = (props: LineChartProps) => {
             <ArgumentAxis
                 valueMarginsEnabled={false}
                 discreteAxisDivisionMode="crossLabels"
+                argumentType={'string'}
             >
-                <Grid visible={true}/>
+                <Grid visible={false}/>
             </ArgumentAxis>
             <Legend
                 verticalAlignment="bottom"

@@ -30,6 +30,7 @@ export const URL_INVESTMENT = '/finance/investment'
 export const URL_FINANCE_INVESTMENT_TYPE = '/finance/investment/type'
 export const URL_INVESTMENT_STATEMENT = '/finance/investment/statement'
 export const URL_FINANCE_INVESTMENT_ALLOCATION = '/investment/allocation'
+export const URL_FINANCE_INVESTMENT_PERFORMANCE = '/investment/performance'
 
 // Other finances
 export const URL_FINANCE_TRANSACTIONS_CATEGORY_LIST = '/finance/transaction/category/list'
