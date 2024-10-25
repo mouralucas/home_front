@@ -13,7 +13,7 @@ const App = () => {
 
     const getInterestData = () => {
         getFinanceData(URL_FINANCE_INVESTMENT_PERFORMANCE, {
-            startAt: 202104,
+            periodRange: 5,
         }).then(response => {
             setInterest(response);
         }).catch(err => {
