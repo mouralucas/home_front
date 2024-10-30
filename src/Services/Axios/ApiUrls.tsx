@@ -1,6 +1,7 @@
 export const URL_BASE = 'http://127.0.0.1:8010';
 export const URL_USER_BASE = 'http://67.205.180.83:9002';
-export const URL_FINANCE_BASE = 'http://67.205.180.83:9003';
+// export const URL_FINANCE_BASE = 'http://67.205.180.83:9003';
+export const URL_FINANCE_BASE = 'http://localhost:8003'
 
 // User URLs
 export const URL_LOGIN = '/login';
@@ -17,7 +18,7 @@ export const URL_LANGUAGE = 'library/language';
 
 // Credit Card
 export const URL_CREDIT_CARD = '/finance/credit-card'
-export const URL_CREDIT_CARD_BILL = '/finance/credit-card/bill'
+export const URL_CREDIT_CARD_BILL = '/creditcard/bill'
 export const URL_CREDIT_CARD_BILL_HISTORY = 'finance/credit-card/bill/history'
 
 //Account
