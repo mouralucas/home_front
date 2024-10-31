@@ -77,7 +77,7 @@ export interface CreditCard {
     dueAt: string //maybe date
 }
 
-export interface CreditCardBill {
+export interface CreditCardTransaction {
     creditCardBillEntry: number | null
     creditCardId: string | null
     creditCardNickname: string | null

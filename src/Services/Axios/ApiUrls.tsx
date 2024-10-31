@@ -18,8 +18,8 @@ export const URL_LANGUAGE = 'library/language';
 
 // Credit Card
 export const URL_CREDIT_CARD = '/finance/credit-card'
-export const URL_CREDIT_CARD_BILL = '/creditcard/bill'
-export const URL_CREDIT_CARD_BILL_HISTORY = 'finance/credit-card/bill/history'
+export const URL_CREDIT_CARD_BILL_CONSOLIDATED = '/creditcard/bill/consolidated'
+export const URL_CREDIT_CARD_BILL_BY_CARD = '/creditcard/bill/card'
 
 //Account
 export const URL_FINANCE_ACCOUNTS = '/finance/account'

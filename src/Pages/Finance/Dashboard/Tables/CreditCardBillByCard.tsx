@@ -1,23 +1,28 @@
 import React, {useEffect, useState} from "react";
 import {DataGridColumn} from "../../../../Assets/Core/Components/Interfaces";
-import {getData} from "../../../../Services/Axios/Get";
-import {URL_CREDIT_CARD_BILL_HISTORY} from "../../../../Services/Axios/ApiUrls";
+import {URL_CREDIT_CARD_BILL_BY_CARD} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
 import {CreditCardBillHistory} from "../../Interfaces";
 import DataGrid from "../../../../Components/Table/DataGrid";
+import {getFinanceData} from "../../../../Services/Axios/Get";
 
 
 interface CreditCardBillByCardProps {
 
 }
 
-interface HistoryResponse {
-    success: boolean
-    message: string
-    history: {
-        periods: any
-        columns: any
-    }
+// interface HistoryResponse {
+//     success: boolean
+//     message: string
+//     history: {
+//         periods: any
+//         columns: any
+//     }
+// }
+interface Test {
+    credit_card: string
+    period: string,
+    total_amount: number
 }
 
 const defaultColumns: DataGridColumn[] = [
@@ -36,7 +41,7 @@ const defaultColumns: DataGridColumn[] = [
 
 const App = (props: CreditCardBillByCardProps) => {
     // TODO: create default table columns like period and id
-    const [columns, setColumns] = useState<DataGridColumn[]>(defaultColumns)
+    const [columns, setColumns] = useState<DataGridColumn[]>([])
     const [billHistory, setBillHistory] = useState<CreditCardBillHistory[]>([])
 
     useEffect(() => {
@@ -44,23 +49,45 @@ const App = (props: CreditCardBillByCardProps) => {
     }, []);
 
     const getHistory = () => {
-        getData(URL_CREDIT_CARD_BILL_HISTORY, {
-            startAt: 202306,
-            endAt: 202312,
-            type: 'byCard'
-        }).then((response: HistoryResponse) => {
-            // setColumns(prevLists => [...prevLists, response.history.columns])
+        // Get the history by card available
+        // In theory the table will have as many columns as credit cards used in the period rage
+        // The first column is always the period, the other are the credit card and their bill amount for the period
+        // The last column is the total for the period
+        getFinanceData(URL_CREDIT_CARD_BILL_BY_CARD, {
+            startPeriod: 202401,
+            endPeriod: 202412,
+        }).then((response: any) => {
+            const dynamicColumns: DataGridColumn[] = response.cards.map((i: any) => ({
+                dataField: i,
+                caption: i,
+                dataType: 'string'
+            }));
+
+            dynamicColumns.push(
+                {
+                    dataField: 'total',
+                    caption: 'Total',
+                    dataType: 'string'
+                }
+            )
+
+            setColumns([...defaultColumns, ...dynamicColumns]);
+            setBillHistory(response.bill);
         }).catch((err: string | ToastOptions) => {
             toast.error('Erro ao buscar histórico de faturas')
         });
     }
 
     return (
-        <DataGrid
-            keyExpr={'id'}
-            data={billHistory}
-            columns={columns}
-        />
+        columns.length > 0 ? (
+            <DataGrid
+                keyExpr={'id'}
+                data={billHistory}
+                columns={columns}
+            />
+        ) : (
+            <div>Carregando...</div>
+        )
     )
 }
 

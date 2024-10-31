@@ -1,6 +1,6 @@
 import Card from '../../../Components/Card'
-import CreditCardBillTable from './Tables/CreditCardBill'
-import AccountStatementTable from './Tables/AccountStatement'
+import CreditCardBillTable from './Tables/CreditCardTransaction'
+import AccountStatementTable from './Tables/AccountTransaction'
 import InvestmentTable from './Tables/Investment'
 import {useEffect} from "react";
 

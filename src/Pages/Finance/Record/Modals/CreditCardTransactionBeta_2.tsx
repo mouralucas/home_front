@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 
 import Modal from '../../../../Components/Modal'
-import {CreditCard, CreditCardBill} from "../../Interfaces";
+import {CreditCard, CreditCardTransaction} from "../../Interfaces";
 import {Category, ReactSelectInterface} from "../../../Interfaces";
 import {Controller, useForm} from "react-hook-form";
 import {getData} from "../../../../Services/Axios/Get";
-import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CREDIT_CARD_BILL} from "../../../../Services/Axios/ApiUrls";
+import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CREDIT_CARD_BILL_CONSOLIDATED} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
 import CurrencyInput from "../../../../Components/Form/Currency";
 import DateBox from "devextreme-react/date-box";
@@ -15,7 +15,7 @@ import submit from "../../../../Services/Axios/Post";
 import {CheckBox} from "devextreme-react/check-box";
 
 interface CreditCardBillProps {
-    creditCardBill: CreditCardBill | null
+    creditCardBill: CreditCardTransaction | null
     modalState: boolean
     hideModal: any
 }
@@ -97,7 +97,7 @@ const App = (props: CreditCardBillProps) => {
         data.categoryId = data.category?.value
         data.creditCardId = data.creditCard?.value
 
-        submit(e, URL_CREDIT_CARD_BILL, data, false, "Fatura salva").then(response => {
+        submit(e, URL_CREDIT_CARD_BILL_CONSOLIDATED, data, false, "Fatura salva").then(response => {
 
         }).catch((err: string | ToastOptions) => {
             toast.error('Erro ao salvar fatura beta');

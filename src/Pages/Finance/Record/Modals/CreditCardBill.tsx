@@ -1,6 +1,6 @@
 import Modal from '../../../../Components/Modal'
 import {ReactElement, useEffect, useState} from "react";
-import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CREDIT_CARD_BILL} from "../../../../Services/Axios/ApiUrls";
+import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CREDIT_CARD_BILL_CONSOLIDATED} from "../../../../Services/Axios/ApiUrls";
 import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
 import Currency from '../../../../Components/Form/Currency'
@@ -9,10 +9,10 @@ import {getData} from "../../../../Services/Axios/Get";
 import filterSelect from "../../../../Utils/DataHandling";
 import {format as formatDate, getDefaultDate} from "../../../../Utils/DateTime";
 import handleSubmit from "../../../../Services/Axios/Post";
-import {CreditCardBill} from "../../Interfaces";
+import {CreditCardTransaction} from "../../Interfaces";
 
 
-const DefaultCreditCardBill: CreditCardBill = {
+const DefaultCreditCardBill: CreditCardTransaction = {
     creditCardBillEntry: null,
     creditCardId: null,
     creditCardNickname: null,
@@ -27,7 +27,7 @@ const DefaultCreditCardBill: CreditCardBill = {
 }
 
 interface CreditCardBillProps {
-    creditCardBill: CreditCardBill | null
+    creditCardBill: CreditCardTransaction | null
     modalState: boolean
     hideModal: any
 }
@@ -45,7 +45,7 @@ const App = (props: CreditCardBillProps): ReactElement => {
     const [category, setCategory] = useState<any | null>([]);
     const [selectedCategory, setSelectedCategory] = useState<any | null>();
 
-    const [creditCardBill, setCreditCardBill] = useState<CreditCardBill>(DefaultCreditCardBill)
+    const [creditCardBill, setCreditCardBill] = useState<CreditCardTransaction>(DefaultCreditCardBill)
 
     useEffect(() => {
         if (props.creditCardBill && props.modalState) {
@@ -200,7 +200,7 @@ const App = (props: CreditCardBillProps): ReactElement => {
                 title={'Fatura'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e: any) => handleSubmit(e, URL_CREDIT_CARD_BILL, creditCardBill, false, "Item de fatura salvo")}
+                actionModal={(e: any) => handleSubmit(e, URL_CREDIT_CARD_BILL_CONSOLIDATED, creditCardBill, false, "Item de fatura salvo")}
                 size={'lg'}
             />
         </div>

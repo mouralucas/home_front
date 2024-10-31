@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {URL_CREDIT_CARD_BILL} from "../../../../Services/Axios/ApiUrls";
+import {URL_CREDIT_CARD_BILL_CONSOLIDATED} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
-import ModalBill from '../Modals/CreditCardBillBeta_2'
+import ModalBill from '../Modals/CreditCardTransactionBeta_2'
 import {getCurrentPeriod} from '../../../../Utils/DateTime'
-import {CreditCardBill} from "../../Interfaces";
+import {CreditCardTransaction} from "../../Interfaces";
 import {toast} from "react-toastify";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
 import {getData} from "../../../../Services/Axios/Get";
@@ -14,17 +14,17 @@ import {getData} from "../../../../Services/Axios/Get";
 interface BillResponse {
     success: boolean
     quantity: number
-    billEntries: CreditCardBill[]
+    billEntries: CreditCardTransaction[]
 }
 
 const App = () => {
-    const [creditCardBill, setCreditCardBill] = useState<CreditCardBill[]>();
-    const [selectedCreditCardBill, setSelectedCreditCardBill] = useState<CreditCardBill | null>(null)
+    const [creditCardTransaction, setCreditCardTransaction] = useState<CreditCardTransaction[]>();
+    const [selectedCreditCardTransaction, setSelectedCreditCardTransaction] = useState<CreditCardTransaction | null>(null)
     const [modalState, setModalState] = useState(false)
 
     const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
-            setSelectedCreditCardBill(e.row.data);
+            setSelectedCreditCardTransaction(e.row.data);
         }
         setModalState(true);
     }
@@ -35,8 +35,8 @@ const App = () => {
     }
 
     const getBills = () => {
-        getData(URL_CREDIT_CARD_BILL, {period: getCurrentPeriod()}).then((response: BillResponse) => {
-            setCreditCardBill(response.billEntries);
+        getData(URL_CREDIT_CARD_BILL_CONSOLIDATED, {period: getCurrentPeriod()}).then((response: BillResponse) => {
+            setCreditCardTransaction(response.billEntries);
         }).catch(response => {
             toast.error("Erro ao buscar faturas")
             return {'error': response}
@@ -180,7 +180,7 @@ const App = () => {
             <DataGrid
                 keyExpr={'creditCardBillEntryId'}
                 columns={columns}
-                data={creditCardBill}
+                data={creditCardTransaction}
                 toolBar={{
                     visible:true,
                     items: toolBarItems
@@ -190,7 +190,7 @@ const App = () => {
                     visible: true
                 }}
             />
-            <ModalBill modalState={modalState} hideModal={hideModal} creditCardBill={selectedCreditCardBill}/>
+            <ModalBill modalState={modalState} hideModal={hideModal} creditCardBill={selectedCreditCardTransaction}/>
         </>
     );
 }

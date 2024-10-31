@@ -1,7 +1,7 @@
 import BarChart from '../../../../Components/Chart/Bar'
 import React, {useEffect, useState} from "react";
-import {getData, getFinanceData} from "../../../../Services/Axios/Get";
-import {URL_CREDIT_CARD_BILL, URL_PERIOD} from "../../../../Services/Axios/ApiUrls";
+import {getFinanceData} from "../../../../Services/Axios/Get";
+import {URL_CREDIT_CARD_BILL_CONSOLIDATED} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
 import {Behavior, Scale} from "devextreme-react/range-selector";
 import {RangeSelector} from "devextreme-react";
@@ -36,7 +36,7 @@ const App = () => {
     }
 
     const getBillHistory = (startAt: number, endAt: number) => {
-        getFinanceData(URL_CREDIT_CARD_BILL, {
+        getFinanceData(URL_CREDIT_CARD_BILL_CONSOLIDATED, {
                 'startPeriod': startAt,
                 'endPeriod': endAt,
             }
