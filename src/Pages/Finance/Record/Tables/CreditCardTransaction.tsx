@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {URL_CREDIT_CARD_BILL_CONSOLIDATED} from "../../../../Services/Axios/ApiUrls";
+import {URL_CREDIT_CARD_TRANSACTION} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
@@ -8,13 +8,13 @@ import {getCurrentPeriod} from '../../../../Utils/DateTime'
 import {CreditCardTransaction} from "../../Interfaces";
 import {toast} from "react-toastify";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
-import {getData} from "../../../../Services/Axios/Get";
+import {getFinanceData} from "../../../../Services/Axios/Get";
 
 
-interface BillResponse {
+interface TransactionResponse {
     success: boolean
     quantity: number
-    billEntries: CreditCardTransaction[]
+    transactions: CreditCardTransaction[]
 }
 
 const App = () => {
@@ -31,20 +31,22 @@ const App = () => {
 
     const hideModal = () => {
         setModalState(false);
-        getBills();
+        getTransactions();
     }
 
-    const getBills = () => {
-        getData(URL_CREDIT_CARD_BILL_CONSOLIDATED, {period: getCurrentPeriod()}).then((response: BillResponse) => {
-            setCreditCardTransaction(response.billEntries);
+    const getTransactions = () => {
+        getFinanceData(URL_CREDIT_CARD_TRANSACTION, {
+            period: getCurrentPeriod()
+        }).then((response: TransactionResponse) => {
+            setCreditCardTransaction(response.transactions);
         }).catch(response => {
-            toast.error("Erro ao buscar faturas")
+            toast.error("Erro ao buscar transações")
             return {'error': response}
         })
     }
 
     useEffect(() => {
-        getBills();
+        getTransactions();
     }, []);
 
     /**
@@ -53,13 +55,13 @@ const App = () => {
      * @returns the installments in xx/xx format
      */
     function installmentCustomCell(cellInfo: any) {
-        return cellInfo.installment + '/' + cellInfo.totalInstallment;
+        return cellInfo.currentInstallment + '/' + cellInfo.installments;
     }
 
     function amountCustomCell(cellInfo: any) {
         const formattedAmount = cellInfo.amount.toFixed(2)
 
-        return cellInfo.currencyReferenceSymbol + ' ' + formattedAmount;
+        return cellInfo.currencySymbol + ' ' + formattedAmount;
     }
 
     function myOtherCommand(e: any) {
@@ -68,9 +70,10 @@ const App = () => {
 
     const columns: DataGridColumn[] = [
         {
-            dataField: "creditCardBillEntryId",
+            dataField: "transactionId",
             caption: "Id",
             dataType: "number",
+            visible: false,
             width: 70
         },
         {
@@ -90,14 +93,14 @@ const App = () => {
             width: 150,
         },
         {
-            dataField: "purchaseAt",
+            dataField: "transactionDate",
             caption: "Compra",
             dataType: "date",
             format: 'dd/MM/yyyy',
             width: 150,
         },
         {
-            dataField: "paymentAt",
+            dataField: "dueDate",
             caption: "Pagamento",
             dataType: "date",
             format: 'dd/MM/yyyy',
@@ -161,7 +164,7 @@ const App = () => {
             location: 'after',
         },
         {
-            child: <Button icon={'refresh'} onClick={getBills}/>,
+            child: <Button icon={'refresh'} onClick={getTransactions}/>,
             location: "after"
         },
         {
@@ -178,7 +181,7 @@ const App = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'creditCardBillEntryId'}
+                keyExpr={'transactionId'}
                 columns={columns}
                 data={creditCardTransaction}
                 toolBar={{

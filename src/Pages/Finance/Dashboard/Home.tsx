@@ -7,7 +7,7 @@ import {toast} from "react-toastify";
 import BillHistory from "./Charts/CreditCardBillHistory";
 import {CategoryTransactions, Summary} from "../Interfaces";
 import CategoryExpensesDetails from "./Tables/CategoryExpensesDetails";
-import CreditCardBillByCardTable from "./Tables/CreditCardBillByCard";
+import CreditCardBillByCardTable from "./Tables/CreditCardBillHistoryByCard";
 import {getCurrentPeriod} from "../../../Utils/DateTime";
 
 interface SummaryResponse {

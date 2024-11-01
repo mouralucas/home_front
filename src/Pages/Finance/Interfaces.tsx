@@ -78,15 +78,27 @@ export interface CreditCard {
 }
 
 export interface CreditCardTransaction {
-    creditCardBillEntry: number | null
-    creditCardId: string | null
-    creditCardNickname: string | null
-    categoryId: string | null
-    categoryName: string | null
-    amount: number
-    paymentAt: string
-    purchaseAt: string
-    description: string
+    // TODO: look why dates are set as strings
+    transactionId: number | null | undefined//ok
+    creditCardId: string | null // ok
+    creditCardNickname: string | null // ok
+    period: number
+    categoryId: string | null //ok
+    categoryName: string | null //ok
+    amount: number //ok
+    currencyId: string
+    currencySymbol: string
+    transactionCurrencyId: string
+    transactionCurrencySymbol: string
+    transactionAmount: number
+    dueDate: string // ok
+    transactionDate: string //ok
+    description: string //ok
+    isInstallment: boolean | undefined | null
+    installments: number | undefined | null
+    currentInstallment: number | undefined | null
+    totalAmount: number | undefined | null
+    parentId: number | null
     createdAt: string | undefined
     lastEditedAt: string | undefined
 }

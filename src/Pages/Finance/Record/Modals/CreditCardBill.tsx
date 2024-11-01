@@ -13,14 +13,25 @@ import {CreditCardTransaction} from "../../Interfaces";
 
 
 const DefaultCreditCardBill: CreditCardTransaction = {
-    creditCardBillEntry: null,
+    transactionId: null,
     creditCardId: null,
     creditCardNickname: null,
     categoryId: null,
     categoryName: null,
+    period: 202412,
+    currencyId: 'BRL',
+    currencySymbol: 'R$',
+    transactionCurrencyId: 'BRL',
+    transactionCurrencySymbol: 'R$',
+    transactionAmount: 0,
+    isInstallment: false,
+    currentInstallment: 1,
+    installments: 1,
+    totalAmount: 0,
+    parentId: null,
     amount: 0,
-    paymentAt: getDefaultDate(),
-    purchaseAt: getDefaultDate(),
+    dueDate: getDefaultDate(),
+    transactionDate: getDefaultDate(),
     description: '',
     createdAt: undefined,
     lastEditedAt: undefined
@@ -141,13 +152,13 @@ const App = (props: CreditCardBillProps): ReactElement => {
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data compra</label>
-                            <DateBox value={creditCardBill.purchaseAt} type="date" className='form-control input-default'
+                            <DateBox value={creditCardBill.transactionDate} type="date" className='form-control input-default'
                                      useMaskBehavior={true}
                                      onValueChanged={(date: any) => setDate(date, 'purchaseAt')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data pagamento</label>
-                            <DateBox value={creditCardBill.paymentAt} className='form-control input-default'
+                            <DateBox value={creditCardBill.dueDate} className='form-control input-default'
                                      useMaskBehavior={true}
                                      onValueChanged={(date: any) => setDate(date, 'paymentAt')}/>
                         </div>
