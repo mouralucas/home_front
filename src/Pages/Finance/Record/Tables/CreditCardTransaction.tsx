@@ -36,7 +36,8 @@ const App = () => {
 
     const getTransactions = () => {
         getFinanceData(URL_CREDIT_CARD_TRANSACTION, {
-            period: getCurrentPeriod()
+            startPeriod: 202401,
+            endPeriod: 202412
         }).then((response: TransactionResponse) => {
             setCreditCardTransaction(response.transactions);
         }).catch(response => {
@@ -148,7 +149,7 @@ const App = () => {
                     key={2}
                     //icon="/url/to/my/icon.ico"
                     icon="coffee"
-                    hint="My Command"
+                    hint="Coffee"
                     onClick={myOtherCommand}
                 />]
         }
