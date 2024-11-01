@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Account, CashFlow, Currency, AccountStatement} from "../../Interfaces";
+import {Account, CashFlow, Currency, AccountTransaction} from "../../Interfaces";
 import {Category, ReactSelectInterface} from "../../../Interfaces";
 import {getData} from "../../../../Services/Axios/Get";
-import {URL_FINANCE_ACCOUNTS, URL_CATEGORIES, URL_CURRENCY, URL_FINANCE_ACCOUNT_STATEMENT, URL_FINANCE_CASH_FLOW} from "../../../../Services/Axios/ApiUrls";
+import {URL_FINANCE_ACCOUNT, URL_CATEGORIES, URL_CURRENCY, URL_FINANCE_ACCOUNT_TRANSACTION, URL_FINANCE_CASH_FLOW} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
 import {Controller, useForm} from "react-hook-form";
 import DropdownList from 'react-widgets/DropdownList'
@@ -20,7 +20,7 @@ import Moment from "moment";
  * Account Statement Modal With React Hook Form
  */
 interface AccountStatementProps {
-    statement: AccountStatement | undefined | null,
+    statement: AccountTransaction | undefined | null,
     modalState: boolean,
     hideModal: any
 }
@@ -114,7 +114,7 @@ const App = (props: AccountStatementProps) => {
     }, [props.modalState]);
 
     const getAccount = () => {
-        getData(URL_FINANCE_ACCOUNTS, {accountType: "checking"}).then((response: GetAccountResponse) => {
+        getData(URL_FINANCE_ACCOUNT, {accountType: "checking"}).then((response: GetAccountResponse) => {
             let options = response.accounts.map((i: Account) =>
                 ({value: i.accountId, label: i.nickname})
             );
@@ -164,7 +164,7 @@ const App = (props: AccountStatementProps) => {
         data.categoryId = data.category?.value
         data.cashFlowId = data.cashFlow.value
 
-        submit(e, URL_FINANCE_ACCOUNT_STATEMENT, data, false, "Item de extrato beta salvo").then(response => {
+        submit(e, URL_FINANCE_ACCOUNT_TRANSACTION, data, false, "Item de extrato beta salvo").then(response => {
             // TODO: handle return here
         }).catch((err: string | ToastOptions) => {
             toast.error('Erro ao salvar extrato beta')

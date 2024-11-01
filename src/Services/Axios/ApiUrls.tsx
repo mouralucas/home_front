@@ -23,8 +23,8 @@ export const URL_CREDIT_CARD_BILL_CONSOLIDATED = '/creditcard/bill/consolidated'
 export const URL_CREDIT_CARD_BILL_BY_CARD = '/creditcard/bill/card'
 
 //Account
-export const URL_FINANCE_ACCOUNTS = '/finance/account'
-export const URL_FINANCE_ACCOUNT_STATEMENT = '/finance/account/statement'
+export const URL_FINANCE_ACCOUNT = '/account'
+export const URL_FINANCE_ACCOUNT_TRANSACTION = '/account/transaction'
 export const URL_FINANCE_CURRENCY_FLOW = "finance/account/currency"
 
 //Investment

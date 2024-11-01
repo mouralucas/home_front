@@ -65,8 +65,8 @@ const App = () => {
         return cellInfo.currencySymbol + ' ' + formattedAmount;
     }
 
-    function myOtherCommand(e: any) {
-        alert('Café');
+    const coffeeCommand = (e: any) => {
+        toast('🦄 Cafezinho delícia!');
     }
 
     const columns: DataGridColumn[] = [
@@ -150,7 +150,7 @@ const App = () => {
                     //icon="/url/to/my/icon.ico"
                     icon="coffee"
                     hint="Coffee"
-                    onClick={myOtherCommand}
+                    onClick={coffeeCommand}
                 />]
         }
     ]

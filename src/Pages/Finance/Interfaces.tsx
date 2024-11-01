@@ -15,19 +15,28 @@ export interface Account {
     closeAt: string
 }
 
-export interface AccountStatement {
-    statementId: number | null
-    amount: number
-    accountName: string
+export interface AccountTransaction {
+    transactionId: number | null
+    ownerId: string
     accountId: string
-    categoryName: string
-    categoryId: string
+    accountName: string
     period: number
-    description: string | null
-    purchasedAt: Date
-    cashFlowId: string
     currencyId: string
     currencySymbol: string
+    amount: number
+    transactionDate: Date
+    categoryId: string
+    categoryName: string
+    description: string | null
+    transactionCurrencyId: string
+    transactionCurrencySymbol: string
+    exchangeRate: number | null
+    taxPerc: number | null
+    tax: number | null
+    spreadPerc: number | null
+    spread: number | null
+    effectiveRate: number | null
+    cashFlowId: string
     createdAt: Date | null
     lastEditedAt: Date | null
 }

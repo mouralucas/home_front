@@ -1,6 +1,6 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
-import {URL_FINANCE_ACCOUNT_STATEMENT, URL_FINANCE_ACCOUNTS, URL_CATEGORIES, URL_CURRENCY} from "../../../../Services/Axios/ApiUrls";
+import {URL_FINANCE_ACCOUNT_TRANSACTION, URL_FINANCE_ACCOUNT, URL_CATEGORIES, URL_CURRENCY} from "../../../../Services/Axios/ApiUrls";
 import Currency from "../../../../Components/Form/Currency";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
@@ -134,7 +134,7 @@ const App = (props: AccountStatementProps) => {
         if (query) {
             callback(filterSelect(account, query));
         } else {
-            getData(URL_FINANCE_ACCOUNTS, {accountType: "checking"}).then(response => {
+            getData(URL_FINANCE_ACCOUNT, {accountType: "checking"}).then(response => {
 
                 let options = response.accounts.map((i: { id: any; nickname: string; }) => ({value: i.id, label: i.nickname}))
                 callback(options);
@@ -269,7 +269,7 @@ const App = (props: AccountStatementProps) => {
                 title={'Extrato'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e: any) => handleSubmit(e, URL_FINANCE_ACCOUNT_STATEMENT, values, false, "Item de extrato salvo")}
+                actionModal={(e: any) => handleSubmit(e, URL_FINANCE_ACCOUNT_TRANSACTION, values, false, "Item de extrato salvo")}
                 size={'lg'}
             />
         </div>

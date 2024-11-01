@@ -1,25 +1,30 @@
 import React, {useEffect, useState} from "react";
-import {URL_FINANCE_ACCOUNT_STATEMENT} from "../../../../Services/Axios/ApiUrls";
+import {URL_FINANCE_ACCOUNT_TRANSACTION} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/Table/DataGrid";
 import Button from "devextreme-react/button";
 import ModalStatement from '../Modals/AccountStatementBeta'
 import {Button as Btn} from "devextreme-react/data-grid";
 import {toast} from "react-toastify";
-import {getData} from "../../../../Services/Axios/Get";
-import {AccountStatement} from "../../Interfaces"
+import {getFinanceData} from "../../../../Services/Axios/Get";
+import {AccountTransaction} from "../../Interfaces"
 import {DataGridColumn} from "../../../../Assets/Core/Components/Interfaces";
 
+interface TransactionResponse {
+    success: boolean
+    quantity: number
+    transactions: AccountTransaction[]
+}
 
 const App = () => {
-    const [statement, setStatement] = useState<AccountStatement[] | null>();
-    const [selectedStatement, setSelectedStatement] = useState<AccountStatement | null>()
+    const [transaction, setTransaction] = useState<AccountTransaction[] | null>();
+    const [selectedTransaction, setSelectedTransaction] = useState<AccountTransaction | null>()
     const [modalState, setModalState] = useState<boolean>(false)
 
     const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
-            setSelectedStatement(e.row.data);
+            setSelectedTransaction(e.row.data);
         } else {
-            setSelectedStatement(null);
+            setSelectedTransaction(null);
         }
         setModalState(true);
     }
@@ -30,8 +35,11 @@ const App = () => {
     }
 
     const getStatements = () => {
-        getData(URL_FINANCE_ACCOUNT_STATEMENT, {period: 202303}).then(response => {
-                setStatement(response.statementEntry);
+        getFinanceData(URL_FINANCE_ACCOUNT_TRANSACTION, {
+            startPeriod: 202401,
+            endPeriod: 202412
+        }).then(response => {
+                setTransaction(response.transactions);
             }
         ).catch(err => {
             toast.error('Houve um erro ao buscar extratos: ' + err)
@@ -54,17 +62,18 @@ const App = () => {
 
     const columns: DataGridColumn[] = [
         {
-            dataField: "statementEntryId",
+            dataField: "transactionId",
             caption: "Id",
             dataType: "number",
+            visible: false,
         },
         {
-            dataField: "accountName",
+            dataField: "accountNickname",
             caption: "Conta",
             dataType: "string",
         },
         {
-            dataField: "purchaseAt",
+            dataField: "transactionDate",
             caption: "Compra",
             dataType: "date",
             format: 'dd/MM/yyyy',
@@ -139,9 +148,9 @@ const App = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'statementEntryId'}
+                keyExpr={'transactionId'}
                 columns={columns}
-                data={statement}
+                data={transaction}
                 toolBar={{
                     visible: true,
                     items: toolBarItems
@@ -151,7 +160,7 @@ const App = () => {
                     visible: true
                 }}
             />
-            <ModalStatement modalState={modalState} hideModal={hideModal} statement={selectedStatement}/>
+            <ModalStatement modalState={modalState} hideModal={hideModal} statement={selectedTransaction}/>
         </>
     );
 }
