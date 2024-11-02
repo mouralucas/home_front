@@ -6,20 +6,19 @@ import Button from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
 import TreeList from "../../../../Components/Table/TreeList";
 import ModalInvestment from '../Modals/Investment';
-import {Investment} from "../../Interfaces";
+import {AccountTransaction, Investment} from "../../Interfaces";
 import {DataGridColumn} from "../../../../Assets/Core/Components/Interfaces";
 
+interface InvestmentResponse {
+    success: boolean
+    quantity: number
+    transactions: AccountTransaction[]
+}
 
 const App = () => {
     const [investment, setInvestment] = useState<Investment[]>([])
     const [selectedInvestment, setSelectedInvestment] = useState<Investment | undefined>()
     const [modalState, setModalState] = useState(false)
-
-
-    // tocar tabela para tree list
-    // Cada linha principal contém o total aplicado naquele investimento
-    // Para investimentos recorrentes (rendimento de conta-corrente, etc.) é criado um pai com o valor total investido
-    //  e cada filho indica um depósito específico
 
     const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {

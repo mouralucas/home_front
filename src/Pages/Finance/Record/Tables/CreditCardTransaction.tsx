@@ -4,7 +4,6 @@ import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalBill from '../Modals/CreditCardTransactionBeta_2'
-import {getCurrentPeriod} from '../../../../Utils/DateTime'
 import {CreditCardTransaction} from "../../Interfaces";
 import {toast} from "react-toastify";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";

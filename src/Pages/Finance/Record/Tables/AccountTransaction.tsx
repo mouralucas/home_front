@@ -38,7 +38,7 @@ const App = () => {
         getFinanceData(URL_FINANCE_ACCOUNT_TRANSACTION, {
             startPeriod: 202401,
             endPeriod: 202412
-        }).then(response => {
+        }).then((response: TransactionResponse) => {
                 setTransaction(response.transactions);
             }
         ).catch(err => {
