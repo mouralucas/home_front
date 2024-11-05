@@ -24,19 +24,21 @@ const DefaultInvestment: Investment = {
     investmentId: null,
     name: '',
     description: null,
+    typeId: '',
     amount: 0,
     price: 0,
     quantity: 0,
-    date: getDefaultDate(),
-    maturityAt: undefined,
+    transactionDate: getDefaultDate(),
+    maturityDate: undefined,
     interestRate: '',
     interestIndex: '',
-    custodianName: null,
-    custodianId: null,
+    custodianName: '',
+    custodianId: '',
     investmentTypeId: null,
     investmentTypeName: null,
     parentId: null,
-    cashFlowId: 'INCOMING',
+    grossAmount: 0,
+    percentageChange: 0,
     createAt: undefined,
     lastEditedAt: undefined,
 };
@@ -175,17 +177,17 @@ const App = (props: InvestmentProps): React.ReactElement => {
                 {value: 'OUTGOING', label: 'Saída'}
             ]
             callback(options)
-            setSelectedCashFlow(options?.filter(cashFlow => cashFlow.value === investment.cashFlowId)[0])
+            // setSelectedCashFlow(options?.filter(cashFlow => cashFlow.value === investment.cashFlowId)[0])
             setCashFlow(options)
         }
     }
 
     // useEffect to set the combo when it has default value
-    useEffect(() => {
-        if (props.investment) {
-            setSelectedCashFlow(cashFlow.filter((i: { value: any; }) => i.value === props.investment?.cashFlowId)[0]);
-        }
-    }, [cashFlow, props.investment])
+    // useEffect(() => {
+    //     if (props.investment) {
+    //         setSelectedCashFlow(cashFlow.filter((i: { value: any; }) => i.value === props.investment?.cashFlowId)[0]);
+    //     }
+    // }, [cashFlow, props.investment])
 
     const getInterestRate = (query: any, callback: any) => {
         if (query) {
@@ -274,7 +276,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
                                 <div className="col-3">
                                     <label htmlFor="">Data vencimento</label>
                                     <DateBox
-                                        value={investment.maturityAt} type="date"
+                                        value={investment.maturityDate} type="date"
                                         className='form-control input-default'
                                         useMaskBehavior={true}
                                         showClearButton={true}
@@ -306,7 +308,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
                                 </div>
                                 <div className="col-3">
                                     <label htmlFor="">Data compra</label>
-                                    <DateBox value={investment?.date} type="date" className='form-control input-default'
+                                    <DateBox value={investment?.transactionDate} type="date" className='form-control input-default'
                                              useMaskBehavior={true}
                                              onValueChanged={(date: any) => setDate(date, 'date')}/>
                                 </div>

@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {URL_INVESTMENT} from "../../../../Services/Axios/ApiUrls";
-import {getData} from "../../../../Services/Axios/Get";
+import {getFinanceData} from "../../../../Services/Axios/Get";
 import Button from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
-import TreeList from "../../../../Components/Table/TreeList";
 import ModalInvestment from '../Modals/Investment';
-import {AccountTransaction, Investment} from "../../Interfaces";
+import {Investment} from "../../Interfaces";
 import {DataGridColumn} from "../../../../Assets/Core/Components/Interfaces";
+import DataGrid from "../../../../Components/Table/DataGrid";
 
 interface InvestmentResponse {
     success: boolean
     quantity: number
-    transactions: AccountTransaction[]
+    investments: Investment[]
 }
 
 const App = () => {
@@ -38,17 +38,27 @@ const App = () => {
     }, [])
 
     const getInvestment = () => {
-        getData(URL_INVESTMENT, {showMode: 'all'}).then(response => {
-            setInvestment(response.investment);
+        getFinanceData(URL_INVESTMENT).then((response: InvestmentResponse) => {
+            console.log(response.investments);
+            setInvestment(response.investments);
         }).catch(err => {
             toast.error(err)
         })
     }
 
     function amountCustomCell(cellInfo: any) {
-        const formattedAmount = cellInfo.amount.toFixed(2)
+        let amount = parseFloat(cellInfo.amount);
+        return cellInfo.currencySymbol + ' ' + amount;
+    }
 
-        return cellInfo.currencySymbol + ' ' + formattedAmount;
+    function grossAmountCustomCell(cellInfo: any) {
+        let grossAmount = parseFloat(cellInfo.percentageChange);
+        return cellInfo.currencySymbol + ' ' + grossAmount;
+    }
+
+
+    const coffeeCommand = (e: any) => {
+        toast('🦄 Cafezinho delícia!');
     }
 
     const columns: DataGridColumn[] = [
@@ -73,14 +83,14 @@ const App = () => {
             width: 400,
         },
         {
-            dataField: "date",
+            dataField: "transactionDate",
             caption: "Data",
             dataType: "date",
             format: 'dd/MM/yyyy',
             width: 130
         },
         {
-            dataField: "maturityAt",
+            dataField: "maturityDate",
             caption: "Vencimento",
             dataType: "date",
             format: 'dd/MM/yyyy',
@@ -93,25 +103,26 @@ const App = () => {
             dataType: "currency",
             calculateCellValue: amountCustomCell,
             width: 200
-        }, 
-        {
-            dataField: "interestIndex",
-            caption: "Taxa",
-            dataType: "string"
         },
         {
-            dataField: 'investmentTypeName',
-            caption: 'Tipo',
+            dataField: "grossAmount",
+            caption: 'Atual',
+            dataType: "currency",
+            calculateCellValue: grossAmountCustomCell,
+        },
+        // {
+        //     dataField: "interestIndex",
+        //     caption: "Taxa",
+        //     dataType: "string"
+        // },
+        {
+            dataField: 'contractedRate',
+            caption: 'Taxa',
             dataType: 'string'
         },
         {
             dataField: 'custodianName',
             caption: 'Agente de custódia',
-            dataType: "string"
-        },
-        {
-            dataField: 'custodianId',
-            caption: 'Id agente de custódia',
             dataType: "string",
             visible: false
         },
@@ -128,6 +139,13 @@ const App = () => {
                     hint="Editar"
                     onClick={showModal}
                 />,
+                <Btn
+                    key={2}
+                    //icon="/url/to/my/icon.ico"
+                    icon="coffee"
+                    hint="Coffee"
+                    onClick={coffeeCommand}
+                />
             ]
         }
 
@@ -149,16 +167,15 @@ const App = () => {
 
     ]
 
-    return(
+    return (
         <>
-            <TreeList
-                tableColumns={columns}
+            <DataGrid
+                columns={columns}
                 keyExpr={'investmentId'}
-                parentIdExpr={'parentId'}
-                dataSource={investment}
-                toolBarRefresh={false}
+                data={investment}
+                // toolBarRefresh={false}
                 toolBarItems={toolBarItems}
-                loadPanel={false}
+                showLoadPanel={false}
             />
             <ModalInvestment modalState={modalState} hideModal={hideModal} investment={selectedInvestment}></ModalInvestment>
         </>

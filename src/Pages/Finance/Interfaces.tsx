@@ -45,21 +45,25 @@ export interface AccountTransaction {
 // Investment Interfaces
 export interface Investment {
     investmentId: string | null
+    custodianId: string
+    custodianName: string
     name: string
     description: string | null
+    typeId: string | null
+    transactionDate: string
+    maturityDate: Date | undefined
+    quantity: number
+
     amount: number
     price: number
-    quantity: number
-    date: string
-    maturityAt: Date | undefined
     interestRate: string
     interestIndex: string
-    custodianName: string | null
-    custodianId: string | null
     investmentTypeId: string | null
     investmentTypeName: string | null
     parentId: string | null
-    cashFlowId: string,
+    grossAmount: number | string
+    percentageChange: number
+
     createAt: Date | undefined,
     lastEditedAt: Date | undefined,
 }

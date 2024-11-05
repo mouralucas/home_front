@@ -150,7 +150,8 @@ const App = () => {
                     icon="coffee"
                     hint="Coffee"
                     onClick={coffeeCommand}
-                />]
+                />
+            ]
         }
     ]
 

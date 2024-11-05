@@ -28,7 +28,7 @@ export const URL_FINANCE_ACCOUNT_TRANSACTION = '/account/transaction'
 export const URL_FINANCE_CURRENCY_FLOW = "finance/account/currency"
 
 //Investment
-export const URL_INVESTMENT = '/finance/investment'
+export const URL_INVESTMENT = '/investment'
 export const URL_FINANCE_INVESTMENT_TYPE = '/finance/investment/type'
 export const URL_INVESTMENT_STATEMENT = '/finance/investment/statement'
 export const URL_FINANCE_INVESTMENT_ALLOCATION = '/investment/allocation'
