@@ -11,7 +11,7 @@
     "@types/node": "^16.18.25",
     "@types/react": "^18.2.5",
     "@types/react-dom": "^18.2.4",
-    "axios": "^1.4.0",
+    "axios": "1.7.4",
     "bootstrap": "^5.2.3",
     "devextreme": "^22.2.4",
     "devextreme-react": "^22.2.4",
