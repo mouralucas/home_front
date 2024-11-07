@@ -1,38 +1,87 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-// @ts-ignore
-function CurrencyInput({ currencySymbol = 'R$', decimalPlaces = 2, value, onChange }) {
-    const [inputValue, setInputValue] = useState('');
+interface CurrencyProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    prefix?: string;
+    suffix?: string;
+    decimalPlaces?: number;
+    defaultValue?: number;
+}
 
-    // Formata o valor baseado nas casas decimais
-    const formatValue = (value: string) => {
-        const numValue = parseInt(value || '0', 10);
-        const divisor = Math.pow(10, decimalPlaces);
-        return (numValue / divisor).toFixed(decimalPlaces);
+function CurrencyInput({
+                           prefix = '',
+                           suffix = '',
+                           decimalPlaces = 2,
+                           defaultValue = 0,
+                           value,
+                           onChange,
+                           ...props
+                       }: CurrencyProps) {
+    const [internalValue, setInternalValue] = useState<string>('');
+    const [signedValue, setSignedValue] = useState<boolean>(false);
+
+    const formatValue = (inputValue: string) => {
+        let isNegative = signedValue
+
+        // check if the defaultValue is negative
+        // in this case, the sigh will be the first char in the string
+        if (internalValue === '' && /^-/.test(inputValue)) {
+            isNegative = true;
+        }
+
+        // if the minus sign is typed change the sign of the number
+        // in this case, the sign will be the last char in the string
+        if (/-$/.test(inputValue)) {
+            isNegative = !signedValue;
+        }
+
+        setSignedValue(isNegative)
+
+        const numericValue = parseInt(inputValue.replace(/\D/g, '')) || 0;
+        const factor = Math.pow(10, decimalPlaces);
+        const formattedValue = (numericValue / factor).toFixed(decimalPlaces);
+
+        const finalValue = `${prefix}${formattedValue}${suffix}`;
+        return isNegative ? `-${finalValue}` : finalValue;
     };
 
-    // Atualiza o valor formatado sempre que o input muda
-    const handleInputChange = (event: { target: { value: any; }; }) => {
-        const { value } = event.target;
-        // Remove qualquer caractere que não seja número
-        const cleanedValue = value.replace(/\D/g, '');
-        setInputValue(cleanedValue);
-        onChange && onChange(formatValue(cleanedValue));
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const rawValue = e.target.value;
+        const formattedValue = formatValue(rawValue);
+
+
+        if (onChange) {
+            onChange({
+                ...e,
+                target: { ...e.target, value: formattedValue }
+            });
+        }
+
+        if (value === undefined) {
+            setInternalValue(formattedValue);
+        }
     };
 
     useEffect(() => {
-        // Formata o valor inicial do input, se tiver algum valor inicial definido
-        setInputValue((prev) => formatValue(prev));
-    }, [decimalPlaces]);
+        // Atualiza o estado interno ao montar o componente ou ao mudar `defaultValue`
+        setInternalValue(formatValue(defaultValue.toFixed(decimalPlaces)));
+    }, [defaultValue, decimalPlaces]);
+
+    useEffect(() => {
+        // Se `value` externo mudar, formate e atualize o estado interno
+        if (value !== undefined) {
+            setInternalValue(formatValue(String(value)));
+        }
+    }, [value]);
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span>{currencySymbol}</span>
+        <div>
             <input
                 type="text"
-                value={formatValue(inputValue)}
-                onChange={handleInputChange}
-                style={{ marginLeft: 4 }}
+                value={value !== undefined ? internalValue : internalValue} // Sempre mostra o valor formatado
+                onChange={handleChange}
+                placeholder="0.00"
+                className="form-control"
+                {...props}
             />
         </div>
     );

@@ -1,13 +1,24 @@
 import React, {useEffect, useState} from 'react';
 
-function CurrencyInput({symbol = '$', decimalPlaces = 2, defaultValue = 487.329}) {
+interface CurrencyProps {
+    prefix: string
+    suffix: string
+    decimalPlaces: number
+    defaultValeu: number
+}
+
+function CurrencyInput({
+                           prefix = '',
+                           suffix = '',
+                           decimalPlaces = 2,
+                           defaultValue = 0,
+                           ...props
+                       }) {
     const [value, setValue] = useState<string>('');
     const [signedValue, setSignedValue] = useState<boolean>(false);
 
 
     const formatValue = (inputValue: string) => {
-        // TODO: add the support to prefix and suffix
-        //  and pass along te default props for the input, like className
         // get the current state of the signed value
         let isNegative = signedValue;
 
@@ -29,7 +40,8 @@ function CurrencyInput({symbol = '$', decimalPlaces = 2, defaultValue = 487.329}
 
         // set the state for the sign
         setSignedValue(isNegative);
-        return isNegative ? `-${formattedValue}` : formattedValue;
+        const finalValue = prefix + '' + formattedValue + '' + suffix
+        return isNegative ? `-${finalValue}` : finalValue;
     };
 
     const handleChange = (e: { target: { value: any; }; }) => {
@@ -44,11 +56,11 @@ function CurrencyInput({symbol = '$', decimalPlaces = 2, defaultValue = 487.329}
     return (
         <div>
             <input
+                {...props}
                 type="text"
                 value={value}
                 onChange={handleChange}
                 placeholder="0.00"
-                className={'form-control'}
             />
         </div>
     );

@@ -8,7 +8,7 @@ import {Controller, useForm} from "react-hook-form";
 import DropdownList from 'react-widgets/DropdownList'
 import Modal from "../../../../Components/Modal";
 import submit from "../../../../Services/Axios/Post";
-import CurrencyInput from "../../../../Components/Form/CurrencyNew2";
+import CurrencyInput from "../../../../Components/Form/CurrencyNew";
 import DateBox from "devextreme-react/date-box";
 import Select from 'react-select';
 import Moment from "moment";
@@ -158,10 +158,10 @@ const App = (props: AccountStatementProps) => {
 
     const onSubmit = (data: AccountStatementValues, e: any) => {
         // Transform select objects to ID only
-        data.currencyId = data.currency.value
-        data.accountId = data.account?.value
-        data.categoryId = data.category?.value
-        data.cashFlowId = data.cashFlow.value
+        // data.currencyId = data.currency.value
+        // data.accountId = data.account?.value
+        // data.categoryId = data.category?.value
+        // data.cashFlowId = data.cashFlow.value
 
         alert(data.amount)
         // submit(e, URL_FINANCE_ACCOUNT_TRANSACTION, data, false, "Item de extrato beta salvo").then(response => {
@@ -196,22 +196,13 @@ const App = (props: AccountStatementProps) => {
                             <Controller name={'amount'}
                                         control={control}
                                         rules={{required: false}}
-                                        defaultValue={selectedTransaction.amount * 100}
                                         render={({field}) => (
-                                            // <CurrencyInput className='form-control input-default'
-                                            //                onFocus={(event: { target: { select: () => any; }; }) => event.target.select()}
-                                            //                currency={selectedTransaction.currencyId}
-                                            //                onValueChange={(e: any) => field.onChange(e.value / 100)}
-                                            //                ref={null}
-                                            // />
-                                            // <CurrencyInput className={'form-control'} prefix={'R$ '}
-                                            //                decimalsLimit={4}
-                                            //                decimalScale={4}
-                                            //                fixedDecimalLength={4}
-                                            //                defaultValue={0.3}
-                                            // />
-                                            <CurrencyInput />
-                                            // <CurrencyInput />
+                                            <CurrencyInput
+                                                prefix="R$ "
+                                                value={field.value} // use o valor do field
+                                                onChange={(value) => field.onChange(value)} // atualize o valor no form
+                                                defaultValue={selectedTransaction.amount} // valor inicial, se houver
+                                            />
                                         )}
 
                             />
