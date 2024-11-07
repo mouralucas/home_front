@@ -8,10 +8,7 @@ import {Controller, useForm} from "react-hook-form";
 import DropdownList from 'react-widgets/DropdownList'
 import Modal from "../../../../Components/Modal";
 import submit from "../../../../Services/Axios/Post";
-// import CurrencyInput from "../../../../Components/Form/Currency";
-// import CurrencyInputNew2 from "../../../../Components/Form/CurrencyNew2";
-// import CurrencyInputNew from "../../../../Components/Form/CurrencyNew";
-import CurrencyInput from '@ericblade/react-currency-input';
+import CurrencyInput from "../../../../Components/Form/CurrencyNew2";
 import DateBox from "devextreme-react/date-box";
 import Select from 'react-select';
 import Moment from "moment";
@@ -87,7 +84,7 @@ const App = (props: AccountStatementProps) => {
     const [categories, setCategories] = useState<ReactSelectInterface[]>([])
     const [currencies, setCurrencies] = useState<ReactSelectInterface[]>([])
     const [cashFlow, setCashFlow] = useState<ReactSelectInterface[]>([])
-    const [selectedTransactions, setSelectedTransactions] = useState<AccountStatementValues>({
+    const [selectedTransaction, setSelectedTransaction] = useState<AccountStatementValues>({
         amount: 0,
         account: null,
         accountId: null,
@@ -148,7 +145,7 @@ const App = (props: AccountStatementProps) => {
         })
     }
 
-    const getCashFlow= () => {
+    const getCashFlow = () => {
         getData(URL_FINANCE_CASH_FLOW).then((response: GetCashFlowResponse) => {
             let options = response.cashFlow.map((i: CashFlow) =>
                 ({value: i.cashFlowId, label: i.cashFlowName})
@@ -185,7 +182,7 @@ const App = (props: AccountStatementProps) => {
                                 name={'currency'}
                                 control={control}
                                 rules={{required: false}}
-                                defaultValue={{value: selectedTransactions.currencyId, label: selectedTransactions.currencySymbol}}
+                                defaultValue={{value: selectedTransaction.currencyId, label: selectedTransaction.currencySymbol}}
                                 render={({field}) => (
                                     <Select
                                         options={currencies}
@@ -199,16 +196,21 @@ const App = (props: AccountStatementProps) => {
                             <Controller name={'amount'}
                                         control={control}
                                         rules={{required: false}}
-                                        defaultValue={selectedTransactions.amount * 100}
+                                        defaultValue={selectedTransaction.amount * 100}
                                         render={({field}) => (
                                             // <CurrencyInput className='form-control input-default'
                                             //                onFocus={(event: { target: { select: () => any; }; }) => event.target.select()}
-                                            //                currency={selectedStatement.currencyId}
+                                            //                currency={selectedTransaction.currencyId}
                                             //                onValueChange={(e: any) => field.onChange(e.value / 100)}
                                             //                ref={null}
                                             // />
-                                            <CurrencyInput className={'form-control'} value={selectedTransactions.amount} allowNegative={true} />
-                                            // <CurrencyInput initialValue={selectedTransactions.amount} />
+                                            // <CurrencyInput className={'form-control'} prefix={'R$ '}
+                                            //                decimalsLimit={4}
+                                            //                decimalScale={4}
+                                            //                fixedDecimalLength={4}
+                                            //                defaultValue={0.3}
+                                            // />
+                                            <CurrencyInput />
                                             // <CurrencyInput />
                                         )}
 
@@ -219,12 +221,12 @@ const App = (props: AccountStatementProps) => {
                             <Controller name={'transactionDate'}
                                         control={control}
                                         rules={{required: false}}
-                                        defaultValue={selectedTransactions.transactionDate}
+                                        defaultValue={selectedTransaction.transactionDate}
                                         render={({field}) => (
                                             <DateBox
                                                 className='form-control input-default'
                                                 useMaskBehavior={true}
-                                                value={selectedTransactions.transactionDate}
+                                                value={selectedTransaction.transactionDate}
                                                 displayFormat={'dd/MM/yyyy'}
                                                 onValueChanged={(e) => field.onChange(Moment(e.value).format('YYYY-MM-DD'))}
                                                 ref={null}
@@ -238,7 +240,7 @@ const App = (props: AccountStatementProps) => {
                             <Controller name={'account'}
                                         control={control}
                                         rules={{required: true}}
-                                        defaultValue={{value: selectedTransactions.accountId, label: selectedTransactions.accountNickname}}
+                                        defaultValue={{value: selectedTransaction.accountId, label: selectedTransaction.accountNickname}}
                                         render={({field}) => (
                                             <Select options={accounts}
                                                     {...field}
@@ -266,7 +268,7 @@ const App = (props: AccountStatementProps) => {
                             <Controller name={'category'}
                                         control={control}
                                         rules={{required: false}}
-                                        defaultValue={{value: selectedTransactions.categoryId, label: selectedTransactions.categoryName}}
+                                        defaultValue={{value: selectedTransaction.categoryId, label: selectedTransaction.categoryName}}
                                         render={({field}) => (
                                             <Select options={categories}
                                                     {...field}
