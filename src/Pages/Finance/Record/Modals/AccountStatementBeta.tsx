@@ -200,7 +200,7 @@ const App = (props: AccountStatementProps) => {
                                             <CurrencyInput
                                                 prefix="R$ "
                                                 value={field.value} // use o valor do field
-                                                onChange={(value) => field.onChange(value)} // atualize o valor no form
+                                                onValueChange={(values) => field.onChange(values.rawValue)} // atualize apenas com `rawValue` ou `formattedValue`
                                                 defaultValue={selectedTransaction.amount} // valor inicial, se houver
                                             />
                                         )}

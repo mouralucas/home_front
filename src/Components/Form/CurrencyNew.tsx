@@ -4,6 +4,7 @@ interface CurrencyProps extends React.InputHTMLAttributes<HTMLInputElement> {
     prefix?: string;
     suffix?: string;
     decimalPlaces?: number;
+    onValueChange?: (values: { rawValue: number; formattedValue: string }) => void;
     defaultValue?: number;
 }
 
@@ -13,6 +14,7 @@ function CurrencyInput({
                            decimalPlaces = 2,
                            defaultValue = 0,
                            value,
+                           onValueChange,
                            onChange,
                            ...props
                        }: CurrencyProps) {
@@ -49,11 +51,16 @@ function CurrencyInput({
         const formattedValue = formatValue(rawValue);
 
 
-        if (onChange) {
-            onChange({
-                ...e,
-                target: { ...e.target, value: formattedValue }
+        if (onValueChange) {
+            onValueChange({
+                rawValue: parseFloat(formattedValue.replace(prefix, '').replace(suffix, '')),
+                formattedValue: formattedValue,
             });
+        }
+
+        // Chame o `onChange` padrão para suportar o campo controlado
+        if (onChange) {
+            onChange(e);
         }
 
         if (value === undefined) {
