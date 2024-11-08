@@ -50,7 +50,6 @@ function CurrencyInput({
         const rawValue = e.target.value;
         const formattedValue = formatValue(rawValue);
 
-
         if (onValueChange) {
             onValueChange({
                 rawValue: parseFloat(formattedValue.replace(prefix, '').replace(suffix, '')),
@@ -58,7 +57,6 @@ function CurrencyInput({
             });
         }
 
-        // Chame o `onChange` padrão para suportar o campo controlado
         if (onChange) {
             onChange(e);
         }
@@ -69,12 +67,10 @@ function CurrencyInput({
     };
 
     useEffect(() => {
-        // Atualiza o estado interno ao montar o componente ou ao mudar `defaultValue`
         setInternalValue(formatValue(defaultValue.toFixed(decimalPlaces)));
     }, [defaultValue, decimalPlaces]);
 
     useEffect(() => {
-        // Se `value` externo mudar, formate e atualize o estado interno
         if (value !== undefined) {
             setInternalValue(formatValue(String(value)));
         }

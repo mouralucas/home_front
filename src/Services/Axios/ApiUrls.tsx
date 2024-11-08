@@ -48,7 +48,7 @@ export const URL_FINANCE_INVESTMENT_PROFIT = 'finance/investment/profit'
 export const URL_UPLOADS = 'file/upload'
 
 // Core URLs
-export const URL_CATEGORIES = 'core/category'
+export const URL_CATEGORIES = '/core/category'
 export const URL_STATUS = 'core/status'
 export const URL_COUNTRY = 'core/country'
 export const URL_PERIOD = 'core/period'

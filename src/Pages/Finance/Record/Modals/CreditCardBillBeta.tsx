@@ -75,7 +75,7 @@ const App = (props: CreditCardBillProps) => {
     const getCategory = () => {
         getData(URL_CATEGORIES, {showMode: 'all', module: 'finance'}).then((response: GetCategoryResponse) => {
             let options: ReactSelectInterface[] = response.categories.map((i: Category) =>
-                ({value: i.categoryId, label: i.categoryName})
+                ({value: i.categoryId, label: i.name})
             );
             setCategories(options)
         }).catch((err: string | ToastOptions) => {

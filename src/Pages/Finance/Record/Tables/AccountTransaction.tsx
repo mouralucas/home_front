@@ -160,7 +160,7 @@ const App = () => {
                     visible: true
                 }}
             />
-            <ModalStatement modalState={modalState} hideModal={hideModal} statement={selectedTransaction}/>
+            <ModalStatement modalState={modalState} hideModal={hideModal} transaction={selectedTransaction}/>
         </>
     );
 }

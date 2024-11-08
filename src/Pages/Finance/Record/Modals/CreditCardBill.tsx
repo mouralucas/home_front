@@ -38,7 +38,7 @@ const DefaultCreditCardBill: CreditCardTransaction = {
 }
 
 interface CreditCardBillProps {
-    creditCardBill: CreditCardTransaction | null
+    creditCardTransaction: CreditCardTransaction | null
     modalState: boolean
     hideModal: any
 }
@@ -56,31 +56,31 @@ const App = (props: CreditCardBillProps): ReactElement => {
     const [category, setCategory] = useState<any | null>([]);
     const [selectedCategory, setSelectedCategory] = useState<any | null>();
 
-    const [creditCardBill, setCreditCardBill] = useState<CreditCardTransaction>(DefaultCreditCardBill)
+    const [creditCardTransaction, setCreditCardTransaction] = useState<CreditCardTransaction>(DefaultCreditCardBill)
 
     useEffect(() => {
-        if (props.creditCardBill && props.modalState) {
-            setCreditCardBill(props.creditCardBill);
+        if (props.creditCardTransaction && props.modalState) {
+            setCreditCardTransaction(props.creditCardTransaction);
         }
 
         if (!props.modalState) {
-            setCreditCardBill(DefaultCreditCardBill);
+            setCreditCardTransaction(DefaultCreditCardBill);
             setSelectedCategory(null);
             setSelectedCreditCard(null);
         }
-    }, [props.modalState, props.creditCardBill])
+    }, [props.modalState, props.creditCardTransaction])
 
     useEffect(() => {
-        if (props.creditCardBill) {
-            setSelectedCategory(category.filter((i: { value: any; }) => i.value === props.creditCardBill?.categoryId)[0]);
+        if (props.creditCardTransaction) {
+            setSelectedCategory(category.filter((i: { value: any; }) => i.value === props.creditCardTransaction?.categoryId)[0]);
         }
-    }, [category, props.creditCardBill])
+    }, [category, props.creditCardTransaction])
 
     useEffect(() => {
-        if (props.creditCardBill) {
-            setSelectedCreditCard(creditCard.filter((i: { value: any; }) => i.value === props.creditCardBill?.creditCardId)[0]);
+        if (props.creditCardTransaction) {
+            setSelectedCreditCard(creditCard.filter((i: { value: any; }) => i.value === props.creditCardTransaction?.creditCardId)[0]);
         }
-    }, [creditCard, props.creditCardBill])
+    }, [creditCard, props.creditCardTransaction])
 
     const getCreditCard = (query: any, callback: any) => {
         if (query) {
@@ -90,7 +90,7 @@ const App = (props: CreditCardBillProps): ReactElement => {
                 console.log(response)
                 let options = response === null ? {} : response?.creditCards.map((i: { id: string; nickname: string; }) => ({value: i.id, label: i.nickname}));
                 callback(options);
-                setSelectedCreditCard(options.filter((card: { value: any; }) => card.value === creditCardBill?.creditCardId)[0]);
+                setSelectedCreditCard(options.filter((card: { value: any; }) => card.value === creditCardTransaction?.creditCardId)[0]);
                 setCreditCard(options);
             });
         }
@@ -103,7 +103,7 @@ const App = (props: CreditCardBillProps): ReactElement => {
             getData(URL_CATEGORIES, {show_mode: 'all', module: 'finance'}).then(response => {
                 let options = response == null ? {} : response.categories.map((i: { id: any; name: any; }) => ({value: i.id, label: i.name}))
                 callback(options);
-                setSelectedCategory(options.filter((category: { value: any; }) => category.value === creditCardBill?.categoryId)[0]);
+                setSelectedCategory(options.filter((category: { value: any; }) => category.value === creditCardTransaction?.categoryId)[0]);
                 setCategory(options);
             });
         }
@@ -111,29 +111,29 @@ const App = (props: CreditCardBillProps): ReactElement => {
 
     const set = (name: any) => {
         return ({target: {value}}: any) => {
-            setCreditCardBill(oldValues => ({...oldValues, [name]: value}));
+            setCreditCardTransaction(oldValues => ({...oldValues, [name]: value}));
         }
     }
 
     const setCombo = (e: any, name: any, setFunction: any) => {
         if (e !== null) {
             setFunction(e);
-            return setCreditCardBill(oldValues => ({...oldValues, [name]: e.value}));
+            return setCreditCardTransaction(oldValues => ({...oldValues, [name]: e.value}));
 
         }
-        return setCreditCardBill(oldValues => ({...oldValues, [name]: e.value}));
+        return setCreditCardTransaction(oldValues => ({...oldValues, [name]: e.value}));
     }
 
     const setDate = (e: any, name: any) => {
         if (e.value !== null) {
-            return setCreditCardBill(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
+            return setCreditCardTransaction(oldValues => ({...oldValues, [name]: Moment(e.value).format('YYYY-MM-DD')}))
         } else {
-            return setCreditCardBill(oldValues => ({...oldValues, [name]: e.value}))
+            return setCreditCardTransaction(oldValues => ({...oldValues, [name]: e.value}))
         }
     }
 
     const setCurrency = (values: any, name: any) => {
-        return setCreditCardBill(oldValues => ({...oldValues, [name]: values.value / 100}));
+        return setCreditCardTransaction(oldValues => ({...oldValues, [name]: values.value / 100}));
     }
 
     const body = () => {
@@ -142,9 +142,9 @@ const App = (props: CreditCardBillProps): ReactElement => {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-4">
-                            <label htmlFor="">Valor: {creditCardBill.amount}</label>
+                            <label htmlFor="">Valor: {creditCardTransaction.amount}</label>
                             <Currency className='form-control input-default'
-                                      value={creditCardBill.amount * 100}
+                                      value={creditCardTransaction.amount * 100}
                                       onFocus={(event: { target: { select: () => any; }; }) => event.target.select()}
                                       onValueChange={(values: any, sourceInfo: any) => {
                                           setCurrency(values, 'amount')
@@ -152,20 +152,20 @@ const App = (props: CreditCardBillProps): ReactElement => {
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data compra</label>
-                            <DateBox value={creditCardBill.transactionDate} type="date" className='form-control input-default'
+                            <DateBox value={creditCardTransaction.transactionDate} type="date" className='form-control input-default'
                                      useMaskBehavior={true}
                                      onValueChanged={(date: any) => setDate(date, 'purchaseAt')}/>
                         </div>
                         <div className="col-4">
                             <label htmlFor="">Data pagamento</label>
-                            <DateBox value={creditCardBill.dueDate} className='form-control input-default'
+                            <DateBox value={creditCardTransaction.dueDate} className='form-control input-default'
                                      useMaskBehavior={true}
                                      onValueChanged={(date: any) => setDate(date, 'paymentAt')}/>
                         </div>
                     </div>
                     <div className='row'>
                         <div className="col-4">
-                            <label htmlFor="">Cartão: {creditCardBill.creditCardId}</label>
+                            <label htmlFor="">Cartão: {creditCardTransaction.creditCardId}</label>
                             <AsyncSelect id={'combo_cards'}
                                          loadOptions={(query, callback) => getCreditCard(query, callback)}
                                          onChange={(e) => setCombo(e, 'creditCardId', setSelectedCreditCard)}
@@ -184,16 +184,16 @@ const App = (props: CreditCardBillProps): ReactElement => {
                     <div className="row">
                         <div className="col-12">
                             <label htmlFor="">Descrição</label>
-                            <textarea className='form-control' value={creditCardBill.description} id=""
+                            <textarea className='form-control' value={creditCardTransaction.description} id=""
                                       onChange={set('description')}></textarea>
                         </div>
                     </div>
                     <div className="row mt-2">
                         <span className='text-small text-muted'>
-                            Criado em: {formatDate(creditCardBill.createdAt)}
+                            Criado em: {formatDate(creditCardTransaction.createdAt)}
                         </span>
                         <span className="text-small text-muted">
-                            Editado em: {formatDate(creditCardBill.lastEditedAt)}
+                            Editado em: {formatDate(creditCardTransaction.lastEditedAt)}
                         </span>
                     </div>
                 </div>
@@ -211,7 +211,7 @@ const App = (props: CreditCardBillProps): ReactElement => {
                 title={'Fatura'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e: any) => handleSubmit(e, URL_CREDIT_CARD_BILL_CONSOLIDATED, creditCardBill, false, "Item de fatura salvo")}
+                actionModal={(e: any) => handleSubmit(e, URL_CREDIT_CARD_BILL_CONSOLIDATED, creditCardTransaction, false, "Item de fatura salvo")}
                 size={'lg'}
             />
         </div>

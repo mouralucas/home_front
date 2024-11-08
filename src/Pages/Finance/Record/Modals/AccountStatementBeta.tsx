@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Account, CashFlow, Currency, AccountTransaction} from "../../Interfaces";
+import {Account, AccountTransaction, CashFlow, Currency} from "../../Interfaces";
 import {Category, ReactSelectInterface} from "../../../Interfaces";
-import {getData} from "../../../../Services/Axios/Get";
-import {URL_FINANCE_ACCOUNT, URL_CATEGORIES, URL_CURRENCY, URL_FINANCE_ACCOUNT_TRANSACTION, URL_FINANCE_CASH_FLOW} from "../../../../Services/Axios/ApiUrls";
+import {getData, getFinanceData} from "../../../../Services/Axios/Get";
+import {URL_CATEGORIES, URL_CURRENCY, URL_FINANCE_ACCOUNT} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
 import {Controller, useForm} from "react-hook-form";
-import DropdownList from 'react-widgets/DropdownList'
 import Modal from "../../../../Components/Modal";
-import submit from "../../../../Services/Axios/Post";
 import CurrencyInput from "../../../../Components/Form/CurrencyNew";
 import DateBox from "devextreme-react/date-box";
 import Select from 'react-select';
@@ -20,7 +18,7 @@ import Moment from "moment";
  * Account Statement Modal With React Hook Form
  */
 interface AccountStatementProps {
-    statement: AccountTransaction | undefined | null,
+    transaction: AccountTransaction | undefined | null,
     modalState: boolean,
     hideModal: any
 }
@@ -57,52 +55,42 @@ interface GetCashFlowResponse {
     cashFlow: CashFlow[]
 }
 
-interface AccountStatementValues {
-    amount: number,
-    account: ReactSelectInterface | null
-    accountId: string | null | undefined
-    accountNickname: string | null | undefined
-    category: ReactSelectInterface | null
-    categoryId: string | null | undefined
-    categoryName: string | null
-    currency: ReactSelectInterface
-    currencyId: string | null | undefined
-    currencySymbol: string
-    transactionDate: string
-    description: string
-    createdAt: null
-    lastEditedAt: null
-    cashFlow: ReactSelectInterface
-    cashFlowId: string | null | undefined
-    cashFlowName: string
+const DefaultTransaction: AccountTransaction = {
+    transactionId: null,
+    amount: 0,
+    // account: ReactSelectInterface | null
+    accountId: '',
+    nickname: '',
+    // category: ReactSelectInterface | null
+    categoryId: '',
+    categoryName: '',
+    // currency: ReactSelectInterface
+    currencyId: 'BRL',
+    currencySymbol: 'R$',
+    transactionCurrencyId: '',
+    transactionCurrencySymbol: 'R$',
+    period: 0,
+    exchangeRate: 0,
+    taxPerc: 0,
+    tax: 0,
+    spreadPerc: 0,
+    spread: 0,
+    effectiveRate: 0,
+    cashFlowId: 'OUTGOING', //Deprecated
+    transactionDate: new Date(),
+    description: '',
+    ownerId: '',
+    createdAt: null,
+    lastEditedAt: null,
 }
 
 const App = (props: AccountStatementProps) => {
-    const {handleSubmit, control, setValue, getValues} = useForm<AccountStatementValues>()
+    const {handleSubmit, control, reset, setValue, getValues} = useForm<AccountTransaction>()
 
     const [accounts, setAccounts] = useState<ReactSelectInterface[]>([])
     const [categories, setCategories] = useState<ReactSelectInterface[]>([])
-    const [currencies, setCurrencies] = useState<ReactSelectInterface[]>([])
-    const [cashFlow, setCashFlow] = useState<ReactSelectInterface[]>([])
-    const [selectedTransaction, setSelectedTransaction] = useState<AccountStatementValues>({
-        amount: 0,
-        account: null,
-        accountId: null,
-        accountNickname: null,
-        category: null,
-        categoryId: null,
-        categoryName: null,
-        currency: {value: "BRL", label: "R$"},
-        currencyId: "BRL",
-        currencySymbol: "R$",
-        transactionDate: Moment(new Date()).format('YYYY-MM-DD'),
-        description: "",
-        createdAt: null,
-        lastEditedAt: null,
-        cashFlow: {value: 'OUTGOING', label: 'Saída'},
-        cashFlowId: "OUTGOING",
-        cashFlowName: 'Saída'
-    });
+    const [currencies, setCurrencies] = useState<any>([])
+    const [selectedTransaction, setSelectedTransaction] = useState<AccountTransaction>(DefaultTransaction);
 
     useEffect(() => {
         if (props.modalState) {
@@ -112,8 +100,19 @@ const App = (props: AccountStatementProps) => {
         }
     }, [props.modalState]);
 
+    useEffect(() => {
+        if (props.modalState && props.transaction) {
+            setSelectedTransaction(props.transaction);
+        }
+
+        if (!props.modalState) {
+            console.log('fechou')
+            reset(DefaultTransaction);
+        }
+    }, [props.modalState]);
+
     const getAccount = () => {
-        getData(URL_FINANCE_ACCOUNT, {accountType: "checking"}).then((response: GetAccountResponse) => {
+        getFinanceData(URL_FINANCE_ACCOUNT, {accountType: "checking"}).then((response: GetAccountResponse) => {
             let options = response.accounts.map((i: Account) =>
                 ({value: i.accountId, label: i.nickname})
             );
@@ -124,9 +123,9 @@ const App = (props: AccountStatementProps) => {
     }
 
     const getCategory = () => {
-        getData(URL_CATEGORIES, {showMode: 'all', module: 'finance'}).then((response: GetCategoryResponse) => {
+        getFinanceData(URL_CATEGORIES, {showMode: 'all', module: 'finance'}).then((response: GetCategoryResponse) => {
             let options = response.categories.map((i: Category) =>
-                ({value: i.categoryId, label: i.categoryName})
+                ({value: i.categoryId, label: i.name})
             );
             setCategories(options)
         }).catch((err: string | ToastOptions) => {
@@ -135,35 +134,24 @@ const App = (props: AccountStatementProps) => {
     }
 
     const getCurrency = () => {
-        getData(URL_CURRENCY).then((response: GetCurrencyResponse) => {
+        getFinanceData(URL_CURRENCY).then((response: GetCurrencyResponse) => {
             let options = response.currencies.map((i: Currency) =>
                 ({value: i.currencyId, label: i.symbol})
             );
             setCurrencies(options)
         }).catch((err: string | ToastOptions) => {
-            toast.error('Houve um erro ao buscar as moedas disponíveis');
+            toast.error('Houve um erro ao buscar as moedas disponíveis ' + err);
         })
     }
 
-    const getCashFlow = () => {
-        getData(URL_FINANCE_CASH_FLOW).then((response: GetCashFlowResponse) => {
-            let options = response.cashFlow.map((i: CashFlow) =>
-                ({value: i.cashFlowId, label: i.cashFlowName})
-            );
-            setCashFlow(options)
-        }).catch((err: string | ToastOptions) => {
-            toast.error('Houve um erro ao buscar as moedas disponíveis');
-        })
-    }
-
-    const onSubmit = (data: AccountStatementValues, e: any) => {
+    const onSubmit = (data: AccountTransaction, e: any) => {
         // Transform select objects to ID only
         // data.currencyId = data.currency.value
         // data.accountId = data.account?.value
         // data.categoryId = data.category?.value
         // data.cashFlowId = data.cashFlow.value
 
-        alert(data.amount)
+        console.log(data)
         // submit(e, URL_FINANCE_ACCOUNT_TRANSACTION, data, false, "Item de extrato beta salvo").then(response => {
         //     // TODO: handle return here
         // }).catch((err: string | ToastOptions) => {
@@ -179,14 +167,16 @@ const App = (props: AccountStatementProps) => {
                         <div className="col-2">
                             <label htmlFor=""></label>
                             <Controller
-                                name={'currency'}
+                                name="currencyId"
                                 control={control}
-                                rules={{required: false}}
-                                defaultValue={{value: selectedTransaction.currencyId, label: selectedTransaction.currencySymbol}}
-                                render={({field}) => (
+                                rules={{ required: false }}
+                                defaultValue={selectedTransaction.currencyId}
+                                render={({ field }) => (
                                     <Select
-                                        options={currencies}
                                         {...field}
+                                        options={currencies}
+                                        value={currencies.find((c: any) => c.value === field.value)}  // usa field.value para o valor atual
+                                        onChange={(val) => field.onChange(val?.value)}
                                     />
                                 )}
                             />
@@ -226,19 +216,19 @@ const App = (props: AccountStatementProps) => {
 
                             />
                         </div>
-                        <div className="col-4">
-                            <label htmlFor="">Conta</label>
-                            <Controller name={'account'}
-                                        control={control}
-                                        rules={{required: true}}
-                                        defaultValue={{value: selectedTransaction.accountId, label: selectedTransaction.accountNickname}}
-                                        render={({field}) => (
-                                            <Select options={accounts}
-                                                    {...field}
-                                            />
-                                        )}
-                            />
-                        </div>
+                        {/*<div className="col-4">*/}
+                        {/*    <label htmlFor="">Conta</label>*/}
+                        {/*    <Controller name={'account'}*/}
+                        {/*                control={control}*/}
+                        {/*                rules={{required: true}}*/}
+                        {/*                defaultValue={{value: selectedTransaction.accountId, label: selectedTransaction.accountNickname}}*/}
+                        {/*                render={({field}) => (*/}
+                        {/*                    <Select options={accounts}*/}
+                        {/*                            {...field}*/}
+                        {/*                    />*/}
+                        {/*                )}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                     </div>
                     <div className="row">
                         {/*<div className="col-6">*/}
@@ -254,31 +244,31 @@ const App = (props: AccountStatementProps) => {
                         {/*                )}*/}
                         {/*    />*/}
                         {/*</div>*/}
-                        <div className="col-6">
-                            <label htmlFor="">Categoria</label>
-                            <Controller name={'category'}
-                                        control={control}
-                                        rules={{required: false}}
-                                        defaultValue={{value: selectedTransaction.categoryId, label: selectedTransaction.categoryName}}
-                                        render={({field}) => (
-                                            <Select options={categories}
-                                                    {...field}
-                                            />
-                                        )}
-                            />
-                        </div>
+                        {/*<div className="col-6">*/}
+                        {/*    <label htmlFor="">Categoria</label>*/}
+                        {/*    <Controller name={'category'}*/}
+                        {/*                control={control}*/}
+                        {/*                rules={{required: false}}*/}
+                        {/*                defaultValue={{value: selectedTransaction.categoryId, label: selectedTransaction.categoryName}}*/}
+                        {/*                render={({field}) => (*/}
+                        {/*                    <Select options={categories}*/}
+                        {/*                            {...field}*/}
+                        {/*                    />*/}
+                        {/*                )}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                     </div>
                     <div className="row">
-                        <div className="col-12">
-                            <label htmlFor="">Descrição</label>
-                            <Controller name={'description'}
-                                        control={control}
-                                        rules={{required: false}}
-                                        render={({field}) => (
-                                            <textarea className='form-control' {...field}></textarea>
-                                        )}
-                            />
-                        </div>
+                        {/*<div className="col-12">*/}
+                        {/*    <label htmlFor="">Descrição</label>*/}
+                        {/*    <Controller name={'description'}*/}
+                        {/*                control={control}*/}
+                        {/*                rules={{required: false}}*/}
+                        {/*                render={({field}) => (*/}
+                        {/*                    <textarea className='form-control' {...field}></textarea>*/}
+                        {/*                )}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                     </div>
                 </form>
             </div>

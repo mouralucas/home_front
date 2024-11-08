@@ -19,7 +19,7 @@ export interface AccountTransaction {
     transactionId: number | null
     ownerId: string
     accountId: string
-    accountName: string
+    nickname: string
     period: number
     currencyId: string
     currencySymbol: string
