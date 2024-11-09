@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {Account, AccountTransaction, CashFlow, Currency} from "../../Interfaces";
-import {Category, ReactSelectInterface} from "../../../Interfaces";
-import {getData, getFinanceData} from "../../../../Services/Axios/Get";
+import {Account, AccountTransaction, Currency} from "../../Interfaces";
+import {Category} from "../../../Interfaces";
+import {getFinanceData} from "../../../../Services/Axios/Get";
 import {URL_CATEGORIES, URL_CURRENCY, URL_FINANCE_ACCOUNT} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
 import {Controller, useForm} from "react-hook-form";
@@ -47,28 +47,13 @@ interface GetCurrencyResponse {
     currencies: Currency[]
 }
 
-interface GetCashFlowResponse {
-    success: boolean
-    message: string
-    statusCode: number
-    quantity: number
-    cashFlow: CashFlow[]
-}
-
 const DefaultTransaction: AccountTransaction = {
     transactionId: null,
     amount: 0,
-    // account: ReactSelectInterface | null
     accountId: '',
-    nickname: '',
-    // category: ReactSelectInterface | null
     categoryId: '',
-    categoryName: '',
-    // currency: ReactSelectInterface
     currencyId: 'BRL',
-    currencySymbol: 'R$',
     transactionCurrencyId: '',
-    transactionCurrencySymbol: 'R$',
     period: 0,
     exchangeRate: 0,
     taxPerc: 0,
@@ -76,43 +61,43 @@ const DefaultTransaction: AccountTransaction = {
     spreadPerc: 0,
     spread: 0,
     effectiveRate: 0,
-    cashFlowId: 'OUTGOING', //Deprecated
     transactionDate: new Date(),
-    description: '',
+    description: undefined,
     ownerId: '',
     createdAt: null,
     lastEditedAt: null,
 }
 
 const App = (props: AccountStatementProps) => {
-    const {handleSubmit, control, reset, setValue, getValues} = useForm<AccountTransaction>()
+    const {handleSubmit, control, reset} = useForm<AccountTransaction>()
 
-    const [accounts, setAccounts] = useState<ReactSelectInterface[]>([])
-    const [categories, setCategories] = useState<ReactSelectInterface[]>([])
-    const [currencies, setCurrencies] = useState<any>([])
+    const [accounts, setAccounts] = useState<any[]>([])
+    const [categories, setCategories] = useState<any[]>([])
+    const [currencies, setCurrencies] = useState<any[]>([])
     const [selectedTransaction, setSelectedTransaction] = useState<AccountTransaction>(DefaultTransaction);
 
     useEffect(() => {
+        // Load necessary information
         if (props.modalState) {
             getCurrency();
             getAccount();
             getCategory();
         }
-    }, [props.modalState]);
 
-    useEffect(() => {
+        // Set initial value if provided
         if (props.modalState && props.transaction) {
+            console.log(props.transaction);
             setSelectedTransaction(props.transaction);
         }
 
+        // Clean form when modal closes
         if (!props.modalState) {
-            console.log('fechou')
             reset(DefaultTransaction);
         }
-    }, [props.modalState]);
+    }, [props.modalState, props.transaction]);
 
     const getAccount = () => {
-        getFinanceData(URL_FINANCE_ACCOUNT, {accountType: "checking"}).then((response: GetAccountResponse) => {
+        getFinanceData(URL_FINANCE_ACCOUNT).then((response: GetAccountResponse) => {
             let options = response.accounts.map((i: Account) =>
                 ({value: i.accountId, label: i.nickname})
             );
@@ -123,7 +108,7 @@ const App = (props: AccountStatementProps) => {
     }
 
     const getCategory = () => {
-        getFinanceData(URL_CATEGORIES, {showMode: 'all', module: 'finance'}).then((response: GetCategoryResponse) => {
+        getFinanceData(URL_CATEGORIES).then((response: GetCategoryResponse) => {
             let options = response.categories.map((i: Category) =>
                 ({value: i.categoryId, label: i.name})
             );
@@ -140,19 +125,13 @@ const App = (props: AccountStatementProps) => {
             );
             setCurrencies(options)
         }).catch((err: string | ToastOptions) => {
-            toast.error('Houve um erro ao buscar as moedas disponíveis ' + err);
+            toast.error('Houve um erro ao buscar as moedas disponíveis');
         })
     }
 
     const onSubmit = (data: AccountTransaction, e: any) => {
-        // Transform select objects to ID only
-        // data.currencyId = data.currency.value
-        // data.accountId = data.account?.value
-        // data.categoryId = data.category?.value
-        // data.cashFlowId = data.cashFlow.value
-
         console.log(data)
-        // submit(e, URL_FINANCE_ACCOUNT_TRANSACTION, data, false, "Item de extrato beta salvo").then(response => {
+        // postFinanceData(e, URL_FINANCE_ACCOUNT_TRANSACTION, data, false, "Item de extrato beta salvo").then(response => {
         //     // TODO: handle return here
         // }).catch((err: string | ToastOptions) => {
         //     toast.error('Erro ao salvar extrato beta')
@@ -169,9 +148,9 @@ const App = (props: AccountStatementProps) => {
                             <Controller
                                 name="currencyId"
                                 control={control}
-                                rules={{ required: false }}
+                                rules={{required: false}}
                                 defaultValue={selectedTransaction.currencyId}
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <Select
                                         {...field}
                                         options={currencies}
@@ -216,59 +195,56 @@ const App = (props: AccountStatementProps) => {
 
                             />
                         </div>
-                        {/*<div className="col-4">*/}
-                        {/*    <label htmlFor="">Conta</label>*/}
-                        {/*    <Controller name={'account'}*/}
-                        {/*                control={control}*/}
-                        {/*                rules={{required: true}}*/}
-                        {/*                defaultValue={{value: selectedTransaction.accountId, label: selectedTransaction.accountNickname}}*/}
-                        {/*                render={({field}) => (*/}
-                        {/*                    <Select options={accounts}*/}
-                        {/*                            {...field}*/}
-                        {/*                    />*/}
-                        {/*                )}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
+                        <div className="col-4">
+                            <label htmlFor="">Conta</label>
+                            <Controller name={'accountId'}
+                                        control={control}
+                                        rules={{required: false}}
+                                        defaultValue={selectedTransaction.accountId}
+                                        render={({field}) => (
+                                            <Select
+                                                {...field}
+                                                options={accounts}
+                                                value={accounts.find((c: any) => c.value === field.value)}
+                                                onChange={(value: any) => field.onChange(value?.value)}
+                                            />
+                                        )}
+                            />
+                        </div>
                     </div>
                     <div className="row">
-                        {/*<div className="col-6">*/}
-                        {/*    <label htmlFor="">Operação</label>*/}
-                        {/*    <Controller name={'cashFlow'}*/}
-                        {/*                control={control}*/}
-                        {/*                rules={{required: false}}*/}
-                        {/*                defaultValue={{value: selectedTransactions.cashFlowId, label: selectedTransactions.cashFlowId}}*/}
-                        {/*                render={({field}) => (*/}
-                        {/*                    <Select options={cashFlow}*/}
-                        {/*                            {...field}*/}
-                        {/*                    />*/}
-                        {/*                )}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-                        {/*<div className="col-6">*/}
-                        {/*    <label htmlFor="">Categoria</label>*/}
-                        {/*    <Controller name={'category'}*/}
-                        {/*                control={control}*/}
-                        {/*                rules={{required: false}}*/}
-                        {/*                defaultValue={{value: selectedTransaction.categoryId, label: selectedTransaction.categoryName}}*/}
-                        {/*                render={({field}) => (*/}
-                        {/*                    <Select options={categories}*/}
-                        {/*                            {...field}*/}
-                        {/*                    />*/}
-                        {/*                )}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
+                        <div className="col-6">
+                            <label htmlFor="">Categoria</label>
+                            <Controller name={'categoryId'}
+                                        control={control}
+                                        rules={{required: false}}
+                                        defaultValue={selectedTransaction.categoryId}
+                                        render={({field}) => (
+                                            <Select
+                                                {...field}
+                                                options={categories}
+                                                value={currencies.find((c: any) => c.value === field.value)}
+                                                onChange={(val) => field.onChange(val?.value)}
+                                            />
+                                        )}
+                            />
+                        </div>
                     </div>
                     <div className="row">
-                        {/*<div className="col-12">*/}
-                        {/*    <label htmlFor="">Descrição</label>*/}
-                        {/*    <Controller name={'description'}*/}
-                        {/*                control={control}*/}
-                        {/*                rules={{required: false}}*/}
-                        {/*                render={({field}) => (*/}
-                        {/*                    <textarea className='form-control' {...field}></textarea>*/}
-                        {/*                )}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
+                        <div className="col-12">
+                            <label htmlFor="">Descrição</label>
+                            <Controller name={'description'}
+                                        control={control}
+                                        rules={{required: false}}
+                                        render={({field}) => (
+                                            <textarea
+                                                {...field}
+                                                value={field.value ?? selectedTransaction.description}
+                                                onChange={field.onChange}
+                                                className='form-control' ></textarea>
+                                        )}
+                            />
+                        </div>
                     </div>
                 </form>
             </div>
