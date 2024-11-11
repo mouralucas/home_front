@@ -71,7 +71,7 @@ const DefaultTransaction: AccountTransaction = {
 }
 
 const App = (props: AccountStatementProps) => {
-    const {handleSubmit, control, reset, formState: {isDirty}} = useForm<AccountTransaction>()
+    const {handleSubmit, control, reset, formState: {isDirty, dirtyFields}, getValues} = useForm<AccountTransaction>()
 
     const [accounts, setAccounts] = useState<any[]>([])
     const [categories, setCategories] = useState<any[]>([])
@@ -140,17 +140,29 @@ const App = (props: AccountStatementProps) => {
     }
 
     const onSubmit = (data: AccountTransaction, e: any) => {
-        console.log(data)
         let method;
+        let submit_data;
+
         if (data.transactionId !== null){
             method = 'patch'
+
+            const currentValues: AccountTransaction = getValues();
+            const modifiedFields: Partial<Record<keyof AccountTransaction, AccountTransaction[keyof AccountTransaction]>> = {};
+
+            (Object.keys(dirtyFields) as Array<keyof AccountTransaction>).forEach((key: keyof AccountTransaction) => {
+                modifiedFields[key] = currentValues[key];
+            });
+
+            modifiedFields['transactionId'] = data.transactionId
+
+            submit_data = modifiedFields
         } else {
             method = 'post'
+            submit_data = data
         }
 
-        financialSubmit(e, URL_FINANCE_ACCOUNT_TRANSACTION, data, false, method).then(response => {
+        financialSubmit(e, URL_FINANCE_ACCOUNT_TRANSACTION, submit_data, false, method).then(response => {
             toast.success('Transação salva com sucesso')
-            console.log(response)
         }).catch((err: string | ToastOptions) => {
             toast.error('Erro ao salvar a transação da conta')
         })
