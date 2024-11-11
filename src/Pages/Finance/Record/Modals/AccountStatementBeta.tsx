@@ -4,12 +4,14 @@ import {Category} from "../../../Interfaces";
 import {getFinanceData} from "../../../../Services/Axios/Get";
 import {URL_CATEGORIES, URL_CURRENCY, URL_FINANCE_ACCOUNT} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
+import { format, parseISO } from 'date-fns';
 import {Controller, useForm} from "react-hook-form";
 import Modal from "../../../../Components/Modal";
 import CurrencyInput from "../../../../Components/Form/CurrencyNew";
-import DateBox from "devextreme-react/date-box";
+import DatePicker from "react-datepicker";
 import Select from 'react-select';
 import Moment from "moment";
+import "react-datepicker/dist/react-datepicker.css";
 
 /**
  *
@@ -61,7 +63,7 @@ const DefaultTransaction: AccountTransaction = {
     spreadPerc: 0,
     spread: 0,
     effectiveRate: 0,
-    transactionDate: new Date(),
+    transactionDate: format(new Date().toDateString(), 'yyyy-MM-dd'),
     description: undefined,
     ownerId: '',
     createdAt: null,
@@ -77,6 +79,14 @@ const App = (props: AccountStatementProps) => {
     const [selectedTransaction, setSelectedTransaction] = useState<AccountTransaction>(DefaultTransaction);
 
     useEffect(() => {
+        // Set initial value if provided
+        if (props.modalState && props.transaction) {
+            reset(props.transaction);
+        } else if (props.modalState && !props.transaction) {
+            reset(DefaultTransaction);
+        }
+
+
         // Load necessary information
         if (props.modalState) {
             getCurrency();
@@ -84,17 +94,17 @@ const App = (props: AccountStatementProps) => {
             getCategory();
         }
 
-        // Set initial value if provided
-        if (props.modalState && props.transaction) {
-            console.log(props.transaction);
-            setSelectedTransaction(props.transaction);
-        }
-
         // Clean form when modal closes
         if (!props.modalState) {
             reset(DefaultTransaction);
         }
     }, [props.modalState, props.transaction]);
+
+    useEffect(() => {
+        if (props.transaction) {
+            setSelectedTransaction(props.transaction);
+        }
+    }, [currencies, categories, accounts]);
 
     const getAccount = () => {
         getFinanceData(URL_FINANCE_ACCOUNT).then((response: GetAccountResponse) => {
@@ -149,12 +159,12 @@ const App = (props: AccountStatementProps) => {
                                 name="currencyId"
                                 control={control}
                                 rules={{required: false}}
-                                defaultValue={selectedTransaction.currencyId}
                                 render={({field}) => (
                                     <Select
                                         {...field}
                                         options={currencies}
-                                        value={currencies.find((c: any) => c.value === field.value)}  // usa field.value para o valor atual
+                                        defaultValue={selectedTransaction?.currencyId}
+                                        value={currencies.find((c: any) => c.value === field.value)}
                                         onChange={(val) => field.onChange(val?.value)}
                                     />
                                 )}
@@ -168,9 +178,8 @@ const App = (props: AccountStatementProps) => {
                                         render={({field}) => (
                                             <CurrencyInput
                                                 prefix="R$ "
-                                                value={field.value} // use o valor do field
-                                                onValueChange={(values) => field.onChange(values.rawValue)} // atualize apenas com `rawValue` ou `formattedValue`
-                                                defaultValue={selectedTransaction.amount} // valor inicial, se houver
+                                                value={field.value}
+                                                onValueChange={(values) => field.onChange(values.rawValue)} 
                                             />
                                         )}
 
@@ -178,21 +187,23 @@ const App = (props: AccountStatementProps) => {
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Data da compra</label>
-                            <Controller name={'transactionDate'}
-                                        control={control}
-                                        rules={{required: false}}
-                                        defaultValue={selectedTransaction.transactionDate}
-                                        render={({field}) => (
-                                            <DateBox
-                                                className='form-control input-default'
-                                                useMaskBehavior={true}
-                                                value={selectedTransaction.transactionDate}
-                                                displayFormat={'dd/MM/yyyy'}
-                                                onValueChanged={(e) => field.onChange(Moment(e.value).format('YYYY-MM-DD'))}
-                                                ref={null}
-                                            />
-                                        )}
-
+                            <Controller
+                                name={'transactionDate'}
+                                control={control}
+                                rules={{ required: false }}
+                                defaultValue={selectedTransaction.transactionDate}
+                                render={({ field }) => (
+                                    <DatePicker
+                                        selected={parseISO(field.value)}
+                                        onChange={(date) => {
+                                            // Verifica se a data é `null`
+                                            field.onChange(date ? format(date, 'yyyy-MM-dd') : selectedTransaction.transactionDate);
+                                        }}
+                                        dateFormat="dd/MM/yyyy" // Exibe no formato brasileiro
+                                        className="form-control"
+                                        placeholderText="Selecione uma data"
+                                    />
+                                )}
                             />
                         </div>
                         <div className="col-4">
@@ -200,7 +211,6 @@ const App = (props: AccountStatementProps) => {
                             <Controller name={'accountId'}
                                         control={control}
                                         rules={{required: false}}
-                                        defaultValue={selectedTransaction.accountId}
                                         render={({field}) => (
                                             <Select
                                                 {...field}
@@ -218,12 +228,11 @@ const App = (props: AccountStatementProps) => {
                             <Controller name={'categoryId'}
                                         control={control}
                                         rules={{required: false}}
-                                        defaultValue={selectedTransaction.categoryId}
                                         render={({field}) => (
                                             <Select
                                                 {...field}
                                                 options={categories}
-                                                value={currencies.find((c: any) => c.value === field.value)}
+                                                value={categories.find((c: any) => c.value === field.value)}
                                                 onChange={(val) => field.onChange(val?.value)}
                                             />
                                         )}
@@ -239,7 +248,7 @@ const App = (props: AccountStatementProps) => {
                                         render={({field}) => (
                                             <textarea
                                                 {...field}
-                                                value={field.value ?? selectedTransaction.description}
+                                                value={field.value ?? ''}
                                                 onChange={field.onChange}
                                                 className='form-control' ></textarea>
                                         )}

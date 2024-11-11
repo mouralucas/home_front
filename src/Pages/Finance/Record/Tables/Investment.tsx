@@ -39,7 +39,6 @@ const App = () => {
 
     const getInvestment = () => {
         getFinanceData(URL_INVESTMENT).then((response: InvestmentResponse) => {
-            console.log(response.investments);
             setInvestment(response.investments);
         }).catch(err => {
             toast.error(err)

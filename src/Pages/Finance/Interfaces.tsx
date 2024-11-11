@@ -22,7 +22,7 @@ export interface AccountTransaction {
     period: number
     currencyId: string
     amount: number
-    transactionDate: Date
+    transactionDate: string
     categoryId: string
     description: string | undefined
     transactionCurrencyId: string

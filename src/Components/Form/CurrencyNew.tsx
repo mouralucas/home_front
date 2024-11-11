@@ -26,7 +26,7 @@ function CurrencyInput({
 
         // check if the defaultValue is negative
         // in this case, the sigh will be the first char in the string
-        if (internalValue === '' && /^-/.test(inputValue)) {
+        if (/^-/.test(inputValue)) {
             isNegative = true;
         }
 
@@ -71,8 +71,9 @@ function CurrencyInput({
     }, [defaultValue, decimalPlaces]);
 
     useEffect(() => {
-        if (value !== undefined) {
-            setInternalValue(formatValue(String(value)));
+        if (value !== undefined && typeof value === 'number') {
+            const formatedValue = formatValue(value.toFixed(decimalPlaces));
+            setInternalValue(formatedValue);
         }
     }, [value]);
 
