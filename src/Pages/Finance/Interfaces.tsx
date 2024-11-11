@@ -86,22 +86,21 @@ export interface CreditCard {
 }
 
 export interface CreditCardTransaction {
-    // TODO: look why dates are set as strings
     transactionId: number | null | undefined
     creditCardId: string | null
-    creditCardNickname: string | null
+    // creditCardNickname: string | null
     period: number
     categoryId: string | null
-    categoryName: string | null
+    // categoryName: string | null
     amount: number //ok
     currencyId: string
-    currencySymbol: string
+    // currencySymbol: string
     transactionCurrencyId: string
-    transactionCurrencySymbol: string
+    // transactionCurrencySymbol: string
     transactionAmount: number
-    dueDate: string // ok
-    transactionDate: string //ok
-    description: string //ok
+    dueDate: string
+    transactionDate: string
+    description: string
     isInstallment: boolean | undefined | null
     installments: number | undefined | null
     currentInstallment: number | undefined | null

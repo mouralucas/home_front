@@ -147,13 +147,13 @@ const App = (props: AccountStatementProps) => {
             method = 'patch'
 
             const currentValues: AccountTransaction = getValues();
-            const modifiedFields: Partial<Record<keyof AccountTransaction, AccountTransaction[keyof AccountTransaction]>> = {};
+            const modifiedFields: Partial<Record<keyof AccountTransaction, AccountTransaction[keyof AccountTransaction]>> = {
+                transactionId: data.transactionId
+            };
 
             (Object.keys(dirtyFields) as Array<keyof AccountTransaction>).forEach((key: keyof AccountTransaction) => {
                 modifiedFields[key] = currentValues[key];
             });
-
-            modifiedFields['transactionId'] = data.transactionId
 
             submit_data = modifiedFields
         } else {
@@ -164,7 +164,7 @@ const App = (props: AccountStatementProps) => {
         financialSubmit(e, URL_FINANCE_ACCOUNT_TRANSACTION, submit_data, false, method).then(response => {
             toast.success('Transação salva com sucesso')
         }).catch((err: string | ToastOptions) => {
-            toast.error('Erro ao salvar a transação da conta')
+            toast.error('Erro ao salvar a transação da conta ' + err)
         })
     };
 

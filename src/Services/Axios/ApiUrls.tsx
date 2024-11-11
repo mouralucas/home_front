@@ -17,7 +17,7 @@ export const URL_PUBLISHER = 'library/publisher';
 export const URL_LANGUAGE = 'library/language';
 
 // Credit Card
-export const URL_CREDIT_CARD = '/finance/credit-card'
+export const URL_CREDIT_CARD = '/creditcard'
 export const URL_CREDIT_CARD_TRANSACTION = '/creditcard/transaction'
 export const URL_CREDIT_CARD_BILL_CONSOLIDATED = '/creditcard/bill/consolidated'
 export const URL_CREDIT_CARD_BILL_BY_CARD = '/creditcard/bill/card'

@@ -2,17 +2,16 @@ import React, {useEffect, useState} from "react";
 
 import Modal from '../../../../Components/Modal'
 import {CreditCard, CreditCardTransaction} from "../../Interfaces";
-import {Category, ReactSelectInterface} from "../../../Interfaces";
+import {Category} from "../../../Interfaces";
 import {Controller, useForm} from "react-hook-form";
-import {getData} from "../../../../Services/Axios/Get";
-import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CREDIT_CARD_BILL_CONSOLIDATED} from "../../../../Services/Axios/ApiUrls";
+import {getFinanceData} from "../../../../Services/Axios/Get";
+import {URL_CATEGORIES, URL_CREDIT_CARD} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
-import CurrencyInput from "../../../../Components/Form/Currency";
-import DateBox from "devextreme-react/date-box";
-import Moment from "moment/moment";
+import CurrencyInput from "../../../../Components/Form/CurrencyNew";
+import DatePicker from "react-datepicker"
 import Select from "react-select";
-import {handleSubmit as submit} from "../../../../Services/Axios/Post";
-import {CheckBox} from "devextreme-react/check-box";
+import {format, parseISO} from "date-fns";
+import {getCurrentPeriod} from "../../../../Utils/DateTime";
 
 interface CreditCardBillProps {
     creditCardBill: CreditCardTransaction | null
@@ -36,25 +35,33 @@ interface GetCategoryResponse {
     categories: Category[]
 }
 
-interface CreditCardBillValues {
-    amountTotal: number
-    transactionDate: string
-    dueDate: string
-    creditCard: ReactSelectInterface | null
-    creditCardId: string | null | undefined
-    creditCardName: string
-    category: ReactSelectInterface | null
-    categoryId: string | null | undefined
-    categoryName: string | null
-    description: string
-    installments: number
+const DefaultCreditCardTransaction: CreditCardTransaction = {
+    transactionId: null,
+    creditCardId: null,
+    period: getCurrentPeriod(),
+    categoryId: '',
+    amount: 0,
+    currencyId: '',
+    transactionCurrencyId: '',
+    transactionAmount: 0,
+    dueDate: format(new Date().toDateString(), 'yyyy-MM-dd'),
+    transactionDate: format(new Date().toDateString(), 'yyyy-MM-dd'),
+    description: '',
+    isInstallment: false,
+    currentInstallment: 1,
+    installments: 1,
+    totalAmount: 0,
+    parentId: null,
+    createdAt: undefined,
+    lastEditedAt: undefined
 }
 
 const App = (props: CreditCardBillProps) => {
-    const {handleSubmit, control, setValue, getValues} = useForm<CreditCardBillValues>()
+    const {handleSubmit, control, reset, formState: {isDirty, dirtyFields}, getValues} = useForm<CreditCardTransaction>()
 
-    const [creditCards, setCreditCards] = useState<ReactSelectInterface[]>([])
-    const [categories, setCategories] = useState<ReactSelectInterface[]>([])
+    const [creditCards, setCreditCards] = useState<any>([])
+    const [categories, setCategories] = useState<any[]>([])
+    const [selectedTransaction, setSelectedTransaction] = useState<CreditCardTransaction>(DefaultCreditCardTransaction)
 
     useEffect(() => {
         if (props.modalState) {
@@ -64,8 +71,8 @@ const App = (props: CreditCardBillProps) => {
     }, [props.modalState]);
 
     const getCreditCards = () => {
-        getData(URL_CREDIT_CARD).then((response: GetCreditCardsResponse) => {
-            let options: ReactSelectInterface[] = response.creditCards.map((i: CreditCard) =>
+        getFinanceData(URL_CREDIT_CARD).then((response: GetCreditCardsResponse) => {
+            let options: any = response.creditCards.map((i: CreditCard) =>
                 ({value: i.creditCardId, label: i.nickname})
             );
             setCreditCards(options)
@@ -75,8 +82,8 @@ const App = (props: CreditCardBillProps) => {
     }
 
     const getCategory = () => {
-        getData(URL_CATEGORIES, {showMode: 'all', module: 'finance'}).then((response: GetCategoryResponse) => {
-            let options: ReactSelectInterface[] = response.categories.map((i: Category) =>
+        getFinanceData(URL_CATEGORIES).then((response: GetCategoryResponse) => {
+            let options = response.categories.map((i: Category) =>
                 ({value: i.categoryId, label: i.name})
             );
             setCategories(options)
@@ -85,23 +92,31 @@ const App = (props: CreditCardBillProps) => {
         })
     }
 
-    const checkChange = (value: any) => {
-        if (value.value) {
-            alert('Carai manolo, quanto tempo não uso React. Aqui coloco lógica de add novas linhas de parcelas')
+    const onSubmit = (data: CreditCardTransaction, e: any) => {
+        let method;
+        let submit_data;
+
+        console.log(data);
+        if (data.transactionId !== null) {
+            method = 'patch'
+
+            const currentValues: CreditCardTransaction = getValues();
+            const modifiedFields: Partial<Record<keyof CreditCardTransaction, CreditCardTransaction[keyof CreditCardTransaction]>> = {
+                transactionId: data.transactionId
+            };
+
+
+            (Object.keys(dirtyFields) as Array<keyof CreditCardTransaction>).forEach((key: keyof CreditCardTransaction) => {
+                modifiedFields[key] = currentValues[key];
+            });
+
+            submit_data = modifiedFields
+        } else {
+            method = 'post'
+            submit_data = data
         }
 
-
-    }
-
-    const onSubmit = (data: CreditCardBillValues, e: any) => {
-        data.categoryId = data.category?.value
-        data.creditCardId = data.creditCard?.value
-
-        submit(e, URL_CREDIT_CARD_BILL_CONSOLIDATED, data, false, "Fatura salva").then(response => {
-
-        }).catch((err: string | ToastOptions) => {
-            toast.error('Erro ao salvar fatura beta');
-        })
+        console.log(submit_data);
     }
 
     const body = (): React.ReactElement => {
@@ -111,90 +126,106 @@ const App = (props: CreditCardBillProps) => {
                     <div className="row">
                         <div className="col-3">
                             <label htmlFor="">Valor</label>
-                            <Controller name={'amountTotal'}
+                            <Controller name={'amount'}
                                         control={control}
                                         rules={{required: false}}
-                                // defaultValue={} // add from props
                                         render={({field}) => (
-                                            <CurrencyInput className='form-control input-default'
-                                                           onFocus={(event: { target: { select: () => any; }; }) => event.target.select()}
-                                                           currency={"BRL"} // add from props
-                                                           onValueChange={(e: any) => field.onChange(e.value / 100)}
-                                                           ref={null}
+                                            <CurrencyInput
+                                                prefix="R$ "
+                                                value={field.value}
+                                                onValueChange={(values: any) => field.onChange(values.rawValue)}
+                                                className={'form-control input-default'}
                                             />
                                         )}
                             />
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Data compra</label>
-                            <Controller name={'transactionDate'}
-                                        control={control}
-                                        render={({field}) => (
-                                            <DateBox
-                                                className='form-control input-default'
-                                                useMaskBehavior={true}
-                                                // value={selectedStatement.transactionDate} // get from props
-                                                onValueChanged={(e) => field.onChange(Moment(e.value).format('YYYY-MM-DD'))}
-                                                ref={null}
-                                            />
-                                        )}
+                            <Controller
+                                name={'transactionDate'}
+                                control={control}
+                                rules={{required: false}}
+                                defaultValue={selectedTransaction.transactionDate}
+                                render={({field}) => (
+                                    <DatePicker
+                                        selected={parseISO(field.value)}
+                                        onChange={(date) => {
+                                            field.onChange(date ? format(date, 'yyyy-MM-dd') : selectedTransaction.transactionDate);
+                                        }}
+                                        dateFormat="dd/MM/yyyy" // Exibe no formato brasileiro
+                                        className="form-control input-default"
+                                        placeholderText="Selecione uma data"
+                                    />
+                                )}
                             />
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Cartão</label>
-                            <Controller name={'creditCard'}
+                            <Controller name={'creditCardId'}
                                         control={control}
                                         render={({field}) => (
-                                            <Select options={creditCards}
-                                                    {...field}
+                                            <Select
+                                                {...field}
+                                                options={creditCards}
+                                                defaultValue={selectedTransaction?.creditCardId}
+                                                value={creditCards.find((c: any) => c.value === field.value)}
+                                                onChange={(val) => field.onChange(val?.value)}
+                                                placeholder={'Selecione'}
                                             />
                                         )}
                             />
                         </div>
                         <div className="col-3">
                             <label htmlFor="">Categoria</label>
-                            <Controller name={'category'}
+                            <Controller name={'categoryId'}
                                         control={control}
                                         render={({field}) => (
-                                            <Select options={categories}
-                                                    {...field}
+                                            <Select
+                                                {...field}
+                                                options={categories}
+                                                defaultValue={selectedTransaction.categoryId}
+                                                value={categories.find((c: any) => c.value === field.value)}
+                                                onChange={(val: any) => field.onChange(val?.value)}
+                                                placeholder={'Selecione'}
                                             />
                                         )}
                             />
                         </div>
-                        {/*<div className="col-4">*/}
-                        {/*    <label htmlFor="">Data pagamento</label>*/}
-                        {/*    <Controller name={'dueDate'}*/}
-                        {/*                control={control}*/}
-                        {/*                render={({field}) => (*/}
-                        {/*                    <DateBox*/}
-                        {/*                        className='form-control input-default'*/}
-                        {/*                        useMaskBehavior={true}*/}
-                        {/*                        // value={selectedStatement.transactionDate} // get from props*/}
-                        {/*                        onValueChanged={(e) => field.onChange(Moment(e.value).format('YYYY-MM-DD'))}*/}
-                        {/*                        ref={null}*/}
-                        {/*                    />*/}
-                        {/*                )}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
                     </div>
                     <div className="row">
-                        <div className="col-6 mt-2">
-                            <CheckBox
-                                text="Transação parcelada"
-                                hint="Parcelamento  "
-                                iconSize="25"
-                                onValueChanged={checkChange}
-                            />
-                        </div>
-                        <div className="col-6 mt-2">
-                            <Controller name={'installments'}
+                        <div className="col-3">
+                            <label htmlFor="">Data pagamento</label>
+                            <Controller name={'dueDate'}
                                         control={control}
+                                        defaultValue={selectedTransaction.dueDate}
                                         render={({field}) => (
-                                            <input className={'form-control'} {...field} />
+                                            <DatePicker
+                                                selected={parseISO(field.value)}
+                                                onChange={(date) => {
+                                                    field.onChange(date ? format(date, 'yyyy-MM-dd') : selectedTransaction.dueDate);
+                                                }}
+                                                className={'form-control input-default'}
+                                            />
                                         )}
                             />
                         </div>
+
+                        {/*<div className="col-6 mt-2">*/}
+                        {/*    <CheckBox*/}
+                        {/*        text="Transação parcelada"*/}
+                        {/*        hint="Parcelamento  "*/}
+                        {/*        iconSize="25"*/}
+                        {/*        onValueChanged={checkChange}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
+                        {/*<div className="col-6 mt-2">*/}
+                        {/*    <Controller name={'installments'}*/}
+                        {/*                control={control}*/}
+                        {/*                render={({field}) => (*/}
+                        {/*                    <input className={'form-control'} {...field} />*/}
+                        {/*                )}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                     </div>
 
                     <div className="row">

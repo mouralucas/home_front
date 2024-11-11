@@ -41,10 +41,6 @@ const financialSubmit = async (
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => {
-        return response.data
-    }).catch(response => {
-        return {'error': response.data}
     })
 
     if (hideModal) {
