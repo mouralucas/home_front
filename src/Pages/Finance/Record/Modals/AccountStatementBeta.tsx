@@ -71,7 +71,7 @@ const DefaultTransaction: AccountTransaction = {
 }
 
 const App = (props: AccountStatementProps) => {
-    const {handleSubmit, control, reset} = useForm<AccountTransaction>()
+    const {handleSubmit, control, reset, formState: { isDirty }} = useForm<AccountTransaction>()
 
     const [accounts, setAccounts] = useState<any[]>([])
     const [categories, setCategories] = useState<any[]>([])
@@ -270,6 +270,7 @@ const App = (props: AccountStatementProps) => {
                 body={body()}
                 fullscreen={false}
                 actionModal={handleSubmit(onSubmit)}
+                disableAction={!isDirty}
                 size={'lg'}
             />
         </div>

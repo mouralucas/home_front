@@ -8,21 +8,22 @@ interface ModalProps {
     // Add defaults no parâmetro e tirar validações do tipo ??
     // Ref: https://bobbyhadz.com/blog/react-optional-props-typescript
     showModal: any;
-    hideModal?: any; // 👈️ marked optional
+    hideModal?: any;
     actionModal?: any;
-    footer?: JSX.Element;
-    body: JSX.Element;
-    headerComponents?: JSX.Element;
+    disableAction?: boolean;
+    footer?: React.ReactElement;
+    body: React.ReactElement;
+    headerComponents?: React.ReactElement;
     fullscreen?: any;
     title?: string;
     size?: any;
 }
 
 
-const App = (props: ModalProps): JSX.Element => {
+const App = (props: ModalProps): React.ReactElement => {
 
     // Criar um props que recebe o footer, caso não exista o props usar o default (que está feito nessa tela)
-    const footer = props.footer ??
+    const footer: React.ReactElement = props.footer ??
         <>
             <div className="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 mt-1">
                 <div className="d-flex flex-nowrap">
@@ -35,7 +36,7 @@ const App = (props: ModalProps): JSX.Element => {
             </div>
             <div className="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12 mt-1">
                 <div className="d-flex flex-nowrap">
-                    <button className='btn btn-default text-white text-center w-100 mr-1'
+                    <button className='btn btn-default text-black btn-outline-primary text-center w-100 mr-1' disabled={props.disableAction ?? false}
                             onClick={props.actionModal ?? props.hideModal}>Salvar
                     </button>
                 </div>
@@ -71,12 +72,4 @@ const App = (props: ModalProps): JSX.Element => {
         html
     );
 }
-
-// App.propTypes = {
-//     showModal: PropTypes.bool.isRequired,
-//     hideModal: PropTypes.bool.isRequired,
-//     body: PropTypes.object.isRequired,
-//     footer: PropTypes.object
-// };
-
 export default App;
