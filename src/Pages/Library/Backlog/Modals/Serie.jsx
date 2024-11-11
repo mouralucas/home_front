@@ -1,7 +1,7 @@
 import Modal from "../../../../Components/Modal";
 import {useEffect, useState} from "react";
 import {URL_COUNTRY, URL_ITEM_SERIE} from "../../../../Services/Axios/ApiUrls";
-import handleSubmit from '../../../../Services/Axios/Post'
+import {handleSubmit} from '../../../../Services/Axios/Post'
 import AsyncSelect from "react-select/async";
 import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";

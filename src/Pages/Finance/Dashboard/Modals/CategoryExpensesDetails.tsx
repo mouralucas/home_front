@@ -1,6 +1,4 @@
 import React from "react";
-import handleSubmit from "../../../../Services/Axios/Post";
-import {URL_FINANCE_ACCOUNT_TRANSACTION} from "../../../../Services/Axios/ApiUrls";
 import Modal from "../../../../Components/Modal";
 
 

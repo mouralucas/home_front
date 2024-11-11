@@ -4,7 +4,7 @@ import {URL_FINANCE_ACCOUNT_TRANSACTION, URL_FINANCE_ACCOUNT, URL_CATEGORIES, UR
 import Currency from "../../../../Components/Form/Currency";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
-import handleSubmit from '../../../../Services/Axios/Post'
+import {handleSubmit} from '../../../../Services/Axios/Post'
 import AsyncSelect from "react-select/async";
 import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";

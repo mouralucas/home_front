@@ -11,7 +11,7 @@ import CurrencyInput from "../../../../Components/Form/Currency";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import Select from "react-select";
-import submit from "../../../../Services/Axios/Post";
+import {handleSubmit as submit} from "../../../../Services/Axios/Post";
 
 interface CreditCardBillProps {
     creditCardBill: CreditCardTransaction | null

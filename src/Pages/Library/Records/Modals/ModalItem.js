@@ -17,7 +17,7 @@ import Currency from "../../../../Components/Form/Currency";
 import AsyncSelect from "react-select/async";
 import filterSelect from "../../../../Utils/DataHandling";
 import {getData} from "../../../../Services/Axios/Get";
-import handleSubmit from "../../../../Services/Axios/Post";
+import {handleSubmit} from "../../../../Services/Axios/Post";
 import {format as formatDate} from "../../../../Utils/DateTime";
 import {toast} from "react-toastify";
 

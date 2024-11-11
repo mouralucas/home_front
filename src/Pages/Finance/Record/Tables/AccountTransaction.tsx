@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {URL_FINANCE_ACCOUNT_TRANSACTION} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/Table/DataGrid";
 import Button from "devextreme-react/button";
-import ModalStatement from '../Modals/AccountStatementBeta'
+import ModalStatement from '../Modals/AccountTransaction'
 import {Button as Btn} from "devextreme-react/data-grid";
 import {toast} from "react-toastify";
 import {getFinanceData} from "../../../../Services/Axios/Get";

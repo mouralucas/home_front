@@ -8,7 +8,7 @@ import AsyncSelect from "react-select/async";
 import {getData} from "../../../../Services/Axios/Get";
 import filterSelect from "../../../../Utils/DataHandling";
 import {format as formatDate, getDefaultDate} from "../../../../Utils/DateTime";
-import handleSubmit from "../../../../Services/Axios/Post";
+import {handleSubmit} from "../../../../Services/Axios/Post";
 import {toast} from "react-toastify";
 import Card from '../../../../Components/Card'
 import {Investment} from "../../Interfaces";

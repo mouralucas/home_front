@@ -2,9 +2,12 @@ import React, {useEffect, useState} from "react";
 import {Account, AccountTransaction, Currency} from "../../Interfaces";
 import {Category} from "../../../Interfaces";
 import {getFinanceData} from "../../../../Services/Axios/Get";
-import {URL_CATEGORIES, URL_CURRENCY, URL_FINANCE_ACCOUNT} from "../../../../Services/Axios/ApiUrls";
+import {
+    URL_CATEGORIES, URL_CURRENCY,
+    URL_FINANCE_ACCOUNT, URL_FINANCE_ACCOUNT_TRANSACTION
+} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
-import { format, parseISO } from 'date-fns';
+import {format, parseISO} from 'date-fns';
 import {Controller, useForm} from "react-hook-form";
 import Modal from "../../../../Components/Modal";
 import CurrencyInput from "../../../../Components/Form/CurrencyNew";
@@ -12,6 +15,7 @@ import DatePicker from "react-datepicker";
 import Select from 'react-select';
 import Moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
+import {postFinanceData} from "../../../../Services/Axios/Post";
 
 /**
  *
@@ -71,7 +75,7 @@ const DefaultTransaction: AccountTransaction = {
 }
 
 const App = (props: AccountStatementProps) => {
-    const {handleSubmit, control, reset, formState: { isDirty }} = useForm<AccountTransaction>()
+    const {handleSubmit, control, reset, formState: {isDirty}} = useForm<AccountTransaction>()
 
     const [accounts, setAccounts] = useState<any[]>([])
     const [categories, setCategories] = useState<any[]>([])
@@ -141,11 +145,11 @@ const App = (props: AccountStatementProps) => {
 
     const onSubmit = (data: AccountTransaction, e: any) => {
         console.log(data)
-        // postFinanceData(e, URL_FINANCE_ACCOUNT_TRANSACTION, data, false, "Item de extrato beta salvo").then(response => {
-        //     // TODO: handle return here
-        // }).catch((err: string | ToastOptions) => {
-        //     toast.error('Erro ao salvar extrato beta')
-        // })
+        postFinanceData(e, URL_FINANCE_ACCOUNT_TRANSACTION, data, false, "Item de extrato beta salvo").then(response => {
+            toast.success('Transação salva com sucesso')
+        }).catch((err: string | ToastOptions) => {
+            toast.error('Erro ao salvar a transação da conta')
+        })
     };
 
     const body = (): React.ReactElement => {
@@ -179,7 +183,7 @@ const App = (props: AccountStatementProps) => {
                                             <CurrencyInput
                                                 prefix="R$ "
                                                 value={field.value}
-                                                onValueChange={(values) => field.onChange(values.rawValue)} 
+                                                onValueChange={(values) => field.onChange(values.rawValue)}
                                             />
                                         )}
 
@@ -190,9 +194,9 @@ const App = (props: AccountStatementProps) => {
                             <Controller
                                 name={'transactionDate'}
                                 control={control}
-                                rules={{ required: false }}
+                                rules={{required: false}}
                                 defaultValue={selectedTransaction.transactionDate}
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <DatePicker
                                         selected={parseISO(field.value)}
                                         onChange={(date) => {
@@ -250,7 +254,7 @@ const App = (props: AccountStatementProps) => {
                                                 {...field}
                                                 value={field.value ?? ''}
                                                 onChange={field.onChange}
-                                                className='form-control' ></textarea>
+                                                className='form-control'></textarea>
                                         )}
                             />
                         </div>
