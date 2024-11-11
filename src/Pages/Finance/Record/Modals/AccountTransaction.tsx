@@ -17,7 +17,7 @@ import {financialSubmit} from "../../../../Services/Axios/Post";
  *
  * @constructor
  *
- * Account Statement Modal With React Hook Form
+ * Account Transaction Modal With React Hook Form
  */
 interface AccountStatementProps {
     transaction: AccountTransaction | undefined | null,
