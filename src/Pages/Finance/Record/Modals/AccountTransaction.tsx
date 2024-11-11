@@ -2,10 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Account, AccountTransaction, Currency} from "../../Interfaces";
 import {Category} from "../../../Interfaces";
 import {getFinanceData} from "../../../../Services/Axios/Get";
-import {
-    URL_CATEGORIES, URL_CURRENCY,
-    URL_FINANCE_ACCOUNT, URL_FINANCE_ACCOUNT_TRANSACTION
-} from "../../../../Services/Axios/ApiUrls";
+import {URL_CATEGORIES, URL_CURRENCY, URL_FINANCE_ACCOUNT, URL_FINANCE_ACCOUNT_TRANSACTION} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
 import {format, parseISO} from 'date-fns';
 import {Controller, useForm} from "react-hook-form";
@@ -13,9 +10,8 @@ import Modal from "../../../../Components/Modal";
 import CurrencyInput from "../../../../Components/Form/CurrencyNew";
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
-import Moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
-import {postFinanceData} from "../../../../Services/Axios/Post";
+import {financialSubmit} from "../../../../Services/Axios/Post";
 
 /**
  *
@@ -145,8 +141,16 @@ const App = (props: AccountStatementProps) => {
 
     const onSubmit = (data: AccountTransaction, e: any) => {
         console.log(data)
-        postFinanceData(e, URL_FINANCE_ACCOUNT_TRANSACTION, data, false, "Item de extrato beta salvo").then(response => {
+        let method;
+        if (data.transactionId !== null){
+            method = 'patch'
+        } else {
+            method = 'post'
+        }
+
+        financialSubmit(e, URL_FINANCE_ACCOUNT_TRANSACTION, data, false, method).then(response => {
             toast.success('Transação salva com sucesso')
+            console.log(response)
         }).catch((err: string | ToastOptions) => {
             toast.error('Erro ao salvar a transação da conta')
         })

@@ -27,20 +27,21 @@ const handleSubmit = async (e: any, url: string, values: any, hideModal: any, to
     }
 }
 
-const postFinanceData = async (e: any, url: string, values: any, hideModal: any, toastMessage: string) => {
+const financialSubmit = async (
+    e: any, url: string,
+    values: any, hideModal: any,
+    method: string
+) => {
     e.preventDefault();
 
     await financeAxios({
-        method: 'post',
+        method: method,
         url: url,
         data: values,
         headers: {
             'Content-Type': 'application/json'
         }
     }).then(response => {
-        if (toastMessage) {
-            toast(toastMessage)
-        }
         return response.data
     }).catch(response => {
         return {'error': response.data}
@@ -51,4 +52,4 @@ const postFinanceData = async (e: any, url: string, values: any, hideModal: any,
     }
 }
 
-export {handleSubmit, postFinanceData};
+export {handleSubmit, financialSubmit};
