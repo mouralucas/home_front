@@ -76,7 +76,6 @@ const App = (props: AccountStatementProps) => {
     const [accounts, setAccounts] = useState<any[]>([])
     const [categories, setCategories] = useState<any[]>([])
     const [currencies, setCurrencies] = useState<any[]>([])
-    const [selectedTransaction, setSelectedTransaction] = useState<AccountTransaction>(DefaultTransaction);
 
     useEffect(() => {
         // Set initial value if provided
@@ -99,12 +98,6 @@ const App = (props: AccountStatementProps) => {
             reset(DefaultTransaction);
         }
     }, [props.modalState, props.transaction]);
-
-    // useEffect(() => {
-    //     if (props.transaction) {
-    //         setSelectedTransaction(props.transaction);
-    //     }
-    // }, [currencies, categories, accounts]);
 
     const getAccount = () => {
         getFinanceData(URL_FINANCE_ACCOUNT).then((response: GetAccountResponse) => {
@@ -183,7 +176,6 @@ const App = (props: AccountStatementProps) => {
                                     <Select
                                         {...field}
                                         options={currencies}
-                                        defaultValue={selectedTransaction?.currencyId}
                                         value={currencies.find((c: any) => c.value === field.value)}
                                         onChange={(val) => field.onChange(val?.value)}
                                     />
@@ -211,13 +203,12 @@ const App = (props: AccountStatementProps) => {
                                 name={'transactionDate'}
                                 control={control}
                                 rules={{required: false}}
-                                defaultValue={selectedTransaction.transactionDate}
                                 render={({field}) => (
                                     <DatePicker
                                         selected={parseISO(field.value)}
                                         onChange={(date) => {
                                             // Verifica se a data é `null`
-                                            field.onChange(date ? format(date, 'yyyy-MM-dd') : selectedTransaction.transactionDate);
+                                            field.onChange(date ? format(date, 'yyyy-MM-dd') : field.value);
                                         }}
                                         dateFormat="dd/MM/yyyy" // Exibe no formato brasileiro
                                         className="form-control"
