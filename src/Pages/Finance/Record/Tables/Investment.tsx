@@ -169,10 +169,9 @@ const App = () => {
     return (
         <>
             <DataGrid
-                columns={columns}
                 keyExpr={'investmentId'}
+                columns={columns}
                 data={investment}
-                // toolBarRefresh={false}
                 toolBarItems={toolBarItems}
                 showLoadPanel={false}
             />

@@ -100,11 +100,11 @@ const App = (props: AccountStatementProps) => {
         }
     }, [props.modalState, props.transaction]);
 
-    useEffect(() => {
-        if (props.transaction) {
-            setSelectedTransaction(props.transaction);
-        }
-    }, [currencies, categories, accounts]);
+    // useEffect(() => {
+    //     if (props.transaction) {
+    //         setSelectedTransaction(props.transaction);
+    //     }
+    // }, [currencies, categories, accounts]);
 
     const getAccount = () => {
         getFinanceData(URL_FINANCE_ACCOUNT).then((response: GetAccountResponse) => {

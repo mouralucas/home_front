@@ -194,7 +194,7 @@ const App = () => {
                     visible: true
                 }}
             />
-            <TransactionModal modalState={modalState} hideModal={hideModal} creditCardBill={selectedCreditCardTransaction}/>
+            <TransactionModal modalState={modalState} hideModal={hideModal} creditCardTransaction={selectedCreditCardTransaction}/>
         </>
     );
 }

@@ -14,7 +14,7 @@ import {format, parseISO} from "date-fns";
 import {getCurrentPeriod} from "../../../../Utils/DateTime";
 
 interface CreditCardBillProps {
-    creditCardBill: CreditCardTransaction | null
+    creditCardTransaction: CreditCardTransaction | null
     modalState: boolean
     hideModal: any
 }
@@ -64,11 +64,21 @@ const App = (props: CreditCardBillProps) => {
     const [selectedTransaction, setSelectedTransaction] = useState<CreditCardTransaction>(DefaultCreditCardTransaction)
 
     useEffect(() => {
+        if (props.modalState && props.creditCardTransaction) {
+            reset(props.creditCardTransaction);
+        } else if (props.modalState && !props.creditCardTransaction) {
+            reset(DefaultCreditCardTransaction)
+        }
+
         if (props.modalState) {
             getCreditCards();
             getCategory();
         }
-    }, [props.modalState]);
+
+        if (!props.modalState) {
+            reset(DefaultCreditCardTransaction);
+        }
+    }, [props.modalState, props.creditCardTransaction]);
 
     const getCreditCards = () => {
         getFinanceData(URL_CREDIT_CARD).then((response: GetCreditCardsResponse) => {
@@ -193,23 +203,22 @@ const App = (props: CreditCardBillProps) => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-3">
-                            <label htmlFor="">Data pagamento</label>
-                            <Controller name={'dueDate'}
-                                        control={control}
-                                        defaultValue={selectedTransaction.dueDate}
-                                        render={({field}) => (
-                                            <DatePicker
-                                                selected={parseISO(field.value)}
-                                                onChange={(date) => {
-                                                    field.onChange(date ? format(date, 'yyyy-MM-dd') : selectedTransaction.dueDate);
-                                                }}
-                                                className={'form-control input-default'}
-                                            />
-                                        )}
-                            />
-                        </div>
-
+                        {/*<div className="col-3">*/}
+                        {/*    <label htmlFor="">Data pagamento</label>*/}
+                        {/*    <Controller name={'dueDate'}*/}
+                        {/*                control={control}*/}
+                        {/*                defaultValue={selectedTransaction.dueDate}*/}
+                        {/*                render={({field}) => (*/}
+                        {/*                    <DatePicker*/}
+                        {/*                        selected={parseISO(field.value)}*/}
+                        {/*                        onChange={(date) => {*/}
+                        {/*                            field.onChange(date ? format(date, 'yyyy-MM-dd') : selectedTransaction.dueDate);*/}
+                        {/*                        }}*/}
+                        {/*                        className={'form-control input-default'}*/}
+                        {/*                    />*/}
+                        {/*                )}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                         {/*<div className="col-6 mt-2">*/}
                         {/*    <CheckBox*/}
                         {/*        text="Transação parcelada"*/}
