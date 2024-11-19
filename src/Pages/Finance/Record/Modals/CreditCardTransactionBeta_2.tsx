@@ -56,12 +56,13 @@ const DefaultCreditCardTransaction: CreditCardTransaction = {
     lastEditedAt: undefined
 }
 
-const App = (props: CreditCardBillProps) => {
+const App = (props: CreditCardBillProps): React.ReactElement => {
     const {handleSubmit, control, reset, formState: {isDirty, dirtyFields}, getValues} = useForm<CreditCardTransaction>()
 
     const [creditCards, setCreditCards] = useState<any>([])
     const [categories, setCategories] = useState<any[]>([])
-    const [selectedTransaction, setSelectedTransaction] = useState<CreditCardTransaction>(DefaultCreditCardTransaction)
+
+    const installmentsArray = Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: i + 1 }));
 
     useEffect(() => {
         if (props.modalState && props.creditCardTransaction) {
@@ -135,8 +136,8 @@ const App = (props: CreditCardBillProps) => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
                         <div className="col-3">
-                            <label htmlFor="">Valor</label>
-                            <Controller name={'amount'}
+                            <label htmlFor="">Valor total</label>
+                            <Controller name={'totalAmount'}
                                         control={control}
                                         rules={{required: false}}
                                         render={({field}) => (
@@ -155,12 +156,11 @@ const App = (props: CreditCardBillProps) => {
                                 name={'transactionDate'}
                                 control={control}
                                 rules={{required: false}}
-                                defaultValue={selectedTransaction.transactionDate}
                                 render={({field}) => (
                                     <DatePicker
                                         selected={parseISO(field.value)}
                                         onChange={(date) => {
-                                            field.onChange(date ? format(date, 'yyyy-MM-dd') : selectedTransaction.transactionDate);
+                                            field.onChange(date ? format(date, 'yyyy-MM-dd') : field.value);
                                         }}
                                         dateFormat="dd/MM/yyyy" // Exibe no formato brasileiro
                                         className="form-control input-default"
@@ -177,7 +177,6 @@ const App = (props: CreditCardBillProps) => {
                                             <Select
                                                 {...field}
                                                 options={creditCards}
-                                                defaultValue={selectedTransaction?.creditCardId}
                                                 value={creditCards.find((c: any) => c.value === field.value)}
                                                 onChange={(val) => field.onChange(val?.value)}
                                                 placeholder={'Selecione'}
@@ -193,13 +192,51 @@ const App = (props: CreditCardBillProps) => {
                                             <Select
                                                 {...field}
                                                 options={categories}
-                                                defaultValue={selectedTransaction.categoryId}
                                                 value={categories.find((c: any) => c.value === field.value)}
                                                 onChange={(val: any) => field.onChange(val?.value)}
                                                 placeholder={'Selecione'}
                                             />
                                         )}
                             />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-2">
+                            <label htmlFor="">Total</label>
+                            <Controller
+                                name={'installments'}
+                                control={control}
+                                render={(field) => (
+                                    <Select
+                                        {...field}
+                                        options={installmentsArray}
+                                        placeholder={'Selecione'}
+                                    />
+                                )}
+                            />
+                        </div>
+                    </div>
+                    <hr></hr>
+
+                    <div className="row">
+                        <div className="col-2">
+                            <label htmlFor="">Parcela</label>
+                            <Controller
+                                name={'currentInstallment'}
+                                control={control}
+                                render={({field}) => (
+                                    <Select
+                                        {...field}
+                                        options={installmentsArray}
+                                        value={installmentsArray.find((c: any) => c.value === field.value)}
+                                        onChange={(val: any) => field.onChange(val?.value)}
+                                        placeholder={'Selecione'}
+                                    />
+                                )}
+                            />
+                        </div>
+                        <div className="col-2">
+
                         </div>
                     </div>
                     <div className="row">
@@ -260,6 +297,7 @@ const App = (props: CreditCardBillProps) => {
                body={body()}
                fullscreen={false}
                actionModal={handleSubmit(onSubmit)}
+               disableAction={isDirty}
                size={'lg'}
         />
     )

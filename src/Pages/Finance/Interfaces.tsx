@@ -104,7 +104,7 @@ export interface CreditCardTransaction {
     isInstallment: boolean | undefined | null
     installments: number | undefined | null
     currentInstallment: number | undefined | null
-    totalAmount: number | undefined | null
+    totalAmount: number
     parentId: number | null
     createdAt: string | undefined
     lastEditedAt: string | undefined
