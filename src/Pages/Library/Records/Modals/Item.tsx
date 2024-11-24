@@ -4,7 +4,7 @@ import {getData} from "../../../../Services/Axios/Get";
 import {URL_AUTHOR, URL_STATUS} from "../../../../Services/Axios/ApiUrls";
 import {getDefaultDate} from "../../../../Utils/DateTime";
 import Modal from "../../../../Components/Modal";
-import {Controller, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form'
 import MainAuthorSelect from '../../../../Components/Form/Select'
 import OtherAuthorsSelect from '../../../../Components/Form/MultiSelect'
 import StatusSelect from '../../../../Components/Form/Select'

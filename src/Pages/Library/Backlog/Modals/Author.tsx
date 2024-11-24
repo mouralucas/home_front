@@ -44,7 +44,7 @@ const App = (props: AuthorModalProps) => {
                                         groupBy={'parent'}
                                         dataKey={'id'}
                                         textField={'name'}
-                                        onChange={(e) => setValue('countryId', e.id)}
+                                        onChange={(e: any) => setValue('countryId', e.id)}
                                         {...field}
                                     />
                                 )}

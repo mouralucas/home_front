@@ -2,13 +2,13 @@ import {URL_FINANCE_BASE} from "./ApiUrls";
 import axios from "axios";
 import {getToken} from "../Auth/Auth";
 
-const finance_connections_instance = axios.create(
+const library_connection_instance = axios.create(
     {
         baseURL: URL_FINANCE_BASE
     }
 );
 
-finance_connections_instance.interceptors.request.use(async config => {
+library_connection_instance.interceptors.request.use(async config => {
     const token = getToken();
     if (token) {
         // @ts-ignore
@@ -17,7 +17,7 @@ finance_connections_instance.interceptors.request.use(async config => {
     return config;
 });
 
-finance_connections_instance.interceptors.response.use(
+library_connection_instance.interceptors.response.use(
     async function (response: any) {
         return response;
     },
@@ -32,4 +32,4 @@ finance_connections_instance.interceptors.response.use(
     }
 );
 
-export default finance_connections_instance
+export default library_connection_instance
