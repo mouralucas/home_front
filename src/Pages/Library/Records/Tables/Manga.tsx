@@ -4,9 +4,10 @@ import {URL_ITEM} from '../../../../Services/Axios/ApiUrls'
 import ModalItem from "../Modals/ModalItem";
 import {Button} from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
-import {getData} from "../../../../Services/Axios/Get";
+import {getLibraryData} from "../../../../Services/Axios/Get";
 import {Item} from "../../interfaces";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
+import {toast} from "react-toastify";
 
 const Manga = () => {
     const [mangas, setManga] = useState<Item[] | null>();
@@ -32,7 +33,7 @@ const Manga = () => {
     }
 
     const getMangas = () => {
-        getData(URL_ITEM, {itemType: 'manga'}).then(response => {
+        getLibraryData(URL_ITEM, {itemType: 'manga'}).then(response => {
                 setManga(response.items);
             }
         ).catch(response => {
@@ -40,7 +41,11 @@ const Manga = () => {
         });
     }
 
-    let colunasTabelaLivro: DataGridColumn[] = [
+    const coffeeCommand = (e: any) => {
+        toast('🦄 Cafezinho delícia!');
+    }
+
+    let columns: DataGridColumn[] = [
         {
             dataField: "itemId",
             caption: "Id",
@@ -97,7 +102,7 @@ const Manga = () => {
             dataType: "number",
             width: 150,
             format: {style: 'currency', currency: 'BRL', useGrouping: true, precision: 2},
-            visible: false,
+            visible: true,
         },
         {
             caption: 'Ações',
@@ -112,13 +117,13 @@ const Manga = () => {
                     hint="Editar"
                     onClick={showModal}
                 />,
-                // <Btn
-                //     // text="My Command"
-                //     // // icon="/url/to/my/icon.ico"
-                //     icon="coffee"
-                //     hint="My Command"
-                //     onClick={myOtherCommand}
-                // />
+                <Btn
+                    // text="My Command"
+                    // // icon="/url/to/my/icon.ico"
+                    icon="coffee"
+                    hint="My Command"
+                    onClick={coffeeCommand}
+                />
             ]
         }
     ]
@@ -152,7 +157,7 @@ const Manga = () => {
         <>
             <DataGrid
                 keyExpr={'itemId'}
-                columns={colunasTabelaLivro}
+                columns={columns}
                 data={mangas}
                 toolBar={{
                     visible:true,

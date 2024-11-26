@@ -1,21 +1,22 @@
 export const URL_BASE = 'http://127.0.0.1:8010';
 export const URL_USER_BASE = 'http://67.205.180.83:9002';
-// export const URL_FINANCE_BASE = 'http://67.205.180.83:9003';
-export const URL_FINANCE_BASE = 'http://localhost:8003'
-export const URL_LIBRARY_BASE = 'http://localhost:8001'
+export const URL_FINANCE_BASE = 'http://67.205.180.83:9003';
+// export const URL_FINANCE_BASE = 'http://localhost:8003'
+export const URL_LIBRARY_BASE = 'http://localhost:8000'
+// export const URL_LIBRARY_BASE = 'http://67.205.180.83:9001'
 
 // User URLs
 export const URL_LOGIN = '/login';
 
 // Library URLs
-export const URL_ITEM = '/library/item';
-export const URL_AUTHOR = 'library/author';
+export const URL_ITEM = '/item';
+export const URL_AUTHOR = '/author';
 export const URL_ITEM_TYPES = 'library/type';
 export const URL_ITEM_FORMAT = 'library/format';
-export const URL_ITEM_SERIE = 'library/serie';
-export const URL_ITEM_COLLECTION = 'library/collection';
-export const URL_PUBLISHER = 'library/publisher';
-export const URL_LANGUAGE = 'library/language';
+export const URL_ITEM_SERIE = '/serie';
+export const URL_ITEM_COLLECTION = '/collection';
+export const URL_PUBLISHER = '/publisher';
+export const URL_LANGUAGE = '/language';
 
 // Credit Card
 export const URL_CREDIT_CARD = '/creditcard'

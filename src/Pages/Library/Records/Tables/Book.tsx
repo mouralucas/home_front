@@ -5,8 +5,9 @@ import ModalItem from "../Modals/ModalItem";
 import {Button} from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
 import {Item} from "../../interfaces";
-import {getData} from "../../../../Services/Axios/Get";
+import {getLibraryData} from "../../../../Services/Axios/Get";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
+import {toast} from "react-toastify";
 
 const Book = () => {
     const [books, setBooks] = useState<Item[] | null>();
@@ -32,7 +33,7 @@ const Book = () => {
     }
 
     const getBooks = () => {
-        getData(URL_ITEM, {itemType: 'book'}).then(response => {
+        getLibraryData(URL_ITEM, {itemType: 'book'}).then(response => {
                 setBooks(response.items);
             }
         ).catch(response => {
@@ -40,12 +41,16 @@ const Book = () => {
         })
     }
 
-    let colunasTabelaLivro: DataGridColumn[] = [
+    const coffeeCommand = (e: any) => {
+        toast('🦄 Cafezinho delícia!');
+    }
+
+    let columns: DataGridColumn[] = [
         {
             dataField: "itemId",
             caption: "Id",
             dataType: "number",
-            visible: false,
+            visible: true,
         },
         {
             dataField: "title",
@@ -71,7 +76,7 @@ const Book = () => {
             width: 150,
         },
         {
-            dataField: "itemFormatId",
+            dataField: "itemFormat",
             caption: "Formato",
             dataType: "string"
         },
@@ -79,7 +84,7 @@ const Book = () => {
             dataField: "serieName",
             caption: "Serie",
             dataType: "string",
-            visible: false,
+            visible: true,
         },
         {
             dataField: "publisherName",
@@ -104,6 +109,13 @@ const Book = () => {
                     hint="Editar"
                     onClick={showModal}
                 />,
+                <Btn
+                    // text="My Command"
+                    // // icon="/url/to/my/icon.ico"
+                    icon="coffee"
+                    hint="My Command"
+                    onClick={coffeeCommand}
+                />
             ]
         }
     ]
@@ -133,7 +145,7 @@ const Book = () => {
         <>
             <DataGrid
                 keyExpr={'itemId'}
-                columns={colunasTabelaLivro}
+                columns={columns}
                 data={books}
                 toolBar={{
                     visible:true,

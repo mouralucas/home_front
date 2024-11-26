@@ -1,10 +1,10 @@
-import {URL_FINANCE_BASE} from "./ApiUrls";
+import {URL_LIBRARY_BASE} from "./ApiUrls";
 import axios from "axios";
 import {getToken} from "../Auth/Auth";
 
 const library_connection_instance = axios.create(
     {
-        baseURL: URL_FINANCE_BASE
+        baseURL: URL_LIBRARY_BASE
     }
 );
 
