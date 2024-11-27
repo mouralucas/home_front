@@ -1,22 +1,22 @@
 export interface Item {
     itemId?: string | null
     lastStatusId: string | null
-    lastStatusDate: string | null
+    lastStatusDate: string
     mainAuthorId: any
     authorsId?: number[]
     translatorId?: number
     title: string
-    subtitle?: string | null
+    subtitle?: string
     titleOriginal?: string
-    subtitleOriginal?: string | null
-    isbnFormatted?: string
-    isbn10Formatted?: string
+    subtitleOriginal?: string
+    isbn?: string
+    isbn10?: string
     itemType: number
     pages?: number
     volume?: number
     edition?: number
-    publishedAt: Date | null
-    publishedOriginalAt: Date | null
+    publicationDate: string | null
+    originalPublicationDate: string | null
     serieId: number
     collectionId: number
     publisherId: number
@@ -46,15 +46,18 @@ export interface Author {
 }
 
 export interface Serie {
-    serieId?: string
+    serieId: string
+    serieName: string
 }
 
 export interface Collection {
-    collectionId?: string
+    collectionId: string
+    collectionName: string
 }
 
 export interface Publisher {
-    publisherId?: string
+    publisherId: string
+    publisherName: string
 }
 
 export interface ItemType {
@@ -66,16 +69,17 @@ export interface ItemFormat {
 }
 
 export interface Language {
-    languageId?: string
+    languageId: string
+    languageName: string
 }
 
 export interface LastStatus {
     statusId?: string
-    statusName?: string
+    name?: string
     description?: string
     order?: number
     image?: string
-    type?: string
+    itemType?: string
 }
 
 // Modal Props
