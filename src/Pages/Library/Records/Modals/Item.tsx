@@ -49,6 +49,7 @@ const DefaultItem: Item = {
     width: 0,
     thickness: 0,
     summary: '',
+    observation: '',
     createdBy: null,
     createdAt: null,
     lastEditedBy: null,
@@ -633,6 +634,24 @@ const App = (props: ItemModalProps) => {
                                                 {...field}
                                                 value={field.value ?? ''}
                                                 onChange={field.onChange}
+                                                rows={15}
+                                                className='form-control'></textarea>
+                                        )}
+                            />
+                        </div>
+                    </div>
+                    <div className="row mt-3">
+                        <div className="col-12">
+                            <label htmlFor="">Descrição</label>
+                            <Controller name={'observation'}
+                                        control={control}
+                                        rules={{required: false}}
+                                        render={({field}) => (
+                                            <textarea
+                                                {...field}
+                                                value={field.value ?? ''}
+                                                onChange={field.onChange}
+                                                rows={15}
                                                 className='form-control'></textarea>
                                         )}
                             />

@@ -29,6 +29,7 @@ export interface Item {
     width: 0
     thickness: 0
     summary?: string
+    observation?: string
     createdBy?: string | null
     createdAt?: Date | null
     lastEditedBy?: string | null
