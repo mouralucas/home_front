@@ -6,14 +6,33 @@ import {toast, ToastOptions} from "react-toastify";
 import {Behavior, Scale} from "devextreme-react/range-selector";
 import {RangeSelector} from "devextreme-react";
 import {CreditCardBillHistory} from "../../Interfaces";
+import Decimal from 'decimal.js';
+
+// TODO: melhorar essas interfaces
+interface Bill {
+    period: string;
+    total_amount: Decimal;
+}
+
+interface PeriodRangeSelector {
+    date: Date;
+    value: string;
+}
+
+interface CreditCardBillConsolidatedResponse {
+    average: number;
+    goal: number;
+    periodRange: string[];
+    bill: Bill[];
+}
 
 const App = () => {
-    const [billHistory, setBillHistory] = useState<CreditCardBillHistory[]>([])
+    const [billHistory, setBillHistory] = useState<any[]>([])
     const [expenseAvg, setExpenseAvg] = useState<number>(0)
     const [expenseGoal, setExpenseGoal] = useState<number>(0)
 
     // Variables for the bill history range selector
-    const [acceptedYearRangeValues, setAcceptedYearRangeValues] = useState();
+    const [acceptedYearRangeValues, setAcceptedYearRangeValues] = useState<PeriodRangeSelector[] | null>(null);
     const [selectedBillHistoryRange, setSelectedBillHistoryRange] = useState<[Date, Date]>()
 
     useEffect(() => {
@@ -35,24 +54,27 @@ const App = () => {
         return `R$ ${arg.valueText}`;
     }
 
+
+
     const getBillHistory = (startAt: number, endAt: number) => {
         getFinanceData(URL_CREDIT_CARD_BILL_CONSOLIDATED, {
                 'startPeriod': startAt,
                 'endPeriod': endAt,
             }
-        ).then(response => {
-            let options = response == null ? {} : response.bill.map((i: {
-                period: string;
-                total_amount: number;
-            }): { period: string, total_amount: number } => ({
-                period: i.period,
-                total_amount: i.total_amount
-            }))
+        ).then((response: CreditCardBillConsolidatedResponse) => {
+            let options = response.bill.map((i: Bill)=>
+                (
+                    {
+                        period: i.period,
+                        total_amount: new Decimal(i.total_amount)
+                    })
+            );
             setBillHistory(options);
 
-            let period_range = response.periodRange.map((item: any) => ({
-                date: new Date(Math.floor(item / 100), (item % 100) - 1, 1),
-                value: item,
+
+            let period_range = response.periodRange.map((period: any) => ({
+                date: new Date(Math.floor(period / 100), (period % 100) - 1, 1),
+                value: period,
             }));
 
             // Only set accepted range when not available yet
