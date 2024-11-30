@@ -4,8 +4,13 @@ import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalPublisher from '../Modals/Publisher'
-import {getData} from "../../../../Services/Axios/Get";
+import {getLibraryData} from "../../../../Services/Axios/Get";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
+import {Publisher} from "../../interfaces";
+
+interface GetLibraryResponse {
+    publisher: Publisher[]
+}
 
 const App = () => {
     const [publisher, setPublisher] = useState();
@@ -23,7 +28,7 @@ const App = () => {
     }
 
     const getAuthor = () => {
-        getData(URL_PUBLISHER).then(response => {
+        getLibraryData(URL_PUBLISHER).then(response => {
             setPublisher(response?.publishers)
         });
     }

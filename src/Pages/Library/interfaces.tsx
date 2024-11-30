@@ -44,6 +44,7 @@ export interface Author {
     languageName?: string
     countryId?: string
     countryName?: string
+    description?: string
 }
 
 export interface Serie {

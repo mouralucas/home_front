@@ -4,12 +4,20 @@ import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalAuthor from '../Modals/Author'
-import {getData} from "../../../../Services/Axios/Get";
+import {getLibraryData} from "../../../../Services/Axios/Get";
 import {toast} from "react-toastify";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
+import {Author} from "../../interfaces";
+
+interface GetAuthorResponse {
+    quantity: number
+    authors: Author[]
+}
+
 
 const App = () => {
-    const [author, setAuthor] = useState();
+    const [author, setAuthor] = useState<Author[]>();
+
     // TODO: ver vídeo sobre uso de states desnecessários
     const [selectedAuthor, setSelectedAuthor] = useState()
     const [modalState, setModalState] = useState(false)
@@ -25,7 +33,7 @@ const App = () => {
     }
 
     const getAuthor = () => {
-        getData(URL_AUTHOR).then(response => {
+        getLibraryData(URL_AUTHOR).then((response: GetAuthorResponse) => {
             setAuthor(response?.authors)
         }).catch(err => {
             toast.error('Não foi possível buscar a lista de autores')
@@ -36,13 +44,13 @@ const App = () => {
         getAuthor();
     }, []);
 
-    function myOtherCommand(e: any) {
-        alert('Café');
+    function coffeeCommand(e: any) {
+        toast('🦄 Cafezinho delícia!');
     }
 
     const columns: DataGridColumn[] = [
         {
-            dataField: "id",
+            dataField: "authorId",
             caption: "Id",
             dataType: "number",
             width: 150,
@@ -85,8 +93,8 @@ const App = () => {
                     key={2}
                     //icon="/url/to/my/icon.ico"
                     icon="coffee"
-                    hint="My Command"
-                    onClick={myOtherCommand}
+                    hint="Café"
+                    onClick={coffeeCommand}
                 />]
         }
     ]
@@ -118,7 +126,7 @@ const App = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'id'}
+                keyExpr={'authorId'}
                 columns={columns}
                 data={author}
                 toolBar={{
