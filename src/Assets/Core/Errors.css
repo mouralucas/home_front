@@ -69,3 +69,8 @@ a.bt-back-error404 {
     /*background: url('') no-repeat left 15% center;*/
     background-size: 15px;
 }
+
+.input-error {
+    border: 2px solid red !important; /* Usa !important para garantir a aplicação */
+    border-radius: 4px; /* Ajuste o arredondamento, se necessário */
+}

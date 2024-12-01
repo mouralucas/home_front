@@ -2,9 +2,9 @@ import Card from '../../../Components/Card'
 import CreditCardBillTable from './Tables/CreditCardTransaction'
 import AccountStatementTable from './Tables/AccountTransaction'
 import InvestmentTable from './Tables/Investment'
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 
-const App = () => {
+const App = (): React.ReactElement => {
     useEffect(() => {
         document.title = 'Registro de informações';
     }, [])

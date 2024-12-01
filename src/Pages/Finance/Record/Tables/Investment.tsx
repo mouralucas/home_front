@@ -18,7 +18,7 @@ interface InvestmentResponse {
 const App = () => {
     const [investment, setInvestment] = useState<Investment[]>([])
     const [selectedInvestment, setSelectedInvestment] = useState<Investment | undefined>()
-    const [modalState, setModalState] = useState(false)
+    const [modalState, setModalState] = useState<boolean>(false)
 
     const showModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
@@ -152,9 +152,17 @@ const App = () => {
 
     let toolBarItems = [
         {
-            child: <Button icon={'refresh'} onClick={getInvestment}/>,
-            location: "after"
+            name: 'columnChooserButton',
+            location: 'after',
         },
+        {
+            name: 'exportButton',
+            location: 'after',
+        },
+        // {
+        //     child: <Button icon='refresh' onClick={getStatements}/>,
+        //     location: "after"
+        // },
         {
             child: <Button icon={'add'} onClick={showModal}></Button>,
             location: "after"
@@ -172,7 +180,10 @@ const App = () => {
                 keyExpr={'investmentId'}
                 columns={columns}
                 data={investment}
-                toolBarItems={toolBarItems}
+                toolBar={{
+                    visible: true,
+                    items: toolBarItems
+                }}
                 showLoadPanel={false}
             />
             <ModalInvestment modalState={modalState} hideModal={hideModal} investment={selectedInvestment}></ModalInvestment>

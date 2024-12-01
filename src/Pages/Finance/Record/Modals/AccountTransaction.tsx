@@ -10,7 +10,7 @@ import Modal from "../../../../Components/Modal";
 import CurrencyInput from "../../../../Components/Form/CurrencyNew";
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
-import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker.css"; // TODO: remove and add in a global place
 import {financialSubmit} from "../../../../Services/Axios/Post";
 
 /**
@@ -207,10 +207,9 @@ const App = (props: AccountStatementProps) => {
                                     <DatePicker
                                         selected={parseISO(field.value)}
                                         onChange={(date) => {
-                                            // Verifica se a data é `null`
                                             field.onChange(date ? format(date, 'yyyy-MM-dd') : field.value);
                                         }}
-                                        dateFormat="dd/MM/yyyy" // Exibe no formato brasileiro
+                                        dateFormat="dd/MM/yyyy"
                                         className="form-control"
                                         placeholderText="Selecione uma data"
                                     />
@@ -277,7 +276,7 @@ const App = (props: AccountStatementProps) => {
             <Modal
                 showModal={props.modalState}
                 hideModal={props.hideModal}
-                title={'Extrato'}
+                title={'Transação'}
                 body={body()}
                 fullscreen={false}
                 actionModal={handleSubmit(onSubmit)}

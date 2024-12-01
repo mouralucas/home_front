@@ -7,7 +7,7 @@ import {UUID} from "crypto";
 
 // Account interfaces
 export interface Account {
-    accountId: UUID
+    accountId: string
     nickname: string
     branch: string
     number: string
@@ -39,36 +39,18 @@ export interface AccountTransaction {
 
 // Investment Interfaces
 export interface Investment {
-    investmentId: string | null
-    custodianId: string
-    custodianName: string
-    name: string
-    description: string | null
-    typeId: string | null
     transactionDate: string
-    maturityDate: Date | undefined
-    quantity: number
-
-    amount: number
-    price: number
-    interestRate: string
-    interestIndex: string
-    investmentTypeId: string | null
-    investmentTypeName: string | null
-    parentId: string | null
-    grossAmount: number | string
-    percentageChange: number
-
-    createAt: Date | undefined,
-    lastEditedAt: Date | undefined,
+    name: string;
+    accountId: string;
+    investmentTypeId: string;
 }
 
 export interface InvestmentType {
-    investmentTypeId: UUID
+    investmentTypeId: string
     investmentTypeName: string
-    parentId: UUID
-    parentName: string
     description: string
+    parentId: string
+    investmentCategoryId: string
 }
 
 export interface InvestmentAllocation {
@@ -141,9 +123,9 @@ export interface Summary {
     periodCreditCardPurchaseQuantity: number
 }
 
-export interface InvestmentType {
-    typeId: UUID
-}
+// export interface InvestmentType {
+//     typeId: UUID
+// }
 
 export interface Currency {
     currencyId: string
@@ -151,7 +133,8 @@ export interface Currency {
     symbol: string
 }
 
-export interface CashFlow {
-    cashFlowId: string
-    cashFlowName: string
+export interface Bank {
+    bankId: string;
+    bankName: string;
+    code: number;
 }

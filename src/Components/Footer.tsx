@@ -9,7 +9,7 @@ const App = () => {
     const [version, setVersion] = useState<any>([])
 
     useEffect(() => {
-        getVersion();
+        // getVersion();
     }, []);
 
     const getVersion = () => {
@@ -37,7 +37,7 @@ const App = () => {
                     {/*<a href="#" className="small text-muted" data-toggle="modal" data-target="#modalVersaoAtual">*/}
                     {/*    Versão 1.0.0*/}
                     {/*</a>*/}
-                    <Link to="#" className='small text-mutted'>Versão {version?.version}. {version?.environment}</Link>
+                    <Link to="#" className='small text-mutted'>Versão 0.0.1. Development</Link>
                 </div>
             </div>
         </footer>
