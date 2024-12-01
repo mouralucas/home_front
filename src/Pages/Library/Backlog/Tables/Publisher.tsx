@@ -8,12 +8,14 @@ import {getLibraryData} from "../../../../Services/Axios/Get";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
 import {Publisher} from "../../interfaces";
 
-interface GetLibraryResponse {
-    publisher: Publisher[]
+interface GetPublisherResponse {
+    quantity: number;
+    publishers: Publisher[];
 }
 
 const App = () => {
-    const [publisher, setPublisher] = useState();
+    const [publisher, setPublisher] = useState<Publisher[]>([]);
+
     const [selectedPublisher, setSelectedPublisher] = useState()
     const [modalState, setModalState] = useState(false)
 
@@ -28,7 +30,7 @@ const App = () => {
     }
 
     const getAuthor = () => {
-        getLibraryData(URL_PUBLISHER).then(response => {
+        getLibraryData(URL_PUBLISHER).then((response: GetPublisherResponse) => {
             setPublisher(response?.publishers)
         });
     }
@@ -43,13 +45,13 @@ const App = () => {
 
     const columns: DataGridColumn[] = [
         {
-            dataField: "id",
+            dataField: "publisherId",
             caption: "Id",
             dataType: "number",
             width: 70,
         },
         {
-            dataField: "name",
+            dataField: "publisherName",
             caption: "Nome",
             dataType: "string",
         },
@@ -60,7 +62,7 @@ const App = () => {
             format: 'shortDate',
         },
         {
-            dataField: "nm_country",
+            dataField: "country_name",
             caption: "Pais",
             dataType: "string",
         },
@@ -114,7 +116,7 @@ const App = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'id'}
+                keyExpr={'publisherId'}
                 columns={columns}
                 data={publisher}
                 toolBar={{

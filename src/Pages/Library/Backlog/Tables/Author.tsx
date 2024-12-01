@@ -3,7 +3,7 @@ import {URL_AUTHOR} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
-import ModalAuthor from '../Modals/Author'
+import ModalAuthor from '../Modals/AuthorOld'
 import {getLibraryData} from "../../../../Services/Axios/Get";
 import {toast} from "react-toastify";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";

@@ -4,11 +4,17 @@ import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalPublisher from '../Modals/Publisher'
-import {getData} from "../../../../Services/Axios/Get";
+import {getData, getLibraryData} from "../../../../Services/Axios/Get";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
+import {Collection} from "../../interfaces";
+
+interface GetCollectionResponse {
+    quantity: number;
+    collections: Collection[];
+}
 
 const App = () => {
-    const [collection, setCollection] = useState();
+    const [collections, setCollections] = useState<Collection[]>([]);
     const [selectedAuthor, setSelectedAuthor] = useState()
     const [modalState, setModalState] = useState(false)
 
@@ -23,14 +29,14 @@ const App = () => {
         setModalState(false);
     }
 
-    const getAuthor = () => {
-        getData(URL_ITEM_COLLECTION).then(response => {
-            setCollection(response?.collections)
+    const getCollection = () => {
+        getLibraryData(URL_ITEM_COLLECTION).then((response: GetCollectionResponse) => {
+            setCollections(response?.collections)
         });
     }
 
     useEffect(() => {
-        getAuthor();
+        getCollection();
     }, []);
 
     function myOtherCommand(e: any) {
@@ -39,13 +45,13 @@ const App = () => {
 
     const columns: DataGridColumn[] = [
         {
-            dataField: "id",
+            dataField: "collectionId",
             caption: "Id",
             dataType: "number",
             width: 70,
         },
         {
-            dataField: "name",
+            dataField: "collectionName",
             caption: "Nome",
             dataType: "string",
         },
@@ -87,7 +93,7 @@ const App = () => {
             location: 'after',
         },
         {
-            child: <Button icon={'refresh'} onClick={getAuthor}/>,
+            child: <Button icon={'refresh'} onClick={getCollection}/>,
             location: "after"
         },
         {
@@ -104,9 +110,9 @@ const App = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'id'}
+                keyExpr={'collectionId'}
                 columns={columns}
-                data={collection}
+                data={collections}
                 toolBar={{
                     visible:true,
                     items: toolBarItems

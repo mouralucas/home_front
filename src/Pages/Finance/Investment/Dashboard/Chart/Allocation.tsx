@@ -28,10 +28,6 @@ const App = () => {
     }
 
     useEffect(() => {
-        console.log(investmentAllocation)
-    }, [investmentAllocation]);
-
-    useEffect(() => {
         getAllocation();
     }, []);
 

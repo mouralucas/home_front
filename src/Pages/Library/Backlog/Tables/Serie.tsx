@@ -4,11 +4,18 @@ import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import ModalSerie from '../Modals/Serie'
-import {getData} from "../../../../Services/Axios/Get";
+import {getLibraryData} from "../../../../Services/Axios/Get";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
+import {Serie} from "../../interfaces";
+
+interface GetSerieResponse {
+    quantity: number;
+    series: Serie[];
+}
 
 const App = () => {
-    const [serie, setSerie] = useState();
+    const [series, setSeries] = useState<Serie[]>();
+    
     const [selectedSerie, setSelectedSerie] = useState({})
     const [modalState, setModalState] = useState(false)
 
@@ -26,8 +33,8 @@ const App = () => {
     }
 
     const getSerie = () => {
-        getData(URL_ITEM_SERIE).then(response => {
-            setSerie(response?.series)
+        getLibraryData(URL_ITEM_SERIE).then((response: GetSerieResponse) => {
+            setSeries(response?.series)
         });
     }
 
@@ -41,13 +48,13 @@ const App = () => {
 
     const columns: DataGridColumn[] = [
         {
-            dataField: "id",
+            dataField: "serieId",
             caption: "Id",
             dataType: "number",
             width: 70,
         },
         {
-            dataField: "name",
+            dataField: "serieName",
             caption: "Nome",
             dataType: "string",
         },
@@ -117,9 +124,9 @@ const App = () => {
     return (
         <>
             <DataGrid
-                keyExpr={'id'}
+                keyExpr={'serieId'}
                 columns={columns}
-                data={serie}
+                data={series}
                 toolBar={{
                     visible:true,
                     items: toolBarItems
