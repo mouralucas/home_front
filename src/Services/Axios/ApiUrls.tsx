@@ -32,6 +32,7 @@ export const URL_FINANCE_ACCOUNT_TRANSACTION = '/account/transaction'
 export const URL_INVESTMENT = '/investment'
 export const URL_FINANCE_INVESTMENT_TYPE = '/investment/type'
 export const URL_INVESTMENT_STATEMENT = '/finance/investment/statement'
+export const URL_FINANCE_INDEXER_TYPE = '/indexer/type'
 export const URL_FINANCE_INVESTMENT_ALLOCATION = '/investment/allocation'
 export const URL_FINANCE_INVESTMENT_PERFORMANCE = '/investment/performance'
 

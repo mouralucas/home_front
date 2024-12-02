@@ -43,6 +43,12 @@ export interface Investment {
     name: string;
     accountId: string;
     investmentTypeId: string;
+    maturityDate: string | null;
+    quantity: number;
+    price: number;
+    amount: number;
+    currencyId: string;
+    indexerTypeId: string;
 }
 
 export interface InvestmentType {
