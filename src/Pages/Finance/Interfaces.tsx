@@ -49,6 +49,11 @@ export interface Investment {
     amount: number;
     currencyId: string;
     indexerTypeId: string;
+    indexerId: string;
+    liquidityId: string;
+    liquidationDate?: string;
+    liquidationAmount?: string;
+    countryId: string;
 }
 
 export interface InvestmentType {
@@ -129,10 +134,6 @@ export interface Summary {
     periodCreditCardPurchaseQuantity: number
 }
 
-// export interface InvestmentType {
-//     typeId: UUID
-// }
-
 export interface Currency {
     currencyId: string
     name: string
@@ -143,4 +144,22 @@ export interface Bank {
     bankId: string;
     bankName: string;
     code: number;
+}
+
+export interface IndexerType {
+    indexerTypeId: string;
+    indexerTypeName: string;
+    description: string;
+}
+
+export interface Indexer {
+    indexerId: string;
+    indexerName: string;
+    description: string;
+}
+
+export interface Liquidity {
+    liquidityId: string;
+    liquidityName: string;
+    description: string;
 }

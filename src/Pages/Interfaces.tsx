@@ -6,7 +6,8 @@ export interface ReactSelectInterface {
 }
 
 export interface Country {
-    countryId: UUID
+    countryId: string;
+    countryName: string;
 }
 
 export interface Category {

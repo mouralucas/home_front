@@ -1,20 +1,16 @@
 import React, {useEffect, useState} from "react";
-import {Account, AccountTransaction, Bank, Currency, Investment, InvestmentType} from "../../Interfaces";
+import {Account, Currency, Indexer, IndexerType, Investment, InvestmentType, Liquidity} from "../../Interfaces";
 import {Controller, useForm} from "react-hook-form";
 import Modal from "../../../../Components/Modal";
 import Select from "react-select";
 import {getFinanceData} from "../../../../Services/Axios/Get";
-import {
-    URL_CURRENCY,
-    URL_FINANCE_ACCOUNT,
-    URL_FINANCE_BANK,
-    URL_FINANCE_INVESTMENT_TYPE
-} from "../../../../Services/Axios/ApiUrls";
+import {URL_COUNTRY, URL_CURRENCY, URL_FINANCE_ACCOUNT, URL_FINANCE_INDEXER, URL_FINANCE_INDEXER_TYPE, URL_FINANCE_INVESTMENT_TYPE, URL_FINANCE_LIQUIDITY} from "../../../../Services/Axios/ApiUrls";
 import {toast} from "react-toastify";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";// TODO: remove and add in a global place
+import "react-datepicker/dist/react-datepicker.css"; // TODO: remove and add in a global place
 import {format, parseISO} from "date-fns";
 import CurrencyInput from "../../../../Components/Form/CurrencyNew";
+import {Country} from "../../../Interfaces";
 
 
 interface InvestmentProps {
@@ -38,6 +34,27 @@ interface GetCurrenciesResponse {
     currencies: Currency[];
 }
 
+interface GetIndexerTypesResponse {
+    quantity: number;
+    indexerTypes: IndexerType[]
+}
+
+interface GetIndexersResponse {
+    quantity: number;
+    indexers: Indexer[]
+}
+
+interface GetLiquidityResponse {
+    quantity: number;
+    liquidity: Liquidity[];
+}
+
+interface GetCountryResponse {
+    quantity: number;
+    countries: Country[];
+}
+
+
 const DefaultInvestment: Investment = {
     transactionDate: format(new Date().toDateString(), 'yyyy-MM-dd'),
     name: '',
@@ -48,7 +65,10 @@ const DefaultInvestment: Investment = {
     price: 0,
     amount: 0,
     currencyId: 'BRL',
-    indexerTypeId: ''
+    indexerTypeId: '',
+    indexerId: '',
+    liquidityId: '',
+    countryId: 'BR',
 }
 
 const App = (props: InvestmentProps): React.ReactElement => {
@@ -64,6 +84,10 @@ const App = (props: InvestmentProps): React.ReactElement => {
     const [accounts, setAccounts] = useState<any[]>([])
     const [investmentTypes, setInvestmentTypes] = useState<any[]>([])
     const [currencies, setCurrencies] = useState<any[]>([])
+    const [indexerType, setIndexerType] = useState<any[]>([])
+    const [indexer, setIndexer] = useState<any[]>([])
+    const [liquidity, setLiquidity] = useState<any[]>([])
+    const [countries, setCountries] = useState<any[]>([])
 
 
     useEffect(() => {
@@ -79,13 +103,17 @@ const App = (props: InvestmentProps): React.ReactElement => {
             getAccounts();
             getInvestmentTypes();
             getCurrencies();
+            getIndexerTypes();
+            getIndexers();
+            getLiquidity();
+            getCountries();
         }
 
         // Clean form when modal closes
         if (!props.modalState) {
             reset(DefaultInvestment);
         }
-    }, [props.modalState, props.investment]);
+    }, [props.modalState, props.investment, reset]);
 
     const getAccounts = () => {
         getFinanceData(URL_FINANCE_ACCOUNT).then((response: GetAccountResponse) => {
@@ -121,7 +149,47 @@ const App = (props: InvestmentProps): React.ReactElement => {
     }
 
     const getIndexerTypes = () => {
-        console.log('Under construction');
+        getFinanceData(URL_FINANCE_INDEXER_TYPE).then((response: GetIndexerTypesResponse) => {
+            let options = response.indexerTypes.map((i: IndexerType) => (
+                {value: i.indexerTypeId, label: i.indexerTypeName}
+            ))
+            setIndexerType(options);
+        }).catch((error: Error) => {
+            toast.error('Erro ao buscar tipos de indexadores' + error)
+        })
+    }
+
+    const getIndexers = () => {
+        getFinanceData(URL_FINANCE_INDEXER).then((response: GetIndexersResponse) => {
+            let options = response.indexers.map((i: Indexer) => (
+                {value: i.indexerId, label: i.indexerName}
+            ))
+            setIndexer(options);
+        }).catch((error: Error) => {
+            toast.error('Erro ao buscar os indexadores' + error)
+        })
+    }
+
+    const getLiquidity = () => {
+        getFinanceData(URL_FINANCE_LIQUIDITY).then((response: GetLiquidityResponse) => {
+            let options = response?.liquidity.map((i: Liquidity) => (
+                {value: i.liquidityId, label: i.liquidityName}
+            ))
+            setLiquidity(options);
+        }).catch((error: Error) => {
+            toast.error('Erro ao buscar as opções de liquidez' + error)
+        })
+    }
+
+    const getCountries = () => {
+        getFinanceData(URL_COUNTRY).then((response: GetCountryResponse) => {
+            let options = response?.countries.map((i: Country) => (
+                {value: i.countryId, label: i.countryName}
+            ))
+            setCountries(options);
+        }).catch((error: Error) => {
+            toast.error('Erro ao buscar os países disponíveis' + error)
+        })
     }
 
     const calculateTotalAmount = () => {
@@ -290,7 +358,8 @@ const App = (props: InvestmentProps): React.ReactElement => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-1">
+                    <div className="col-2">
+                        <label htmlFor="">Moeda</label>
                         <Controller
                             name={'currencyId'}
                             control={control}
@@ -300,11 +369,12 @@ const App = (props: InvestmentProps): React.ReactElement => {
                                     options={currencies}
                                     value={currencies.find((c: any) => c.value === field.value)}
                                     onChange={(val) => field.onChange(val?.value)}
+                                    className={`${errors.currencyId ? "border border-danger" : ""}`}
                                 />
                             )}
                         />
                     </div>
-                    <div className="col-3">
+                    <div className="col-5">
                         <label htmlFor="">Tipo indexador</label>
                         <Controller
                             name={'indexerTypeId'}
@@ -313,7 +383,96 @@ const App = (props: InvestmentProps): React.ReactElement => {
                             render={({field}) => (
                                 <Select
                                     {...field}
-                                    options={currencies}
+                                    options={indexerType}
+                                    value={indexerType.find((c: any) => c.value === field.value)}
+                                    onChange={(val) => field.onChange(val?.value)}
+                                    className={`${errors.indexerTypeId ? "border border-danger" : ""}`}
+                                />
+                            )}
+                        />
+                    </div>
+                    <div className="col-5">
+                        <label htmlFor="">Indexador</label>
+                        <Controller
+                            name={'indexerId'}
+                            control={control}
+                            rules={{required: 'Esse campo é obrigatório'}}
+                            render={({field}) => (
+                                <Select
+                                    {...field}
+                                    options={indexer}
+                                    value={indexer.find((c: any) => c.value === field.value)}
+                                    onChange={(val) => field.onChange(val?.value)}
+                                    className={`${errors.indexerId ? "border border-danger" : ""}`}
+                                />
+                            )}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-3">
+                        <label htmlFor="">Liquidez</label>
+                        <Controller
+                            name={'liquidityId'}
+                            control={control}
+                            rules={{required: 'Esse campo é obrigatório'}}
+                            render={({field}) => (
+                                <Select
+                                    {...field}
+                                    options={liquidity}
+                                    value={currencies.find((c: any) => c.value === field.value)}
+                                    onChange={(val) => field.onChange(val?.value)}
+                                    className={`${errors.liquidityId ? "border border-danger" : ""}`}
+                                />
+                            )}
+                        />
+                    </div>
+                    <div className="col-3">
+                        <label htmlFor="">País</label>
+                        <Controller
+                            name={'countryId'}
+                            control={control}
+                            rules={{required: 'Esse campo é obrigatório'}}
+                            render={({field}) => (
+                                <Select
+                                    {...field}
+                                    options={countries}
+                                    value={countries.find((c: any) => c.value === field.value)}
+                                    onChange={(val) => field.onChange(val?.value)}
+                                    className={`${errors.liquidityId ? "border border-danger" : ""}`}
+                                />
+                            )}
+                        />
+                    </div>
+                    <div className="col-3">
+                        <label htmlFor="">Liquidado em</label>
+                        <Controller
+                            name={'liquidationDate'}
+                            control={control}
+                            render={({field}) => (
+                                <DatePicker
+                                    selected={field.value ? parseISO(field.value) : null}
+                                    onChange={(date) => {
+                                        field.onChange(date ? format(date, 'yyyy-MM-dd') : field.value);
+                                    }}
+                                    dateFormat="dd/MM/yyyy"
+                                    className="form-control"
+                                    placeholderText="__/__/____"
+                                />
+                            )}
+                        />
+                    </div>
+                    <div className="col-3">
+                        <label htmlFor="">Valor líquido</label>
+                        <Controller
+                            name={'liquidationAmount'}
+                            control={control}
+                            render={({field}) => (
+                                <CurrencyInput
+                                    prefix={'R$ '}
+                                    value={field.value}
+                                    onValueChange={(values) => field.onChange(values.rawValue)}
+                                    className={`form-control input-default`}
                                 />
                             )}
                         />
