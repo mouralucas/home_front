@@ -64,11 +64,15 @@ const DefaultInvestment: Investment = {
     quantity: 0,
     price: 0,
     amount: 0,
+    contractedRate: '',
     currencyId: 'BRL',
     indexerTypeId: '',
     indexerId: '',
     liquidityId: '',
     countryId: 'BR',
+    liquidationDate: null,
+    liquidationAmount: 0,
+    observation: ''
 }
 
 const App = (props: InvestmentProps): React.ReactElement => {
@@ -208,7 +212,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
         let html: React.ReactElement = <div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="row">
-                    <div className="col-3">
+                    <div className="col-4">
                         <label htmlFor="">Data</label>
                         <Controller
                             name={'transactionDate'}
@@ -227,22 +231,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
                             )}
                         />
                     </div>
-                    <div className="col-3">
-                        <label htmlFor="">Nome do investimento</label>
-                        <Controller
-                            name={'name'}
-                            control={control}
-                            rules={{required: "Este campo é obrigatório"}}
-                            render={({field}) => (
-                                <input
-                                    type="text"
-                                    {...field}
-                                    className={`form-control input-default ${errors.name ? "input-error" : ""}`}
-                                />
-                            )}
-                        />
-                    </div>
-                    <div className="col-3">
+                    <div className="col-4">
                         <label htmlFor="">Conta</label>
                         <Controller
                             name={'accountId'}
@@ -262,7 +251,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
                             <div className="text-danger mt-1">{errors.accountId.message}</div>
                         )}
                     </div>
-                    <div className="col-3">
+                    <div className="col-4">
                         <label htmlFor="">Tipo de investimento</label>
                         <Controller
                             name={'investmentTypeId'}
@@ -275,6 +264,38 @@ const App = (props: InvestmentProps): React.ReactElement => {
                                     value={investmentTypes.find((c: any) => c.value === field.value)}
                                     onChange={(val: any) => field.onChange(val?.value)}
                                     className={`${errors.investmentTypeId ? "border border-danger" : ""}`}
+                                />
+                            )}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-6">
+                        <label htmlFor="">Nome do investimento</label>
+                        <Controller
+                            name={'name'}
+                            control={control}
+                            rules={{required: "Este campo é obrigatório"}}
+                            render={({field}) => (
+                                <input
+                                    type="text"
+                                    {...field}
+                                    className={`form-control input-default ${errors.name ? "input-error" : ""}`}
+                                />
+                            )}
+                        />
+                    </div>
+                    <div className="col-6">
+                        <label htmlFor="">Taxa contratada</label>
+                        <Controller
+                            name={'contractedRate'}
+                            control={control}
+                            rules={{required: "Este campo é obrigatório"}}
+                            render={({field}) => (
+                                <input
+                                    type="text"
+                                    {...field}
+                                    className={`form-control input-default ${errors.contractedRate ? "input-error" : ""}`}
                                 />
                             )}
                         />
@@ -420,7 +441,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
                                 <Select
                                     {...field}
                                     options={liquidity}
-                                    value={currencies.find((c: any) => c.value === field.value)}
+                                    value={liquidity.find((c: any) => c.value === field.value)}
                                     onChange={(val) => field.onChange(val?.value)}
                                     className={`${errors.liquidityId ? "border border-danger" : ""}`}
                                 />
@@ -473,6 +494,24 @@ const App = (props: InvestmentProps): React.ReactElement => {
                                     value={field.value}
                                     onValueChange={(values) => field.onChange(values.rawValue)}
                                     className={`form-control input-default`}
+                                />
+                            )}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12">
+                        <label htmlFor="">Observações</label>
+                        <Controller
+                            name={'observation'}
+                            control={control}
+                            render={({field}) => (
+                                <textarea
+                                    {...field}
+                                    value={field.value ?? ''}
+                                    onChange={field.onChange}
+                                    rows={5}
+                                    className='form-control'
                                 />
                             )}
                         />

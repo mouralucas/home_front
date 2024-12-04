@@ -47,13 +47,15 @@ export interface Investment {
     quantity: number;
     price: number;
     amount: number;
+    contractedRate: string;
     currencyId: string;
     indexerTypeId: string;
     indexerId: string;
     liquidityId: string;
-    liquidationDate?: string;
-    liquidationAmount?: string;
+    liquidationDate?: string | null;
+    liquidationAmount?: number;
     countryId: string;
+    observation?: string;
 }
 
 export interface InvestmentType {

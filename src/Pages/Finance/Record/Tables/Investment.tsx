@@ -159,10 +159,10 @@ const App = () => {
             name: 'exportButton',
             location: 'after',
         },
-        // {
-        //     child: <Button icon='refresh' onClick={getStatements}/>,
-        //     location: "after"
-        // },
+        {
+            child: <Button icon='refresh' onClick={getInvestment}/>,
+            location: "after"
+        },
         {
             child: <Button icon={'add'} onClick={showModal}></Button>,
             location: "after"
