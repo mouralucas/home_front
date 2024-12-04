@@ -141,6 +141,12 @@ const App = () => {
                     icon="coffee"
                     hint="Coffee"
                     onClick={coffeeCommand}
+                />,
+                <Btn
+                    key={3}
+                    icon="money"
+                    hint={"Liquidar"}
+                    onClick={coffeeCommand}
                 />
             ]
         }
