@@ -71,7 +71,7 @@ const DefaultTransaction: AccountTransaction = {
 }
 
 const App = (props: AccountStatementProps) => {
-    const {handleSubmit, control, reset, formState: {isDirty, dirtyFields}, getValues} = useForm<AccountTransaction>()
+    const {handleSubmit, control, reset, formState: {isDirty, dirtyFields, errors}, getValues} = useForm<AccountTransaction>()
 
     const [accounts, setAccounts] = useState<any[]>([])
     const [categories, setCategories] = useState<any[]>([])
@@ -155,9 +155,10 @@ const App = (props: AccountStatementProps) => {
         }
 
         financialSubmit(e, URL_FINANCE_ACCOUNT_TRANSACTION, submit_data, false, method).then(() => {
-            toast.success('Transação salva com sucesso')
+            toast.success('Transação salva com sucesso');
+            reset(DefaultTransaction);
         }).catch((err: string | ToastOptions) => {
-            toast.error('Erro ao salvar a transação da conta ' + err)
+            toast.error('Erro ao salvar a transação da conta ' + err);
         })
     };
 
@@ -171,13 +172,14 @@ const App = (props: AccountStatementProps) => {
                             <Controller
                                 name="currencyId"
                                 control={control}
-                                rules={{required: false}}
+                                rules={{required: 'Esse campo é obrigatório'}}
                                 render={({field}) => (
                                     <Select
                                         {...field}
                                         options={currencies}
                                         value={currencies.find((c: any) => c.value === field.value)}
                                         onChange={(val) => field.onChange(val?.value)}
+                                        className={`${errors.currencyId ? "input-error" : ""}`}
                                     />
                                 )}
                             />
@@ -186,12 +188,15 @@ const App = (props: AccountStatementProps) => {
                             <label htmlFor="">Valor</label>
                             <Controller name={'amount'}
                                         control={control}
-                                        rules={{required: false}}
+                                        rules={{
+                                            validate: (value) => value !== 0 || "Este campo não deve ser zero",
+                                        }}
                                         render={({field}) => (
                                             <CurrencyInput
                                                 prefix="R$ "
                                                 value={field.value}
                                                 onValueChange={(values) => field.onChange(values.rawValue)}
+                                                className={`form-control input-default ${errors.amount ? 'input-error' : ''}`}
                                             />
                                         )}
 
@@ -202,7 +207,7 @@ const App = (props: AccountStatementProps) => {
                             <Controller
                                 name={'transactionDate'}
                                 control={control}
-                                rules={{required: false}}
+                                rules={{required: 'Esse campo é obrigatório'}}
                                 render={({field}) => (
                                     <DatePicker
                                         selected={parseISO(field.value)}
@@ -210,8 +215,8 @@ const App = (props: AccountStatementProps) => {
                                             field.onChange(date ? format(date, 'yyyy-MM-dd') : field.value);
                                         }}
                                         dateFormat="dd/MM/yyyy"
-                                        className="form-control"
                                         placeholderText="Selecione uma data"
+                                        className={`form-control ${errors.transactionDate ? "input-error" : ""}`}
                                     />
                                 )}
                             />
@@ -220,13 +225,14 @@ const App = (props: AccountStatementProps) => {
                             <label htmlFor="">Conta</label>
                             <Controller name={'accountId'}
                                         control={control}
-                                        rules={{required: false}}
+                                        rules={{required: 'Esse campo é obrigatório'}}
                                         render={({field}) => (
                                             <Select
                                                 {...field}
                                                 options={accounts}
                                                 value={accounts.find((c: any) => c.value === field.value)}
                                                 onChange={(value: any) => field.onChange(value?.value)}
+                                                className={`${errors.accountId ? "input-error" : ""}`}
                                             />
                                         )}
                             />
@@ -237,13 +243,14 @@ const App = (props: AccountStatementProps) => {
                             <label htmlFor="">Categoria</label>
                             <Controller name={'categoryId'}
                                         control={control}
-                                        rules={{required: false}}
+                                        rules={{required: 'Esse campo é obrigatório'}}
                                         render={({field}) => (
                                             <Select
                                                 {...field}
                                                 options={categories}
                                                 value={categories.find((c: any) => c.value === field.value)}
                                                 onChange={(val) => field.onChange(val?.value)}
+                                                className={`${errors.categoryId ? "input-error" : ""}`}
                                             />
                                         )}
                             />

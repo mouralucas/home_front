@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Account, AccountTransaction, Currency, Indexer, IndexerType, Investment, InvestmentType, Liquidity} from "../../Interfaces";
+import {Account, Currency, Indexer, IndexerType, Investment, InvestmentType, Liquidity} from "../../Interfaces";
 import {Controller, useForm} from "react-hook-form";
 import Modal from "../../../../Components/Modal";
 import Select from "react-select";
 import {getFinanceData} from "../../../../Services/Axios/Get";
-import {URL_COUNTRY, URL_CURRENCY, URL_FINANCE_ACCOUNT, URL_FINANCE_ACCOUNT_TRANSACTION, URL_FINANCE_INDEXER, URL_FINANCE_INDEXER_TYPE, URL_FINANCE_INVESTMENT_TYPE, URL_FINANCE_LIQUIDITY, URL_INVESTMENT} from "../../../../Services/Axios/ApiUrls";
+import {URL_COUNTRY, URL_CURRENCY, URL_FINANCE_ACCOUNT, URL_FINANCE_INDEXER, URL_FINANCE_INDEXER_TYPE, URL_FINANCE_INVESTMENT_TYPE, URL_FINANCE_LIQUIDITY, URL_INVESTMENT} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // TODO: remove and add in a global place
@@ -229,7 +229,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
             submit_data = data
         }
 
-        financialSubmit(e, URL_INVESTMENT, submit_data, false, method).then(response => {
+        financialSubmit(e, URL_INVESTMENT, submit_data, false, method).then(() => {
             toast.success('Investimento salvo com sucesso')
         }).catch((err: string | ToastOptions) => {
             toast.error('Erro ao salvar o investimento ' + err)
