@@ -105,7 +105,7 @@ const App = (props: AccountStatementProps) => {
                 ({value: i.accountId, label: i.nickname})
             );
             setAccounts(options);
-        }).catch((err: string | ToastOptions) => {
+        }).catch(() => {
             toast.error('Houve um erro ao buscar as contas bancárias');
         })
     }
@@ -116,7 +116,7 @@ const App = (props: AccountStatementProps) => {
                 ({value: i.categoryId, label: i.name})
             );
             setCategories(options)
-        }).catch((err: string | ToastOptions) => {
+        }).catch(() => {
             toast.error('Houve um erro ao buscar as categorias');
         })
     }
@@ -127,7 +127,7 @@ const App = (props: AccountStatementProps) => {
                 ({value: i.currencyId, label: i.symbol})
             );
             setCurrencies(options)
-        }).catch((err: string | ToastOptions) => {
+        }).catch(() => {
             toast.error('Houve um erro ao buscar as moedas disponíveis');
         })
     }
@@ -154,7 +154,7 @@ const App = (props: AccountStatementProps) => {
             submit_data = data
         }
 
-        financialSubmit(e, URL_FINANCE_ACCOUNT_TRANSACTION, submit_data, false, method).then(response => {
+        financialSubmit(e, URL_FINANCE_ACCOUNT_TRANSACTION, submit_data, false, method).then(() => {
             toast.success('Transação salva com sucesso')
         }).catch((err: string | ToastOptions) => {
             toast.error('Erro ao salvar a transação da conta ' + err)

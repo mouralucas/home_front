@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from "react";
-import {Account, Currency, Indexer, IndexerType, Investment, InvestmentType, Liquidity} from "../../Interfaces";
+import {Account, AccountTransaction, Currency, Indexer, IndexerType, Investment, InvestmentType, Liquidity} from "../../Interfaces";
 import {Controller, useForm} from "react-hook-form";
 import Modal from "../../../../Components/Modal";
 import Select from "react-select";
 import {getFinanceData} from "../../../../Services/Axios/Get";
-import {URL_COUNTRY, URL_CURRENCY, URL_FINANCE_ACCOUNT, URL_FINANCE_INDEXER, URL_FINANCE_INDEXER_TYPE, URL_FINANCE_INVESTMENT_TYPE, URL_FINANCE_LIQUIDITY} from "../../../../Services/Axios/ApiUrls";
-import {toast} from "react-toastify";
+import {URL_COUNTRY, URL_CURRENCY, URL_FINANCE_ACCOUNT, URL_FINANCE_ACCOUNT_TRANSACTION, URL_FINANCE_INDEXER, URL_FINANCE_INDEXER_TYPE, URL_FINANCE_INVESTMENT_TYPE, URL_FINANCE_LIQUIDITY, URL_INVESTMENT} from "../../../../Services/Axios/ApiUrls";
+import {toast, ToastOptions} from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // TODO: remove and add in a global place
 import {format, parseISO} from "date-fns";
 import CurrencyInput from "../../../../Components/Form/CurrencyNew";
 import {Country} from "../../../Interfaces";
+import {financialSubmit} from "../../../../Services/Axios/Post";
 
 
 interface InvestmentProps {
@@ -56,6 +57,7 @@ interface GetCountryResponse {
 
 
 const DefaultInvestment: Investment = {
+    investmentId: null,
     transactionDate: format(new Date().toDateString(), 'yyyy-MM-dd'),
     name: '',
     accountId: '',
@@ -204,8 +206,34 @@ const App = (props: InvestmentProps): React.ReactElement => {
         setValue('amount', amount);
     }
 
-    const onSubmit = (data: Investment) => {
-        console.log(data);
+    const onSubmit = (data: Investment, e: any) => {
+        let method;
+        let submit_data;
+
+        if (data.investmentId !== null){
+            method = 'patch'
+
+            const currentValues: Investment = getValues();
+            const modifiedFields: Partial<Record<keyof Investment, Investment[keyof Investment]>> = {
+                investmentId: data.investmentId
+            };
+
+            (Object.keys(dirtyFields) as Array<keyof Investment>).forEach((key: keyof Investment) => {
+                modifiedFields[key] = currentValues[key];
+            });
+
+            submit_data = modifiedFields
+            console.log(submit_data);
+        } else {
+            method = 'post'
+            submit_data = data
+        }
+
+        financialSubmit(e, URL_INVESTMENT, submit_data, false, method).then(response => {
+            toast.success('Investimento salvo com sucesso')
+        }).catch((err: string | ToastOptions) => {
+            toast.error('Erro ao salvar o investimento ' + err)
+        })
     }
 
     const body = (): React.ReactElement => {
@@ -530,6 +558,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
             title={'Investimento'}
             body={body()}
             actionModal={handleSubmit(onSubmit)}
+            disableAction={!isDirty}
             size={'lg'}
         />
     )

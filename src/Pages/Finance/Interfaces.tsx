@@ -16,7 +16,7 @@ export interface Account {
 }
 
 export interface AccountTransaction {
-    transactionId: number | null
+    transactionId?: number | null
     ownerId: string
     accountId: string
     period: number
@@ -39,6 +39,7 @@ export interface AccountTransaction {
 
 // Investment Interfaces
 export interface Investment {
+    investmentId?: string | null,
     transactionDate: string
     name: string;
     accountId: string;

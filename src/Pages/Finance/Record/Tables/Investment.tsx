@@ -51,8 +51,11 @@ const App = () => {
     }
 
     function grossAmountCustomCell(cellInfo: any) {
-        let grossAmount = parseFloat(cellInfo.percentageChange);
-        return cellInfo.currencySymbol + ' ' + grossAmount;
+        let currentSymbol: string = cellInfo.currencySymbol;
+        let grossAmount: number = parseFloat(cellInfo.grossAmount);
+        let percentageChange: number = parseFloat(cellInfo.percentageChange);
+        let formated_string: string = `${currentSymbol} ${grossAmount} (${percentageChange}%)`
+        return formated_string;
     }
 
 
@@ -93,7 +96,6 @@ const App = () => {
             caption: "Vencimento",
             dataType: "date",
             format: 'dd/MM/yyyy',
-            // calculateCellValue: dateCustomCell,
             width: 130
         },
         {
@@ -109,11 +111,6 @@ const App = () => {
             dataType: "currency",
             calculateCellValue: grossAmountCustomCell,
         },
-        // {
-        //     dataField: "interestIndex",
-        //     caption: "Taxa",
-        //     dataType: "string"
-        // },
         {
             dataField: 'contractedRate',
             caption: 'Taxa',
