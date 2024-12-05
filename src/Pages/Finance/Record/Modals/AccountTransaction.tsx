@@ -267,6 +267,7 @@ const App = (props: AccountStatementProps) => {
                                                 {...field}
                                                 value={field.value ?? ''}
                                                 onChange={field.onChange}
+                                                rows={5}
                                                 className='form-control'></textarea>
                                         )}
                             />
