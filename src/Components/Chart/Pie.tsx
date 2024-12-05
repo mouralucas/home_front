@@ -1,5 +1,6 @@
 import PieChart, {Animation, Export, Label, Legend, Margin, Series} from 'devextreme-react/pie-chart';
 import React from 'react';
+import {Tooltip} from "devextreme-react/chart";
 
 interface PieCharProps {
     data: any[],
@@ -7,11 +8,13 @@ interface PieCharProps {
     axis: any
     palette?: string[]
     type?: any
+
     showLegend?: boolean
     legendOrientation?: string
     legendVerticalAlignment?: string
     legendHorizontalAlignment?: string
     legendItemTextPosition?: string
+
     exportEnabled?: boolean
     onPointClick?: any
 }
@@ -29,8 +32,6 @@ const App = (props: PieCharProps) => {
         // Make a backend call to get details based on sliceData
         // Assume you have the details in response.data
         const response = {}; // Your backend response here
-        console.log(e.target.data);
-
         // setSliceDetails(response.data);
         // setModalIsOpen(true);
     };
@@ -49,7 +50,7 @@ const App = (props: PieCharProps) => {
                 argumentField={props.axis.argumentField}
                 valueField={props.axis.valueField}
             >
-                <Label visible={true} customizeText={formatText}/>
+                <Label visible={false} customizeText={formatText}/>
             </Series>
             <Margin bottom={20}/>
             <Export enabled={props.exportEnabled ?? false}/>
@@ -59,6 +60,13 @@ const App = (props: PieCharProps) => {
                 verticalAlignment={props.legendVerticalAlignment ?? "bottom"}
                 horizontalAlignment={props.legendHorizontalAlignment ?? "center"}
                 itemTextPosition={props.legendItemTextPosition ?? "right"}
+            />
+            <Tooltip
+                enabled={true} // Habilita o tooltip
+                format="fixedPoint" // Formata os valores
+                customizeTooltip={(info: any) => ({
+                    text: `${info.argumentText}: (${info.percentText})`,
+                })}
             />
             <Animation enabled={true}/>
         </PieChart>

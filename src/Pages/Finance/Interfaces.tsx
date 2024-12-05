@@ -115,17 +115,19 @@ export interface CreditCardBillHistory {
 
 
 // Others
-export interface Expense {
-    // fields from new endpoint
+export interface ExpenseByCategory {
+    categoryId: string;
+    categoryName: string;
+    total: number;
 }
 
-export interface CategoryTransactions {
-    transactionID: number
-    categoryId: string
-    category: string // TODO: review this variable name, it is the parent category
-    categoryName: string
-    total: number
-}
+// export interface CategoryTransactions {
+//     transactionID: number
+//     categoryId: string
+//     category: string // TODO: review this variable name, it is the parent category
+//     categoryName: string
+//     total: number
+// }
 
 export interface Summary {
     period: number

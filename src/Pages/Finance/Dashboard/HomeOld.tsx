@@ -5,7 +5,7 @@ import {getData} from "../../../Services/Axios/Get";
 import {URL_FINANCE_SUMMARY, URL_FINANCE_TRANSACTIONS_CATEGORY_LIST} from "../../../Services/Axios/ApiUrls";
 import {toast} from "react-toastify";
 import BillHistory from "./Charts/CreditCardBillConsolidated";
-import {CategoryTransactions, Summary} from "../Interfaces";
+import {Summary} from "../Interfaces";
 import CategoryExpensesDetails from "./Tables/CategoryExpensesDetails";
 import CreditCardBillByCardTable from "./Tables/CreditCardBillHistoryByCard";
 import {getCurrentPeriod} from "../../../Utils/DateTime";
@@ -16,15 +16,15 @@ interface SummaryResponse {
     summary: Summary
 }
 
-interface CategoryTransactionsResponse {
-    success: boolean
-    message?: string
-    transactions: CategoryTransactions[]
-}
+// interface CategoryTransactionsResponse {
+//     success: boolean
+//     message?: string
+//     transactions: CategoryTransactions[]
+// }
 
 const Home = () => {
     const [summary, setSummary] = useState<Summary>()
-    const [expensesByCategory, setExpensesByCategory] = useState<CategoryTransactions[]>([])
+    const [expensesByCategory, setExpensesByCategory] = useState<any[]>([])
     const [selectedPeriod, setSelectedPeriod] = useState<number>(getCurrentPeriod())
 
     useEffect(() => {
@@ -43,7 +43,7 @@ const Home = () => {
         getData(URL_FINANCE_TRANSACTIONS_CATEGORY_LIST, {
             categoryId: categoryId,
             period: selectedPeriod
-        }).then((response: CategoryTransactionsResponse) => {
+        }).then((response: any) => {
             setExpensesByCategory(response.transactions)
         }).catch(err => {
             toast.error('Houve um erro ao buscar as transações por categoria')
@@ -109,10 +109,10 @@ const Home = () => {
                             <Card.Body>
                                 <div className="row">
                                     <div className="col-6">
-                                        {/*<PieChartCategoryExpenses*/}
-                                        {/*    period={selectedPeriod}*/}
-                                        {/*    pointClick={handleChartPointClick}*/}
-                                        {/*/>*/}
+                                        <PieChartCategoryExpenses
+                                            period={selectedPeriod}
+                                            pointClick={handleChartPointClick}
+                                        />
                                     </div>
                                     <div className="col-6">
                                         {/*<CategoryExpensesDetails data={expensesByCategory}/>*/}

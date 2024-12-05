@@ -1,38 +1,31 @@
 import PieChart from "../../../../Components/Chart/Pie";
 import React, {useEffect, useState} from "react";
-import {URL_FINANCE_TRANSACTIONS_CATEGORY_AGGREGATED} from "../../../../Services/Axios/ApiUrls";
-import {getData} from "../../../../Services/Axios/Get";
+import {URL_FINANCE_EXPENSES_BY_CATEGORY} from "../../../../Services/Axios/ApiUrls";
+import {getFinanceData} from "../../../../Services/Axios/Get";
 import {toast, ToastOptions} from "react-toastify";
-import {getCurrentPeriod} from "../../../../Utils/DateTime";
-import {CategoryTransactions} from "../../Interfaces";
-import ModalCategoryExpensesDetails from "../Modals/CategoryExpensesDetails"
+import {ExpenseByCategory} from "../../Interfaces";
 
 interface ExpenseCategoryProps {
     period: number
-    pointClick: any
+    pointClick?: any
 }
 
-interface CategoryTransactionsAggregatedResponse {
-    success: boolean
-    message?: string
-    transactions: CategoryTransactions[]
+interface ExpensesByCategoryReturn {
+    expensesByCategory: ExpenseByCategory[]
 }
 
 const App = (props: ExpenseCategoryProps) => {
-    const [expenses, setExpenses] = useState<CategoryTransactions[]>([])
+    const [expensesByCategory, setExpensesByCategory] = useState<ExpenseByCategory[]>([])
 
     useEffect(() => {
         getExpenses();
     }, []);
 
     const getExpenses = () => {
-        getData(URL_FINANCE_TRANSACTIONS_CATEGORY_AGGREGATED, {
-                'period': props.period,
-            }
-        ).then((response: CategoryTransactionsAggregatedResponse) => {
-                setExpenses(response.transactions)
-            }
-        ).catch((err: string | ToastOptions) => {
+        getFinanceData(URL_FINANCE_EXPENSES_BY_CATEGORY).then((response: ExpensesByCategoryReturn) => {
+            setExpensesByCategory(response.expensesByCategory);
+            console.log(response.expensesByCategory);
+        }).catch((err: string | ToastOptions) => {
                 toast.error('Houve um erro ao buscar as despesas variáveis' + err)
             }
         );
@@ -40,10 +33,10 @@ const App = (props: ExpenseCategoryProps) => {
 
     return (
         <>
-            <PieChart data={expenses}
-                      axis={{argumentField: 'category', valueField: 'total'}}
+            <PieChart data={expensesByCategory}
+                      axis={{argumentField: 'categoryName', valueField: 'total'}}
                       title={'Categoria'}
-                      onPointClick={props.pointClick}
+                // onPointClick={props.pointClick}
             />
         </>
     );
