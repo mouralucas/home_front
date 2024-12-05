@@ -11,7 +11,7 @@ import Decimal from 'decimal.js';
 // TODO: melhorar essas interfaces
 interface Bill {
     period: string;
-    total_amount: Decimal;
+    totalAmount: number;
 }
 
 interface PeriodRangeSelector {
@@ -55,19 +55,19 @@ const App = () => {
     }
 
 
-
     const getBillHistory = (startAt: number, endAt: number) => {
         getFinanceData(URL_CREDIT_CARD_BILL_CONSOLIDATED, {
                 'startPeriod': startAt,
                 'endPeriod': endAt,
             }
         ).then((response: CreditCardBillConsolidatedResponse) => {
-            let options = response.bill.map((i: Bill)=>
+            let options = response.bill.map((i: Bill) =>
                 (
                     {
                         period: i.period,
-                        total_amount: new Decimal(i.total_amount)
-                    })
+                        total_amount: i.totalAmount
+                    }
+                )
             );
             setBillHistory(options);
 
@@ -81,7 +81,7 @@ const App = () => {
             if (acceptedYearRangeValues == null) {
                 setAcceptedYearRangeValues(period_range);
             }
-            
+
             const sd = new Date(Math.floor(startAt / 100), (startAt % 100) - 1, 1)
             const ed = new Date(Math.floor(endAt / 100), (endAt % 100) - 1, 1)
             setSelectedBillHistoryRange([sd, ed])

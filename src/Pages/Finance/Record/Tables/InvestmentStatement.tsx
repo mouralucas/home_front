@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from "react";
-import axios from "../../../../Services/Axios/Axios";
-import {URL_CREDIT_CARD_BILL_CONSOLIDATED} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
@@ -24,14 +22,7 @@ const App = () => {
     }
 
     const getInvestmentStatement = () => {
-        axios.get(URL_CREDIT_CARD_BILL_CONSOLIDATED, {
-            params: {'reference': 202209}
-        }).then(response => {
-                setBills(response.data.bill);
-            }
-        ).catch(response => {
-            return {'error': response}
-        })
+        console.log('Get investments')
     }
 
     useEffect(() => {

@@ -1,6 +1,6 @@
 import Modal from '../../../../Components/Modal'
 import {ReactElement, useEffect, useState} from "react";
-import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CREDIT_CARD_BILL_CONSOLIDATED} from "../../../../Services/Axios/ApiUrls";
+import {URL_CATEGORIES, URL_CREDIT_CARD} from "../../../../Services/Axios/ApiUrls";
 import DateBox from 'devextreme-react/date-box';
 import Moment from 'moment';
 import Currency from '../../../../Components/Form/Currency'
@@ -207,7 +207,7 @@ const App = (props: CreditCardBillProps): ReactElement => {
                 title={'Fatura'}
                 body={body()}
                 fullscreen={false}
-                actionModal={(e: any) => handleSubmit(e, URL_CREDIT_CARD_BILL_CONSOLIDATED, creditCardTransaction, false, "Item de fatura salvo")}
+                actionModal={(e: any) => handleSubmit(e, URL_CREDIT_CARD, creditCardTransaction, false, "Item de fatura salvo")}
                 size={'lg'}
             />
         </div>

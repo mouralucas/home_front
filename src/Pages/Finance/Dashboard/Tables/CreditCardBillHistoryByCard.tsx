@@ -33,11 +33,28 @@ const defaultColumns: DataGridColumn[] = [
         'dataType': 'string'
     },
     {
+        'dataField': 'currencySymbol',
+        'caption': 'Currency',
+        'visible': false,
+        'dataType': 'string'
+    },
+    {
         'dataField': 'period',
         'caption': 'Período',
         'dataType': 'string'
     }
 ]
+
+
+// # TODO: This function can by global, since it is generic
+function amountCustomCellFactory(dataField: any) {
+    return function(cellInfo: any) {
+        const value = cellInfo[dataField];
+        if (!value) return '';
+        const formattedAmount = parseFloat(value).toFixed(2);
+        return cellInfo.currencySymbol + ' ' + formattedAmount;
+    };
+}
 
 const App = (props: CreditCardBillByCardProps) => {
     // TODO: create default table columns like period and id
@@ -60,14 +77,16 @@ const App = (props: CreditCardBillByCardProps) => {
             const dynamicColumns: DataGridColumn[] = response.cards.map((i: any) => ({
                 dataField: i,
                 caption: i,
-                dataType: 'string'
+                dataType: 'currency',
+                calculateCellValue: amountCustomCellFactory(i),
             }));
 
             dynamicColumns.push(
                 {
                     dataField: 'total',
                     caption: 'Total',
-                    dataType: 'string'
+                    dataType: 'currency',
+                    calculateCellValue: amountCustomCellFactory('total'),
                 }
             )
 

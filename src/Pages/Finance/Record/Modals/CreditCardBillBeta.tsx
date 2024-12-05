@@ -5,13 +5,12 @@ import {CreditCard, CreditCardTransaction} from "../../Interfaces";
 import {Category, ReactSelectInterface} from "../../../Interfaces";
 import {Controller, useForm} from "react-hook-form";
 import {getData} from "../../../../Services/Axios/Get";
-import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CREDIT_CARD_BILL_CONSOLIDATED} from "../../../../Services/Axios/ApiUrls";
+import {URL_CATEGORIES, URL_CREDIT_CARD} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
 import CurrencyInput from "../../../../Components/Form/Currency";
 import DateBox from "devextreme-react/date-box";
 import Moment from "moment/moment";
 import Select from "react-select";
-import {handleSubmit as submit} from "../../../../Services/Axios/Post";
 
 interface CreditCardBillProps {
     creditCardBill: CreditCardTransaction | null
@@ -87,11 +86,7 @@ const App = (props: CreditCardBillProps) => {
         data.categoryId = data.category?.value
         data.creditCardId = data.creditCard?.value
 
-        submit(e, URL_CREDIT_CARD_BILL_CONSOLIDATED, data, false, "Fatura salva").then(response => {
-
-        }).catch((err: string | ToastOptions) => {
-            toast.error('Erro ao salvar fatura beta');
-        })
+        console.log(data);
     }
 
     const body = (): React.ReactElement => {
