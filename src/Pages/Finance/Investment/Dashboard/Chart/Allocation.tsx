@@ -39,9 +39,19 @@ const App = () => {
                     title={"Alocação por tipo de renda"}
                     axis={{argumentField: 'name', valueField: 'total'}}
                     type={'doughnut'}
-                    legendOrientation={'vertical'}
-                    legendVerticalAlignment={'bottom'}
-                    legendHorizontalAlignment={'left'}
+                    legend={
+                        {
+                            show: true,
+                            orientation: 'vertical',
+                            verticalAlignment: 'bottom',
+                            horizontalAlignment: 'left',
+                        }
+                    }
+                    tooltip={
+                        {
+                            show: true,
+                        }
+                    }
                 />
             </div>
             <div className="col-6">
@@ -50,9 +60,19 @@ const App = () => {
                     title={"Alocação por tipo de investimento"}
                     axis={{argumentField: 'name', valueField: 'total'}}
                     type={'doughnut'}
-                    legendOrientation={'vertical'}
-                    legendVerticalAlignment={'bottom'}
-                    legendHorizontalAlignment={'left'}
+                    legend={
+                        {
+                            show: true,
+                            orientation: 'vertical',
+                            verticalAlignment: 'bottom',
+                            horizontalAlignment: 'left',
+                        }
+                    }
+                    tooltip={
+                        {
+                            show: true,
+                        }
+                    }
                 />
             </div>
         </div>

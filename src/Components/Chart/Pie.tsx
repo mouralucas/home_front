@@ -9,11 +9,19 @@ interface PieCharProps {
     palette?: string[]
     type?: any
 
-    showLegend?: boolean
-    legendOrientation?: string
-    legendVerticalAlignment?: string
-    legendHorizontalAlignment?: string
-    legendItemTextPosition?: string
+    legend?: {
+        show: boolean;
+        orientation?: string;
+        verticalAlignment?: string;
+        horizontalAlignment?: string;
+        itemTextPosition?: string;
+    }
+
+    tooltip?: {
+        show: boolean;
+        format?: string;
+        customizeTooltip?: any;
+    }
 
     exportEnabled?: boolean
     onPointClick?: any
@@ -36,6 +44,10 @@ const App = (props: PieCharProps) => {
         // setModalIsOpen(true);
     };
 
+    const toolTipFunc =(info: any) => {
+        return {text: `${info.argumentText}: (${info.percentText})`}
+    }
+
     return (
         <PieChart
             id="pie"
@@ -55,18 +67,16 @@ const App = (props: PieCharProps) => {
             <Margin bottom={20}/>
             <Export enabled={props.exportEnabled ?? false}/>
             <Legend
-                visible={props.showLegend ?? true}
-                orientation={props.legendOrientation ?? 'horizontal'}
-                verticalAlignment={props.legendVerticalAlignment ?? "bottom"}
-                horizontalAlignment={props.legendHorizontalAlignment ?? "center"}
-                itemTextPosition={props.legendItemTextPosition ?? "right"}
+                visible={props.legend?.show ?? false}
+                orientation={props.legend?.orientation ?? 'horizontal'}
+                verticalAlignment={props.legend?.verticalAlignment ?? "bottom"}
+                horizontalAlignment={props.legend?.horizontalAlignment ?? "center"}
+                itemTextPosition={props.legend?.itemTextPosition ?? "right"}
             />
             <Tooltip
-                enabled={true} // Habilita o tooltip
-                format="fixedPoint" // Formata os valores
-                customizeTooltip={(info: any) => ({
-                    text: `${info.argumentText}: (${info.percentText})`,
-                })}
+                enabled={props.tooltip?.show ?? false}
+                format={props.tooltip?.format ?? "fixedPoint"}
+                customizeTooltip={props.tooltip?.customizeTooltip ?? toolTipFunc}
             />
             <Animation enabled={true}/>
         </PieChart>

@@ -36,6 +36,11 @@ const App = (props: ExpenseCategoryProps) => {
             <PieChart data={expensesByCategory}
                       axis={{argumentField: 'categoryName', valueField: 'total'}}
                       title={'Categoria'}
+                      tooltip={
+                          {
+                              show: true
+                          }
+                      }
                 // onPointClick={props.pointClick}
             />
         </>
