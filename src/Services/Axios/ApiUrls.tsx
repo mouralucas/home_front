@@ -1,9 +1,9 @@
 export const URL_BASE = 'http://127.0.0.1:8010';
 export const URL_USER_BASE = 'http://67.205.180.83:9002';
-// export const URL_FINANCE_BASE = 'http://67.205.180.83:9003';
-export const URL_FINANCE_BASE = 'http://192.168.0.103:8003';
-export const URL_LIBRARY_BASE = 'http://192.168.0.103:8001';
-// export const URL_LIBRARY_BASE = 'http://67.205.180.83:9001';
+export const URL_FINANCE_BASE = 'http://67.205.180.83:9003';
+// export const URL_FINANCE_BASE = 'http://192.168.0.103:8003';
+// export const URL_LIBRARY_BASE = 'http://192.168.0.103:8001';
+export const URL_LIBRARY_BASE = 'http://67.205.180.83:9001';
 
 // User URLs
 export const URL_LOGIN = '/login';
@@ -23,6 +23,7 @@ export const URL_CREDIT_CARD = '/creditcard'
 export const URL_CREDIT_CARD_TRANSACTION = '/creditcard/transaction'
 export const URL_CREDIT_CARD_BILL_CONSOLIDATED = '/creditcard/bill/consolidated'
 export const URL_CREDIT_CARD_BILL_BY_CARD = '/creditcard/bill/card'
+export const URL_CREDIT_CARD_INSTALLMENT_DUE_DATES = '/creditcard/transaction/installment/due-date\n'
 
 //Account
 export const URL_FINANCE_ACCOUNT = '/account'

@@ -24,7 +24,6 @@ const App = (props: ExpenseCategoryProps) => {
     const getExpenses = () => {
         getFinanceData(URL_FINANCE_EXPENSES_BY_CATEGORY).then((response: ExpensesByCategoryReturn) => {
             setExpensesByCategory(response.expensesByCategory);
-            console.log(response.expensesByCategory);
         }).catch((err: string | ToastOptions) => {
                 toast.error('Houve um erro ao buscar as despesas variáveis' + err)
             }
@@ -41,7 +40,7 @@ const App = (props: ExpenseCategoryProps) => {
                               show: true
                           }
                       }
-                // onPointClick={props.pointClick}
+                onPointClick={props.pointClick}
             />
         </>
     );

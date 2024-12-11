@@ -28,6 +28,7 @@ const Login = () => {
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
+
         const token = await loginAPI({
             username,
             password
@@ -38,7 +39,7 @@ const Login = () => {
         } else {
             setToken(token.tokenPair.accessToken);
             // TODO: set to navigate to de user home (create variable to home page)
-            let navigate_to = location.state?.from.pathname ?? "/library/home"
+            let navigate_to: string = location.state?.from.pathname ?? "/library/home"
             navigate(navigate_to, {replace: true});
         }
     }

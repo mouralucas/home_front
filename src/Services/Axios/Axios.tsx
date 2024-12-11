@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {getToken} from "../Auth/Auth";
 import {URL_BASE} from "./ApiUrls";
+import {Navigate, useLocation} from "react-router-dom";
+import React from "react";
 
 // Change the value of baseURL to change the API server
 const instance = axios.create(
@@ -24,12 +26,15 @@ instance.interceptors.response.use(
     },
     async function (error) {
         // TODO: revisar status code pra limpar o localStorage
+        let location = useLocation();
+
         if (error.response.status === 401 && getToken()) {
             localStorage.clear();
         } else {
             console.error('Error', error);
         }
-        return Promise.reject(error);
+        return <Navigate to="/login" state={{from: location}}/>;
+        // return Promise.reject(error);
     }
 );
 

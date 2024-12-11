@@ -1,55 +1,64 @@
 import React, {useEffect, useState} from "react";
 
 import Modal from '../../../../Components/Modal'
-import {CreditCard, CreditCardTransaction} from "../../Interfaces";
+import {CreditCard, CreditCardTransaction, Currency} from "../../Interfaces";
 import {Category} from "../../../Interfaces";
-import {Controller, useForm} from "react-hook-form";
+import {Controller, useFieldArray, useForm} from "react-hook-form";
 import {getFinanceData} from "../../../../Services/Axios/Get";
-import {URL_CATEGORIES, URL_CREDIT_CARD} from "../../../../Services/Axios/ApiUrls";
+import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CREDIT_CARD_INSTALLMENT_DUE_DATES, URL_CURRENCY} from "../../../../Services/Axios/ApiUrls";
 import {toast, ToastOptions} from "react-toastify";
 import CurrencyInput from "../../../../Components/Form/CurrencyNew";
 import DatePicker from "react-datepicker"
 import Select from "react-select";
 import {format, parseISO} from "date-fns";
-import {getCurrentPeriod} from "../../../../Utils/DateTime";
 
 interface CreditCardBillProps {
-    creditCardTransaction: CreditCardTransaction | null
-    modalState: boolean
-    hideModal: any
+    creditCardTransaction: CreditCardTransaction | null;
+    modalState: boolean;
+    hideModal: any;
 }
 
 interface GetCreditCardsResponse {
-    success: boolean
-    message: string
-    statusCode: number
-    quantity: number
-    creditCards: CreditCard[]
+    quantity: number;
+    creditCards: CreditCard[];
 }
 
 interface GetCategoryResponse {
-    success: boolean
-    message: string
-    statusCode: number
-    quantity: number
-    categories: Category[]
+    quantity: number;
+    categories: Category[];
+}
+
+interface GetCurrencyResponse {
+    quantity: number;
+    currencies: Currency[];
+}
+
+// TODO: Adjust to CamelCase after backend adjust
+interface GetDueDatesResponse {
+    dueDates: [{
+        currentInstallment: number;
+        dueDate: string;
+    }];
 }
 
 const DefaultCreditCardTransaction: CreditCardTransaction = {
     transactionId: null,
-    creditCardId: null,
-    period: getCurrentPeriod(),
+    creditCardId: '',
+    transactionDate: format(new Date().toDateString(), 'yyyy-MM-dd'),
     categoryId: '',
     amount: 0,
-    currencyId: '',
+    currencyId: 'BRL',
+
     transactionCurrencyId: '',
     transactionAmount: 0,
-    dueDate: format(new Date().toDateString(), 'yyyy-MM-dd'),
-    transactionDate: format(new Date().toDateString(), 'yyyy-MM-dd'),
+    dollarExchangeRate: 0,
+    currencyDollarExchangeRate: 0,
+    totalTax: 0,
+
     description: '',
     isInstallment: false,
-    currentInstallment: 1,
-    installments: 1,
+    installments: [],
+    totInstallments: 1,
     totalAmount: 0,
     parentId: null,
     createdAt: undefined,
@@ -57,29 +66,85 @@ const DefaultCreditCardTransaction: CreditCardTransaction = {
 }
 
 const App = (props: CreditCardBillProps): React.ReactElement => {
-    const {handleSubmit, control, reset, formState: {isDirty, dirtyFields}, getValues} = useForm<CreditCardTransaction>()
+    const {handleSubmit, control, reset, formState: {isDirty, dirtyFields, errors}, getValues, setValue} = useForm<CreditCardTransaction>({defaultValues: DefaultCreditCardTransaction})
 
     const [creditCards, setCreditCards] = useState<any>([])
     const [categories, setCategories] = useState<any[]>([])
+    const [currencies, setCurrencies] = useState<any[]>([])
+    const [qtdInstallments, setQtdInstallments] = useState<any[]>(Array.from({length: 12}, (_, i) => ({value: i + 1, label: i + 1})))
 
-    const installmentsArray = Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: i + 1 }));
+    const [showInternationalTransaction, setShowInternationalTransaction] = useState<boolean>(false);
+
+    // Create the list of installments in form
+    const {fields, append, remove, update} = useFieldArray({
+        control,
+        name: "installments",
+    });
 
     useEffect(() => {
         if (props.modalState && props.creditCardTransaction) {
             reset(props.creditCardTransaction);
         } else if (props.modalState && !props.creditCardTransaction) {
-            reset(DefaultCreditCardTransaction)
+            reset(DefaultCreditCardTransaction);
         }
 
         if (props.modalState) {
             getCreditCards();
             getCategory();
+            getCurrency();
+
+            // Set the basic installment
+            append({currentInstallment: 1, amount: 0, dueDate: format(new Date().toDateString(), 'yyyy-MM-dd')});
         }
 
         if (!props.modalState) {
             reset(DefaultCreditCardTransaction);
         }
     }, [props.modalState, props.creditCardTransaction]);
+
+    const updateInstallmentList = () => {
+        const totInstallment: number = getValues('totInstallments');
+        const totAmount: number = getValues('totalAmount')
+        const creditCardId: string = getValues('creditCardId')
+        const transactionDate: string = getValues('transactionDate')
+
+        if (creditCardId !== "" && totAmount !== 0) {
+            console.log('chamou a função de parcelas');
+            // The minimum information needed to calculate the due date is the credit card.
+            const installmentAmount = totAmount / totInstallment
+
+            const currentLength = fields.length;
+
+            getFinanceData(URL_CREDIT_CARD_INSTALLMENT_DUE_DATES, {
+                creditCardId: creditCardId,
+                totInstallments: totInstallment,
+                transactionDate: transactionDate
+            }).then((response: GetDueDatesResponse) => {
+                fields.forEach((_, index) => {
+                    const dueDate = response.dueDates.find(d => d.currentInstallment === index + 1)?.dueDate || format(new Date().toDateString(), 'yyyy-MM-dd');
+                    update(index, {
+                        ...fields[index],
+                        amount: installmentAmount,
+                        dueDate: dueDate
+                    });
+                });
+
+                if (totInstallment > currentLength) {
+                    for (let i = currentLength; i < totInstallment; i++) {
+                        append({currentInstallment: i + 1, amount: installmentAmount, dueDate: response.dueDates.find(d => d.currentInstallment === i + 1)?.dueDate || format(new Date().toDateString(), 'yyyy-MM-dd')});
+                    }
+                } else if (totInstallment < currentLength) {
+                    for (let i = currentLength - 1; i >= totInstallment; i--) {
+                        remove(i);
+                    }
+                }
+            });
+        }
+    }
+
+    const handleInternationalTransactionVisibility = () => {
+        setShowInternationalTransaction(!showInternationalTransaction);
+    };
 
     const getCreditCards = () => {
         getFinanceData(URL_CREDIT_CARD).then((response: GetCreditCardsResponse) => {
@@ -103,10 +168,20 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
         })
     }
 
+    const getCurrency = () => {
+        getFinanceData(URL_CURRENCY).then((response: GetCurrencyResponse) => {
+            let options = response.currencies.map((i: Currency) =>
+                ({value: i.currencyId, label: i.symbol})
+            );
+            setCurrencies(options)
+        }).catch(() => {
+            toast.error('Houve um erro ao buscar as moedas disponíveis');
+        })
+    }
+
     const onSubmit = (data: CreditCardTransaction, e: any) => {
         let method;
         let submit_data;
-
         console.log(data);
         if (data.transactionId !== null) {
             method = 'patch'
@@ -120,7 +195,6 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
             (Object.keys(dirtyFields) as Array<keyof CreditCardTransaction>).forEach((key: keyof CreditCardTransaction) => {
                 modifiedFields[key] = currentValues[key];
             });
-
             submit_data = modifiedFields
         } else {
             method = 'post'
@@ -135,56 +209,86 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
             <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
-                        <div className="col-3">
+                        <div className="col-6">
+                            <label htmlFor="">Cartão</label>
+                            <Controller
+                                name={'creditCardId'}
+                                control={control}
+                                rules={{required: 'Esse campo é obrigatório'}}
+                                render={({field}) => (
+                                    <Select
+                                        {...field}
+                                        options={creditCards}
+                                        value={creditCards.find((c: any) => c.value === field.value)}
+                                        onChange={(val) => {
+                                            field.onChange(val?.value);
+                                            updateInstallmentList();
+                                        }}
+                                        placeholder={'Selecione'}
+                                        className={`${errors.creditCardId ? "input-error" : ""}`}
+                                    />
+                                )}
+                            />
+                        </div>
+                        <div className="col-2">
+                            <label htmlFor=""></label>
+                            <Controller
+                                name="currencyId"
+                                control={control}
+                                rules={{required: 'Esse campo é obrigatório'}}
+                                render={({field}) => (
+                                    <Select
+                                        {...field}
+                                        options={currencies}
+                                        value={currencies.find((c: any) => c.value === field.value)}
+                                        onChange={(val) => field.onChange(val?.value)}
+                                        className={`${errors.currencyId ? "input-error" : ""}`}
+                                    />
+                                )}
+                            />
+                        </div>
+                        <div className="col-4">
                             <label htmlFor="">Valor total</label>
                             <Controller name={'totalAmount'}
                                         control={control}
-                                        rules={{required: false}}
+                                        rules={{
+                                            validate: (value) => value !== 0 || "Este campo não deve ser zero",
+                                        }}
                                         render={({field}) => (
                                             <CurrencyInput
                                                 prefix="R$ "
                                                 value={field.value}
                                                 onValueChange={(values: any) => field.onChange(values.rawValue)}
-                                                className={'form-control input-default'}
+                                                onBlur={updateInstallmentList}
+                                                className={`form-control input-default ${errors.totalAmount ? "input-error" : ""}`}
                                             />
                                         )}
                             />
                         </div>
+
+                    </div>
+                    <div className="row">
                         <div className="col-3">
                             <label htmlFor="">Data compra</label>
                             <Controller
                                 name={'transactionDate'}
                                 control={control}
-                                rules={{required: false}}
+                                rules={{required: 'Esse campo é obrigatório'}}
                                 render={({field}) => (
                                     <DatePicker
                                         selected={parseISO(field.value)}
                                         onChange={(date) => {
                                             field.onChange(date ? format(date, 'yyyy-MM-dd') : field.value);
                                         }}
-                                        dateFormat="dd/MM/yyyy" // Exibe no formato brasileiro
-                                        className="form-control input-default"
+                                        dateFormat="dd/MM/yyyy"
+                                        onBlur={updateInstallmentList}
+                                        className={`form-control input-default ${errors.transactionDate ? "input-error" : ""}`}
                                         placeholderText="Selecione uma data"
                                     />
                                 )}
                             />
                         </div>
-                        <div className="col-3">
-                            <label htmlFor="">Cartão</label>
-                            <Controller name={'creditCardId'}
-                                        control={control}
-                                        render={({field}) => (
-                                            <Select
-                                                {...field}
-                                                options={creditCards}
-                                                value={creditCards.find((c: any) => c.value === field.value)}
-                                                onChange={(val) => field.onChange(val?.value)}
-                                                placeholder={'Selecione'}
-                                            />
-                                        )}
-                            />
-                        </div>
-                        <div className="col-3">
+                        <div className="col-6">
                             <label htmlFor="">Categoria</label>
                             <Controller name={'categoryId'}
                                         control={control}
@@ -199,80 +303,170 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
                                         )}
                             />
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-2">
-                            <label htmlFor="">Total</label>
+                        <div className="col-3">
+                            <label htmlFor="">Parcelas</label>
                             <Controller
-                                name={'installments'}
-                                control={control}
-                                render={(field) => (
-                                    <Select
-                                        {...field}
-                                        options={installmentsArray}
-                                        placeholder={'Selecione'}
-                                    />
-                                )}
-                            />
-                        </div>
-                    </div>
-                    <hr></hr>
-
-                    <div className="row">
-                        <div className="col-2">
-                            <label htmlFor="">Parcela</label>
-                            <Controller
-                                name={'currentInstallment'}
+                                name={'totInstallments'}
                                 control={control}
                                 render={({field}) => (
                                     <Select
                                         {...field}
-                                        options={installmentsArray}
-                                        value={installmentsArray.find((c: any) => c.value === field.value)}
-                                        onChange={(val: any) => field.onChange(val?.value)}
+                                        options={qtdInstallments}
+                                        value={qtdInstallments.find((c: any) => c.value === field.value)}
+                                        onChange={(val: any) => {
+                                            field.onChange(val?.value);
+                                            updateInstallmentList();
+                                        }}
                                         placeholder={'Selecione'}
                                     />
                                 )}
                             />
                         </div>
-                        <div className="col-2">
+                    </div>
+
+                    <hr/>
+                    <h4><input
+                        type="checkbox"
+                        checked={showInternationalTransaction}
+                        onChange={handleInternationalTransactionVisibility}
+                    /> Compra internacional</h4>
+
+                    {showInternationalTransaction && (
+                        <div>
+                            <div className="row">
+                                <div className="col-3">
+                                    <label htmlFor="">Moeda original</label>
+                                    <Controller
+                                        name={'transactionCurrencyId'}
+                                        control={control}
+                                        render={({field}) => (
+                                            <Select
+                                                options={currencies}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                                <div className="col-3">
+                                    <label htmlFor="">Valor original</label>
+                                    <Controller
+                                        name={'transactionAmount'}
+                                        control={control}
+                                        render={({field}) => (
+                                            <CurrencyInput
+                                                prefix="R$ "
+                                                value={field.value}
+                                                onValueChange={(values: any) => field.onChange(values.rawValue)}
+                                                className={`form-control input-default`}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                                <div className="col-3">
+                                    <label htmlFor="">Dólar</label>
+                                    <Controller
+                                        name={'dollarExchangeRate'}
+                                        control={control}
+                                        render={({field}) => (
+                                            <CurrencyInput
+                                                prefix="R$ "
+                                                value={field.value}
+                                                onValueChange={(values: any) => field.onChange(values.rawValue)}
+                                                className={`form-control input-default`}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                                <div className="col-3">
+                                    <label htmlFor="">Moéda para Dólar</label>
+                                    <Controller
+                                        name={'currencyDollarExchangeRate'}
+                                        control={control}
+                                        render={({field}) => (
+                                            <CurrencyInput
+                                                prefix="R$ "
+                                                value={field.value}
+                                                onValueChange={(values: any) => field.onChange(values.rawValue)}
+                                                className={`form-control input-default`}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-3">
+                                    <label htmlFor="">Total de imposto</label>
+                                    <Controller
+                                        name={'totalTax'}
+                                        control={control}
+                                        render={({field}) => (
+                                            <CurrencyInput
+                                                prefix={"R$ "}
+                                                value={field.value}
+                                                onValueChange={(values: any) => field.onChange(values.rawValue)}
+                                                className={`form-control input-default`}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <hr/>
+                    <h4>Parcelas</h4>
+                    {/*// TODO: only show this block if it is a installment purchase, otherwise just send the basic list with one element*/}
+                    {fields.map((field, index) => (
+                        <div className="row" key={field.id}>
+                            <div className={'col-3'}>
+                                <label>Nº parcela</label>
+                                <Controller
+                                    name={`installments.${index}.currentInstallment`}
+                                    control={control}
+                                    render={({field}) => (
+                                        <input type={'text'}
+                                               {...field}
+                                               disabled={true}
+                                               className={'form-control'}
+                                        />
+                                    )}
+                                />
+                            </div>
+                            <div className="col-3">
+                                <label htmlFor="">Valor</label>
+                                <Controller
+                                    name={`installments.${index}.amount`}
+                                    control={control}
+                                    render={({field}) => (
+                                        <CurrencyInput
+                                            prefix="R$ "
+                                            value={field.value}
+                                            onValueChange={(values: any) => field.onChange(values.rawValue)}
+                                            className={`form-control input-default ${errors.totalAmount ? "input-error" : ""}`}
+                                        />
+                                    )}
+                                />
+                            </div>
+                            <div className="col-3">
+                                <label htmlFor="">Pagamento</label>
+                                <Controller
+                                    name={`installments.${index}.dueDate`}
+                                    control={control}
+                                    render={({field}) => (
+                                        <DatePicker
+                                            selected={parseISO(field.value)}
+                                            onChange={(date) => {
+                                                field.onChange(date ? format(date, 'yyyy-MM-dd') : field.value);
+                                            }}
+                                            dateFormat="dd/MM/yyyy"
+                                            className={'form-control'}
+                                        />
+                                    )}
+                                />
+                            </div>
 
                         </div>
-                    </div>
-                    <div className="row">
-                        {/*<div className="col-3">*/}
-                        {/*    <label htmlFor="">Data pagamento</label>*/}
-                        {/*    <Controller name={'dueDate'}*/}
-                        {/*                control={control}*/}
-                        {/*                defaultValue={selectedTransaction.dueDate}*/}
-                        {/*                render={({field}) => (*/}
-                        {/*                    <DatePicker*/}
-                        {/*                        selected={parseISO(field.value)}*/}
-                        {/*                        onChange={(date) => {*/}
-                        {/*                            field.onChange(date ? format(date, 'yyyy-MM-dd') : selectedTransaction.dueDate);*/}
-                        {/*                        }}*/}
-                        {/*                        className={'form-control input-default'}*/}
-                        {/*                    />*/}
-                        {/*                )}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-                        {/*<div className="col-6 mt-2">*/}
-                        {/*    <CheckBox*/}
-                        {/*        text="Transação parcelada"*/}
-                        {/*        hint="Parcelamento  "*/}
-                        {/*        iconSize="25"*/}
-                        {/*        onValueChanged={checkChange}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-                        {/*<div className="col-6 mt-2">*/}
-                        {/*    <Controller name={'installments'}*/}
-                        {/*                control={control}*/}
-                        {/*                render={({field}) => (*/}
-                        {/*                    <input className={'form-control'} {...field} />*/}
-                        {/*                )}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-                    </div>
+                    ))}
 
                     <div className="row">
                         <div className="col-12">
@@ -280,7 +474,11 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
                             <Controller name={'description'}
                                         control={control}
                                         render={({field}) => (
-                                            <textarea className='form-control' {...field}></textarea>
+                                            <textarea
+                                                {...field}
+                                                rows={5}
+                                                className='form-control'
+                                            />
                                         )}/>
                         </div>
                     </div>
@@ -293,11 +491,11 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
     return (
         <Modal showModal={props.modalState}
                hideModal={props.hideModal}
-               title={'Fatura com parcelas'}
+               title={'Transação'}
                body={body()}
                fullscreen={false}
                actionModal={handleSubmit(onSubmit)}
-               disableAction={isDirty}
+               disableAction={!isDirty}
                size={'lg'}
         />
     )

@@ -52,7 +52,7 @@ const App = (props: PieCharProps) => {
         <PieChart
             id="pie"
             dataSource={props.data}
-            palette={props.palette ?? 'Violet'}
+            palette={props.palette ?? 'Pastel'}
             title={props.title}
             type={props.type ?? 'pie'}
             resolveLabelOverlapping={'shift'}

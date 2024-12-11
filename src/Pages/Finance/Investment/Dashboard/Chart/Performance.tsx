@@ -5,17 +5,17 @@ import {URL_FINANCE_INVESTMENT_PERFORMANCE} from "../../../../../Services/Axios/
 import {toast} from "react-toastify";
 
 const App = () => {
-    const [interest, setInterest] = useState<any>([])
+    const [performance, setPerformance] = useState<any>([])
 
     useEffect(() => {
-        getInterestData();
+        getPerformanceData();
     }, []);
 
-    const getInterestData = () => {
+    const getPerformanceData = () => {
         getFinanceData(URL_FINANCE_INVESTMENT_PERFORMANCE, {
-            periodRange: 5,
+            periodRange: 12,
         }).then(response => {
-            setInterest(response);
+            setPerformance(response);
         }).catch(err => {
             toast.error(err);
         })
@@ -24,11 +24,11 @@ const App = () => {
     return (
         <Line
             id={'investment_profit_chart'}
-            data={interest?.data}
-            series={interest?.series}
+            data={performance?.data}
+            series={performance?.series}
             argumentField={'period'}
             title={"Evolução do investimento"}
-            subtitle={"Eh os guri"}
+            subtitle={"Evolução, em %, dos investimentos comparados ao CDI"}
             type={'spline'}
         />
     )

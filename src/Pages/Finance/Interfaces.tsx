@@ -81,29 +81,44 @@ export interface CreditCard {
     dueAt: string //maybe date
 }
 
+
+export interface CreditCardInstalments {
+    currentInstallment: number;
+    amount: number;
+    dueDate: string;
+}
+
+export interface CreditCardTransactionTax {
+    currencyId: string;
+    taxId: string;
+    amount: number;
+}
+
 export interface CreditCardTransaction {
-    transactionId: number | null | undefined
-    creditCardId: string | null
-    // creditCardNickname: string | null
-    period: number
-    categoryId: string | null
-    // categoryName: string | null
-    amount: number //ok
-    currencyId: string
-    // currencySymbol: string
-    transactionCurrencyId: string
-    // transactionCurrencySymbol: string
-    transactionAmount: number
-    dueDate: string
-    transactionDate: string
-    description: string
-    isInstallment: boolean | undefined | null
-    installments: number | undefined | null
-    currentInstallment: number | undefined | null
-    totalAmount: number
-    parentId: number | null
-    createdAt: string | undefined
-    lastEditedAt: string | undefined
+    transactionId: number | null;
+    creditCardId: string;
+    // period: number;
+    transactionDate: string;
+    categoryId: string;
+    amount: number;
+    currencyId: string;
+
+    // International transactions information
+    transactionCurrencyId: string;
+    transactionAmount: number;
+    dollarExchangeRate?: number;
+    currencyDollarExchangeRate?: number;
+    taxDetail?: CreditCardTransactionTax[];
+    totalTax?: number
+
+    description: string;
+    isInstallment: boolean;
+    installments: CreditCardInstalments[];
+    totInstallments: number
+    totalAmount: number;
+    parentId: number | null;
+    createdAt?: string;
+    lastEditedAt?: string;
 }
 
 export interface CreditCardBillHistory {

@@ -134,7 +134,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
 
     const getInvestmentTypes = () => {
         getFinanceData(URL_FINANCE_INVESTMENT_TYPE).then((response: GetInvestmentTypesResponse) => {
-            let options = response?.investmentTypes.map((i: InvestmentType) => (
+            let options = response.investmentTypes.map((i: InvestmentType) => (
                 {value: i.investmentTypeId, label: i.investmentTypeName}
             ));
             setInvestmentTypes(options);

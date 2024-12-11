@@ -16,7 +16,7 @@ const App = (props: LineChartProps) => {
     return (
         <Chart
             id={props.id}
-            palette={"Violet"}
+            palette={"Pastel"}
             dataSource={props.data}>
 
             <CommonSeriesSettings
