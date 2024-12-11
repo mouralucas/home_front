@@ -57,7 +57,7 @@ const DefaultCreditCardTransaction: CreditCardTransaction = {
 
     description: '',
     isInstallment: false,
-    installments: [],
+    installments: [{currentInstallment: 1, amount: 0, dueDate: format(new Date().toDateString(), 'yyyy-MM-dd')}],
     totInstallments: 1,
     totalAmount: 0,
     parentId: null,
@@ -94,7 +94,7 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
             getCurrency();
 
             // Set the basic installment
-            append({currentInstallment: 1, amount: 0, dueDate: format(new Date().toDateString(), 'yyyy-MM-dd')});
+            // append({currentInstallment: 1, amount: 0, dueDate: format(new Date().toDateString(), 'yyyy-MM-dd')});
         }
 
         if (!props.modalState) {
