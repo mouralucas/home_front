@@ -49,7 +49,8 @@ const DefaultCreditCardTransaction: CreditCardTransaction = {
     amount: 0,
     currencyId: 'BRL',
 
-    transactionCurrencyId: '',
+    isInternationalTransaction: false,
+    transactionCurrencyId: 'BRL',
     transactionAmount: 0,
     dollarExchangeRate: 0,
     currencyDollarExchangeRate: 0,

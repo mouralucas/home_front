@@ -104,6 +104,7 @@ export interface CreditCardTransaction {
     currencyId: string;
 
     // International transactions information
+    isInternationalTransaction: boolean;
     transactionCurrencyId: string;
     transactionAmount: number;
     dollarExchangeRate?: number;

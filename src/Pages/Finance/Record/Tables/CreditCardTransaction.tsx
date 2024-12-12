@@ -3,7 +3,7 @@ import {URL_CREDIT_CARD_TRANSACTION} from "../../../../Services/Axios/ApiUrls";
 import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
-import TransactionModal from '../Modals/CreditCardTransactionBeta_2'
+import TransactionModal from '../Modals/CreditCardTransaction'
 import {CreditCardTransaction} from "../../Interfaces";
 import {toast} from "react-toastify";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
