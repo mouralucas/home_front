@@ -1,39 +1,23 @@
 import React, {useEffect, useState} from "react";
 
 import Modal from '../../../../Components/Modal'
-import {CreditCard, CreditCardTransaction, Currency} from "../../Interfaces";
-import {Category} from "../../../Interfaces";
+import {CreditCardTransaction} from "../../Interfaces";
 import {Controller, useFieldArray, useForm} from "react-hook-form";
 import {getFinanceData} from "../../../../Services/Axios/Get";
-import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CREDIT_CARD_INSTALLMENT_DUE_DATES, URL_CURRENCY} from "../../../../Services/Axios/ApiUrls";
-import {toast, ToastOptions} from "react-toastify";
+import {URL_CREDIT_CARD_INSTALLMENT_DUE_DATES, URL_CREDIT_CARD_TRANSACTION, URL_INVESTMENT} from "../../../../Services/Axios/ApiUrls";
 import CurrencyInput from "../../../../Components/Form/CurrencyNew";
 import DatePicker from "react-datepicker"
 import Select from "react-select";
 import {format, parseISO} from "date-fns";
+import {getCategories, getCreditCards, getCurrencies} from "../../../../Services/CommonFunctions/Finance";
+import {financialSubmit} from "../../../../Services/Axios/Post";
+import {toast, ToastOptions} from "react-toastify";
 
 interface CreditCardBillProps {
-    creditCardTransaction: CreditCardTransaction | null;
     modalState: boolean;
     hideModal: any;
 }
 
-interface GetCreditCardsResponse {
-    quantity: number;
-    creditCards: CreditCard[];
-}
-
-interface GetCategoryResponse {
-    quantity: number;
-    categories: Category[];
-}
-
-interface GetCurrencyResponse {
-    quantity: number;
-    currencies: Currency[];
-}
-
-// TODO: Adjust to CamelCase after backend adjust
 interface GetDueDatesResponse {
     dueDates: [{
         currentInstallment: number;
@@ -46,11 +30,10 @@ const DefaultCreditCardTransaction: CreditCardTransaction = {
     creditCardId: '',
     transactionDate: format(new Date().toDateString(), 'yyyy-MM-dd'),
     categoryId: '',
-    amount: 0,
     currencyId: 'BRL',
 
     isInternationalTransaction: false,
-    transactionCurrencyId: 'BRL',
+    transactionCurrencyId: '',
     transactionAmount: 0,
     dollarExchangeRate: 0,
     currencyDollarExchangeRate: 0,
@@ -67,14 +50,16 @@ const DefaultCreditCardTransaction: CreditCardTransaction = {
 }
 
 const App = (props: CreditCardBillProps): React.ReactElement => {
-    const {handleSubmit, control, reset, formState: {isDirty, dirtyFields, errors}, getValues, setValue} = useForm<CreditCardTransaction>({defaultValues: DefaultCreditCardTransaction})
+    const {handleSubmit, control, reset, formState: {isDirty, dirtyFields, errors}, getValues, setValue, watch} = useForm<CreditCardTransaction>({defaultValues: DefaultCreditCardTransaction})
 
-    const [creditCards, setCreditCards] = useState<any>([])
+    const [creditCards, setCreditCards] = useState<any[]>([])
     const [categories, setCategories] = useState<any[]>([])
     const [currencies, setCurrencies] = useState<any[]>([])
     const [qtdInstallments, setQtdInstallments] = useState<any[]>(Array.from({length: 12}, (_, i) => ({value: i + 1, label: i + 1})))
 
-    const [showInternationalTransaction, setShowInternationalTransaction] = useState<boolean>(false);
+    // const [showInternationalTransaction, setShowInternationalTransaction] = useState<boolean>(false);
+
+    const showInternationalTransaction: boolean = watch('isInternationalTransaction')
 
     // Create the list of installments in form
     const {fields, append, remove, update} = useFieldArray({
@@ -82,26 +67,20 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
         name: "installments",
     });
 
+    const fetchTransactionData: () => Promise<void> = async () => {
+        setCreditCards(await getCreditCards());
+        setCategories(await getCategories());
+        setCurrencies(await getCurrencies());
+    };
+
     useEffect(() => {
-        if (props.modalState && props.creditCardTransaction) {
-            reset(props.creditCardTransaction);
-        } else if (props.modalState && !props.creditCardTransaction) {
-            reset(DefaultCreditCardTransaction);
-        }
+        reset(DefaultCreditCardTransaction);
 
         if (props.modalState) {
-            getCreditCards();
-            getCategory();
-            getCurrency();
-
-            // Set the basic installment
-            // append({currentInstallment: 1, amount: 0, dueDate: format(new Date().toDateString(), 'yyyy-MM-dd')});
+            fetchTransactionData().then();
         }
 
-        if (!props.modalState) {
-            reset(DefaultCreditCardTransaction);
-        }
-    }, [props.modalState, props.creditCardTransaction]);
+    }, [props.modalState]);
 
     const updateInstallmentList = () => {
         const totInstallment: number = getValues('totInstallments');
@@ -110,7 +89,6 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
         const transactionDate: string = getValues('transactionDate')
 
         if (creditCardId !== "" && totAmount !== 0) {
-            console.log('chamou a função de parcelas');
             // The minimum information needed to calculate the due date is the credit card.
             const installmentAmount = totAmount / totInstallment
 
@@ -143,47 +121,9 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
         }
     }
 
-    const handleInternationalTransactionVisibility = () => {
-        setShowInternationalTransaction(!showInternationalTransaction);
-    };
-
-    const getCreditCards = () => {
-        getFinanceData(URL_CREDIT_CARD).then((response: GetCreditCardsResponse) => {
-            let options: any = response.creditCards.map((i: CreditCard) =>
-                ({value: i.creditCardId, label: i.nickname})
-            );
-            setCreditCards(options)
-        }).catch((err: string | ToastOptions) => {
-            toast.error('Houve um erro ao buscar os cartões de crédito');
-        })
-    }
-
-    const getCategory = () => {
-        getFinanceData(URL_CATEGORIES).then((response: GetCategoryResponse) => {
-            let options = response.categories.map((i: Category) =>
-                ({value: i.categoryId, label: i.name})
-            );
-            setCategories(options)
-        }).catch((err: string | ToastOptions) => {
-            toast.error('Houve um erro ao buscar as categorias');
-        })
-    }
-
-    const getCurrency = () => {
-        getFinanceData(URL_CURRENCY).then((response: GetCurrencyResponse) => {
-            let options = response.currencies.map((i: Currency) =>
-                ({value: i.currencyId, label: i.symbol})
-            );
-            setCurrencies(options)
-        }).catch(() => {
-            toast.error('Houve um erro ao buscar as moedas disponíveis');
-        })
-    }
-
     const onSubmit = (data: CreditCardTransaction, e: any) => {
         let method;
         let submit_data;
-        console.log(data);
         if (data.transactionId !== null) {
             method = 'patch'
 
@@ -202,7 +142,11 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
             submit_data = data
         }
 
-        console.log(submit_data);
+        financialSubmit(e, URL_CREDIT_CARD_TRANSACTION, submit_data, false, method).then(() => {
+            toast.success('Investimento salvo com sucesso')
+        }).catch((err: string | ToastOptions) => {
+            toast.error('Erro ao salvar o investimento ' + err)
+        })
     }
 
     const body = (): React.ReactElement => {
@@ -293,6 +237,7 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
                             <label htmlFor="">Categoria</label>
                             <Controller name={'categoryId'}
                                         control={control}
+                                        rules={{required: 'Esse campo é obrigatório'}}
                                         render={({field}) => (
                                             <Select
                                                 {...field}
@@ -300,6 +245,7 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
                                                 value={categories.find((c: any) => c.value === field.value)}
                                                 onChange={(val: any) => field.onChange(val?.value)}
                                                 placeholder={'Selecione'}
+                                                className={`${errors.categoryId ? "input-error" : ""}`}
                                             />
                                         )}
                             />
@@ -326,11 +272,23 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
                     </div>
 
                     <hr/>
-                    <h4><input
-                        type="checkbox"
-                        checked={showInternationalTransaction}
-                        onChange={handleInternationalTransactionVisibility}
-                    /> Compra internacional</h4>
+                    <h4>
+                        <Controller
+                            name={"isInternationalTransaction"}
+                            control={control}
+                            render={({field}) => (
+                                <input
+                                    {...field}
+                                    type={'checkbox'}
+                                    value={'on'}
+                                    checked={field.value}
+                                    // disabled={true}
+                                    // className={'form-control'}
+                                />
+                            )}
+                        />
+                        Compra internacional
+                    </h4>
 
                     {showInternationalTransaction && (
                         <div>
@@ -340,9 +298,17 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
                                     <Controller
                                         name={'transactionCurrencyId'}
                                         control={control}
+                                        rules={{
+                                            required: showInternationalTransaction ? 'Campo obrigatório' : false,
+                                        }}
                                         render={({field}) => (
                                             <Select
+                                                {...field}
                                                 options={currencies}
+                                                value={currencies.find((c: any) => c.value === field.value)}
+                                                onChange={(val: any) => field.onChange(val?.value)}
+                                                placeholder={'Selecione'}
+                                                className={`${errors.transactionCurrencyId ? "input-error" : ""}`}
                                             />
                                         )}
                                     />
@@ -352,12 +318,20 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
                                     <Controller
                                         name={'transactionAmount'}
                                         control={control}
+                                        rules={{
+                                            validate: (value) => {
+                                                if (showInternationalTransaction) {
+                                                    return value !== 0 || 'Este campo não deve ser zero';
+                                                }
+                                                return true; // Se não for uma compra internacional, o campo não precisa ser validado
+                                            },
+                                        }}
                                         render={({field}) => (
                                             <CurrencyInput
                                                 prefix="R$ "
                                                 value={field.value}
                                                 onValueChange={(values: any) => field.onChange(values.rawValue)}
-                                                className={`form-control input-default`}
+                                                className={`form-control input-default ${errors.transactionAmount ? "input-error" : ""}`}
                                             />
                                         )}
                                     />
@@ -367,12 +341,20 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
                                     <Controller
                                         name={'dollarExchangeRate'}
                                         control={control}
+                                        rules={{
+                                            validate: (value) => {
+                                                if (showInternationalTransaction) {
+                                                    return value !== 0 || 'Este campo não deve ser zero';
+                                                }
+                                                return true;
+                                            },
+                                        }}
                                         render={({field}) => (
                                             <CurrencyInput
                                                 prefix="R$ "
                                                 value={field.value}
                                                 onValueChange={(values: any) => field.onChange(values.rawValue)}
-                                                className={`form-control input-default`}
+                                                className={`form-control input-default ${errors.dollarExchangeRate ? "input-error" : ""}`}
                                             />
                                         )}
                                     />
@@ -382,12 +364,20 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
                                     <Controller
                                         name={'currencyDollarExchangeRate'}
                                         control={control}
+                                        rules={{
+                                            validate: (value) => {
+                                                if (showInternationalTransaction) {
+                                                    return value !== 0 || 'Este campo não deve ser zero';
+                                                }
+                                                return true; // Se não for uma compra internacional, o campo não precisa ser validado
+                                            },
+                                        }}
                                         render={({field}) => (
                                             <CurrencyInput
                                                 prefix="R$ "
                                                 value={field.value}
                                                 onValueChange={(values: any) => field.onChange(values.rawValue)}
-                                                className={`form-control input-default`}
+                                                className={`form-control input-default ${errors.currencyDollarExchangeRate ? "input-error" : ""}`}
                                             />
                                         )}
                                     />

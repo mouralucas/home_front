@@ -4,7 +4,8 @@ import DataGrid from "../../../../Components/Table/DataGrid";
 import {Button as Btn,} from 'devextreme-react/data-grid';
 import Button from "devextreme-react/button";
 import TransactionModal from '../Modals/CreditCardTransaction'
-import {CreditCardTransaction} from "../../Interfaces";
+import UpdateTransactionModal from '../Modals/UpdateCreditCardTransaction'
+import {CreditCardTransaction, UpdateCreditCardTransaction} from "../../Interfaces";
 import {toast} from "react-toastify";
 import {DataGridColumn, DataGridToolBarItem} from "../../../../Assets/Core/Components/Interfaces";
 import {getFinanceData} from "../../../../Services/Axios/Get";
@@ -18,25 +19,35 @@ interface TransactionResponse {
 
 const App = () => {
     const [creditCardTransaction, setCreditCardTransaction] = useState<CreditCardTransaction[]>();
-    const [selectedCreditCardTransaction, setSelectedCreditCardTransaction] = useState<CreditCardTransaction | null>(null)
-    const [modalState, setModalState] = useState(false)
+    const [selectedCreditCardTransaction, setSelectedCreditCardTransaction] = useState<UpdateCreditCardTransaction | undefined>(undefined)
+    const [transactionModalState, setTransactionModalState] = useState<boolean>(false)
+    const [updateTransactionModalState, setUpdateTransactionModalState] = useState<boolean>(false)
 
-    const showModal = (e: any) => {
-        if (typeof e.row !== 'undefined') {
-            setSelectedCreditCardTransaction(e.row.data);
-        }
-        setModalState(true);
+    const showTransactionModal = (e: any) => {
+        setTransactionModalState(true);
     }
 
-    const hideModal = () => {
-        setModalState(false);
+    const hideTransactionModal = () => {
+        setTransactionModalState(false);
+        getTransactions();
+    }
+
+    const showUpdateTransactionModal = (e: any) => {
+        if (typeof e.row !== 'undefined') {
+            setSelectedCreditCardTransaction(e.row.data);
+            setUpdateTransactionModalState(true);
+        }
+    }
+
+    const hideUpdateTransactionModal = () => {
+        setUpdateTransactionModalState(false);
         getTransactions();
     }
 
     const getTransactions = () => {
         getFinanceData(URL_CREDIT_CARD_TRANSACTION, {
             startPeriod: 202401,
-            endPeriod: 202412
+            endPeriod: 202506
         }).then((response: TransactionResponse) => {
             setCreditCardTransaction(response.transactions);
         }).catch(response => {
@@ -142,7 +153,7 @@ const App = () => {
                     // icon="/url/to/my/icon.ico"
                     icon="edit"
                     hint="Editar"
-                    onClick={showModal}
+                    onClick={showUpdateTransactionModal}
                 />,
                 <Btn
                     key={2}
@@ -169,7 +180,7 @@ const App = () => {
             location: "after"
         },
         {
-            child: <Button icon={'add'} onClick={showModal}></Button>,
+            child: <Button icon={'add'} onClick={showTransactionModal}></Button>,
             location: "after"
         },
         {
@@ -186,7 +197,7 @@ const App = () => {
                 columns={columns}
                 data={creditCardTransaction}
                 toolBar={{
-                    visible:true,
+                    visible: true,
                     items: toolBarItems
                 }}
                 showLoadPanel={false}
@@ -194,7 +205,8 @@ const App = () => {
                     visible: true
                 }}
             />
-            <TransactionModal modalState={modalState} hideModal={hideModal} creditCardTransaction={selectedCreditCardTransaction}/>
+            <TransactionModal modalState={transactionModalState} hideModal={hideTransactionModal}/>
+            <UpdateTransactionModal modalState={updateTransactionModalState} hideModal={hideUpdateTransactionModal} creditCardTransaction={selectedCreditCardTransaction}/>
         </>
     );
 }
