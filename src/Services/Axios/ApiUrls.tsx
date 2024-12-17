@@ -44,6 +44,7 @@ export const URL_FINANCE_TRANSACTIONS_CATEGORY_LIST = '/finance/transaction/cate
 export const URL_FINANCE_EXPENSES_BY_CATEGORY = '/finance/expenses/category'
 export const URL_CURRENCY = '/finance/currency'
 export const URL_FINANCE_SUMMARY = '/finance/summary'
+export const URL_FINANCE_TAX_FEE = '/finance/tax-fee'
 export const URL_FINANCE_BANK = '/finance/bank'
 export const URL_FINANCE_INTEREST = 'finance/interest'
 export const URL_FINANCE_INVESTMENT_PROFIT = 'finance/investment/profit'

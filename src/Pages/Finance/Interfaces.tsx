@@ -173,14 +173,6 @@ export interface ExpenseByCategory {
     total: number;
 }
 
-// export interface CategoryTransactions {
-//     transactionID: number
-//     categoryId: string
-//     category: string // TODO: review this variable name, it is the parent category
-//     categoryName: string
-//     total: number
-// }
-
 export interface Summary {
     period: number
     referenceDate: string
@@ -231,4 +223,13 @@ export interface FeeDetails {
     currencyId: string;
     feeId: string;
     amount: number;
+}
+
+export interface TaxFee {
+    taxFeeId: string;
+    name: string
+    description: string;
+    acronyms: string;
+    countryId: string;
+    type: string
 }

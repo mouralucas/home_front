@@ -5,6 +5,7 @@ import {getFinanceData} from "../../../../Services/Axios/Get";
 import Button from "devextreme-react/button";
 import {Button as Btn} from "devextreme-react/data-grid";
 import ModalInvestment from '../Modals/Investment';
+import ModalLiquidate from '../Modals/InvestmentLiquidate';
 import {Investment} from "../../Interfaces";
 import {DataGridColumn} from "../../../../Assets/Core/Components/Interfaces";
 import DataGrid from "../../../../Components/Table/DataGrid";
@@ -18,18 +19,28 @@ interface InvestmentResponse {
 const App = () => {
     const [investment, setInvestment] = useState<Investment[]>([])
     const [selectedInvestment, setSelectedInvestment] = useState<Investment | undefined>()
-    const [modalState, setModalState] = useState<boolean>(false)
+    const [modalInvestmentState, setModalInvestmentState] = useState<boolean>(false)
+    const [modalLiquidateState, setModalLiquidateState] = useState<boolean>(false)
 
-    const showModal = (e: any) => {
+    const showInvestmentModal = (e: any) => {
         if (typeof e.row !== 'undefined') {
             setSelectedInvestment(e.row.data);
         }
-        setModalState(true);
+        setModalInvestmentState(true);
     }
 
-    const hideModal = () => {
-        setModalState(false);
+    const hideInvestmentModal = () => {
+        setModalInvestmentState(false);
         setSelectedInvestment(undefined);
+        getInvestment();
+    }
+
+    const showLiquidateModal = () => {
+        setModalLiquidateState(true);
+    }
+
+    const hideLiquidateModal = () => {
+        setModalLiquidateState(false);
         getInvestment();
     }
 
@@ -133,7 +144,7 @@ const App = () => {
                     // icon="/url/to/my/icon.ico"
                     icon="edit"
                     hint="Editar"
-                    onClick={showModal}
+                    onClick={showInvestmentModal}
                 />,
                 <Btn
                     key={2}
@@ -146,7 +157,7 @@ const App = () => {
                     key={3}
                     icon="money"
                     hint={"Liquidar"}
-                    onClick={coffeeCommand}
+                    onClick={showLiquidateModal}
                 />
             ]
         }
@@ -167,7 +178,7 @@ const App = () => {
             location: "after"
         },
         {
-            child: <Button icon={'add'} onClick={showModal}></Button>,
+            child: <Button icon={'add'} onClick={showInvestmentModal}></Button>,
             location: "after"
         },
         {
@@ -189,7 +200,8 @@ const App = () => {
                 }}
                 showLoadPanel={false}
             />
-            <ModalInvestment modalState={modalState} hideModal={hideModal} investment={selectedInvestment}></ModalInvestment>
+            <ModalInvestment modalState={modalInvestmentState} hideModal={hideInvestmentModal} investment={selectedInvestment}></ModalInvestment>
+            <ModalLiquidate modalState={modalLiquidateState} hideModal={hideLiquidateModal} />
         </>
     )
 }

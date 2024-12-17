@@ -57,11 +57,8 @@ const App = (props: CreditCardBillProps): React.ReactElement => {
     const [currencies, setCurrencies] = useState<any[]>([])
     const [qtdInstallments, setQtdInstallments] = useState<any[]>(Array.from({length: 12}, (_, i) => ({value: i + 1, label: i + 1})))
 
-    // const [showInternationalTransaction, setShowInternationalTransaction] = useState<boolean>(false);
-
     const showInternationalTransaction: boolean = watch('isInternationalTransaction')
 
-    // Create the list of installments in form
     const {fields, append, remove, update} = useFieldArray({
         control,
         name: "installments",

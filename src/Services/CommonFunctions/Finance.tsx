@@ -1,6 +1,6 @@
 import {getFinanceData} from "../Axios/Get";
-import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CURRENCY} from "../Axios/ApiUrls";
-import {CreditCard, Currency} from "../../Pages/Finance/Interfaces";
+import {URL_CATEGORIES, URL_CREDIT_CARD, URL_CURRENCY, URL_FINANCE_TAX_FEE} from "../Axios/ApiUrls";
+import {CreditCard, Currency, TaxFee} from "../../Pages/Finance/Interfaces";
 import {toast, ToastOptions} from "react-toastify";
 import {Category} from "../../Pages/Interfaces";
 
@@ -21,6 +21,10 @@ interface GetCurrencyResponse {
     currencies: Currency[];
 }
 
+interface GetTaxFeeResponse {
+    quantity: number;
+    taxFee: TaxFee[];
+}
 
 export const getCreditCards = async (): Promise<any[]> => {
     try {
@@ -56,5 +60,17 @@ export const getCurrencies = async (): Promise<any[]> => {
     } catch (err: any | ToastOptions) {
         toast.error('Houve um erro ao buscar as moedas');
         return [];
+    }
+};
+
+export const getTaxFee = async (countryId: string, taxFeeType: string): Promise<any[]> => {
+    try {
+        const response: GetTaxFeeResponse = await getFinanceData(URL_FINANCE_TAX_FEE, {countryId: countryId, type: taxFeeType});
+        return response.taxFee.map((i: TaxFee) => (
+            {value: i.taxFeeId, label: i.name}
+        ))
+    } catch (err: any | ToastOptions) {
+        toast.error('Houve um erro ao buscar as taxas e impostos')
+        return []
     }
 };
