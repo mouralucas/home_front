@@ -59,6 +59,16 @@ export interface Investment {
     observation?: string;
 }
 
+export interface InvestmentLiquidate {
+    investmentId: string;
+    grossAmount: number;
+    netAmount: number;
+    liquidationAmount: number;
+    liquidationDate: string;
+    taxDetails: TaxDetails[];
+    feeDetails: FeeDetails[];
+}
+
 export interface InvestmentType {
     investmentTypeId: string
     investmentTypeName: string
@@ -80,7 +90,6 @@ export interface CreditCard {
     closingAt: string //maybe date
     dueAt: string //maybe date
 }
-
 
 export interface CreditCardInstalments {
     currentInstallment: number;
@@ -149,7 +158,6 @@ export interface UpdateCreditCardTransaction {
 }
 
 
-
 export interface CreditCardBillHistory {
     period: number
     balance: number
@@ -211,4 +219,16 @@ export interface Liquidity {
     liquidityId: string;
     liquidityName: string;
     description: string;
+}
+
+export interface TaxDetails {
+    currencyId: string;
+    taxId: string;
+    amount: number;
+}
+
+export interface FeeDetails {
+    currencyId: string;
+    feeId: string;
+    amount: number;
 }
