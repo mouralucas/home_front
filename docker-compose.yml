@@ -1,6 +1,7 @@
 services:
-  react-app:
+  frontend-service:
     build:
+      image: 'mouralucas/rolf-services:frontend'
       context: .
       dockerfile: Dockerfile
     ports:

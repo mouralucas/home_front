@@ -6,7 +6,7 @@ export const URL_FINANCE_BASE = 'http://67.205.180.83:9003';
 export const URL_LIBRARY_BASE = 'http://67.205.180.83:9001';
 
 // User URLs
-export const URL_LOGIN = '/user/login';
+export const URL_LOGIN = '/login';
 
 // Library URLs
 export const URL_ITEM = '/item';
