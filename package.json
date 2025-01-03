@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",
-    "@testing-library/react": "^16.0.1",
+    "@testing-library/react": "^16.1.0",
     "@types/react-datepicker": "^6.2.0",
     "devextreme-themebuilder": "^22.2.4",
     "webpack": "^5.96.1",

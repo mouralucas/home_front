@@ -39,7 +39,7 @@ const App = () => {
             startPeriod: 202401,
             endPeriod: 202412
         }).then((response: TransactionResponse) => {
-                setTransaction(response.transactions);
+                setTransaction(response?.transactions);
             }
         ).catch(err => {
             toast.error('Houve um erro ao buscar extratos: ' + err)

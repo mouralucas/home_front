@@ -11,7 +11,7 @@ const Card = ({children, marginTop = 'mt-4'}: CardProps) => {
 
     let subComponents = subComponentList.map((key) => {
         return React.Children.map(children, (child) =>
-            child.type.name === key ? child : null
+            child.type.displayName === key ? child : null
         );
     });
 
@@ -24,13 +24,16 @@ const Card = ({children, marginTop = 'mt-4'}: CardProps) => {
     );
 };
 
-const Header = (props: any) => <div className='card-header justify-content-between d-flex flex-wrap'>{props.children}</div>;
+const Header = (props: any) => <div className='card-header'>{props.children}</div>;
+Header.displayName = 'Header';
 Card.Header = Header;
 
 const Body = (props: any) => <div className='card-body'>{props.children}</div>;
+Body.displayName = 'Body';
 Card.Body = Body;
 
 const Footer = (props: any) => <div className='card-footer'>{props.children}</div>;
+Footer.displayName = 'Footer';
 Card.Footer = Footer;
 
 export default Card;

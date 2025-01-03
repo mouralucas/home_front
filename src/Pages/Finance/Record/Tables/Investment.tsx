@@ -57,14 +57,15 @@ const App = () => {
     }
 
     function amountCustomCell(cellInfo: any) {
-        let amount = parseFloat(cellInfo.amount);
-        return cellInfo.currencySymbol + ' ' + amount;
+        let amount: string = parseFloat(cellInfo.amount).toFixed(2);
+        let formated_string: string = `${cellInfo.currencySymbol} ${amount}`
+        return formated_string;
     }
 
     function grossAmountCustomCell(cellInfo: any) {
         let currentSymbol: string = cellInfo.currencySymbol;
-        let grossAmount: number = parseFloat(cellInfo.grossAmount);
-        let percentageChange: number = parseFloat(cellInfo.percentageChange);
+        let grossAmount: string = parseFloat(cellInfo.grossAmount).toFixed(2);
+        let percentageChange: string = parseFloat(cellInfo.percentageChange).toFixed(2);
         let formated_string: string = `${currentSymbol} ${grossAmount} (${percentageChange}%)`
         return formated_string;
     }

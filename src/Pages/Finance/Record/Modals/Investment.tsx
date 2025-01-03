@@ -378,6 +378,7 @@ const App = (props: InvestmentProps): React.ReactElement => {
                             render={({field}) => (
                                 <CurrencyInput
                                     prefix={'R$ '}
+                                    decimalPlaces={5}
                                     value={field.value}
                                     onValueChange={(values) => field.onChange(values.rawValue)}
                                     className={`form-control input-default ${errors.price ? 'input-error' : ''}`}
